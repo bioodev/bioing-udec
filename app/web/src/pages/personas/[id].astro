@@ -6,6 +6,7 @@ import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
 import { vinculosDe } from '@/lib/contenido';
+import { existentes } from '@/lib/reglas';
 import LinkedinLogo from 'phosphor-astro/LinkedinLogo.astro';
 import LinkSimple from 'phosphor-astro/Link.astro';
 
@@ -18,7 +19,7 @@ interface Props { persona: CollectionEntry<'personas'> }
 const { persona } = Astro.props;
 const perfil = persona.data.perfil_egresado?.autorizado ? persona.data.perfil_egresado : undefined;
 const organizacion = perfil?.organizacion ? await getEntry(perfil.organizacion) : undefined;
-const areas = perfil?.areas ? await getEntries(perfil.areas) : [];
+const areas = perfil?.areas ? existentes(await getEntries(perfil.areas)) : [];
 const { noticias, organiza, expone, ofrece } = await vinculosDe('personas', persona.id);
 ---
 <Base titulo={persona.data.nombre}>

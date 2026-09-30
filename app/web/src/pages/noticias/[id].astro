@@ -3,19 +3,21 @@ import { getEntries, getEntry, render, type CollectionEntry } from 'astro:conten
 import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
-import { formatoFecha, formatoFechaHora, publicados } from '@/lib/contenido';
+import { formatoFecha, formatoFechaHora, noticiasVisibles } from '@/lib/contenido';
+import { existentes } from '@/lib/reglas';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 
 export async function getStaticPaths() {
-  const noticias = await publicados('noticias');
+  const noticias = await noticiasVisibles();
   return noticias.map((noticia) => ({ params: { id: noticia.id }, props: { noticia } }));
 }
 
 interface Props { noticia: CollectionEntry<'noticias'> }
 const { noticia } = Astro.props;
 const { Content } = await render(noticia);
-const personas = await getEntries(noticia.data.personas_mencionadas ?? []);
-const organizaciones = await getEntries(noticia.data.organizaciones_mencionadas ?? []);
+// existentes(): una referencia a una entrada borrada se descarta en vez de romper el build.
+const personas = existentes(await getEntries(noticia.data.personas_mencionadas ?? []));
+const organizaciones = existentes(await getEntries(noticia.data.organizaciones_mencionadas ?? []));
 const actividad = noticia.data.actividad ? await getEntry(noticia.data.actividad) : undefined;
 const cobertura = actividad?.data.publicado ? actividad : undefined;
 ---

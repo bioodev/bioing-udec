@@ -20,7 +20,7 @@ const esActual = (href: string) => (href === '/' ? actual === '/' : actual.start
     <title>{titulo === 'BIOING+' ? titulo : `${titulo} · BIOING+`}</title>
   </head>
   <body class="min-h-screen flex flex-col">
-    <a href="#contenido" class="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:p-2 focus:bg-background">Saltar al contenido</a>
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2 focus:shadow-lg">Saltar al contenido</a>
     <header class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
       <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
         <a href="/" class="font-semibold tracking-tight text-lg">BIOING+</a>

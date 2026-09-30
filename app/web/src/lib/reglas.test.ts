@@ -1,7 +1,25 @@
 import { describe, expect, test } from 'vitest';
 import {
-  actividadEsProxima, anuncioVigente, estaVigente, fechaSola, hoyEnChile, normalizar,
+  actividadEsProxima, anuncioVigente, estaVigente, existentes, fechaSola, hoyEnChile, normalizar, yaPublicado,
 } from './reglas';
+
+describe('yaPublicado', () => {
+  // 2026-09-30 20:00 en Chile (UTC-3) = 2026-09-30 23:00 UTC
+  const ahora = new Date('2026-09-30T23:00:00Z');
+  test('una fecha pasada ya está publicada', () => expect(yaPublicado(new Date('2026-09-15'), ahora)).toBe(true));
+  test('la fecha de hoy en Chile ya está publicada', () => expect(yaPublicado(new Date('2026-09-30'), ahora)).toBe(true));
+  test('una fecha futura todavía no se publica', () => expect(yaPublicado(new Date('2027-04-12'), ahora)).toBe(false));
+  test('a las 22:00 de Chile, la fecha de "mañana en UTC" sigue siendo futura', () => {
+    // 2026-09-30 22:00 en Chile = 2026-10-01 01:00 UTC; en Chile aún no es 1 de octubre
+    expect(yaPublicado(new Date('2026-10-01'), new Date('2026-10-01T01:00:00Z'))).toBe(false);
+  });
+});
+
+describe('existentes', () => {
+  test('descarta las referencias que no encontraron su entrada', () => {
+    expect(existentes(['a', undefined, 'b', undefined])).toEqual(['a', 'b']);
+  });
+});
 
 describe('hoyEnChile', () => {
   test('a las 01:00 UTC todavía es el día anterior en Chile', () => {

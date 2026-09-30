@@ -25,6 +25,16 @@ export function actividadEsProxima(a: { inicio: Date; fin?: Date }, ahora: Date)
   return (a.fin ?? a.inicio) >= ahora;
 }
 
+/** Una fecha de publicación (sin hora) ya llegó si es hoy o antes, según el día en Chile. */
+export function yaPublicado(fecha: Date, ahora: Date): boolean {
+  return fechaSola(fecha) <= hoyEnChile(ahora);
+}
+
+/** getEntries() devuelve undefined para referencias a entradas borradas; se descartan. */
+export function existentes<T>(entradas: (T | undefined)[]): T[] {
+  return entradas.filter((e): e is T => e !== undefined);
+}
+
 export function normalizar(texto: string): string {
   return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim();
 }

@@ -6,12 +6,13 @@ import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/starwind/select';
 import { egresadosDelDirectorio } from '@/lib/contenido';
+import { existentes } from '@/lib/reglas';
 import { TODAS } from '@/lib/filtro-directorio';
 
 const egresados = await Promise.all(
   (await egresadosDelDirectorio()).map(async (persona) => {
     const perfil = persona.data.perfil_egresado!;
-    const areas = perfil.areas ? await getEntries(perfil.areas) : [];
+    const areas = perfil.areas ? existentes(await getEntries(perfil.areas)) : [];
     const organizacion = perfil.organizacion ? await getEntry(perfil.organizacion) : undefined;
     return { persona, areas, organizacion };
   }),

@@ -1,12 +1,22 @@
 // Acceso al contenido. Las páginas consultan por aquí, no con getCollection directo,
 // para que ningún Borrador (publicado: false) llegue al sitio por olvido.
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { actividadEsProxima, anuncioVigente, estaVigente } from './reglas';
+import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './reglas';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners';
 
 export function publicados<C extends ColeccionPublicable>(coleccion: C) {
   return getCollection(coleccion, ({ data }) => data.publicado) as Promise<CollectionEntry<C>[]>;
+}
+
+/** Noticias publicadas cuya fecha ya llegó (una Noticia con fecha futura no aparece en ninguna parte). */
+export async function noticiasVisibles(ahora = new Date()) {
+  return (await publicados('noticias')).filter((n) => yaPublicado(n.data.fecha, ahora));
+}
+
+/** Anuncios publicados cuya fecha de publicación ya llegó. */
+export async function anunciosVisibles(ahora = new Date()) {
+  return (await publicados('anuncios')).filter((a) => yaPublicado(a.data.fecha, ahora));
 }
 
 type Ref = { collection: string; id: string };
@@ -37,7 +47,7 @@ export function vinculos() {
       return v;
     };
 
-    for (const n of await publicados('noticias')) {
+    for (const n of await noticiasVisibles()) {
       for (const id of ids(n.data.personas_mencionadas)) de('personas', id).noticias.push(n);
       for (const id of ids(n.data.organizaciones_mencionadas)) de('organizaciones', id).noticias.push(n);
     }
@@ -48,7 +58,7 @@ export function vinculos() {
       }
       for (const id of ids(a.data.expositores)) de('personas', id).expone.push(a);
     }
-    for (const a of await publicados('anuncios')) {
+    for (const a of await anunciosVisibles()) {
       const { coleccion, id } = personaUOrganizacion(a.data.oferente);
       de(coleccion, id).ofrece.push(a);
     }
@@ -77,7 +87,7 @@ export async function bannerVigente(ahora = new Date()) {
 }
 
 export async function noticiasRecientes(cantidad = 3) {
-  const noticias = await publicados('noticias');
+  const noticias = await noticiasVisibles();
   return noticias.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf()).slice(0, cantidad);
 }
 
@@ -87,7 +97,7 @@ export async function proximasActividades(ahora = new Date()) {
 }
 
 export async function anunciosVigentes(ahora = new Date()) {
-  const anuncios = (await publicados('anuncios')).filter((a) => anuncioVigente(a.data, ahora));
+  const anuncios = (await anunciosVisibles(ahora)).filter((a) => anuncioVigente(a.data, ahora));
   return anuncios.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
 }
 

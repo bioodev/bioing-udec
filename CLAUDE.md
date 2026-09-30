@@ -19,7 +19,7 @@ npm run build        # sitio estático en dist/
 npm test             # Vitest: reglas puras en src/lib/*.test.ts
 ```
 
-No hay linter todavía. Una referencia rota entre colecciones (un slug que no existe) se registra como `[ERROR] [content] Invalid content reference` pero **no** hace fallar el build: revisar la salida del build.
+No hay linter todavía. Una referencia rota entre colecciones (un slug que no existe, p. ej. una Persona borrada que sigue mencionada) se registra como `[ERROR] [content] Invalid content reference` pero **no** hace fallar el build: las páginas envuelven `getEntries()` con `existentes()` (`src/lib/reglas.ts`) y descartan la entrada faltante. Revisar la salida del build para limpiar esas referencias. Noticias y Anuncios con fecha futura no aparecen hasta ese día (`noticiasVisibles()` / `anunciosVisibles()`).
 
 ## Astro
 
