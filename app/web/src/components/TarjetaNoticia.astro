@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { formatoFecha } from '@/lib/contenido';
+
+interface Props { noticia: CollectionEntry<'noticias'> }
+const { noticia } = Astro.props;
+---
+<article class="overflow-hidden rounded-lg border border-border bg-card">
+  {noticia.data.imagen
+    ? <Image src={noticia.data.imagen} alt="" class="aspect-video w-full object-cover" widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
+    : <div class="aspect-video w-full bg-muted" aria-hidden="true"></div>}
+  <div class="p-5">
+    <p class="text-sm text-muted-foreground"><time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time></p>
+    <h3 class="mt-1 text-lg font-semibold leading-snug"><a href={`/noticias/${noticia.id}`} class="hover:text-primary">{noticia.data.titulo}</a></h3>
+    {noticia.data.bajada && <p class="mt-2 text-sm text-muted-foreground">{noticia.data.bajada}</p>}
+  </div>
+</article>

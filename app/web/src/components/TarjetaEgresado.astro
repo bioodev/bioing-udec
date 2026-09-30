@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { normalizar } from '@/lib/reglas';
+
+interface Props { persona: CollectionEntry<'personas'>; areas: string[]; organizacion?: string }
+const { persona, areas, organizacion } = Astro.props;
+const perfil = persona.data.perfil_egresado!;
+---
+<li class="rounded-lg border border-border bg-card p-5"
+    data-nombre={normalizar(persona.data.nombre)}
+    data-generacion={perfil.generacion?.toString() ?? ''}
+    data-areas={(perfil.areas ?? []).map((a) => a.id).join(' ')}
+    data-organizacion={perfil.organizacion?.id ?? ''}>
+  <h3 class="font-semibold"><a href={`/personas/${persona.id}`} class="hover:text-primary">{persona.data.nombre}</a></h3>
+  <p class="mt-1 text-sm text-muted-foreground">
+    {[perfil.cargo, organizacion].filter(Boolean).join(' · ')}
+  </p>
+  <p class="mt-2 text-xs text-muted-foreground">
+    {perfil.generacion ? `Generación ${perfil.generacion} · ` : ''}Egreso {perfil.anio_egreso}{areas.length > 0 && ` · ${areas.join(', ')}`}
+  </p>
+</li>

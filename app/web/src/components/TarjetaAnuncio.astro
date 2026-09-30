@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Badge } from '@/components/starwind/badge';
+import { formatoFecha } from '@/lib/contenido';
+
+interface Props { anuncio: CollectionEntry<'anuncios'> }
+const { anuncio } = Astro.props;
+const TIPO = {
+  trabajo: 'Trabajo', practica: 'Práctica', pasantia: 'Pasantía', proyecto: 'Proyecto',
+  convocatoria: 'Convocatoria', colaboracion: 'Colaboración', otra: 'Oportunidad',
+} as const;
+---
+<article class="rounded-lg border border-border bg-card p-5">
+  <Badge variant="default">{TIPO[anuncio.data.tipo]}</Badge>
+  <h3 class="mt-2 text-lg font-semibold leading-snug">{anuncio.data.titulo}</h3>
+  {anuncio.data.fecha_limite && <p class="mt-1 text-sm text-muted-foreground">Postula hasta el {formatoFecha(anuncio.data.fecha_limite)}</p>}
+  <p class="mt-2 text-sm">Contacto: {anuncio.data.contacto}</p>
+</article>
