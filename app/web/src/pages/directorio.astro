@@ -1,0 +1,113 @@
+---
+import { getEntries, getEntry } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import TarjetaEgresado from '@/components/TarjetaEgresado.astro';
+import { Input } from '@/components/starwind/input';
+import { Label } from '@/components/starwind/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/starwind/select';
+import { egresadosDelDirectorio } from '@/lib/contenido';
+import { TODAS } from '@/lib/filtro-directorio';
+
+const egresados = await Promise.all(
+  (await egresadosDelDirectorio()).map(async (persona) => {
+    const perfil = persona.data.perfil_egresado!;
+    const areas = perfil.areas ? await getEntries(perfil.areas) : [];
+    const organizacion = perfil.organizacion ? await getEntry(perfil.organizacion) : undefined;
+    return { persona, areas, organizacion };
+  }),
+);
+
+const unicos = <T,>(xs: T[], clave: (x: T) => string) => [...new Map(xs.map((x) => [clave(x), x])).values()];
+const generaciones = [...new Set(egresados.map((e) => e.persona.data.perfil_egresado!.generacion).filter((g): g is number => g !== undefined))].sort();
+const areas = unicos(egresados.flatMap((e) => e.areas), (a) => a.id).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.organizacion] : [])), (o) => o.id).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+---
+<Base titulo="Directorio" descripcion="Directorio de bioingenieros/as egresados/as de la Universidad de Concepción.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-semibold tracking-tight">Directorio de bioingenieros/as</h1>
+    <p class="mt-2 text-muted-foreground">Egresados/as que autorizaron publicar su perfil.</p>
+
+    <form id="filtros" class="mt-8 grid gap-4 md:grid-cols-4" role="search" onsubmit="return false">
+      <div class="grid gap-2">
+        <Label for="texto">Nombre</Label>
+        <Input id="texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
+      </div>
+      <div class="grid gap-2">
+        <Label for="generacion">Generación</Label>
+        <Select id="generacion" name="generacion" defaultValue={TODAS}>
+          <SelectTrigger class="w-full"><SelectValue placeholder="Todas" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value={TODAS}>Todas</SelectItem>
+            {generaciones.map((g) => <SelectItem value={String(g)}>{g}</SelectItem>)}
+          </SelectContent>
+        </Select>
+      </div>
+      <div class="grid gap-2">
+        <Label for="area">Área</Label>
+        <Select id="area" name="area" defaultValue={TODAS}>
+          <SelectTrigger class="w-full"><SelectValue placeholder="Todas" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value={TODAS}>Todas</SelectItem>
+            {areas.map((a) => <SelectItem value={a.id}>{a.data.nombre}</SelectItem>)}
+          </SelectContent>
+        </Select>
+      </div>
+      <div class="grid gap-2">
+        <Label for="organizacion">Organización</Label>
+        <Select id="organizacion" name="organizacion" defaultValue={TODAS}>
+          <SelectTrigger class="w-full"><SelectValue placeholder="Todas" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value={TODAS}>Todas</SelectItem>
+            {organizaciones.map((o) => <SelectItem value={o.id}>{o.data.nombre}</SelectItem>)}
+          </SelectContent>
+        </Select>
+      </div>
+    </form>
+
+    <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{egresados.length} egresados/as</p>
+    <ul id="resultados" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {egresados.map((e) => (
+        <TarjetaEgresado persona={e.persona} areas={e.areas.map((a) => a.data.nombre)} organizacion={e.organizacion?.data.nombre} />
+      ))}
+    </ul>
+    <p id="sin-resultados" class="mt-8 hidden text-center text-muted-foreground">No hay egresados/as que coincidan con los filtros.</p>
+  </section>
+</Base>
+
+<script>
+  import { coincide, TODAS, type Filtros } from '@/lib/filtro-directorio';
+
+  const form = document.querySelector<HTMLFormElement>('#filtros')!;
+  const tarjetas = [...document.querySelectorAll<HTMLLIElement>('#resultados > li')];
+  const contador = document.querySelector('#contador')!;
+  const sinResultados = document.querySelector('#sin-resultados')!;
+
+  function aplicar() {
+    const d = new FormData(form);
+    const valor = (k: string) => (d.get(k) as string | null) || TODAS;
+    const filtros: Filtros = {
+      texto: (d.get('texto') as string | null) ?? '',
+      generacion: valor('generacion'),
+      area: valor('area'),
+      organizacion: valor('organizacion'),
+    };
+    let visibles = 0;
+    for (const li of tarjetas) {
+      const ok = coincide({
+        nombre: li.dataset.nombre ?? '',
+        generacion: li.dataset.generacion ?? '',
+        areas: (li.dataset.areas ?? '').split(' ').filter(Boolean),
+        organizacion: li.dataset.organizacion ?? '',
+      }, filtros);
+      li.hidden = !ok;
+      if (ok) visibles++;
+    }
+    contador.textContent = `${visibles} egresados/as`;
+    sinResultados.classList.toggle('hidden', visibles > 0);
+  }
+
+  form.addEventListener('input', aplicar);
+  // Starwind v3 emite starwind:value-change (burbujea) antes de actualizar el valor del
+  // input oculto; se difiere la lectura para que FormData vea el valor nuevo.
+  form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
+</script>
