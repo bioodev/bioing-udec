@@ -16,9 +16,10 @@ Desde `app/web` (Astro 7, Node ≥ 22.12):
 npm run dev          # servidor local en localhost:4321 (admin en /admin/index.html; /admin/ solo funciona en el build)
 npx astro check      # tipos y esquemas de contenido
 npm run build        # sitio estático en dist/
+npm test             # Vitest: reglas puras en src/lib/*.test.ts
 ```
 
-No hay tests ni linter todavía. Una referencia rota entre colecciones (un slug que no existe) se registra como `[ERROR] [content] Invalid content reference` pero **no** hace fallar el build: revisar la salida del build.
+No hay linter todavía. Una referencia rota entre colecciones (un slug que no existe) se registra como `[ERROR] [content] Invalid content reference` pero **no** hace fallar el build: revisar la salida del build.
 
 ## Astro
 
@@ -26,6 +27,9 @@ No hay tests ni linter todavía. Una referencia rota entre colecciones (un slug 
 - Las páginas consultan el contenido mediante `src/lib/contenido.ts`: `publicados()` filtra los Borradores y `vinculosDe()` da el índice inverso para las Fichas. No usar `getCollection` directo en colecciones con campo `publicado`.
 - Fechas: los campos con hora llevan offset de America/Santiago y se muestran con `formatoFechaHora`. Las fechas solas (`AAAA-MM-DD`) se parsean como medianoche UTC y se muestran con `formatoFecha` (en UTC), para no correr el día.
 - Las imágenes van en `src/assets/media` y se referencian con ruta relativa (`../../assets/media/…`) para que `image()` las optimice.
+- Starwind UI **v3**: componentes en `src/components/starwind/` (se agregan con `npx starwind@latest add <nombre>`); el tema está en `src/styles/starwind.css` con los tokens de `docs/DESIGN.md`. Ojo: la documentación en línea de v2 no aplica; en v3 los cambios de valor se escuchan con el evento `starwind:value-change` (burbujea y se emite antes de fijar el valor), y los `SelectTrigger` necesitan `aria-labelledby` apuntando a su `Label`.
+- Las reglas con fechas o filtros van en módulos puros (`src/lib/reglas.ts`, `src/lib/filtro-directorio.ts`) con tests; las páginas solo consultan `src/lib/contenido.ts`.
+- `/componentes` es un catálogo que solo existe en `npm run dev`.
 - El contenido que dice "Contenido de ejemplo" en `src/content/` es de prueba y se borra cuando haya contenido real.
 
 ## Sveltia CMS

@@ -33,9 +33,9 @@ const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.orga
         <Input id="texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
       </div>
       <div class="grid gap-2">
-        <Label for="generacion">Generación</Label>
+        <Label id="etiqueta-generacion" for="generacion">Generación</Label>
         <Select id="generacion" name="generacion" defaultValue={TODAS}>
-          <SelectTrigger class="w-full"><SelectValue placeholder="Todas" /></SelectTrigger>
+          <SelectTrigger class="w-full" aria-labelledby="etiqueta-generacion"><SelectValue placeholder="Todas" /></SelectTrigger>
           <SelectContent>
             <SelectItem value={TODAS}>Todas</SelectItem>
             {generaciones.map((g) => <SelectItem value={String(g)}>{g}</SelectItem>)}
@@ -43,9 +43,9 @@ const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.orga
         </Select>
       </div>
       <div class="grid gap-2">
-        <Label for="area">Área</Label>
+        <Label id="etiqueta-area" for="area">Área</Label>
         <Select id="area" name="area" defaultValue={TODAS}>
-          <SelectTrigger class="w-full"><SelectValue placeholder="Todas" /></SelectTrigger>
+          <SelectTrigger class="w-full" aria-labelledby="etiqueta-area"><SelectValue placeholder="Todas" /></SelectTrigger>
           <SelectContent>
             <SelectItem value={TODAS}>Todas</SelectItem>
             {areas.map((a) => <SelectItem value={a.id}>{a.data.nombre}</SelectItem>)}
@@ -53,9 +53,9 @@ const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.orga
         </Select>
       </div>
       <div class="grid gap-2">
-        <Label for="organizacion">Organización</Label>
+        <Label id="etiqueta-organizacion" for="organizacion">Organización</Label>
         <Select id="organizacion" name="organizacion" defaultValue={TODAS}>
-          <SelectTrigger class="w-full"><SelectValue placeholder="Todas" /></SelectTrigger>
+          <SelectTrigger class="w-full" aria-labelledby="etiqueta-organizacion"><SelectValue placeholder="Todas" /></SelectTrigger>
           <SelectContent>
             <SelectItem value={TODAS}>Todas</SelectItem>
             {organizaciones.map((o) => <SelectItem value={o.id}>{o.data.nombre}</SelectItem>)}
@@ -65,6 +65,7 @@ const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.orga
     </form>
 
     <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{egresados.length} egresados/as</p>
+    <h2 class="sr-only">Resultados</h2>
     <ul id="resultados" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {egresados.map((e) => (
         <TarjetaEgresado persona={e.persona} areas={e.areas.map((a) => a.data.nombre)} organizacion={e.organizacion?.data.nombre} />
