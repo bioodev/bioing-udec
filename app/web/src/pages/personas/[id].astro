@@ -1,0 +1,32 @@
+---
+// Ficha de Persona. Solo se genera para Personas con Ficha activa.
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { vinculosDe, formatoFecha, formatoFechaHora } from '../../lib/contenido';
+
+export async function getStaticPaths() {
+  const personas = await getCollection('personas', ({ data }) => data.ficha_activa);
+  return personas.map((persona) => ({ params: { id: persona.id }, props: { persona } }));
+}
+
+interface Props { persona: CollectionEntry<'personas'> }
+const { persona } = Astro.props;
+const perfil = persona.data.perfil_egresado?.autorizado ? persona.data.perfil_egresado : undefined;
+const organizacion = perfil?.organizacion ? await getEntry(perfil.organizacion) : undefined;
+const { noticias, organiza, expone, ofrece } = await vinculosDe('personas', persona.id);
+---
+<html lang="es">
+  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><title>{persona.data.nombre} · BIOING+</title></head>
+  <body>
+    <h1>{persona.data.nombre}</h1>
+    {persona.data.descripcion && <p>{persona.data.descripcion}</p>}
+    {persona.data.foto && <Image src={persona.data.foto} alt={persona.data.nombre} width={240} />}
+    {perfil && (
+      <p>Egreso {perfil.anio_egreso}{perfil.cargo && ` · ${perfil.cargo}`}{organizacion && ` · ${organizacion.data.nombre}`}</p>
+    )}
+    {expone.length > 0 && <><h2>Expuso en</h2><ul>{expone.map((a) => <li>{a.data.titulo} · {formatoFechaHora(a.data.inicio)}</li>)}</ul></>}
+    {organiza.length > 0 && <><h2>Organizó</h2><ul>{organiza.map((a) => <li>{a.data.titulo}</li>)}</ul></>}
+    {noticias.length > 0 && <><h2>Noticias</h2><ul>{noticias.map((n) => <li>{n.data.titulo} · {formatoFecha(n.data.fecha)}</li>)}</ul></>}
+    {ofrece.length > 0 && <><h2>Ofrece</h2><ul>{ofrece.map((a) => <li>{a.data.titulo}</li>)}</ul></>}
+  </body>
+</html>

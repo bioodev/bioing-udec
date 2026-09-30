@@ -1,0 +1,328 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+# Modelo de dominio: ver CONTEXT.md. Decisión de stack: docs/adr/0001-sveltia-cms-astro.md
+
+backend:
+  name: gitea
+  repo: bioing/bioing-udec
+  branch: main
+  base_url: https://gitea.bioodev.work
+  api_root: https://gitea.bioodev.work/api/v1
+  # TODO: registrar una OAuth app pública en Gitea (redirect URI = URL del admin) y poner aquí app_id.
+  # Mientras tanto se entra con "Iniciar sesión con un token de acceso".
+
+# Imágenes en src/assets para que Astro las optimice (image()). Las colecciones con imágenes
+# declaran public_folder relativo a su carpeta de contenido (src/content/<colección>/).
+media_folder: /app/web/src/assets/media
+public_folder: /media # no se usa: cada colección con imágenes lo sobrescribe
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+output:
+  omit_empty_optional_fields: true
+
+collections:
+  # ── Comunidad ───────────────────────────────────────────────
+
+  - name: personas
+    label: Personas
+    label_singular: Persona
+    folder: /app/web/src/content/personas
+    media_folder: /app/web/src/assets/media
+    public_folder: ../../assets/media
+    format: yml
+    identifier_field: nombre
+    summary: '{{nombre}}'
+    fields:
+      - { name: nombre, label: Nombre y apellido, widget: string }
+      - name: descripcion
+        label: Descripción breve
+        widget: string
+        required: false
+        hint: 'Ej.: "Académica FCB", "Estudiante de Bioingeniería".'
+      - { name: foto, label: Foto, widget: image, required: false }
+      - name: ficha_activa
+        label: Ficha pública activa
+        widget: boolean
+        default: true
+        hint: Si se desactiva, el nombre aparece sin enlace y la Persona sale del Directorio.
+      - name: perfil_egresado
+        label: Perfil de egresado
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - name: autorizado
+            label: Autoriza publicar su perfil
+            widget: boolean
+            default: false
+          - name: generacion # TODO: confirmar significado (docs/preguntas-reunion.md 1.1)
+            label: Generación
+            widget: number
+            value_type: int
+            required: false
+          - { name: anio_egreso, label: Año de egreso, widget: number, value_type: int }
+          - name: areas
+            label: Áreas
+            widget: relation
+            collection: areas
+            display_fields: [nombre]
+            multiple: true
+            required: false
+          - name: organizacion
+            label: Organización
+            widget: relation
+            collection: organizaciones
+            display_fields: [nombre]
+            required: false
+          - { name: cargo, label: Cargo / profesión, widget: string, required: false }
+          - name: enlaces
+            label: Enlaces profesionales
+            label_singular: Enlace
+            widget: list
+            required: false
+            fields:
+              - { name: etiqueta, label: Etiqueta, widget: string }
+              - { name: url, label: URL, widget: string, type: url }
+
+  - name: organizaciones
+    label: Organizaciones
+    label_singular: Organización
+    folder: /app/web/src/content/organizaciones
+    media_folder: /app/web/src/assets/media
+    public_folder: ../../assets/media
+    format: yml
+    identifier_field: nombre
+    summary: '{{nombre}} ({{tipo}})'
+    fields:
+      - { name: nombre, label: Nombre, widget: string }
+      - name: tipo
+        label: Tipo
+        widget: select
+        options:
+          - { label: Empresa, value: empresa }
+          - { label: Institución, value: institucion }
+          - { label: Laboratorio, value: laboratorio }
+          - { label: Agrupación, value: agrupacion }
+      - { name: sitio_web, label: Sitio web, widget: string, type: url, required: false }
+      - { name: logo, label: Logo, widget: image, required: false }
+      - { name: ficha_activa, label: Ficha pública activa, widget: boolean, default: true }
+
+  # ── Contenidos ──────────────────────────────────────────────
+
+  - name: noticias
+    label: Noticias
+    label_singular: Noticia
+    folder: /app/web/src/content/noticias
+    media_folder: /app/web/src/assets/media
+    public_folder: ../../assets/media
+    identifier_field: titulo
+    summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
+    fields:
+      - { name: titulo, label: Título, widget: string }
+      - { name: fecha, label: Fecha de publicación, widget: datetime, type: date }
+      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - { name: imagen, label: Imagen destacada, widget: image, required: false }
+      - { name: bajada, label: Bajada, widget: text, required: false }
+      - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false }
+      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
+      - name: personas_mencionadas
+        label: Personas mencionadas
+        widget: relation
+        collection: personas
+        display_fields: [nombre]
+        multiple: true
+        required: false
+      - name: organizaciones_mencionadas
+        label: Organizaciones mencionadas
+        widget: relation
+        collection: organizaciones
+        display_fields: [nombre]
+        multiple: true
+        required: false
+      - name: actividad
+        label: Actividad que cubre
+        widget: relation
+        collection: actividades
+        display_fields: [titulo]
+        required: false
+        hint: Solo si la Noticia es la Cobertura de una Actividad ya realizada.
+      - { name: body, label: Cuerpo, widget: richtext }
+
+  - name: actividades
+    label: Agenda
+    label_singular: Actividad
+    folder: /app/web/src/content/actividades
+    media_folder: /app/web/src/assets/media
+    public_folder: ../../assets/media
+    identifier_field: titulo
+    summary: "{{titulo}} · {{inicio | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
+    fields:
+      - { name: titulo, label: Nombre de la actividad, widget: string }
+      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - name: tipo
+        label: Tipo
+        widget: select
+        options:
+          - { label: Seminario, value: seminario }
+          - { label: Charla, value: charla }
+          - { label: Congreso, value: congreso }
+          - { label: Taller, value: taller }
+          - { label: Actividad de estudiantes, value: estudiantes }
+          - { label: Actividad de egresados/as, value: egresados }
+          - { label: Actividad académica, value: academica }
+          - { label: Encuentro de la comunidad, value: encuentro }
+          - { label: Otra, value: otra }
+      - { name: inicio, label: Inicio, widget: datetime, input_timezone: America/Santiago }
+      - { name: fin, label: Término, widget: datetime, input_timezone: America/Santiago, required: false }
+      - name: modalidad
+        label: Modalidad
+        widget: select
+        options:
+          - { label: Presencial, value: presencial }
+          - { label: En línea, value: en-linea }
+          - { label: Híbrida, value: hibrida }
+      - { name: lugar, label: Lugar, widget: string, required: false }
+      - name: organizadores
+        label: Organizadores
+        label_singular: Organizador
+        widget: list
+        typeKey: tipo
+        types:
+          - name: persona
+            label: Persona
+            fields:
+              - { name: persona, label: Persona, widget: relation, collection: personas, display_fields: [nombre] }
+          - name: organizacion
+            label: Organización
+            fields:
+              - { name: organizacion, label: Organización, widget: relation, collection: organizaciones, display_fields: [nombre] }
+      - name: expositores
+        label: Expositores
+        widget: relation
+        collection: personas
+        display_fields: [nombre]
+        multiple: true
+        required: false
+      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
+      - { name: enlace_inscripcion, label: Enlace de inscripción o información, widget: string, type: url, required: false }
+      - { name: imagen, label: Imagen, widget: image, required: false }
+      - { name: body, label: Descripción, widget: richtext }
+
+  - name: anuncios
+    label: Anuncios
+    label_singular: Anuncio
+    folder: /app/web/src/content/anuncios
+    identifier_field: titulo
+    summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
+    fields:
+      - { name: titulo, label: Título, widget: string }
+      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - name: tipo
+        label: Tipo de oportunidad
+        widget: select
+        options:
+          - { label: Oferta de trabajo, value: trabajo }
+          - { label: Práctica profesional, value: practica }
+          - { label: Pasantía, value: pasantia }
+          - { label: Proyecto de investigación, value: proyecto }
+          - { label: Convocatoria, value: convocatoria }
+          - { label: Solicitud de colaboración, value: colaboracion }
+          - { label: Otra, value: otra }
+      - name: oferente
+        label: Oferente
+        widget: object
+        typeKey: tipo
+        types:
+          - name: persona
+            label: Persona
+            fields:
+              - { name: persona, label: Persona, widget: relation, collection: personas, display_fields: [nombre] }
+          - name: organizacion
+            label: Organización
+            fields:
+              - { name: organizacion, label: Organización, widget: relation, collection: organizaciones, display_fields: [nombre] }
+      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
+      - { name: fecha, label: Fecha de publicación, widget: datetime, type: date }
+      - { name: fecha_limite, label: Fecha límite, widget: datetime, type: date, required: false }
+      - name: contacto
+        label: Contacto
+        widget: string
+        hint: Correo, teléfono o enlace. Texto libre; no es una Persona.
+      - { name: enlace, label: Enlace externo, widget: string, type: url, required: false }
+      - { name: body, label: Descripción, widget: richtext }
+
+  - name: documentos
+    label: Repositorio
+    label_singular: Documento
+    folder: /app/web/src/content/documentos
+    format: yml
+    identifier_field: titulo
+    summary: "{{titulo}} ({{anio}}) {{publicado | ternary('', '(borrador)')}}"
+    fields:
+      - { name: titulo, label: Título, widget: string }
+      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - name: tipo # TODO: confirmar lista (docs/preguntas-reunion.md 5.3)
+        label: Tipo de documento
+        widget: select
+        options:
+          - { label: Decreto, value: decreto }
+          - { label: Reglamento, value: reglamento }
+          - { label: Ley, value: ley }
+          - { label: Informe, value: informe }
+          - { label: Publicación, value: publicacion }
+          - { label: Documento institucional, value: institucional }
+          - { label: Documento histórico, value: historico }
+          - { label: Material académico, value: academico }
+          - { label: Otro, value: otro }
+      - { name: anio, label: Año, widget: number, value_type: int }
+      - { name: enlace, label: Enlace al archivo (Drive), widget: string, type: url }
+      - { name: descripcion, label: Descripción, widget: text, required: false }
+      - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false }
+      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
+      - { name: palabras_clave, label: Palabras clave, widget: list, required: false }
+
+  - name: banners
+    label: Banners
+    label_singular: Banner
+    folder: /app/web/src/content/banners
+    media_folder: /app/web/src/assets/media
+    public_folder: ../../assets/media
+    format: yml
+    identifier_field: titulo
+    summary: "{{titulo}} · {{inicio | date('YYYY-MM-DD')}} → {{fin | date('YYYY-MM-DD')}}"
+    fields:
+      - { name: titulo, label: Título, widget: string }
+      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - { name: texto, label: Texto, widget: text, required: false }
+      - { name: imagen, label: Imagen, widget: image }
+      - name: enlace
+        label: Enlace
+        widget: string
+        hint: Ruta interna (p. ej. /noticias/mi-noticia) o URL externa.
+      - { name: inicio, label: Inicio de vigencia, widget: datetime, input_timezone: America/Santiago }
+      - { name: fin, label: Fin de vigencia, widget: datetime, input_timezone: America/Santiago }
+
+  # ── Clasificación ───────────────────────────────────────────
+
+  - name: areas
+    label: Áreas
+    label_singular: Área
+    folder: /app/web/src/content/areas
+    format: yml
+    identifier_field: nombre
+    summary: '{{nombre}}'
+    fields:
+      - { name: nombre, label: Nombre, widget: string }
+
+  - name: temas
+    label: Temas
+    label_singular: Tema
+    folder: /app/web/src/content/temas
+    format: yml
+    identifier_field: nombre
+    summary: '{{nombre}}'
+    fields:
+      - { name: nombre, label: Nombre, widget: string }

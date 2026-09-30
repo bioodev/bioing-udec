@@ -1,0 +1,12 @@
+nombre: Ana Pérez
+descripcion: Bioingeniera, investigadora en biomateriales
+perfil_egresado:
+  autorizado: true
+  anio_egreso: 2019
+  areas:
+    - biomateriales
+  organizacion: laboratorio-de-biomateriales-udec
+  cargo: Investigadora
+  enlaces:
+    - etiqueta: LinkedIn
+      url: https://www.linkedin.com/
