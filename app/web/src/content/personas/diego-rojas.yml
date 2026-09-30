@@ -1,0 +1,10 @@
+nombre: Diego Rojas
+descripcion: Bioingeniero
+perfil_egresado:
+  autorizado: true
+  generacion: 2012
+  anio_egreso: 2018
+  areas:
+    - acuicultura
+  organizacion: acuicola-del-sur-ejemplo
+  cargo: Jefe de producción

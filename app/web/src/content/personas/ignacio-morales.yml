@@ -1,0 +1,5 @@
+nombre: Ignacio Morales
+descripcion: Egresado que no autorizó publicar su perfil
+perfil_egresado:
+  autorizado: false
+  anio_egreso: 2019

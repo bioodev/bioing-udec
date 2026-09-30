@@ -1,0 +1,10 @@
+nombre: Matías Vargas
+descripcion: Bioingeniero
+perfil_egresado:
+  autorizado: true
+  generacion: 2010
+  anio_egreso: 2016
+  areas:
+    - medio-ambiente
+  organizacion: acuicola-del-sur-ejemplo
+  cargo: Encargado ambiental

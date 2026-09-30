@@ -1,0 +1,10 @@
+nombre: Valentina Castro
+descripcion: Bioingeniera
+perfil_egresado:
+  autorizado: true
+  generacion: 2015
+  anio_egreso: 2021
+  areas:
+    - biomateriales
+  organizacion: laboratorio-de-biomateriales-udec
+  cargo: Tesista de doctorado

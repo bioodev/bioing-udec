@@ -1,0 +1,10 @@
+nombre: Camila Herrera
+descripcion: Bioingeniera
+perfil_egresado:
+  autorizado: true
+  generacion: 2014
+  anio_egreso: 2020
+  areas:
+    - industria-alimentaria
+  organizacion: alimentos-bio-ejemplo
+  cargo: Ingeniera de procesos

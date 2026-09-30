@@ -1,0 +1,9 @@
+nombre: Sofía Muñoz
+descripcion: Bioingeniera
+perfil_egresado:
+  autorizado: true
+  anio_egreso: 2021
+  areas:
+    - salud
+  organizacion: laboratorio-de-biomateriales-udec
+  cargo: Investigadora asistente

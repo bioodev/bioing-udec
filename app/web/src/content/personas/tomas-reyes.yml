@@ -1,0 +1,10 @@
+nombre: Tomás Reyes
+descripcion: Bioingeniero
+perfil_egresado:
+  autorizado: true
+  generacion: 2011
+  anio_egreso: 2017
+  areas:
+    - industria-alimentaria
+  organizacion: alimentos-bio-ejemplo
+  cargo: Gerente de calidad

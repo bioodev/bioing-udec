@@ -2,6 +2,7 @@ nombre: Ana Pérez
 descripcion: Bioingeniera, investigadora en biomateriales
 perfil_egresado:
   autorizado: true
+  generacion: 2013
   anio_egreso: 2019
   areas:
     - biomateriales
