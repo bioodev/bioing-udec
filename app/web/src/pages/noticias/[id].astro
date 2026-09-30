@@ -1,0 +1,51 @@
+---
+import { getEntries, getEntry, render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import EnlaceFicha from '@/components/EnlaceFicha.astro';
+import { formatoFecha, formatoFechaHora, publicados } from '@/lib/contenido';
+
+export async function getStaticPaths() {
+  const noticias = await publicados('noticias');
+  return noticias.map((noticia) => ({ params: { id: noticia.id }, props: { noticia } }));
+}
+
+interface Props { noticia: CollectionEntry<'noticias'> }
+const { noticia } = Astro.props;
+const { Content } = await render(noticia);
+const personas = await getEntries(noticia.data.personas_mencionadas ?? []);
+const organizaciones = await getEntries(noticia.data.organizaciones_mencionadas ?? []);
+const actividad = noticia.data.actividad ? await getEntry(noticia.data.actividad) : undefined;
+const cobertura = actividad?.data.publicado ? actividad : undefined;
+---
+<Base titulo={noticia.data.titulo} descripcion={noticia.data.bajada}>
+  <article class="mx-auto max-w-3xl px-4 py-12">
+    <p class="text-sm text-muted-foreground"><time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time></p>
+    <h1 class="mt-2 text-4xl font-semibold tracking-tight">{noticia.data.titulo}</h1>
+    {noticia.data.bajada && <p class="mt-4 text-xl text-muted-foreground">{noticia.data.bajada}</p>}
+    {noticia.data.imagen && <Image src={noticia.data.imagen} alt="" class="mt-8 w-full rounded-lg" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
+    <div class="prose mt-8 max-w-none"><Content /></div>
+
+    {cobertura && (
+      <aside class="mt-10 rounded-lg bg-muted p-5">
+        <p class="text-sm text-muted-foreground">Cobertura de la actividad</p>
+        <p class="font-semibold">{cobertura.data.titulo} · {formatoFechaHora(cobertura.data.inicio)}</p>
+      </aside>
+    )}
+
+    {(personas.length > 0 || organizaciones.length > 0) && (
+      <section class="mt-10 border-t border-border pt-6 text-sm">
+        {personas.length > 0 && (
+          <p><span class="text-muted-foreground">Personas: </span>
+            {personas.map((p, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="personas" entrada={p} /></>)}
+          </p>
+        )}
+        {organizaciones.length > 0 && (
+          <p class="mt-2"><span class="text-muted-foreground">Organizaciones: </span>
+            {organizaciones.map((o, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="organizaciones" entrada={o} /></>)}
+          </p>
+        )}
+      </section>
+    )}
+  </article>
+</Base>

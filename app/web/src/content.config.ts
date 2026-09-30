@@ -12,7 +12,9 @@ import { z } from 'astro/zod';
 const yml = (coleccion: string) => glob({ base: `./src/content/${coleccion}`, pattern: '**/*.yml' });
 const md = (coleccion: string) => glob({ base: `./src/content/${coleccion}`, pattern: '**/*.md' });
 
-const referencias = (coleccion: 'personas' | 'organizaciones' | 'areas' | 'temas') =>
+// Genérico para que cada campo conserve a qué colección apunta (con una unión de
+// nombres, getEntries() devolvería entradas de cualquiera de las colecciones).
+const referencias = <C extends 'personas' | 'organizaciones' | 'areas' | 'temas'>(coleccion: C) =>
   z.array(reference(coleccion)).optional();
 
 const publicado = z.boolean().default(false);

@@ -1,8 +1,11 @@
 ---
-// Ficha de Persona. Solo se genera para Personas con Ficha activa.
-import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntries, getEntry, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
-import { vinculosDe, formatoFecha, formatoFechaHora } from '../../lib/contenido';
+import Base from '@/layouts/Base.astro';
+import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
+import TarjetaActividad from '@/components/TarjetaActividad.astro';
+import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
+import { vinculosDe } from '@/lib/contenido';
 
 export async function getStaticPaths() {
   const personas = await getCollection('personas', ({ data }) => data.ficha_activa);
@@ -13,20 +16,34 @@ interface Props { persona: CollectionEntry<'personas'> }
 const { persona } = Astro.props;
 const perfil = persona.data.perfil_egresado?.autorizado ? persona.data.perfil_egresado : undefined;
 const organizacion = perfil?.organizacion ? await getEntry(perfil.organizacion) : undefined;
+const areas = perfil?.areas ? await getEntries(perfil.areas) : [];
 const { noticias, organiza, expone, ofrece } = await vinculosDe('personas', persona.id);
 ---
-<html lang="es">
-  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><title>{persona.data.nombre} · BIOING+</title></head>
-  <body>
-    <h1>{persona.data.nombre}</h1>
-    {persona.data.descripcion && <p>{persona.data.descripcion}</p>}
-    {persona.data.foto && <Image src={persona.data.foto} alt={persona.data.nombre} width={240} />}
-    {perfil && (
-      <p>Egreso {perfil.anio_egreso}{perfil.cargo && ` · ${perfil.cargo}`}{organizacion && ` · ${organizacion.data.nombre}`}</p>
-    )}
-    {expone.length > 0 && <><h2>Expuso en</h2><ul>{expone.map((a) => <li>{a.data.titulo} · {formatoFechaHora(a.data.inicio)}</li>)}</ul></>}
-    {organiza.length > 0 && <><h2>Organizó</h2><ul>{organiza.map((a) => <li>{a.data.titulo}</li>)}</ul></>}
-    {noticias.length > 0 && <><h2>Noticias</h2><ul>{noticias.map((n) => <li>{n.data.titulo} · {formatoFecha(n.data.fecha)}</li>)}</ul></>}
-    {ofrece.length > 0 && <><h2>Ofrece</h2><ul>{ofrece.map((a) => <li>{a.data.titulo}</li>)}</ul></>}
-  </body>
-</html>
+<Base titulo={persona.data.nombre}>
+  <section class="bg-muted">
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:flex-row sm:items-center">
+      {persona.data.foto
+        ? <Image src={persona.data.foto} alt={persona.data.nombre} width={160} height={160} class="h-40 w-40 rounded-full object-cover" />
+        : <div class="flex h-40 w-40 items-center justify-center rounded-full bg-background text-5xl font-semibold text-muted-foreground" aria-hidden="true">{persona.data.nombre.charAt(0)}</div>}
+      <div>
+        <h1 class="text-4xl font-semibold tracking-tight">{persona.data.nombre}</h1>
+        {persona.data.descripcion && <p class="mt-2 text-lg text-muted-foreground">{persona.data.descripcion}</p>}
+        {perfil && (
+          <dl class="mt-4 grid gap-1 text-sm">
+            {perfil.cargo && <div><dt class="inline text-muted-foreground">Cargo: </dt><dd class="inline">{perfil.cargo}{organizacion && ` · ${organizacion.data.nombre}`}</dd></div>}
+            <div><dt class="inline text-muted-foreground">Egreso: </dt><dd class="inline">{perfil.anio_egreso}{perfil.generacion && ` (generación ${perfil.generacion})`}</dd></div>
+            {areas.length > 0 && <div><dt class="inline text-muted-foreground">Áreas: </dt><dd class="inline">{areas.map((a) => a.data.nombre).join(', ')}</dd></div>}
+            {perfil.enlaces?.map((e) => <div><dd><a href={e.url} class="text-primary hover:underline" rel="noopener" target="_blank">{e.etiqueta} ↗</a></dd></div>)}
+          </dl>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-6xl px-4 py-12 grid gap-12">
+    {expone.length > 0 && <section><h2 class="text-2xl font-semibold">Expuso en</h2><div class="mt-6 grid gap-6 md:grid-cols-3">{expone.map((a) => <TarjetaActividad actividad={a} />)}</div></section>}
+    {organiza.length > 0 && <section><h2 class="text-2xl font-semibold">Organizó</h2><div class="mt-6 grid gap-6 md:grid-cols-3">{organiza.map((a) => <TarjetaActividad actividad={a} />)}</div></section>}
+    {noticias.length > 0 && <section><h2 class="text-2xl font-semibold">Noticias</h2><div class="mt-6 grid gap-6 md:grid-cols-3">{noticias.map((n) => <TarjetaNoticia noticia={n} />)}</div></section>}
+    {ofrece.length > 0 && <section><h2 class="text-2xl font-semibold">Oportunidades que ofrece</h2><div class="mt-6 grid gap-6 md:grid-cols-3">{ofrece.map((a) => <TarjetaAnuncio anuncio={a} />)}</div></section>}
+  </div>
+</Base>

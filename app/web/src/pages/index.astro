@@ -1,8 +1,51 @@
 ---
 import Base from '@/layouts/Base.astro';
+import Banner from '@/components/Banner.astro';
+import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
+import TarjetaActividad from '@/components/TarjetaActividad.astro';
+import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
+import { anunciosVigentes, bannerVigente, noticiasRecientes, proximasActividades } from '@/lib/contenido';
+
+const [banner, noticias, actividades, anuncios] = await Promise.all([
+  bannerVigente(), noticiasRecientes(3), proximasActividades(), anunciosVigentes(),
+]);
 ---
 <Base titulo="BIOING+">
-  <section class="mx-auto max-w-6xl px-4 py-24">
-    <h1 class="text-5xl font-semibold tracking-tight">BIOING+</h1>
+  {banner ? <Banner banner={banner} /> : (
+    <section class="mx-auto max-w-6xl px-4 py-24 text-center">
+      <h1 class="text-5xl font-semibold tracking-tight">BIOING+</h1>
+      <p class="mt-4 text-lg text-muted-foreground">La comunidad de Bioingeniería de la Universidad de Concepción.</p>
+    </section>
+  )}
+
+  {noticias.length > 0 && (
+    <section class="mx-auto max-w-6xl px-4 py-16">
+      <h2 class="text-3xl font-semibold tracking-tight">Noticias recientes</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">{noticias.map((n) => <TarjetaNoticia noticia={n} />)}</div>
+    </section>
+  )}
+
+  {actividades.length > 0 && (
+    <section class="bg-muted">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <h2 class="text-3xl font-semibold tracking-tight">Próximas actividades</h2>
+        <div class="mt-8 grid gap-6 md:grid-cols-3">{actividades.slice(0, 3).map((a) => <TarjetaActividad actividad={a} />)}</div>
+      </div>
+    </section>
+  )}
+
+  {anuncios.length > 0 && (
+    <section class="mx-auto max-w-6xl px-4 py-16">
+      <h2 class="text-3xl font-semibold tracking-tight">Anuncios</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">{anuncios.slice(0, 3).map((a) => <TarjetaAnuncio anuncio={a} />)}</div>
+    </section>
+  )}
+
+  <section class="bg-foreground text-background">
+    <div class="mx-auto max-w-6xl px-4 py-16 text-center">
+      <h2 class="text-3xl font-semibold tracking-tight">Directorio de bioingenieros/as</h2>
+      <p class="mx-auto mt-3 max-w-xl opacity-80">Encuentra egresados/as por generación, área y organización.</p>
+      <a href="/directorio" class="mt-6 inline-block rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90">Ir al Directorio</a>
+    </div>
   </section>
 </Base>

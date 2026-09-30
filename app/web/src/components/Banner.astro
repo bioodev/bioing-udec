@@ -12,6 +12,6 @@ const externo = /^https?:\/\//.test(banner.data.enlace);
   <div class="mx-auto max-w-6xl px-4 py-24 text-center">
     <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl">{banner.data.titulo}</h1>
     {banner.data.texto && <p class="mx-auto mt-4 max-w-2xl text-lg opacity-90">{banner.data.texto}</p>}
-    <Button href={banner.data.enlace} class="mt-8 rounded-full" {...(externo ? { target: '_blank', rel: 'noopener' } : {})}>Ver más</Button>
+    <Button href={banner.data.enlace} variant="primary" class="mt-8 rounded-full" {...(externo ? { target: '_blank', rel: 'noopener' } : {})}>Ver más</Button>
   </div>
 </section>
