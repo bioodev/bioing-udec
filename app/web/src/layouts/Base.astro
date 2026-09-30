@@ -1,0 +1,73 @@
+---
+import '@/styles/starwind.css';
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/starwind/sheet';
+import IconMenu from '@tabler/icons/outline/menu-2.svg';
+import { MENU, URL_FCB } from '@/lib/navegacion';
+
+interface Props { titulo: string; descripcion?: string }
+const { titulo, descripcion = 'Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción.' } = Astro.props;
+const actual = Astro.url.pathname;
+const esActual = (href: string) => (href === '/' ? actual === '/' : actual.startsWith(href));
+---
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={descripcion} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{titulo === 'BIOING+' ? titulo : `${titulo} · BIOING+`}</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:p-2 focus:bg-background">Saltar al contenido</a>
+    <header class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
+        <a href="/" class="font-semibold tracking-tight text-lg">BIOING+</a>
+        <nav aria-label="Principal" class="hidden lg:flex flex-1 items-center gap-5 text-sm">
+          {MENU.map((item) => (
+            <a href={item.href} aria-current={esActual(item.href) ? 'page' : undefined}
+               class:list={['hover:text-primary', esActual(item.href) ? 'text-primary' : 'text-foreground']}>
+              {item.etiqueta}
+            </a>
+          ))}
+        </nav>
+        <a href={URL_FCB} class="ml-auto hidden lg:inline text-sm text-muted-foreground hover:text-primary">FCB UdeC ↗</a>
+        <div class="ml-auto lg:hidden">
+          <Sheet>
+            <SheetTrigger aria-label="Abrir menú" class="p-2"><IconMenu aria-hidden="true" /></SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader><SheetTitle>BIOING+</SheetTitle></SheetHeader>
+              <nav aria-label="Principal (móvil)" class="grid gap-1 px-4">
+                {MENU.map((item) => (
+                  <SheetClose asChild>
+                    <a href={item.href} aria-current={esActual(item.href) ? 'page' : undefined}
+                       class="rounded-md px-2 py-2 hover:bg-muted">{item.etiqueta}</a>
+                  </SheetClose>
+                ))}
+                <a href={URL_FCB} class="mt-4 px-2 py-2 text-muted-foreground">Facultad de Ciencias Biológicas ↗</a>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </header>
+
+    <main id="contenido" class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="bg-muted text-sm">
+      <div class="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:grid-cols-3">
+        <div>
+          <p class="font-semibold">BIOING+</p>
+          <p class="text-muted-foreground">FCB UdeC · Universidad de Concepción</p>
+        </div>
+        <nav aria-label="Pie de página" class="grid gap-1">
+          <a href={URL_FCB} class="hover:text-primary">Facultad de Ciencias Biológicas</a>
+          <a href="/instagram" class="hover:text-primary">Instagram</a>
+          <a href="/directorio" class="hover:text-primary">Directorio de egresados/as</a>
+        </nav>
+        <p class="text-muted-foreground">Contacto: pendiente de definir con el equipo BIOING+.</p>
+      </div>
+    </footer>
+  </body>
+</html>

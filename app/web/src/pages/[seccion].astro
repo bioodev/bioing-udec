@@ -1,0 +1,18 @@
+---
+import Base from '@/layouts/Base.astro';
+import { MENU } from '@/lib/navegacion';
+
+export function getStaticPaths() {
+  return MENU.filter((i) => !i.disponible).map((i) => ({
+    params: { seccion: i.href.slice(1) },
+    props: { etiqueta: i.etiqueta },
+  }));
+}
+const { etiqueta } = Astro.props;
+---
+<Base titulo={etiqueta}>
+  <section class="mx-auto max-w-3xl px-4 py-24 text-center">
+    <h1 class="text-4xl font-semibold tracking-tight">{etiqueta}</h1>
+    <p class="mt-4 text-muted-foreground">Esta sección estará disponible próximamente.</p>
+  </section>
+</Base>
