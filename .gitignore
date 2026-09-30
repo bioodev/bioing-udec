@@ -5,3 +5,6 @@ dist/
 .env.*
 !.env.example
 .DS_Store
+
+# Contenido sintético (se regenera con: cd app/web \&\& npm run datos:generar)
+app/web/src/content/**/sint-*

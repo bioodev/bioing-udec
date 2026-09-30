@@ -10,7 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "vitest run"
+    "test": "vitest run",
+    "datos:generar": "node scripts/datos-sinteticos.mjs",
+    "datos:limpiar": "node scripts/datos-sinteticos.mjs --limpiar"
   },
   "dependencies": {
     "@starwind-ui/astro": "^1.2.1",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@faker-js/faker": "^10.6.0",
     "typescript": "^6.0.3",
     "vitest": "^5.0.3"
   }

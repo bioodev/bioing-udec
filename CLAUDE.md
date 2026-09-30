@@ -17,7 +17,11 @@ npm run dev          # servidor local en localhost:4321 (admin en /admin/index.h
 npx astro check      # tipos y esquemas de contenido
 npm run build        # sitio estático en dist/
 npm test             # Vitest: reglas puras en src/lib/*.test.ts
+npm run datos:generar  # contenido sintético (Faker + lorem ipsum) con prefijo sint-, ignorado por git
+npm run datos:limpiar  # borra solo el contenido sint-
 ```
+
+Tras `datos:generar` con el servidor de desarrollo corriendo, reiniciarlo (`npx astro dev stop` y volver a levantar): no detecta bien cientos de archivos nuevos de una vez.
 
 No hay linter todavía. Una referencia rota entre colecciones (un slug que no existe, p. ej. una Persona borrada que sigue mencionada) se registra como `[ERROR] [content] Invalid content reference` pero **no** hace fallar el build: las páginas envuelven `getEntries()` con `existentes()` (`src/lib/reglas.ts`) y descartan la entrada faltante. Revisar la salida del build para limpiar esas referencias. Noticias y Anuncios con fecha futura no aparecen hasta ese día (`noticiasVisibles()` / `anunciosVisibles()`).
 
