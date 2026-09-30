@@ -1,6 +1,7 @@
 // Acceso al contenido. Las páginas consultan por aquí, no con getCollection directo,
 // para que ningún Borrador (publicado: false) llegue al sitio por olvido.
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { actividadEsProxima, anuncioVigente, estaVigente } from './reglas';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners';
 
@@ -67,3 +68,34 @@ export const formatoFechaHora = (d: Date) =>
   d.toLocaleString('es-CL', { timeZone: ZONA, dateStyle: 'long', timeStyle: 'short' });
 export const formatoFecha = (d: Date) =>
   d.toLocaleDateString('es-CL', { timeZone: 'UTC', dateStyle: 'long' });
+
+// ── Consultas para las páginas ("ahora" = momento del build) ─────────
+
+export async function bannerVigente(ahora = new Date()) {
+  const vigentes = (await publicados('banners')).filter((b) => estaVigente(b.data, ahora));
+  return vigentes.sort((a, b) => b.data.inicio.valueOf() - a.data.inicio.valueOf())[0];
+}
+
+export async function noticiasRecientes(cantidad = 3) {
+  const noticias = await publicados('noticias');
+  return noticias.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf()).slice(0, cantidad);
+}
+
+export async function proximasActividades(ahora = new Date()) {
+  const actividades = (await publicados('actividades')).filter((a) => actividadEsProxima(a.data, ahora));
+  return actividades.sort((a, b) => a.data.inicio.valueOf() - b.data.inicio.valueOf());
+}
+
+export async function anunciosVigentes(ahora = new Date()) {
+  const anuncios = (await publicados('anuncios')).filter((a) => anuncioVigente(a.data, ahora));
+  return anuncios.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+}
+
+/** Personas con Perfil de egresado autorizado y Ficha activa. */
+export async function egresadosDelDirectorio() {
+  const personas = await getCollection(
+    'personas',
+    ({ data }) => data.ficha_activa && data.perfil_egresado?.autorizado === true,
+  );
+  return personas.sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+}
