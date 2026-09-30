@@ -1,0 +1,177 @@
+---
+import { getEntries } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
+import { Input } from '@/components/starwind/input';
+import { Label } from '@/components/starwind/label';
+import { Button } from '@/components/starwind/button';
+import { NativeSelect, NativeSelectOption } from '@/components/starwind/native-select';
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
+import CaretLeft from 'phosphor-astro/CaretLeft.astro';
+import CaretRight from 'phosphor-astro/CaretRight.astro';
+import { noticiasVisibles } from '@/lib/contenido';
+import { existentes, normalizar } from '@/lib/reglas';
+import { TODAS } from '@/lib/filtro-noticias';
+
+const noticias = await Promise.all(
+  (await noticiasVisibles())
+    .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf())
+    .map(async (noticia) => ({
+      noticia,
+      temas: existentes(await getEntries(noticia.data.temas ?? [])),
+      personas: existentes(await getEntries(noticia.data.personas_mencionadas ?? [])),
+    })),
+);
+
+const porId = <T extends { id: string }>(xs: T[]) => [...new Map(xs.map((x) => [x.id, x])).values()];
+const temas = porId(noticias.flatMap((n) => n.temas)).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+const personas = porId(noticias.flatMap((n) => n.personas)).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+const anios = [...new Set(noticias.map((n) => n.noticia.data.fecha.getUTCFullYear()))].sort((a, b) => b - a);
+---
+<Base titulo="Noticias" descripcion="Noticias de la comunidad de Bioingeniería UdeC.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-semibold tracking-tight">Noticias</h1>
+
+    <form id="filtros" class="mt-8 grid gap-4 md:grid-cols-3" role="search" onsubmit="return false">
+      <div class="grid gap-2">
+        <Label for="texto">Buscar</Label>
+        <Input id="texto" name="texto" type="search" placeholder="Título o bajada" autocomplete="off" />
+      </div>
+      <div class="grid gap-2">
+        <Label for="persona-input">Persona mencionada</Label>
+        <Combobox id="persona" name="persona">
+          <ComboboxInput id="persona-input" placeholder="Buscar persona" showClear />
+          <ComboboxContent>
+            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+            {personas.map((p) => <ComboboxItem value={p.id}>{p.data.nombre}</ComboboxItem>)}
+          </ComboboxContent>
+        </Combobox>
+      </div>
+      <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
+        <Label for="anio">Año</Label>
+        <NativeSelect id="anio" name="anio">
+          <NativeSelectOption value={TODAS}>Todos</NativeSelectOption>
+          {anios.map((a) => <NativeSelectOption value={String(a)}>{a}</NativeSelectOption>)}
+        </NativeSelect>
+      </div>
+      <input type="hidden" name="tema" id="tema" value={TODAS} />
+    </form>
+
+    <div class="mt-4 flex flex-wrap gap-2" role="group" aria-label="Filtrar por tema">
+      <button type="button" data-tema={TODAS} aria-pressed="true" class="chip-tema">Todos</button>
+      {temas.map((t) => <button type="button" data-tema={t.id} aria-pressed="false" class="chip-tema">{t.data.nombre}</button>)}
+    </div>
+
+    <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{noticias.length} noticias</p>
+    <h2 class="sr-only">Resultados</h2>
+    <ul id="lista" class="mt-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {noticias.map(({ noticia, temas, personas }) => (
+        <li
+          data-texto={normalizar(`${noticia.data.titulo} ${noticia.data.bajada ?? ''}`)}
+          data-temas={temas.map((t) => t.id).join(' ')}
+          data-personas={personas.map((p) => p.id).join(' ')}
+          data-anio={String(noticia.data.fecha.getUTCFullYear())}
+        >
+          <TarjetaNoticia noticia={noticia} />
+        </li>
+      ))}
+    </ul>
+    <p id="sin-resultados" class="mt-8 hidden text-center text-muted-foreground">No hay noticias que coincidan con los filtros.</p>
+
+    <nav id="paginacion" aria-label="Paginación" class="mt-10 flex items-center justify-center gap-4">
+      <Button id="anterior" variant="outline" class="rounded-full"><CaretLeft class="size-4" aria-hidden="true" />Anterior</Button>
+      <span id="pagina" class="text-sm text-muted-foreground"></span>
+      <Button id="siguiente" variant="outline" class="rounded-full">Siguiente<CaretRight class="size-4" aria-hidden="true" /></Button>
+    </nav>
+  </section>
+</Base>
+
+<style>
+  .chip-tema {
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    padding: 0.25rem 0.875rem;
+    font-size: 0.875rem;
+  }
+  .chip-tema:hover { background: var(--muted); }
+  .chip-tema[aria-pressed='true'] { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+  .chip-tema:focus-visible { outline: 2px solid var(--outline); outline-offset: 2px; }
+</style>
+
+<script>
+  import { coincideNoticia, paginar, TODAS, type FiltrosNoticias } from '@/lib/filtro-noticias';
+
+  const POR_PAGINA = 12;
+  const form = document.querySelector<HTMLFormElement>('#filtros')!;
+  const tema = document.querySelector<HTMLInputElement>('#tema')!;
+  const anio = document.querySelector<HTMLSelectElement>('#anio')!;
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.chip-tema')];
+  const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
+  const contador = document.querySelector('#contador')!;
+  const sinResultados = document.querySelector('#sin-resultados')!;
+  const paginacion = document.querySelector<HTMLElement>('#paginacion')!;
+  const anterior = document.querySelector<HTMLButtonElement>('#anterior')!;
+  const siguiente = document.querySelector<HTMLButtonElement>('#siguiente')!;
+  const textoPagina = document.querySelector('#pagina')!;
+  let pagina = 1;
+
+  function filtros(): FiltrosNoticias {
+    const d = new FormData(form);
+    return {
+      texto: (d.get('texto') as string | null) ?? '',
+      tema: (d.get('tema') as string | null) || TODAS,
+      persona: (d.get('persona') as string | null) ?? '',
+      anio: (d.get('anio') as string | null) || TODAS,
+    };
+  }
+
+  function aplicar(desdePrimera = true) {
+    if (desdePrimera) pagina = 1;
+    const f = filtros();
+    const visibles = items.filter((li) => coincideNoticia({
+      texto: li.dataset.texto ?? '',
+      temas: (li.dataset.temas ?? '').split(' ').filter(Boolean),
+      personas: (li.dataset.personas ?? '').split(' ').filter(Boolean),
+      anio: li.dataset.anio ?? '',
+    }, f));
+    const p = paginar(visibles, pagina, POR_PAGINA);
+    pagina = p.pagina;
+    const mostrar = new Set(p.items);
+    for (const li of items) li.hidden = !mostrar.has(li);
+
+    contador.textContent = visibles.length === 1 ? '1 noticia' : `${visibles.length} noticias`;
+    sinResultados.classList.toggle('hidden', visibles.length > 0);
+    paginacion.hidden = p.totalPaginas <= 1;
+    textoPagina.textContent = `Página ${p.pagina} de ${p.totalPaginas}`;
+    anterior.disabled = p.pagina === 1;
+    siguiente.disabled = p.pagina === p.totalPaginas;
+    for (const c of chips) c.setAttribute('aria-pressed', String(c.dataset.tema === f.tema));
+
+    // Los filtros quedan en la URL para compartir el listado filtrado.
+    const url = new URL(location.href);
+    for (const [k, v] of Object.entries({ q: f.texto, tema: f.tema, persona: f.persona, anio: f.anio, pagina: String(p.pagina) })) {
+      if (v && v !== TODAS && !(k === 'pagina' && v === '1')) url.searchParams.set(k, v); else url.searchParams.delete(k);
+    }
+    history.replaceState(null, '', url);
+  }
+
+  // Estado inicial desde la URL (p. ej. /noticias?tema=logros desde el detalle de una Noticia).
+  const params = new URLSearchParams(location.search);
+  (document.querySelector<HTMLInputElement>('#texto')!).value = params.get('q') ?? '';
+  if (params.get('tema') && chips.some((c) => c.dataset.tema === params.get('tema'))) tema.value = params.get('tema')!;
+  if (params.get('anio') && [...anio.options].some((o) => o.value === params.get('anio'))) anio.value = params.get('anio')!;
+  if (params.get('persona')) {
+    document.querySelector('#persona')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('persona') } }));
+  }
+  pagina = Number(params.get('pagina')) || 1;
+
+  for (const c of chips) c.addEventListener('click', () => { tema.value = c.dataset.tema ?? TODAS; aplicar(); });
+  form.addEventListener('input', () => aplicar());
+  form.addEventListener('change', () => aplicar());
+  // Starwind v3: el Combobox emite starwind:value-change antes de fijar el valor.
+  form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
+  anterior.addEventListener('click', () => { pagina--; aplicar(false); scrollTo({ top: 0 }); });
+  siguiente.addEventListener('click', () => { pagina++; aplicar(false); scrollTo({ top: 0 }); });
+  // El Combobox termina de inicializarse después; se aplica cuando el navegador queda libre.
+  setTimeout(() => aplicar(false), 0);
+</script>
