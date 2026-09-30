@@ -13,7 +13,7 @@ Stack decidido (ver `docs/adr/0001-sveltia-cms-astro.md`): sitio estático **Ast
 Desde `app/web` (Astro 7, Node ≥ 22.12):
 
 ```sh
-npm run dev          # servidor local en localhost:4321 (admin en /admin/)
+npm run dev          # servidor local en localhost:4321 (admin en /admin/index.html; /admin/ solo funciona en el build)
 npx astro check      # tipos y esquemas de contenido
 npm run build        # sitio estático en dist/
 ```
