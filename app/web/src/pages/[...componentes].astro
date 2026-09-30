@@ -1,0 +1,63 @@
+---
+// Catálogo de componentes. Solo existe en `npm run dev`.
+import Base from '@/layouts/Base.astro';
+import Banner from '@/components/Banner.astro';
+import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
+import TarjetaActividad from '@/components/TarjetaActividad.astro';
+import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
+import TarjetaEgresado from '@/components/TarjetaEgresado.astro';
+import { Button } from '@/components/starwind/button';
+import { Badge } from '@/components/starwind/badge';
+import { Input } from '@/components/starwind/input';
+import { anunciosVigentes, bannerVigente, egresadosDelDirectorio, publicados } from '@/lib/contenido';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { componentes: 'componentes' } }] : [];
+}
+
+const banner = await bannerVigente();
+const noticias = await publicados('noticias');
+const conImagen = noticias.find((n) => n.data.imagen);
+const sinImagen = noticias.find((n) => !n.data.imagen);
+const actividad = (await publicados('actividades'))[0];
+const anuncio = (await anunciosVigentes())[0];
+const egresado = (await egresadosDelDirectorio())[0];
+const colores = ['primary', 'background', 'foreground', 'muted', 'muted-foreground', 'border', 'outline'];
+---
+<Base titulo="Componentes">
+  <div class="mx-auto grid max-w-6xl gap-16 px-4 py-12">
+    <section>
+      <h2 class="text-2xl font-semibold">Colores</h2>
+      <div class="mt-4 flex flex-wrap gap-4">
+        {colores.map((c) => <div class="text-xs"><div class="h-16 w-24 rounded-lg border border-border" style={`background: var(--${c})`}></div>{c}</div>)}
+      </div>
+    </section>
+    <section>
+      <h2 class="text-2xl font-semibold">Tipografía</h2>
+      <p class="text-5xl font-semibold tracking-tight">Título principal</p>
+      <p class="text-3xl font-semibold tracking-tight">Título de sección</p>
+      <p>Texto de cuerpo. <span class="text-muted-foreground">Texto secundario.</span></p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-semibold">Starwind</h2>
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <Button variant="primary" class="rounded-full">Primario</Button>
+        <Button class="rounded-full">Default</Button>
+        <Button variant="outline" class="rounded-full">Contorno</Button>
+        <Badge>Badge</Badge>
+        <Input placeholder="Input" class="max-w-xs" aria-label="Ejemplo de input" />
+      </div>
+    </section>
+    {banner && <section><h2 class="text-2xl font-semibold">Banner</h2><div class="mt-4"><Banner banner={banner} /></div></section>}
+    <section>
+      <h2 class="text-2xl font-semibold">Tarjetas</h2>
+      <div class="mt-4 grid gap-6 md:grid-cols-3">
+        {conImagen && <TarjetaNoticia noticia={conImagen} />}
+        {sinImagen && <TarjetaNoticia noticia={sinImagen} />}
+        {actividad && <TarjetaActividad actividad={actividad} />}
+        {anuncio && <TarjetaAnuncio anuncio={anuncio} />}
+      </div>
+      {egresado && <ul class="mt-6 grid gap-4 md:grid-cols-3"><TarjetaEgresado persona={egresado} areas={['Área de ejemplo']} organizacion="Organización de ejemplo" /></ul>}
+    </section>
+  </div>
+</Base>
