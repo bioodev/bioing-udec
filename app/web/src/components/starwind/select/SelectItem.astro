@@ -1,6 +1,6 @@
 ---
 import SelectPrimitive from "@starwind-ui/astro/select";
-import Check from "@tabler/icons/outline/check.svg";
+import Check from "phosphor-astro/Check.astro";
 import type { HTMLAttributes } from "astro/types";
 import type { VariantProps } from "tailwind-variants";
 import { selectItem, selectItemIndicator, selectItemText } from "./variants";
@@ -41,7 +41,7 @@ const {
         data-slot="select-item-indicator"
       >
         <slot name="indicator">
-          <Check class="size-4" />
+          <Check class="size-4" aria-hidden="true" />
         </slot>
       </SelectPrimitive.ItemIndicator>
     )

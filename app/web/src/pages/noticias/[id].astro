@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import { formatoFecha, formatoFechaHora, publicados } from '@/lib/contenido';
+import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 
 export async function getStaticPaths() {
   const noticias = await publicados('noticias');
@@ -28,7 +29,7 @@ const cobertura = actividad?.data.publicado ? actividad : undefined;
 
     {cobertura && (
       <aside class="mt-10 rounded-lg bg-muted p-5">
-        <p class="text-sm text-muted-foreground">Cobertura de la actividad</p>
+        <p class="flex items-center gap-1.5 text-sm text-muted-foreground"><CalendarBlank class="size-4" aria-hidden="true" />Cobertura de la actividad</p>
         <p class="font-semibold">{cobertura.data.titulo} · {formatoFechaHora(cobertura.data.inicio)}</p>
       </aside>
     )}

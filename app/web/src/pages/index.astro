@@ -4,6 +4,7 @@ import Banner from '@/components/Banner.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
+import ArrowRight from 'phosphor-astro/ArrowRight.astro';
 import { anunciosVigentes, bannerVigente, noticiasRecientes, proximasActividades } from '@/lib/contenido';
 
 const [banner, noticias, actividades, anuncios] = await Promise.all([
@@ -45,7 +46,7 @@ const [banner, noticias, actividades, anuncios] = await Promise.all([
     <div class="mx-auto max-w-6xl px-4 py-16 text-center">
       <h2 class="text-3xl font-semibold tracking-tight">Directorio de bioingenieros/as</h2>
       <p class="mx-auto mt-3 max-w-xl opacity-80">Encuentra egresados/as por generación, área y organización.</p>
-      <a href="/directorio" class="mt-6 inline-block rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90">Ir al Directorio</a>
+      <a href="/directorio" class="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90">Ir al Directorio <ArrowRight class="size-4" aria-hidden="true" /></a>
     </div>
   </section>
 </Base>

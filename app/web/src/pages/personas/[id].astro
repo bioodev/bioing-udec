@@ -6,6 +6,8 @@ import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
 import { vinculosDe } from '@/lib/contenido';
+import LinkedinLogo from 'phosphor-astro/LinkedinLogo.astro';
+import LinkSimple from 'phosphor-astro/Link.astro';
 
 export async function getStaticPaths() {
   const personas = await getCollection('personas', ({ data }) => data.ficha_activa);
@@ -33,7 +35,10 @@ const { noticias, organiza, expone, ofrece } = await vinculosDe('personas', pers
             {perfil.cargo && <div><dt class="inline text-muted-foreground">Cargo: </dt><dd class="inline">{perfil.cargo}{organizacion && ` · ${organizacion.data.nombre}`}</dd></div>}
             <div><dt class="inline text-muted-foreground">Egreso: </dt><dd class="inline">{perfil.anio_egreso}{perfil.generacion && ` (generación ${perfil.generacion})`}</dd></div>
             {areas.length > 0 && <div><dt class="inline text-muted-foreground">Áreas: </dt><dd class="inline">{areas.map((a) => a.data.nombre).join(', ')}</dd></div>}
-            {perfil.enlaces?.map((e) => <div><dd><a href={e.url} class="text-primary hover:underline" rel="noopener" target="_blank">{e.etiqueta} ↗</a></dd></div>)}
+            {perfil.enlaces?.map((e) => {
+              const Icono = /linkedin\.com/.test(e.url) ? LinkedinLogo : LinkSimple;
+              return <div><dd><a href={e.url} class="inline-flex items-center gap-1.5 text-primary hover:underline" rel="noopener" target="_blank"><Icono class="size-4" aria-hidden="true" />{e.etiqueta}</a></dd></div>;
+            })}
           </dl>
         )}
       </div>

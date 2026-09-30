@@ -2,6 +2,8 @@
 import type { CollectionEntry } from 'astro:content';
 import { Badge } from '@/components/starwind/badge';
 import { formatoFecha } from '@/lib/contenido';
+import Clock from 'phosphor-astro/Clock.astro';
+import EnvelopeSimple from 'phosphor-astro/EnvelopeSimple.astro';
 
 interface Props { anuncio: CollectionEntry<'anuncios'> }
 const { anuncio } = Astro.props;
@@ -13,6 +15,6 @@ const TIPO = {
 <article class="rounded-lg border border-border bg-card p-5">
   <Badge variant="default">{TIPO[anuncio.data.tipo]}</Badge>
   <h3 class="mt-2 text-lg font-semibold leading-snug">{anuncio.data.titulo}</h3>
-  {anuncio.data.fecha_limite && <p class="mt-1 text-sm text-muted-foreground">Postula hasta el {formatoFecha(anuncio.data.fecha_limite)}</p>}
-  <p class="mt-2 text-sm">Contacto: {anuncio.data.contacto}</p>
+  {anuncio.data.fecha_limite && <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />Postula hasta el {formatoFecha(anuncio.data.fecha_limite)}</p>}
+  <p class="mt-2 flex items-center gap-1.5 text-sm"><EnvelopeSimple class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" /><span class="sr-only">Contacto: </span>{anuncio.data.contacto}</p>
 </article>

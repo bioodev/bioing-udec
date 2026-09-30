@@ -1,6 +1,6 @@
 ---
 import SelectPrimitive from "@starwind-ui/astro/select";
-import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
+import ChevronDown from "phosphor-astro/CaretDown.astro";
 import type { HTMLAttributes } from "astro/types";
 import type { VariantProps } from "tailwind-variants";
 import { selectTrigger, selectValue } from "./variants";
@@ -47,7 +47,7 @@ const {
         data-slot="select-icon"
       >
         <slot name="icon">
-          <ChevronDown />
+          <ChevronDown aria-hidden="true" />
         </slot>
       </SelectPrimitive.Icon>
     )

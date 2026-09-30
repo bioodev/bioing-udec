@@ -1,7 +1,9 @@
 ---
 import '@/styles/starwind.css';
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/starwind/sheet';
-import IconMenu from '@tabler/icons/outline/menu-2.svg';
+import IconMenu from 'phosphor-astro/List.astro';
+import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
+import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
 import { MENU, URL_FCB } from '@/lib/navegacion';
 
 interface Props { titulo: string; descripcion?: string }
@@ -30,10 +32,10 @@ const esActual = (href: string) => (href === '/' ? actual === '/' : actual.start
             </a>
           ))}
         </nav>
-        <a href={URL_FCB} class="ml-auto hidden lg:inline text-sm text-muted-foreground hover:text-primary">FCB UdeC ↗</a>
+        <a href={URL_FCB} class="ml-auto hidden lg:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">FCB UdeC <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
         <div class="ml-auto lg:hidden">
           <Sheet>
-            <SheetTrigger aria-label="Abrir menú" class="p-2"><IconMenu aria-hidden="true" /></SheetTrigger>
+            <SheetTrigger aria-label="Abrir menú" class="p-2"><IconMenu class="size-6" aria-hidden="true" /></SheetTrigger>
             <SheetContent side="left">
               <SheetHeader><SheetTitle>BIOING+</SheetTitle></SheetHeader>
               <nav aria-label="Principal (móvil)" class="grid gap-1 px-4">
@@ -43,7 +45,7 @@ const esActual = (href: string) => (href === '/' ? actual === '/' : actual.start
                        class="rounded-md px-2 py-2 hover:bg-muted">{item.etiqueta}</a>
                   </SheetClose>
                 ))}
-                <a href={URL_FCB} class="mt-4 px-2 py-2 text-muted-foreground">Facultad de Ciencias Biológicas ↗</a>
+                <a href={URL_FCB} class="mt-4 inline-flex items-center gap-1 px-2 py-2 text-muted-foreground">Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
               </nav>
             </SheetContent>
           </Sheet>
@@ -62,8 +64,8 @@ const esActual = (href: string) => (href === '/' ? actual === '/' : actual.start
           <p class="text-muted-foreground">FCB UdeC · Universidad de Concepción</p>
         </div>
         <nav aria-label="Pie de página" class="grid gap-1">
-          <a href={URL_FCB} class="hover:text-primary">Facultad de Ciencias Biológicas</a>
-          <a href="/instagram" class="hover:text-primary">Instagram</a>
+          <a href={URL_FCB} class="inline-flex items-center gap-1 hover:text-primary">Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
+          <a href="/instagram" class="inline-flex items-center gap-1.5 hover:text-primary"><InstagramLogo class="size-4" aria-hidden="true" />Instagram</a>
           <a href="/directorio" class="hover:text-primary">Directorio de egresados/as</a>
         </nav>
         <p class="text-muted-foreground">Contacto: pendiente de definir con el equipo BIOING+.</p>

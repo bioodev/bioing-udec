@@ -1,6 +1,6 @@
 ---
 import SheetPrimitive from "@starwind-ui/astro/drawer";
-import X from "@tabler/icons/outline/x.svg";
+import X from "phosphor-astro/X.astro";
 import type { HTMLAttributes } from "astro/types";
 import { Button } from "../button";
 import { sheetBackdrop, sheetCloseButton, sheetContent } from "./variants";
@@ -38,10 +38,10 @@ const { class: className, side = "right", ...rest } = Astro.props;
     data-sw-drawer-close
   >
     <slot name="icon">
-      <X class="size-5 transition-opacity" />
+      <X class="size-5 transition-opacity" aria-hidden="true" />
     </slot>
 
-    <span class="sr-only">Close sheet</span>
+    <span class="sr-only">Cerrar</span>
   </Button>
 
   <div class="pointer-events-none fixed inset-0" data-floating-root data-slot="floating-root" />
