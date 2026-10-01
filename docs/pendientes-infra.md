@@ -1,14 +1,41 @@
 # Pendientes de infraestructura
 
-Se hacen antes de entregar el admin al Encargado de comunicaciones. Mientras tanto se desarrolla en local y se publica a mano (`npm run build` + `wrangler deploy`).
+Producción según `docs/propuesta-desarrollo.md` (secciones 6 y 8): repositorio en **GitHub**, build y hosting en **Cloudflare**, imágenes en el repositorio, documentos en Google Drive o R2, todo a nombre de la **cuenta central** del proyecto.
 
+Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioing/bioing-udec`, backend `gitea` en `config.yml`) y se publica a mano si hace falta (`npm run build` + `wrangler deploy`). El Gitea **no** es parte de la entrega.
+
+## Cuentas (requieren a la carrera)
+
+- [ ] Cuenta central del proyecto (Gmail) con doble factor (dos métodos), códigos de respaldo y contraseña en gestor compartido; reenvío al correo de la jefatura.
+- [ ] Organización en GitHub a nombre de la cuenta central; miembros con sus propias cuentas (Encargado de comunicaciones, respaldo, jefatura, proveedor).
+- [ ] Cuenta de Cloudflare de la cuenta central, con miembros invitados, tarjeta y alertas de facturación.
+- [ ] Dominio (Cloudflare Registrar recomendado; si es `.cl`, definir titular) y autorización si el nombre usa la marca "UdeC".
+
+## Migración del repositorio de Gitea a GitHub
+
+- [ ] Integrar `demo-frontend` a `main` (en Gitea, `main` además tiene commits hechos desde Sveltia).
+- [ ] Crear el repositorio privado en la organización de GitHub y subir el historial completo (`git push --mirror`).
+- [ ] `config.yml`: backend `github` con `repo: <org>/<repo>` y `base_url` del Worker de autenticación.
+- [ ] Desplegar Sveltia CMS Authenticator (Worker de Cloudflare) en la ruta `/auth` del dominio, con la OAuth App de GitHub (callback a esa ruta) y los dominios permitidos.
+- [ ] Actualizar `docs/adr/0001-sveltia-cms-astro.md` (repositorio en GitHub; el Gitea queda solo como entorno de desarrollo) y `CLAUDE.md`.
+- [ ] Revisar `Cross-Origin-Opener-Policy` en `/admin` (`same-origin-allow-popups`) para que funcione la ventana de inicio de sesión.
+
+## Build y despliegue (Cloudflare)
+
+- [ ] `wrangler.jsonc` para servir `app/web/dist` como assets estáticos (o Cloudflare Pages si el dominio tuviera DNS externo).
+- [ ] Workers Builds conectado al repositorio de GitHub: build y deploy en cada push a `main`.
+- [ ] Reconstrucción diaria poco después de las 00:00 **de Chile** (≈ 04:00 UTC en invierno, 03:00 UTC en verano; p. ej. `15 4 * * *`), no a las 00:00 UTC, o un Anuncio vencido seguiría visible hasta ~21 horas.
+- [ ] Avisos por correo ante fallas de build. Si el build registra `Invalid content reference`, avisar sin fallar (el sitio ya descarta esas referencias y un build caído congela Agenda y Anuncios).
+- [ ] Revisión periódica de enlaces rotos (documentos de Drive).
+- [ ] Aviso cuando el repositorio supere 1 GB.
+- [ ] Caché de imágenes optimizadas entre builds, si el tiempo de build crece.
+- [ ] Encabezados de seguridad (`_headers`), redirecciones (`_redirects`) y página 404.
+
+## Contenido y medios
+
+- [ ] Activar en `config.yml` la optimización al subir (`media_libraries.all.transformations`: WebP, 2048 px, calidad 85).
+- [ ] Campo "documento" que acepte enlace de Google Drive o archivo en R2; reglas de Drive (propiedad de la cuenta central, carpeta pública dedicada).
+- [ ] R2 solo si se usa para documentos: bucket, servido en `/media` del dominio, clave limitada a ese bucket, `public_url` en `config.yml`.
 - [ ] **Prueba de imagen en el admin**: subir una imagen desde Sveltia y confirmar que la ruta queda como `../../assets/media/…`. Si no, ajustar `media_folder`/`public_folder` en `config.yml`.
 - [ ] **Prueba de "Agregar Persona"** desde una Noticia: debe quedar en el mismo commit que la Noticia.
-- [ ] **Dominio del sitio** (depende de la pregunta 6.4 de `docs/preguntas-reunion.md`).
-- [ ] **Cloudflare**: cuenta, token de API con permiso de Workers, `wrangler.jsonc` para servir `app/web/dist` como assets estáticos.
-- [ ] **Runner de Gitea Actions** (`act_runner` en el docker-compose de Gitea, registrado en la organización `bioing`, `capacity: 1`, builds con `--memory=1g`).
-- [ ] **Workflow** `.gitea/workflows/deploy.yml`: build + deploy en cada push a `main` y una vez al día (Agenda, Anuncios, Banners y Noticias programadas dependen de la fecha). El cron diario debe correr poco después de las 00:00 **de Chile** (≈ 04:00 UTC en invierno, 03:00 UTC en verano; p. ej. `15 4 * * *`), no a las 00:00 UTC, o un Anuncio vencido seguiría visible hasta ~21 horas. Si el build registra `Invalid content reference`, debe avisar (no fallar: el sitio ya descarta esas referencias y un build caído congela Agenda y Anuncios).
-- [ ] **OAuth app en Gitea** (PKCE, cliente no confidencial) con redirect a la URL del admin de producción; poner su `app_id` en `config.yml`.
-- [ ] **CORS de producción**: agregar el dominio del sitio a `GITEA__cors__ALLOW_DOMAIN`.
-- [ ] **Cuenta del Encargado de comunicaciones** en Gitea, con escritura en `bioing/bioing-udec`.
-- [ ] Borrar el contenido de ejemplo y la "Noticia demo borrar luego".
+- [ ] Borrar el contenido de ejemplo y la "Noticia demo borrar luego" (el sintético `sint-*` no está en git: `npm run datos:limpiar`).
