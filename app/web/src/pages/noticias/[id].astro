@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
+import Migas from '@/components/Migas.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import { formatoFecha, formatoFechaHora, noticiasVisibles, relacionadasDe } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
@@ -31,15 +32,14 @@ const areas = existentes(await getEntries(noticia.data.areas ?? []));
 const relacionadas = await relacionadasDe(noticia);
 
 const enlace = `/noticias/${noticia.id}`;
+// Las mismas migas se muestran arriba de la página y van al JSON-LD (BreadcrumbList).
+const rutas = [
+  { name: 'Inicio', url: '/' },
+  { name: 'Noticias', url: '/noticias' },
+  { name: noticia.data.titulo, url: enlace },
+];
 const jsonLdPagina = [
-  migas(
-    [
-      { name: 'Inicio', url: '/' },
-      { name: 'Noticias', url: '/noticias' },
-      { name: noticia.data.titulo, url: enlace },
-    ],
-    Astro.site,
-  ),
+  migas(rutas, Astro.site),
   jsonLdNoticia(noticia, {
     site: Astro.site,
     url: enlace,
@@ -52,7 +52,8 @@ const jsonLdPagina = [
 ---
 <Base titulo={noticia.data.titulo} descripcion={noticia.data.bajada} imagen={noticia.data.imagen?.src} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
-    <p class="text-sm text-muted-foreground"><time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time></p>
+    <Migas items={rutas} />
+    <p class="mt-6 text-sm text-muted-foreground"><time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time></p>
     <h1 class="mt-2 text-4xl font-semibold tracking-tight">{noticia.data.titulo}</h1>
     {temas.length > 0 && (
       <div class="mt-3 flex flex-wrap gap-2">
