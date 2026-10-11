@@ -9,6 +9,8 @@ import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import { formatoFecha, formatoFechaHora, noticiasVisibles, relacionadasDe } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { minutosLectura } from '@/lib/lectura';
+import { idYouTube } from '@/lib/enlaces';
+import VideoModal from '@/components/VideoModal.astro';
 import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
@@ -32,6 +34,8 @@ const ig = noticia.data.instagram && (await getEntry(noticia.data.instagram));
 const areas = existentes(await getEntries(noticia.data.areas ?? []));
 const etiquetas = noticia.data.etiquetas ?? [];
 const lectura = minutosLectura(noticia.body ?? '');
+// Sin video reconocido (idYouTube devuelve null) no se muestra nada.
+const video = noticia.data.video ? idYouTube(noticia.data.video) : null;
 const relacionadas = await relacionadasDe(noticia);
 
 const enlace = `/noticias/${noticia.id}`;
@@ -100,6 +104,12 @@ const jsonLdPagina = [
 
     <div class="lg:col-start-1 lg:row-start-2">
       <div class="prose mt-8 max-w-none"><Content /></div>
+
+    {video && (
+      <div class="mt-10">
+        <VideoModal id={video} titulo={noticia.data.titulo} />
+      </div>
+    )}
 
     {ig?.data.publicado && (
       <section class="mt-10">

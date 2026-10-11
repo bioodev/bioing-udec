@@ -137,7 +137,7 @@ collections:
       - { name: fecha, label: Fecha de publicación, widget: datetime, type: date }
       - { name: publicado, label: Publicado, widget: boolean, default: false }
       - { name: imagen, label: Imagen destacada, widget: image, required: false }
-      - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título. }
+      - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título." }
       - { name: bajada, label: Bajada, widget: text, required: false }
       - name: etiquetas
         label: Etiquetas (tags)
@@ -169,6 +169,7 @@ collections:
         required: false
         hint: Solo si la Noticia es la Cobertura de una Actividad ya realizada.
       - { name: instagram, label: Publicación de Instagram relacionada, widget: relation, collection: instagram, display_fields: [titulo], required: false }
+      - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo del cuerpo, en una ventana al hacer clic." }
       - { name: body, label: Cuerpo, widget: richtext }
 
   - name: actividades

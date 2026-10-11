@@ -73,6 +73,7 @@ const noticias = defineCollection({
       publicado,
       imagen: image().optional(),
       imagen_alt: z.string().optional(), // describe la imagen destacada; sin él, la imagen se trata como decorativa
+      video: z.url().optional(), // enlace de YouTube; si no es de un video reconocido, la página no lo muestra
       bajada: z.string().optional(),
       etiquetas: z.array(z.string()).optional(), // tags de texto libre; la categoría editorial sigue siendo `temas`
       temas: referencias('temas'),

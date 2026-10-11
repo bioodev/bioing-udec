@@ -94,7 +94,7 @@ _Avoid_: Base de datos, buscador de bioingenieros
 ### Contenidos
 
 **Noticia**:
-Publicación de actualidad sobre la comunidad de Bioingeniería, con fecha, Temas, Áreas, Personas mencionadas y Organizaciones mencionadas. Opcionalmente tiene texto alternativo de la imagen destacada.
+Publicación de actualidad sobre la comunidad de Bioingeniería, con fecha, Temas, Áreas, Personas mencionadas y Organizaciones mencionadas. Opcionalmente tiene texto alternativo de la imagen destacada y un video de YouTube.
 _Avoid_: Artículo, post, nota
 
 **Persona mencionada** / **Organización mencionada**:
