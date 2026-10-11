@@ -76,7 +76,6 @@ const grandes = await Promise.all(items.map((item) => getImage({ src: item.image
         disparador = boton;
         mostrar(i);
         dialogo.showModal();
-        document.documentElement.style.overflow = 'hidden'; // el fondo no se desplaza mientras está abierto
       }));
       dialogo.querySelector('[data-anterior]')?.addEventListener('click', anterior);
       dialogo.querySelector('[data-siguiente]')?.addEventListener('click', siguiente);
@@ -88,7 +87,6 @@ const grandes = await Promise.all(items.map((item) => getImage({ src: item.image
       dialogo.addEventListener('click', (e) => { if (e.target === dialogo) dialogo.close(); }); // clic fuera
       // Esc ya cierra el <dialog> de forma nativa; el evento "close" cubre todos los cierres.
       dialogo.addEventListener('close', () => {
-        document.documentElement.style.overflow = '';
         disparador?.focus();
       });
     }
