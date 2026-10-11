@@ -1,0 +1,149 @@
+---
+import { getEntries } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import TarjetaDocumento from '@/components/TarjetaDocumento.astro';
+import { Input } from '@/components/starwind/input';
+import { Label } from '@/components/starwind/label';
+import { NativeSelect, NativeSelectOption } from '@/components/starwind/native-select';
+import { documentosDelRepositorio } from '@/lib/contenido';
+import { existentes, normalizar } from '@/lib/reglas';
+import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
+import { TODOS } from '@/lib/filtro-repositorio';
+
+const documentos = await Promise.all(
+  (await documentosDelRepositorio()).map(async (documento) => ({
+    documento,
+    temas: existentes(await getEntries(documento.data.temas ?? [])),
+  })),
+);
+
+const porId = <T extends { id: string }>(xs: T[]) => [...new Map(xs.map((x) => [x.id, x])).values()];
+const presentes = new Set(documentos.map((d) => d.documento.data.tipo));
+const tipos = (Object.keys(TIPOS_DOCUMENTO) as (keyof typeof TIPOS_DOCUMENTO)[]).filter((t) => presentes.has(t));
+const temas = porId(documentos.flatMap((d) => d.temas)).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+const anios = [...new Set(documentos.map((d) => d.documento.data.anio))].sort((a, b) => b - a);
+const total = documentos.length;
+
+const textoDe = (d: (typeof documentos)[number]) =>
+  normalizar(`${d.documento.data.titulo} ${d.documento.data.descripcion ?? ''} ${(d.documento.data.palabras_clave ?? []).join(' ')}`);
+---
+<Base titulo="Repositorio" descripcion="Documentos de interés para la comunidad de Bioingeniería UdeC: decretos, reglamentos, informes y más.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-semibold tracking-tight">Repositorio</h1>
+    <p class="mt-2 text-muted-foreground">Documentos de interés para la comunidad de Bioingeniería UdeC.</p>
+
+    {total === 0 ? (
+      <p class="mt-8 text-muted-foreground">Aún no hay documentos en el Repositorio.</p>
+    ) : (
+      <>
+        <form id="filtros" class="mt-8 grid gap-4 md:grid-cols-4" role="search" onsubmit="return false">
+          <div class="grid gap-2">
+            <Label for="texto">Buscar</Label>
+            <Input id="texto" name="texto" type="search" placeholder="Título, descripción o palabra clave" autocomplete="off" />
+          </div>
+          <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
+            <Label for="tipo">Tipo</Label>
+            <NativeSelect id="tipo" name="tipo">
+              <NativeSelectOption value={TODOS}>Todos</NativeSelectOption>
+              {tipos.map((t) => <NativeSelectOption value={t}>{TIPOS_DOCUMENTO[t]}</NativeSelectOption>)}
+            </NativeSelect>
+          </div>
+          <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
+            <Label for="tema">Tema</Label>
+            <NativeSelect id="tema" name="tema">
+              <NativeSelectOption value={TODOS}>Todos</NativeSelectOption>
+              {temas.map((t) => <NativeSelectOption value={t.id}>{t.data.nombre}</NativeSelectOption>)}
+            </NativeSelect>
+          </div>
+          <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
+            <Label for="anio">Año</Label>
+            <NativeSelect id="anio" name="anio">
+              <NativeSelectOption value={TODOS}>Todos los años</NativeSelectOption>
+              {anios.map((a) => <NativeSelectOption value={String(a)}>{a}</NativeSelectOption>)}
+            </NativeSelect>
+          </div>
+        </form>
+
+        <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{total === 1 ? '1 documento' : `${total} documentos`}</p>
+        <h2 class="sr-only">Resultados</h2>
+        <ul id="lista" class="mt-4 grid gap-6 md:grid-cols-2">
+          {documentos.map((d) => (
+            <li
+              data-texto={textoDe(d)}
+              data-tipo={d.documento.data.tipo}
+              data-temas={d.temas.map((t) => t.id).join(' ')}
+              data-anio={String(d.documento.data.anio)}
+            >
+              <TarjetaDocumento documento={d.documento} temas={d.temas.map((t) => t.data.nombre)} />
+            </li>
+          ))}
+        </ul>
+        <p id="sin-resultados" class="mt-8 hidden text-center text-muted-foreground">No hay documentos que coincidan con los filtros.</p>
+      </>
+    )}
+  </section>
+</Base>
+
+<script>
+  import { coincideDocumento, TODOS, type FiltrosRepositorio } from '@/lib/filtro-repositorio';
+
+  const form = document.querySelector<HTMLFormElement>('#filtros');
+  if (form) {
+    const texto = document.querySelector<HTMLInputElement>('#texto')!;
+    const tipo = document.querySelector<HTMLSelectElement>('#tipo')!;
+    const tema = document.querySelector<HTMLSelectElement>('#tema')!;
+    const anio = document.querySelector<HTMLSelectElement>('#anio')!;
+    const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
+    const contador = document.querySelector('#contador')!;
+    const sinResultados = document.querySelector('#sin-resultados')!;
+
+    function filtros(): FiltrosRepositorio {
+      const d = new FormData(form!);
+      return {
+        texto: (d.get('texto') as string | null) ?? '',
+        tipo: (d.get('tipo') as string | null) || TODOS,
+        tema: (d.get('tema') as string | null) || TODOS,
+        anio: (d.get('anio') as string | null) || TODOS,
+      };
+    }
+
+    function aplicar() {
+      const f = filtros();
+      let visibles = 0;
+      for (const li of items) {
+        const ok = coincideDocumento({
+          texto: li.dataset.texto ?? '',
+          tipo: li.dataset.tipo ?? '',
+          temas: (li.dataset.temas ?? '').split(' ').filter(Boolean),
+          anio: li.dataset.anio ?? '',
+        }, f);
+        li.hidden = !ok;
+        if (ok) visibles++;
+      }
+      contador.textContent = visibles === 1 ? '1 documento' : `${visibles} documentos`;
+      sinResultados.classList.toggle('hidden', visibles > 0);
+
+      // Los filtros quedan en la URL para compartir el listado filtrado.
+      const url = new URL(location.href);
+      for (const [k, v] of Object.entries({ q: f.texto, tipo: f.tipo, tema: f.tema, anio: f.anio })) {
+        if (v && v !== TODOS) url.searchParams.set(k, v); else url.searchParams.delete(k);
+      }
+      history.replaceState(null, '', url);
+    }
+
+    // Estado inicial desde la URL (p. ej. /repositorio?tipo=reglamento). Un valor que no
+    // está entre las opciones del select se ignora.
+    const params = new URLSearchParams(location.search);
+    texto.value = params.get('q') ?? '';
+    const elegir = (select: HTMLSelectElement, valor: string | null) => {
+      if (valor && [...select.options].some((o) => o.value === valor)) select.value = valor;
+    };
+    elegir(tipo, params.get('tipo'));
+    elegir(tema, params.get('tema'));
+    elegir(anio, params.get('anio'));
+
+    form.addEventListener('input', aplicar);
+    form.addEventListener('change', aplicar);
+    aplicar();
+  }
+</script>

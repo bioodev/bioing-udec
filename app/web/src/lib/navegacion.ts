@@ -7,7 +7,7 @@ export const MENU = [
   { etiqueta: 'Instagram', href: '/instagram', disponible: false },
   { etiqueta: 'Directorio', href: '/directorio', disponible: true },
   { etiqueta: 'Anuncios', href: '/anuncios', disponible: true },
-  { etiqueta: 'Repositorio', href: '/repositorio', disponible: false },
+  { etiqueta: 'Repositorio', href: '/repositorio', disponible: true },
 ];
 
 // Pendiente de confirmar con el equipo BIOING+ la URL exacta de la FCB.
