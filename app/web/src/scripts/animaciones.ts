@@ -40,13 +40,16 @@ export function iniciarAnimaciones(): void {
   document.documentElement.setAttribute('data-animaciones', '1');
 
   try {
+    // Ojo: NO usar clearProps:'transform' al terminar: la clase .anima sigue aplicando
+    // translateY(20px) por CSS, y al limpiar el transform inline el contenido volvería a
+    // bajarse. El transform inline final (translate(0,0)) queda como ancla sobre el CSS.
     contexto = gsap.context(() => {
     // HERO: entrada al cargar, con ligero escalonado entre título, texto y botón.
     const hero = gsap.utils.toArray<HTMLElement>('[data-animar="hero"]');
     if (hero.length) {
       gsap.to(hero, {
         opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-        stagger: 0.12, delay: 0.1, clearProps: 'transform', overwrite: 'auto',
+        stagger: 0.12, delay: 0.1, overwrite: 'auto',
       });
     }
 
@@ -55,7 +58,7 @@ export function iniciarAnimaciones(): void {
       gsap.to(el, {
         opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        clearProps: 'transform', overwrite: 'auto',
+        overwrite: 'auto',
       });
     });
 
@@ -68,7 +71,7 @@ export function iniciarAnimaciones(): void {
         opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
         stagger: Math.min(0.06, 0.45 / hijos.length),
         scrollTrigger: { trigger: contenedor, start: 'top 88%', once: true },
-        clearProps: 'transform', overwrite: 'auto',
+        overwrite: 'auto',
       });
     });
   }, document.body);
