@@ -2,7 +2,7 @@
 
 **Cliente:** Carrera de Bioingeniería, Facultad de Ciencias Biológicas, Universidad de Concepción
 **Contrapartes:** Jefatura de carrera, periodista (Encargado de comunicaciones) y responsable del proyecto
-**Fecha:** [por definir] · **Versión:** borrador 1
+**Fecha:** 10 de octubre de 2026 · **Versión:** 2
 
 ---
 
@@ -35,6 +35,8 @@ Esta solución **reemplaza WordPress** por un esquema con una superficie de ataq
 - Repositorio de documentos con buscador.
 - Publicaciones de Instagram seleccionadas: el Encargado de comunicaciones pega el enlace de una publicación y el sitio la muestra con el embed oficial de Instagram (ver 6.2).
 - Anuario de egresados/as en PDF.
+- Contenido multimedia en noticias y otras secciones: videos, galerías de fotos, documentos de Google Drive y PDF (ver 6.3).
+- Buscador general del sitio (índice estático, sin servidor), SEO básico (sitemap y metadatos para redes sociales) y analítica respetuosa de la privacidad (Cloudflare Web Analytics, sin cookies).
 - Diseño responsivo y accesible.
 
 **Metas de calidad** (se verifican en la entrega):
@@ -42,8 +44,6 @@ Esta solución **reemplaza WordPress** por un esquema con una superficie de ataq
 - Accesibilidad según WCAG 2.1 nivel AA.
 - Puntaje Lighthouse ≥ 90 en rendimiento, accesibilidad, buenas prácticas y SEO, en las páginas principales.
 - Funcionamiento en las dos últimas versiones de Chrome, Firefox, Safari y Edge, en escritorio y móvil.
-
-- Contenido multimedia en noticias y otras secciones: videos, galerías de fotos, documentos de Google Drive y PDF (ver 6.3).
 
 **Gestor de contenidos:** panel de administración web para crear, editar y publicar cada tipo de contenido, con borradores, vínculos entre contenidos (por ejemplo, las personas mencionadas en una noticia) y carga de imágenes.
 
@@ -234,7 +234,7 @@ Fuentes: [GitLab — Storage usage quotas](https://docs.gitlab.com/user/storage_
 
 | # | Riesgo o decisión | Impacto | Mitigación propuesta | Depende de |
 |---|---|---|---|---|
-| 1 | **Eliminación de datos personales.** Al borrar a una persona del sitio, su registro (y sus fotos, que están en el repositorio) sigue en el historial de Git. | Alto: derecho de supresión (Ley 19.628 y Ley 21.719 de protección de datos, a confirmar su entrada en vigencia) | Procedimiento documentado de eliminación que incluya el historial; o mantener los datos del Directorio fuera del repositorio | Carrera / asesoría jurídica UdeC |
+| 1 | **Eliminación de datos personales.** Al borrar a una persona del sitio, su registro (y sus fotos, que están en el repositorio) sigue en el historial de Git. | Alto: derecho de supresión (Ley 19.628 y Ley 21.719 de protección de datos personales, vigente desde el 1 de diciembre de 2026, antes de la puesta en producción) | Procedimiento documentado de eliminación que incluya el historial; o mantener los datos del Directorio fuera del repositorio | Carrera / asesoría jurídica UdeC |
 | 2 | **Registro del consentimiento.** Debe quedar prueba de que cada egresado/a autorizó publicar sus datos. | Alto | El formulario de Google es el registro oficial de autorizaciones, con fecha y alcance; el sitio solo publica perfiles marcados como autorizados | Carrera |
 | 3 | **Titularidad del dominio.** Un dominio `.cl` exige un titular con RUT; si es una persona, el dominio queda ligado a ella. | Medio | Preferir un dominio en Cloudflare Registrar a nombre de la cuenta central (ver 6.1); si es `.cl`, definir el titular por escrito | Carrera |
 | 4 | **Contenido de terceros (Instagram).** El embed oficial carga scripts y cookies de Meta, y Meta puede cambiar su formato. | Bajo | Carga bajo demanda con tarjeta propia previa (ver 6.2); si el embed deja de funcionar, la tarjeta sigue enlazando a la publicación | Proveedor |
@@ -246,16 +246,15 @@ Fuentes: [GitLab — Storage usage quotas](https://docs.gitlab.com/user/storage_
 | 10 | **Alcance de la integración con IA.** | Bajo | La arquitectura queda **preparada** (contenido en archivos estructurados, cambios revisables); una integración concreta se cotiza aparte | Carrera / Proveedor |
 | 11 | **Documentos en Drive.** Enlaces rotos (archivo movido, permiso cambiado o dueño que se va) o exposición accidental de una carpeta. | Medio | Reglas de 6.3: propiedad de la cuenta central, carpeta pública dedicada y revisión automática de enlaces | Carrera |
 
-Se incluyen además en el alcance: buscador general del sitio (índice estático, sin servidor), SEO básico (sitemap y metadatos para redes sociales) y analítica respetuosa de la privacidad (Cloudflare Web Analytics, sin cookies).
-
 ## 10. Supuestos, exclusiones y limitaciones
 
 **Supuestos**
 
-- La carrera entrega los contenidos iniciales (textos, fotografías, video, documentos del repositorio y listado de egresados/as con sus autorizaciones). La carga inicial la realiza [por definir: el proveedor, a partir de lo entregado, o el Encargado de comunicaciones durante la capacitación].
-- El diseño visual incluye [por definir: p. ej. dos] rondas de ajustes sobre la propuesta de diseño.
+- La carrera entrega los contenidos iniciales (textos, fotografías, video, documentos del repositorio y listado de egresados/as con sus autorizaciones). El proveedor importa el listado de egresados/as desde una planilla; el resto de la carga inicial la realiza el Encargado de comunicaciones durante la capacitación, con apoyo del proveedor.
+- El diseño visual incluye dos rondas de ajustes sobre la propuesta de diseño.
 - Existe una persona designada como Encargado de comunicaciones durante y después del proyecto.
 - Si existe un sitio actual con direcciones indexadas en buscadores, la carrera entrega el listado de sus URLs para configurar redirecciones.
+- Las fechas de la sección 11 suponen que los requisitos de la sección 13 se entregan a tiempo; un atraso en ellos desplaza las fechas en el mismo plazo.
 
 **Exclusiones**
 
@@ -279,21 +278,30 @@ Se incluyen además en el alcance: buscador general del sitio (índice estático
 
 | Hito | Contenido | Criterio de aceptación | Fecha |
 |---|---|---|---|
-| 1. Modelo y base | Modelo de contenidos, arquitectura, gestor configurado, diseño base | Demo navegable revisada por la contraparte; modelo de contenidos aprobado | Avanzado (demo funcional) |
-| 2. Secciones | Inicio, Noticias, Directorio y Fichas | Cada sección funciona con contenido de prueba y la contraparte aprueba su diseño | Avanzado (demo funcional) |
-| 3. Secciones restantes | Agenda, Anuncios, Repositorio, Instagram, ¿Qué es la Bioingeniería?, anuario PDF | Todas las secciones del alcance funcionan con contenido de prueba; pruebas automáticas en verde | [por definir] |
-| 4. Producción | Dominio, Cloudflare, R2, CI/CD, identidad visual definitiva, carga de contenidos iniciales | Sitio publicado en el dominio definitivo; el Encargado de comunicaciones publica un contenido de principio a fin sin ayuda; metas de calidad cumplidas | [por definir] |
-| 5. Cierre | Capacitación, documentación y entrega | Entregables de cierre recibidos y capacitación realizada; acta de entrega conforme | [por definir] |
+| 1. Modelo y base | Modelo de contenidos, arquitectura, gestor configurado, diseño base | Demo navegable revisada por la contraparte; modelo de contenidos aprobado | Completado (demo funcional) |
+| 2. Secciones | Inicio, Noticias, Directorio y Fichas | Cada sección funciona con contenido de prueba y la contraparte aprueba su diseño | Completado (demo funcional) |
+| 3. Secciones restantes | Agenda, Anuncios, Repositorio, Instagram, ¿Qué es la Bioingeniería?, anuario PDF | Todas las secciones del alcance funcionan con contenido de prueba; pruebas automáticas en verde | 30 de noviembre de 2026 (en curso) |
+| 4. Producción | Dominio, Cloudflare, R2, CI/CD, identidad visual definitiva, carga de contenidos iniciales | Sitio publicado en el dominio definitivo; el Encargado de comunicaciones publica un contenido de principio a fin sin ayuda; metas de calidad cumplidas | 31 de enero de 2027 |
+| 5. Cierre | Capacitación, documentación y entrega | Entregables de cierre recibidos y capacitación realizada; acta de entrega conforme | 15 de marzo de 2027 |
 
-La contraparte revisa cada hito en un plazo de [por definir: p. ej. 5 días hábiles]; sin observaciones en ese plazo, el hito se considera aceptado.
+La contraparte revisa cada hito en un plazo de 5 días hábiles; sin observaciones en ese plazo, el hito se considera aceptado.
 
-**Fecha de entrega comprometida:** marzo de 2027 [confirmar fecha exacta].
+**Fecha de entrega comprometida:** 15 de marzo de 2027, antes del inicio del año académico.
 
 ## 12. Pagos
 
-[por definir: montos, cantidad de cuotas y su asociación a hitos, según lo conversado en la reunión].
+**Valor total acordado: $1.300.000 bruto**, en un solo pago contra entrega conforme (Hito 5), mediante boleta de honorarios electrónica. Quien paga retiene el impuesto y lo entera al SII; el valor no lleva IVA.
+
+| Año de emisión de la boleta | Retención | Monto retenido | Monto líquido a recibir |
+|---|---|---|---|
+| 2026 | 15,25 % | $198.250 | $1.101.750 |
+| **2027** (entrega en marzo) | **16 %** | **$208.000** | **$1.092.000** |
+
+Como la entrega es en marzo de 2027, aplica la retención de 2027. El valor incluye todo lo de la sección 3, la capacitación y la garantía de la sección 15; **no incluye** los costos de terceros (dominio y eventual uso sobre las cuotas gratuitas, ver 6.4 y 16), que se pagan directamente con la tarjeta de la cuenta del proyecto.
 
 ## 13. Requisitos de la contraparte para continuar
+
+Para cumplir el Hito 4, los requisitos de dominio, cuenta central, tarjeta e identidad visual se necesitan **a más tardar el 15 de diciembre de 2026**, y el listado de egresados/as con sus autorizaciones y los contenidos iniciales, a más tardar el 15 de enero de 2027.
 
 - Logo BIOING+ y manual de marca UdeC/FCB (o su aprobación del diseño propuesto).
 - Definición del nombre de dominio (ver 6.1) y, si se usa la marca "UdeC", su autorización.
@@ -311,16 +319,20 @@ La contraparte revisa cada hito en un plazo de [por definir: p. ej. 5 días háb
 - Credenciales y traspaso de todas las cuentas a la institución.
 - Pruebas automatizadas y evidencia de verificación.
 - Guía de usuario para el Encargado de comunicaciones.
-- Capacitación: [por definir: p. ej. dos sesiones de 2 horas] para el Encargado de comunicaciones y una persona de respaldo, con grabación.
+- Capacitación: dos sesiones de 2 horas para el Encargado de comunicaciones y una persona de respaldo, con grabación.
 - Guía de mantención.
 - Pago final contra entrega conforme.
 
 ## 15. Condiciones
 
-- **Garantía y soporte: seis (6) meses** desde la entrega. [por definir: qué incluye (p. ej. corrección de errores y asistencia de uso) y qué no (nuevas funcionalidades), tiempos de respuesta y canal de contacto].
+- **Garantía y soporte: seis (6) meses** desde la entrega conforme, sin costo adicional.
+  - **Incluye:** corrección de errores (funcionamiento distinto de lo aprobado), asistencia de uso del panel, reversión de cambios de contenido publicados por error y actualizaciones de seguridad de dependencias.
+  - **No incluye:** funcionalidades nuevas, cambios de diseño, carga de contenidos ni fallas causadas por servicios de terceros (Instagram, Google Drive) o por cambios hechos fuera del panel por otras personas.
+  - **Canal y tiempos:** correo electrónico; respuesta en 2 días hábiles y, si el sitio está caído o no se puede publicar, en 1 día hábil.
 - **Cambios de alcance:** toda funcionalidad nueva o cambio sobre lo aprobado se solicita por escrito, se estima en esfuerzo y costo, y se incorpora solo con aprobación de la contraparte.
 - Todas las cuentas y el código quedan a nombre de la institución.
-- [por definir: propiedad intelectual y licencia del código].
+- **Propiedad intelectual:** el código desarrollado y el contenido son de la institución. Las herramientas de código abierto usadas (Astro, Sveltia CMS y otras) conservan sus licencias.
+- **Datos personales:** el proveedor usa los datos de egresados/as solo para este proyecto, no los copia fuera de los servicios del proyecto y elimina sus copias locales al cierre.
 
 ## 16. Continuidad después de la garantía
 
@@ -328,5 +340,5 @@ El objetivo es que el sitio siga funcionando sin depender del proveedor:
 
 - **Operación diaria:** el Encargado de comunicaciones publica de forma autónoma; la reconstrucción diaria y los certificados son automáticos.
 - **Costos recurrentes:** renovación anual del dominio y, solo si se superan las cuotas gratuitas (ver 6.4), almacenamiento en R2 o minutos de build. Con el volumen esperado, hosting, builds y almacenamiento quedan dentro de los planes gratuitos.
-- **Mantención técnica:** actualizaciones de dependencias y ajustes menores, recomendadas cada [por definir: p. ej. 6] meses. Las puede realizar cualquier desarrollador con conocimientos de Astro siguiendo la guía de mantención.
-- **Plan de mantención opcional:** [por definir: modalidad y valor, si la carrera lo requiere].
+- **Mantención técnica:** actualizaciones de dependencias y ajustes menores, recomendadas cada 6 meses. Las puede realizar cualquier desarrollador con conocimientos de Astro siguiendo la guía de mantención.
+- **Plan de mantención opcional:** si la carrera lo requiere, se cotiza aparte al terminar la garantía.
