@@ -26,6 +26,11 @@
 
 El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase B → Fase C → Fase D.
 
+> **Cambio 2026-10-11** ([ADR 0003](../adr/0003-cuenta-central-anticipada-y-ambientes.md)): B1–B3 (cuenta central, GitHub,
+> Cloudflare) las ejecuta el proveedor ya, con visto bueno de la carrera para el nombre. Así C1, C3 y casi
+> toda C4 se adelantan en `*.workers.dev` (QA + producción); el dominio (B4) solo agrega el redespliegue final.
+> Paso a paso: [`2026-10-11-plan-ambientes-qa-produccion.md`](2026-10-11-plan-ambientes-qa-produccion.md).
+
 ---
 
 ## FASE A — Producción en código (sin cuentas) — SE HACE YA

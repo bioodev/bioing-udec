@@ -1,5 +1,5 @@
 // Configuración de despliegue en Cloudflare (Workers Static Assets).
-// Deploy manual (ambiente de desarrollo): npm run deploy:dev
+// Deploy manual al Worker de QA (bioing-web-qa): npm run deploy:dev. Producción solo por Workers Builds.
 // El deploy definitivo se conectará a Workers Builds en la Fase C (sin secretos aquí).
 {
   "$schema": "node_modules/wrangler/config-schema.json",
@@ -11,5 +11,12 @@
     "not_found_handling": "404-page",
     // Carpetas con index.html se sirven con barra final; los .html sueltos, sin ella.
     "html_handling": "auto-trailing-slash"
+  },
+  // Ambientes (docs/plans/2026-10-11-plan-ambientes-qa-produccion.md):
+  //   producción = este nivel superior → Worker "bioing-web" (rama main)
+  //   QA         = env.qa → Worker "bioing-web-qa" (rama develop), siempre en *.workers.dev
+  // El dominio oficial se agrega aquí con "routes" + "custom_domain": true cuando exista (Fase C).
+  "env": {
+    "qa": {}
   }
 }

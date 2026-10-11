@@ -1,5 +1,10 @@
 # Despliegue en Cloudflare (ambiente de desarrollo)
 
+> **Actualización 2026-10-11:** el destino de este procedimiento es ahora el Worker de **QA**
+> (`bioing-web-qa`) en la cuenta central del proyecto. Producción (`bioing-web`) se publica por Workers Builds.
+> Plan completo de ambientes y redespliegue con dominio:
+> [`plans/2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md).
+
 > **Para qué sirve:** publicar el sitio en una URL estable (`*.workers.dev`) para revisarlo desde cualquier
 > dispositivo, probar los encabezados de seguridad reales, el 404, el buscador y el rendimiento en el CDN,
 > **sin depender de las cuentas ni del dominio de la carrera** (que llegan en la Fase C).
@@ -18,7 +23,7 @@
 - `app/web/public/_headers` incluye una regla para `https://*.workers.dev/*` con `X-Robots-Tag: noindex`,
   para que el ambiente de prueba no se indexe. El patrón **no** alcanza al dominio definitivo: puede quedarse
   igual cuando el sitio pase a producción.
-- `npm run deploy:dev` (en `app/web`) = `build` + `postbuild` + `wrangler deploy`.
+- `npm run deploy:dev` (en `app/web`) = `build` + `postbuild` + `wrangler deploy --env qa` (Worker **`bioing-web-qa`**: nunca toca producción).
 - `app/web/wrangler` ya está como devDependency: no hay que instalar nada aparte.
 
 **Confirmado en la documentación de Cloudflare:** los archivos `_headers` y `_redirects` **sí** se aplican en
@@ -30,7 +35,7 @@ Workers Static Assets (no se aplican a respuestas generadas por código de Worke
    Fase C se reemplaza por la de la carrera.
 2. **Subdominio `workers.dev`**: la primera vez hay que elegirlo en el panel (Workers & Pages → *Change*
    subdomain), p. ej. `mi-cuenta.workers.dev`. La URL del sitio será
-   `https://bioing-web.<subdominio>.workers.dev`.
+   `https://bioing-web-qa.<subdominio>.workers.dev`.
 3. **Node ≥ 22.12** y dependencias instaladas: `cd app/web && npm ci`.
 4. **Comprobación sin credenciales** (debe pasar siempre):
    ```sh
@@ -67,13 +72,13 @@ Opción A — archivo local (recomendada; `app/web/.env` está en `.gitignore`):
 
 ```sh
 cd app/web
-echo 'SITE_URL=https://bioing-web.<subdominio>.workers.dev' > .env
+echo 'SITE_URL=https://bioing-web-qa.<subdominio>.workers.dev' > .env
 ```
 
 Opción B — solo para un comando:
 
 ```sh
-SITE_URL=https://bioing-web.<subdominio>.workers.dev npm run deploy:dev
+SITE_URL=https://bioing-web-qa.<subdominio>.workers.dev npm run deploy:dev
 ```
 
 ## 4. Desplegar
@@ -83,7 +88,7 @@ cd app/web
 npm run deploy:dev        # build → postbuild (Pagefind) → wrangler deploy
 ```
 
-La primera vez, `wrangler` crea el Worker llamado `bioing-web` (nombre definido en `wrangler.jsonc`).
+La primera vez, `wrangler` crea el Worker `bioing-web-qa` (`name` de `wrangler.jsonc` + el entorno `qa`).
 Al terminar imprime la URL publicada.
 
 Para actualizar el ambiente después de cualquier cambio: volver a correr `npm run deploy:dev` (sin volver a
@@ -98,7 +103,7 @@ hacer login).
       contienen la **URL del Worker**, no `bioing.example`.
 - [ ] El `<head>` de una ficha lleva canonical y Open Graph con la URL del Worker; el JSON-LD valida
       (`npm run verificar:jsonld` en local).
-- [ ] Encabezados reales (`curl -I https://bioing-web.<subdominio>.workers.dev/`):
+- [ ] Encabezados reales (`curl -I https://bioing-web-qa.<subdominio>.workers.dev/`):
       `content-security-policy`, `strict-transport-security`, `x-content-type-options`,
       `x-frame-options: DENY`.
 - [ ] Caché larga en los assets con hash: `curl -I .../_astro/<archivo>` debe traer
@@ -168,6 +173,9 @@ npx wrangler delete                  # borrar el Worker (libera el nombre y la U
 El ambiente es prescindible: si se borra, no afecta al repositorio ni al sitio de producción.
 
 ## 11. Camino a producción (Fase C, con la carrera)
+
+> Superado por [`plans/2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md)
+> (cuenta central adelantada, ambientes QA/producción y redespliegue con dominio). Se conserva como referencia.
 
 1. Cuenta de Cloudflare de la **cuenta central** del proyecto y dominio propio.
 2. Repositorio en GitHub + **Worker de autenticación** de Sveltia en `/auth` (CORS/PKCE) para que el panel

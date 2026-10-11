@@ -4,7 +4,12 @@ Producción según `docs/propuesta-desarrollo.md` (secciones 6 y 8): repositorio
 
 Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioing/bioing-udec`, backend `gitea` en `config.yml`) y se publica a mano si hace falta (`npm run build` + `wrangler deploy`). El Gitea **no** es parte de la entrega.
 
-## Cuentas (requieren a la carrera)
+## Cuentas
+
+> **Desde el 2026-10-11** ([ADR 0003](adr/0003-cuenta-central-anticipada-y-ambientes.md)): la cuenta central, GitHub y
+> Cloudflare las crea **el proveedor ahora**, con visto bueno de la carrera para el nombre; se traspasan en el
+> Hito 5. Paso a paso: [`plans/2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md).
+> De la carrera siguen dependiendo el **dominio**, la **tarjeta** y la identidad visual.
 
 - [ ] Cuenta central del proyecto (Gmail) con doble factor (dos métodos), códigos de respaldo y contraseña en gestor compartido; reenvío al correo de la jefatura.
 - [ ] Organización en GitHub a nombre de la cuenta central; miembros con sus propias cuentas (Encargado de comunicaciones, respaldo, jefatura, proveedor).
@@ -23,7 +28,7 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 ## Build y despliegue (Cloudflare)
 
 - [x] `wrangler.jsonc` para servir `app/web/dist` como assets estáticos (o Cloudflare Pages si el dominio tuviera DNS externo). _Hecho; con 404 propio (`not_found_handling: "404-page"`) desde el 2026-10-11._
-- [ ] **Ambiente de desarrollo en Cloudflare** (no depende de la carrera): `npm run deploy:dev` desde `app/web` con una cuenta propia (plan gratuito) → `https://bioing-web.<cuenta>.workers.dev`, con `SITE_URL` apuntando a esa URL y `noindex` en `_headers`. _Preparado 2026-10-11; procedimiento en `despliegue-cloudflare.md`. Falta la sesión de `wrangler login` y decidir si el proveedor lo mantiene hasta la Fase C (el panel no inicia sesión desde ahí: sirve para ver y revisar el sitio)._
+- [ ] **Ambiente de desarrollo en Cloudflare** (no depende de la carrera): `npm run deploy:dev` desde `app/web` con una cuenta propia (plan gratuito) → `https://bioing-web-qa.<cuenta>.workers.dev`, con `SITE_URL` apuntando a esa URL y `noindex` en `_headers`. _Preparado 2026-10-11; procedimiento en `despliegue-cloudflare.md`. Falta la sesión de `wrangler login` y decidir si el proveedor lo mantiene hasta la Fase C (el panel no inicia sesión desde ahí: sirve para ver y revisar el sitio)._
 - [ ] Workers Builds conectado al repositorio de GitHub: build y deploy en cada push a `main`.
 - [ ] **Analítica sin cookies (Cloudflare Web Analytics)**: activar cuando exista la cuenta de la carrera. Requiere ampliar la CSP de `_headers` (`script-src` y `connect-src` con `https://static.cloudflareinsights.com` y `https://cloudflareinsights.com`) y revisar el modo `spa` del beacon por las View Transitions. Pasos en `guia-mantencion.md` §8.
 - [ ] Reconstrucción diaria poco después de las 00:00 **de Chile** (≈ 04:00 UTC en invierno, 03:00 UTC en verano; p. ej. `15 4 * * *`), no a las 00:00 UTC, o un Anuncio vencido seguiría visible hasta ~21 horas.

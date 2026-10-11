@@ -168,16 +168,20 @@ shaders WebGL y la textura halftone por rendimiento y por decisión del equipo.
   `npm run build`, `npm run postbuild`, `npm run preview`, `npm run datos:generar`/`datos:limpiar`,
   `npm run verificar:jsonld`, `npm run dev:tunel`.
 - **Pagefind y verificar:jsonld** solo existen sobre `dist/`: con npm 11, `postbuild` no se dispara solo.
-- **Ambiente de desarrollo en Cloudflare** (sin depender de la carrera): `npm run deploy:dev`
-  (`build` + `postbuild` + `wrangler deploy`) publica en `https://<name>.<cuenta>.workers.dev`. Procedimiento
-  paso a paso, verificación y problemas comunes: [`despliegue-cloudflare.md`](despliegue-cloudflare.md).
-  Antes de
-  construir, fijar `SITE_URL` con esa URL para que canonical, sitemap, `robots.txt`/`llms.txt`, feeds y
-  JSON-LD apunten ahí. `wrangler.jsonc` sirve el 404 propio (`assets.not_found_handling: "404-page"`) y
-  `_headers` marca `*.workers.dev` como `noindex` (el patrón no alcanza al dominio definitivo). Requiere
-  sesión de `wrangler login` o `CLOUDFLARE_API_TOKEN`. **El panel (`/admin/`) no inicia sesión desde ese
-  origen** (necesita el repositorio y CORS/PKCE de la Fase C): el ambiente dev es para ver y revisar el
-  sitio, no para editar contenido.
+- **Ambientes en Cloudflare** ([ADR 0003](adr/0003-cuenta-central-anticipada-y-ambientes.md)): dos Workers de
+  assets estáticos definidos en `wrangler.jsonc` — `bioing-web` (producción, rama `main`; nivel superior) y
+  `bioing-web-qa` (QA, rama `develop`; `env.qa`). Ambos en `*.workers.dev` hasta que exista el dominio
+  oficial, que se agrega a producción con `routes` + `custom_domain`. `npm run deploy:dev` publica **solo QA**
+  (`wrangler deploy --env qa`); producción se publica por Workers Builds. Paso a paso, CI/CD, reconstrucción
+  diaria (Deploy Hook) y redespliegue con dominio:
+  [`plans/2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md);
+  procedimiento manual y verificación: [`despliegue-cloudflare.md`](despliegue-cloudflare.md).
+  Antes de construir, fijar `SITE_URL` con la URL del ambiente para que canonical, sitemap,
+  `robots.txt`/`llms.txt`, feeds y JSON-LD apunten ahí. `wrangler.jsonc` sirve el 404 propio
+  (`assets.not_found_handling: "404-page"`) y `_headers` marca `*.workers.dev` como `noindex` (el patrón no
+  alcanza al dominio definitivo). El panel (`/admin/`) inicia sesión recién cuando el backend sea `github`
+  con el Worker de autenticación (etapa 4 del plan); el contenido se edita **solo desde producción**, porque
+  el `config.yml` de ambos ambientes escribe en `main`.
 - **Publicación**: cada cambio en el repositorio dispara build + deploy en Cloudflare; una reconstrucción
   diaria poco después de medianoche de Chile actualiza lo que depende de la fecha.
 - **Contenido de prueba**: `npm run datos:generar` crea contenido `sint-*` (ignorado por git) y

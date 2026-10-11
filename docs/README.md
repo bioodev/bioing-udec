@@ -38,10 +38,12 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 
 - [`0001-sveltia-cms-astro.md`](adr/0001-sveltia-cms-astro.md) — el stack del sitio.
 - [`0002-estructura-de-la-documentacion.md`](adr/0002-estructura-de-la-documentacion.md) — esta estructura.
+- [`0003-cuenta-central-anticipada-y-ambientes.md`](adr/0003-cuenta-central-anticipada-y-ambientes.md) — cuenta central adelantada; ambientes QA y producción.
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)
 
-- [`plans/`](plans/) — planes de ejecución por hito (`YYYY-MM-DD-plan-tema.md`).
+- [`plans/`](plans/) — planes de ejecución por hito (`YYYY-MM-DD-plan-tema.md`). Vigente para infraestructura:
+  [`2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md).
 - [`analisis/`](analisis/) — wireframes acordados, comparativa EmDash y evaluación de Tolaria.
 - [`biotech-imgs-demo/`](biotech-imgs-demo/) — fotos originales (Unsplash) usadas como material de prueba; la
   versión optimizada que usa el sitio está en `app/web/src/assets/media/`.
