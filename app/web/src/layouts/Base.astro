@@ -169,9 +169,24 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
   </body>
   <script>
     import { iniciarAnimaciones, limpiarAnimaciones } from '@/scripts/animaciones';
+
+    // Tema claro/oscuro: ClientRouter (View Transitions) puede resetear las clases del
+    // <html> al navegar (lo mismo que pasa con .anima), así que se re-aplica la preferencia
+    // tras cada navegación (astro:page-load corre en la carga inicial y en cada una).
+    // Misma lógica que el script inline anti-FOUC del <head> (localStorage > sistema).
+    function aplicarTema() {
+      let guardado = null;
+      try { guardado = localStorage.getItem('tema'); } catch { /* privado */ }
+      const oscuro = guardado === 'oscuro' || (guardado !== 'claro' && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark', oscuro);
+    }
+
     // View Transitions (ClientRouter): limpiar antes de reemplazar el DOM y
     // reinicializar en la carga inicial y tras cada navegación (astro:page-load).
     document.addEventListener('astro:before-swap', limpiarAnimaciones);
-    document.addEventListener('astro:page-load', iniciarAnimaciones);
+    document.addEventListener('astro:page-load', () => {
+      aplicarTema();
+      iniciarAnimaciones();
+    });
   </script>
 </html>
