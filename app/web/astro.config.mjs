@@ -20,5 +20,12 @@ export default defineConfig({
 	],
 	vite: {
 		plugins: [tailwindcss()],
+		build: {
+			// Los scripts procesados (module) salen como archivo externo: la CSP pública no admite
+			// 'unsafe-inline' en script-src (public/_headers). Astro incrusta inline todo chunk de
+			// script menor que assetsInlineLimit; devolver false para .js lo evita. Lo demás
+			// (CSS, imágenes) conserva el umbral por defecto de Vite (undefined).
+			assetsInlineLimit: (ruta) => (ruta.endsWith('.js') ? false : undefined),
+		},
 	},
 });
