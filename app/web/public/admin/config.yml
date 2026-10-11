@@ -170,6 +170,16 @@ collections:
         hint: Solo si la Noticia es la Cobertura de una Actividad ya realizada.
       - { name: instagram, label: Publicación de Instagram relacionada, widget: relation, collection: instagram, display_fields: [titulo], required: false }
       - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo del cuerpo, en una ventana al hacer clic." }
+      - name: galeria
+        label: Galería de imágenes
+        label_singular: Imagen
+        widget: list
+        required: false
+        max: 12
+        hint: "Hasta 12 imágenes. Se ven en una grilla y, al hacer clic, se amplían."
+        fields:
+          - { name: imagen, label: Imagen, widget: image }
+          - { name: alt, label: Texto alternativo, widget: string, hint: "Describe lo que se ve en la imagen. No repitas el título." }
       - { name: body, label: Cuerpo, widget: richtext }
 
   - name: actividades

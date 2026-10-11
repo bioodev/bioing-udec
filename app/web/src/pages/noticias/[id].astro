@@ -11,6 +11,7 @@ import { existentes } from '@/lib/reglas';
 import { minutosLectura } from '@/lib/lectura';
 import { idYouTube } from '@/lib/enlaces';
 import VideoModal from '@/components/VideoModal.astro';
+import GaleriaImagenes from '@/components/GaleriaImagenes.astro';
 import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
@@ -36,6 +37,7 @@ const etiquetas = noticia.data.etiquetas ?? [];
 const lectura = minutosLectura(noticia.body ?? '');
 // Sin video reconocido (idYouTube devuelve null) no se muestra nada.
 const video = noticia.data.video ? idYouTube(noticia.data.video) : null;
+const galeria = noticia.data.galeria ?? [];
 const relacionadas = await relacionadasDe(noticia);
 
 const enlace = `/noticias/${noticia.id}`;
@@ -109,6 +111,13 @@ const jsonLdPagina = [
       <div class="mt-10">
         <VideoModal id={video} titulo={noticia.data.titulo} />
       </div>
+    )}
+
+    {galeria.length > 0 && (
+      <section class="mt-10" aria-labelledby="galeria-titulo">
+        <h2 id="galeria-titulo" class="text-xl font-semibold tracking-tight">Galería</h2>
+        <div class="mt-4"><GaleriaImagenes items={galeria} /></div>
+      </section>
     )}
 
     {ig?.data.publicado && (
