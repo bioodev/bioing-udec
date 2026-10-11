@@ -95,6 +95,28 @@ Al terminar imprime la URL publicada.
 Para actualizar el ambiente después de cualquier cambio: volver a correr `npm run deploy:dev` (sin volver a
 hacer login).
 
+### 4.1 Vista previa personal con despliegue automático (Etapa P, opcional)
+
+La vista previa `https://bioing.bioodev.work` (Worker `bioing-web-qa`, cuenta personal del proveedor) se
+publica **a mano**. Por eso una publicación desde el panel —que solo hace un commit en `main` del espejo
+`bioodev/bioing-udec`— **no** actualiza el sitio. Para que se actualice sola, la persona conecta Workers Builds
+en el dashboard (el agente no puede autorizar la app de GitHub):
+
+| Campo (Worker `bioing-web-qa` → Settings → Build) | Valor |
+|---|---|
+| Repositorio | `bioodev/bioing-udec` (autorizar la app de GitHub solo en ese repo) |
+| Rama | `main` (sin builds de otras ramas) |
+| Directorio raíz | `app/web` |
+| Comando de build | `npm run datos:generar && npm run build && npm run postbuild` |
+| Comando de deploy | `npx wrangler deploy --env qa --domain bioing.bioodev.work` |
+| Variables de build | `SITE_URL=https://bioing.bioodev.work`, `NODE_VERSION=22` |
+
+- `datos:generar` va **solo** aquí: el contenido `sint-*` está fuera de git y la vista previa lo genera en cada
+  build (semilla fija, fechas relativas a hoy). En el Worker de producción ese paso **no** va.
+- Prueba: publicar algo desde el panel → en 1–3 min aparece un build en *Deployments* → el cambio se ve.
+- No cambia el [ADR 0004](adr/0004-flujo-de-trabajo-una-persona.md) para la cuenta oficial; se desmonta con la
+  Etapa P del [plan de ambientes](plans/2026-10-11-plan-ambientes-qa-produccion.md).
+
 ## 5. Verificación (5 minutos, con la URL publicada)
 
 - [ ] `/` carga con imágenes y estilos (CSS/JS y fuentes no bloqueados por el CSP).
@@ -116,8 +138,9 @@ hacer login).
 
 ## 6. Qué **no** funciona en este ambiente
 
-- **El panel (`/admin/`) no inicia sesión**: el CMS necesita el repositorio definitivo y el CORS/PKCE del
-  Worker de autenticación (Fase C). Se edita contenido en local (`npm run dev`).
+- **El panel (`/admin/`) entra solo con token**: apunta al espejo de prueba `bioodev/bioing-udec` y se usa
+  «Iniciar sesión con un token de acceso» (fine-grained, *Contents: Read and write*). El botón «Iniciar sesión
+  con GitHub» necesita el Worker de autenticación OAuth (Fase C, etapa 4 del plan de ambientes).
 - **No es producción**: el contenido será el de prueba y la URL es provisional.
 - **Sin analítica**: Cloudflare Web Analytics se activa con la cuenta definitiva (ver
   [`guia-mantencion.md`](guia-mantencion.md) §8, que incluye el ajuste de CSP que hace falta).
@@ -143,6 +166,9 @@ Sirve para una revisión rápida desde el celular, pero muestra el **dev**, no e
 | Las rutas inexistentes muestran un 404 pelado | Falta `not_found_handling` | Ya está en `wrangler.jsonc`; verificar que no se editó |
 | El Worker no se crea: nombre tomado | Ya existe un Worker con ese nombre en la cuenta | Cambiar `name` en `wrangler.jsonc` (y la URL) |
 | El subdominio `workers.dev` no existe | Nunca se eligió en el panel | Workers & Pages → *Change* subdomain |
+| `/admin/` en blanco: la CSP bloquea `unpkg.com` | Cloudflare **suma** las cabeceras de las reglas de `_headers` que coinciden (llegan dos CSP) | La regla `/admin/*` debe quitar la heredada con `! Content-Security-Policy` (ya está) |
+| El build falla con `ImageNotFound /media/…` tras publicar desde el panel | Ruta de imagen escrita con el `public_folder` antiguo | `public_folder: '@/assets/media'` en `config.yml` (ya está); corregir la ruta del archivo a `'@/assets/media/…'` |
+| Publiqué desde el panel y el sitio no cambió | La vista previa no está conectada a Workers Builds | Desplegar a mano (§4) o conectar el build (§4.1) |
 | Aparece una advertencia de cobro | Plan gratuito superado | Revisar el panel; el volumen esperado entra de sobra |
 
 ## 9. Costos y límites
