@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
+import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
+import { formatoFecha } from '@/lib/contenido';
+
+interface Props { publicacion: CollectionEntry<'instagram'> }
+const { titulo, enlace, fecha, imagen } = Astro.props.publicacion.data;
+---
+<article class="publicacion-ig rounded-lg border border-border bg-card p-5" data-enlace={enlace}>
+  {imagen && <Image src={imagen} alt="" widths={[320, 640]} sizes="(min-width: 768px) 33vw, 100vw" class="mb-4 aspect-square w-full rounded-md object-cover" />}
+  <p class="flex items-center gap-1.5 text-sm text-muted-foreground"><InstagramLogo class="size-4" aria-hidden="true" />{formatoFecha(fecha)}</p>
+  <h3 class="mt-2 font-semibold leading-snug">{titulo}</h3>
+  <div class="mt-4 flex flex-wrap gap-3 text-sm">
+    <button type="button" data-cargar class="rounded-full bg-primary px-4 py-1.5 text-primary-foreground hover:opacity-90">Ver publicación aquí</button>
+    <a href={enlace} target="_blank" rel="noopener" class="inline-flex items-center gap-1 hover:text-primary">Abrir en Instagram<ArrowSquareOut class="size-4" aria-hidden="true" /></a>
+  </div>
+  <p class="mt-2 text-xs text-muted-foreground">Al verla aquí se carga contenido de Instagram (Meta).</p>
+  <div data-embed></div>
+</article>
+
+<script>
+  declare global { interface Window { instgrm?: { Embeds: { process(): void } } } }
+  let script: Promise<void> | undefined;
+  const cargarScript = () => (script ??= new Promise((ok, error) => {
+    const s = Object.assign(document.createElement('script'), { src: 'https://www.instagram.com/embed.js', async: true, onload: () => ok(), onerror: error });
+    document.body.append(s);
+  }));
+
+  for (const tarjeta of document.querySelectorAll<HTMLElement>('.publicacion-ig')) {
+    const boton = tarjeta.querySelector<HTMLButtonElement>('[data-cargar]')!;
+    boton.addEventListener('click', async () => {
+      const bq = document.createElement('blockquote');
+      bq.className = 'instagram-media';
+      bq.dataset.instgrmPermalink = tarjeta.dataset.enlace;
+      bq.dataset.instgrmVersion = '14';
+      bq.innerHTML = `<a href="${tarjeta.dataset.enlace}">Ver en Instagram</a>`;
+      tarjeta.querySelector('[data-embed]')!.append(bq);
+      boton.remove();
+      tarjeta.querySelector<HTMLAnchorElement>('a')?.focus();
+      try { await cargarScript(); window.instgrm?.Embeds.process(); } catch { /* queda el enlace */ }
+    });
+  }
+</script>
