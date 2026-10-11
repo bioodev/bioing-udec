@@ -12,7 +12,8 @@
     "astro": "astro",
     "test": "vitest run",
     "datos:generar": "node scripts/datos-sinteticos.mjs",
-    "datos:limpiar": "node scripts/datos-sinteticos.mjs --limpiar"
+    "datos:limpiar": "node scripts/datos-sinteticos.mjs --limpiar",
+    "dev:tunel": "bash scripts/dev-tunel.sh"
   },
   "dependencies": {
     "@starwind-ui/astro": "^1.2.1",
