@@ -1,0 +1,42 @@
+---
+import Play from 'phosphor-astro/Play.astro';
+import X from 'phosphor-astro/X.astro';
+
+interface Props { id: string; titulo: string }
+const { id, titulo } = Astro.props;
+---
+<div class="video-modal" data-id={id} data-titulo={titulo}>
+  <button type="button" data-abrir class="group relative block w-full overflow-hidden rounded-lg">
+    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" class="aspect-video w-full object-cover" />
+    <span class="absolute inset-0 grid place-items-center bg-black/30 group-hover:bg-black/40">
+      <span class="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-primary-foreground"><Play class="size-5" aria-hidden="true" />Ver video</span>
+    </span>
+  </button>
+  <dialog aria-labelledby={`video-${id}-titulo`} class="w-[min(64rem,calc(100vw-2rem))] rounded-lg bg-black p-0 backdrop:bg-black/80">
+    <div class="flex items-center justify-between px-4 py-2 text-white">
+      <h2 id={`video-${id}-titulo`} class="text-sm">{titulo}</h2>
+      <button type="button" data-cerrar aria-label="Cerrar video" class="p-1"><X class="size-5" aria-hidden="true" /></button>
+    </div>
+    <div data-reproductor class="aspect-video w-full"></div>
+  </dialog>
+</div>
+
+<script>
+  for (const raiz of document.querySelectorAll<HTMLElement>('.video-modal')) {
+    const dialogo = raiz.querySelector('dialog')!;
+    const reproductor = raiz.querySelector<HTMLElement>('[data-reproductor]')!;
+    raiz.querySelector('[data-abrir]')!.addEventListener('click', () => {
+      const iframe = Object.assign(document.createElement('iframe'), {
+        src: `https://www.youtube-nocookie.com/embed/${raiz.dataset.id}?autoplay=1`,
+        title: raiz.dataset.titulo ?? 'Video',
+        allow: 'autoplay; encrypted-media; picture-in-picture; fullscreen',
+        className: 'size-full',
+      });
+      reproductor.replaceChildren(iframe);
+      dialogo.showModal();
+    });
+    raiz.querySelector('[data-cerrar]')!.addEventListener('click', () => dialogo.close());
+    dialogo.addEventListener('click', (e) => { if (e.target === dialogo) dialogo.close(); }); // clic fuera
+    dialogo.addEventListener('close', () => reproductor.replaceChildren()); // detiene el video
+  }
+</script>
