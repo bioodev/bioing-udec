@@ -1,24 +1,25 @@
 ---
 import Base from '@/layouts/Base.astro';
-import Banner from '@/components/Banner.astro';
+import HeroCarrusel from '@/components/HeroCarrusel.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { anunciosVigentes, bannerVigente, noticiasRecientes, proximasActividades, publicacionesInstagram } from '@/lib/contenido';
+import { anunciosVigentes, noticiasRecientes, proximasActividades, publicacionesInstagram, publicados } from '@/lib/contenido';
+import { estaVigente } from '@/lib/reglas';
 
-const [banner, noticias, actividades, anuncios, pubInstagram] = await Promise.all([
-  bannerVigente(), noticiasRecientes(3), proximasActividades(), anunciosVigentes(), publicacionesInstagram(3),
+// Banners vigentes: cada uno es un slide del hero en carrusel (wireframes: Inicio).
+const banners = (await publicados('banners'))
+  .filter((b) => estaVigente(b.data, new Date()))
+  .sort((a, b) => b.data.inicio.valueOf() - a.data.inicio.valueOf());
+
+const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
+  noticiasRecientes(3), proximasActividades(), anunciosVigentes(), publicacionesInstagram(3),
 ]);
 ---
 <Base titulo="BIOING+">
-  {banner ? <Banner banner={banner} /> : (
-    <section class="mx-auto max-w-6xl px-4 py-24 text-center">
-      <h1 class="text-5xl font-semibold tracking-tight">BIOING+</h1>
-      <p class="mt-4 text-lg text-muted-foreground">La comunidad de Bioingeniería de la Universidad de Concepción.</p>
-    </section>
-  )}
+  {banners.length > 0 && <HeroCarrusel banners={banners} />}
 
   {noticias.length > 0 && (
     <section class="mx-auto max-w-6xl px-4 py-16">
