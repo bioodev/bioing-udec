@@ -327,7 +327,7 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 
 - **Componentes** en `src/components/starwind/`; los propios del sitio (tarjetas de Noticia, Actividad,
   Anuncio, Documento, Egresado; `EnlaceFicha`, `HeroCarrusel`, `Banner`, `Logo`, `ThemeToggle`,
-  `VideoModal`, `PublicacionInstagram`) en `src/components/`.
+  `VideoModal`, `PublicacionInstagram`, `Migas`) en `src/components/`.
 - **Starwind v3 ≠ v2**: la documentación en línea de v2 no aplica. Los cambios de valor se escuchan con el
   evento `starwind:value-change` (burbujea y se emite antes de fijar el valor); los `SelectTrigger` necesitan
   `aria-labelledby` apuntando a su `Label`; para fijar un valor desde código se despacha
@@ -354,6 +354,20 @@ Foto del Banner con tinte cálido sutil (`.hero-imagen` con `sepia`/`saturate`) 
 plano (`bg-foreground/30`) para el contraste del título. **Descartados**: los shaders WebGL de Paper Shaders
 (rompían el rendimiento ≥ 90 por TBT) y la textura halftone CMYK en CSS/máscaras (no gustó al equipo). No
 reintroducir efectos de puntos/impresión en el hero.
+
+### Noticia individual (`/noticias/[id]`)
+
+- **Orden**: migas de pan (`Migas.astro`, con `aria-current="page"` en el último ítem), título, bajada,
+  imagen destacada y luego el cuerpo.
+- **Caja "Información de la noticia"** (`<aside>` con `<dl>`): fecha, Categoría (los Temas, enlazados a
+  `/noticias?tema=`), Etiquetas (enlazadas a `/noticias?etiqueta=`), Áreas (texto) y Lectura (minutos,
+  `minutosLectura`). Las filas vacías se omiten. En escritorio (`lg`) es una columna lateral `sticky` junto
+  al cuerpo; en móvil va arriba del cuerpo.
+- **Cuerpo** en la columna de lectura de 48 rem; Instagram, Cobertura de la Actividad y Personas
+  mencionadas van debajo.
+- **"Te puede interesar"**: tres `TarjetaNoticia` (3 columnas en `md`, 1 en móvil) con enlace "Ver todas las
+  noticias". El ranking está en `src/lib/relacionadas.ts` (Temas ×3, Etiquetas ×2, Áreas ×1).
+- La imagen de la noticia es la `og:image` de la página (se pasa a `Base`).
 
 ### Animaciones
 
