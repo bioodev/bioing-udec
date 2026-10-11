@@ -11,12 +11,12 @@ interface Props { anuncio: CollectionEntry<'anuncios'>; vencido?: boolean }
 // Por defecto se calcula al construir; así cualquier listado (p. ej. la Ficha) marca los vencidos.
 const { anuncio, vencido = !anuncioVigente(anuncio.data, new Date()) } = Astro.props;
 ---
-<article class="rounded-lg border border-border bg-card p-5">
+<a href={`/anuncios/${anuncio.id}`} class="group block rounded-lg border border-border bg-card p-5 transition hover:border-outline/60">
   <p class="flex flex-wrap items-center gap-2">
     <Badge variant="default">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Badge>
     {vencido && <Badge variant="secondary">Vencido</Badge>}
   </p>
-  <h3 class="mt-2 text-lg font-semibold leading-snug"><a href={`/anuncios/${anuncio.id}`} class="hover:text-primary">{anuncio.data.titulo}</a></h3>
+  <h3 class="mt-2 text-lg font-semibold leading-snug group-hover:text-primary">{anuncio.data.titulo}</h3>
   {anuncio.data.fecha_limite && <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />{vencido ? 'Cerró el' : 'Postula hasta el'} {formatoFecha(anuncio.data.fecha_limite)}</p>}
   <p class="mt-2 flex items-center gap-1.5 text-sm"><EnvelopeSimple class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" /><span class="sr-only">Contacto: </span>{anuncio.data.contacto}</p>
-</article>
+</a>

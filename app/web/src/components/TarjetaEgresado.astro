@@ -7,18 +7,20 @@ interface Props { persona: CollectionEntry<'personas'>; areas: string[]; organiz
 const { persona, areas, organizacion } = Astro.props;
 const perfil = persona.data.perfil_egresado!;
 ---
-<li class="rounded-lg border border-border bg-card p-5"
+<li class="rounded-lg border border-border bg-card p-5 transition hover:border-outline/60"
     data-nombre={normalizar(persona.data.nombre)}
     data-generacion={perfil.generacion?.toString() ?? ''}
     data-areas={(perfil.areas ?? []).map((a) => a.id).join(' ')}
     data-organizacion={perfil.organizacion?.id ?? ''}>
-  <h3 class="font-semibold"><a href={`/personas/${persona.id}`} class="hover:text-primary">{persona.data.nombre}</a></h3>
-  {(perfil.cargo || organizacion) && (
-    <p class="mt-1 flex items-start gap-1.5 text-sm text-muted-foreground">
-      <Briefcase class="mt-0.5 size-4 shrink-0" aria-hidden="true" />{[perfil.cargo, organizacion].filter(Boolean).join(' · ')}
+  <a href={`/personas/${persona.id}`} class="group block focus-visible:outline-2 focus-visible:outline-offset-4">
+    <h3 class="font-semibold group-hover:text-primary">{persona.data.nombre}</h3>
+    {(perfil.cargo || organizacion) && (
+      <p class="mt-1 flex items-start gap-1.5 text-sm text-muted-foreground">
+        <Briefcase class="mt-0.5 size-4 shrink-0" aria-hidden="true" />{[perfil.cargo, organizacion].filter(Boolean).join(' · ')}
+      </p>
+    )}
+    <p class="mt-2 text-xs text-muted-foreground">
+      {perfil.generacion ? `Generación ${perfil.generacion} · ` : ''}Egreso {perfil.anio_egreso}{areas.length > 0 && ` · ${areas.join(', ')}`}
     </p>
-  )}
-  <p class="mt-2 text-xs text-muted-foreground">
-    {perfil.generacion ? `Generación ${perfil.generacion} · ` : ''}Egreso {perfil.anio_egreso}{areas.length > 0 && ` · ${areas.join(', ')}`}
-  </p>
+  </a>
 </li>
