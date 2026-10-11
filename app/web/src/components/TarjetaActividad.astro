@@ -76,7 +76,7 @@ const lugar = actividad.data.lugar ?? MODALIDADES[actividad.data.modalidad];
     {descripcion && <p class="line-clamp-3 text-sm text-muted-foreground">{descripcion}</p>}
     <div class="mt-auto pt-3">
       <Button as="a" href={String(enlace)} variant="outline" class="rounded-full" {...(externo ? { target: '_blank', rel: 'noopener' } : {})}>
-        Más información<ArrowUpRight class="size-4" aria-hidden="true" />
+        Más información<span class="sr-only"> sobre {actividad.data.titulo}</span><ArrowUpRight class="size-4" aria-hidden="true" />
       </Button>
     </div>
   </div>
