@@ -149,11 +149,23 @@ const banners = defineCollection({
     }),
 });
 
+// ── Páginas institucionales (colección de archivos únicos en config.yml) ──
+
+const paginas = defineCollection({
+  loader: md('paginas'),
+  schema: z.object({
+    titulo: z.string(),
+    bajada: z.string(),
+    video: z.url().optional(),
+    caracteristicas: z.array(z.object({ titulo: z.string(), texto: z.string() })).optional(),
+  }),
+});
+
 // ── Clasificación ─────────────────────────────────────────
 
 const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre: z.string() }) });
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginas, areas, temas,
 };
