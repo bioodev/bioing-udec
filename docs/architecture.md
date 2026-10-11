@@ -34,6 +34,8 @@ AGENTS.md            → reglas operativas para agentes de IA
 docs/                → contexto, arquitectura, diseño, propuestas, planes, ADR, análisis
 app/web              → el sitio (Astro + Sveltia CMS); acá vive todo el código
 app/api              → sin uso por ahora (se descartó el backend propio)
+.opencode/skills     → skills de IA del stack (herramienta local, gitignored: se regeneran con
+                       `npx autoskills -y` desde `app/web`; no forman parte del entregable)
 ```
 
 `app/web` (Astro 7, Node ≥ 22.12):

@@ -34,6 +34,16 @@ npm run dev:tunel         # expone el dev por cloudflared (revisión desde el ce
 Con el servidor de dev corriendo, después de `datos:generar` hay que reiniciarlo (`astro dev stop` y volver a
 levantar): no detecta cientos de archivos nuevos de una vez.
 
+## Herramientas locales (fuera de git)
+
+- **Skills de IA del stack**: se generan con `npx autoskills -y` **ejecutado desde `app/web`** (desde la raíz
+  del monorepo no detecta Astro ni Cloudflare: solo ofrece Bash). Quedan en `app/web/.agents/skills`, con
+  enlaces en `.opencode/skills`, y están **gitignored** a propósito (no son parte del entregable): hay que
+  regenerarlos en cada clon nuevo. Traen `cloudflare`, `wrangler`, `workers-best-practices`, `astro`,
+  `tailwind-css-patterns`, `gsap-*`, `vitest`, `seo`, `accessibility`…
+- **Despliegue** (ambiente de desarrollo y camino a producción, con verificación y problemas comunes):
+  [`docs/despliegue-cloudflare.md`](docs/despliegue-cloudflare.md).
+
 ## Reglas de trabajo
 
 - Commits en **español e imperativo**, uno por tarea o hallazgo. No hay linter todavía.
