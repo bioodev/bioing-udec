@@ -126,6 +126,12 @@ collections:
       - { name: publicado, label: Publicado, widget: boolean, default: false }
       - { name: imagen, label: Imagen destacada, widget: image, required: false }
       - { name: bajada, label: Bajada, widget: text, required: false }
+      - name: etiquetas
+        label: Etiquetas (tags)
+        label_singular: Etiqueta
+        widget: list
+        required: false
+        hint: Texto libre para etiquetar la Noticia (p. ej. simulación, clínica). Editable por el Encargado de comunicaciones sin crear Temas.
       - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false }
       - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
       - name: personas_mencionadas

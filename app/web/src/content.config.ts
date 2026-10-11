@@ -73,6 +73,7 @@ const noticias = defineCollection({
       publicado,
       imagen: image().optional(),
       bajada: z.string().optional(),
+      etiquetas: z.array(z.string()).optional(), // tags de texto libre; la categoría editorial sigue siendo `temas`
       temas: referencias('temas'),
       areas: referencias('areas'),
       personas_mencionadas: referencias('personas'),
