@@ -24,6 +24,7 @@ npm test                  # Vitest: reglas puras en src/lib/*.test.ts
 npm run build             # sitio estático en dist/
 npm run postbuild         # índice de Pagefind (npm 11 NO lo dispara solo: correr ambos juntos)
 npm run preview           # sirve dist/ en localhost:4322 (el buscador /buscar solo existe aquí)
+npm run verificar         # test + astro check + build + postbuild + JSON-LD: antes de mergear a main
 npm run verificar:jsonld  # valida el JSON-LD del build
 npm run deploy:dev        # build + postbuild + deploy a Cloudflare (*.workers.dev; requiere wrangler login)
 npm run datos:generar     # contenido sintético de prueba (sint-*, ignorado por git)
@@ -47,6 +48,9 @@ levantar): no detecta cientos de archivos nuevos de una vez.
 ## Reglas de trabajo
 
 - Commits en **español e imperativo**, uno por tarea o hallazgo. No hay linter todavía.
+- **Ramas** ([ADR 0004](docs/adr/0004-flujo-de-trabajo-una-persona.md)): se trabaja en `develop` o en ramas o
+  worktrees propios. **Los agentes nunca hacen push**: el push lo hace la persona. Cloudflare solo construye
+  `main`, así que publicar es mergear `develop` en `main`, con `npm run verificar` en verde antes.
 - **TDD** donde haya lógica pura: módulo en `src/lib/` + `*.test.ts`. Las páginas no llevan lógica de negocio;
   consultan el contenido por `src/lib/contenido.ts`.
 - Textos de interfaz en español y **términos del dominio según `docs/context.md`** (evitar los listados

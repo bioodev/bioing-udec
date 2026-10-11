@@ -170,9 +170,10 @@ shaders WebGL y la textura halftone por rendimiento y por decisión del equipo.
 - **Pagefind y verificar:jsonld** solo existen sobre `dist/`: con npm 11, `postbuild` no se dispara solo.
 - **Ambientes en Cloudflare** ([ADR 0003](adr/0003-cuenta-central-anticipada-y-ambientes.md)): dos Workers de
   assets estáticos definidos en `wrangler.jsonc` — `bioing-web` (producción, rama `main`; nivel superior) y
-  `bioing-web-qa` (QA, rama `develop`; `env.qa`). Ambos en `*.workers.dev` hasta que exista el dominio
+  `bioing-web-qa` (QA, publicada a mano; `env.qa`). Ambos en `*.workers.dev` hasta que exista el dominio
   oficial, que se agrega a producción con `routes` + `custom_domain`. `npm run deploy:dev` publica **solo QA**
-  (`wrangler deploy --env qa`); producción se publica por Workers Builds. Paso a paso, CI/CD, reconstrucción
+  (`wrangler deploy --env qa`); producción se publica por Workers Builds, que construye **solo `main`**
+  ([ADR 0004](adr/0004-flujo-de-trabajo-una-persona.md)). Paso a paso, CI/CD, reconstrucción
   diaria (Deploy Hook) y redespliegue con dominio:
   [`plans/2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md);
   procedimiento manual y verificación: [`despliegue-cloudflare.md`](despliegue-cloudflare.md).

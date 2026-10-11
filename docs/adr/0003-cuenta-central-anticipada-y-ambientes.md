@@ -1,6 +1,7 @@
 # 0003 · Cuenta central anticipada y ambientes QA / producción
 
-- **Estado:** Accepted · 2026-10-11
+- **Estado:** Accepted · 2026-10-11 · el punto 2 (QA construida desde `develop`) lo reemplaza el
+  [ADR 0004](0004-flujo-de-trabajo-una-persona.md): QA se publica a mano
 - **Decisores:** proveedor (pendiente: visto bueno de la carrera para el nombre del correo)
 - **Contexto relacionado:** `../propuesta-desarrollo.md` §6.5 · `../plans/2026-10-11-plan-hito-4-produccion.md` ·
   `../plans/2026-10-11-plan-ambientes-qa-produccion.md` · `../pendientes-infra.md`

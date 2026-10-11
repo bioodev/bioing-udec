@@ -14,7 +14,7 @@
   },
   // Ambientes (docs/plans/2026-10-11-plan-ambientes-qa-produccion.md):
   //   producción = este nivel superior → Worker "bioing-web" (rama main)
-  //   QA         = env.qa → Worker "bioing-web-qa" (rama develop), siempre en *.workers.dev
+  //   QA         = env.qa → Worker "bioing-web-qa" (a mano: npm run deploy:dev), siempre en *.workers.dev
   // El dominio oficial se agrega aquí con "routes" + "custom_domain": true cuando exista (Fase C).
   "env": {
     "qa": {}

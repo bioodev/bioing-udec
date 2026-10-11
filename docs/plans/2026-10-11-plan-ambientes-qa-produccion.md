@@ -11,7 +11,7 @@ sin esperar la Fase B. De la carrera solo quedan pendientes el **dominio**, la *
 | Ambiente | Worker | Rama | URL (hasta tener dominio) | Indexable |
 |---|---|---|---|---|
 | dev | — | cualquiera | `localhost:4321` (y Gitea mientras dure) | no |
-| QA | `bioing-web-qa` (`env.qa` en `wrangler.jsonc`) | `develop` | `https://bioing-web-qa.<sub>.workers.dev` | no (`noindex`) |
+| QA | `bioing-web-qa` (`env.qa` en `wrangler.jsonc`) | a mano (`npm run deploy:dev`) | `https://bioing-web-qa.<sub>.workers.dev` | no (`noindex`) |
 | producción | `bioing-web` | `main` | `https://bioing-web.<sub>.workers.dev` → dominio oficial | sí, solo con el dominio |
 
 `<sub>` = subdominio `workers.dev` de la cuenta de Cloudflare central (se elige una vez, paso 3.2).
@@ -96,7 +96,8 @@ central.
       Define las URLs de QA y de producción hasta tener dominio.
 
 ### 3.3 Primer despliegue manual (crea los dos Workers)
-Workers Builds necesita que los Workers existan para conectarlos al repositorio. Desde `app/web`:
+Workers Builds necesita que el Worker de producción exista para conectarlo al repositorio. QA se crea igual
+porque se sigue publicando a mano. Desde `app/web`:
 ```sh
 npx wrangler login                                   # (persona) con la cuenta central
 npx wrangler whoami
@@ -106,24 +107,40 @@ SITE_URL=https://bioing-web.<sub>.workers.dev npm run build && npm run postbuild
 npx wrangler deploy                                   # crea bioing-web
 ```
 
-### 3.4 Workers Builds (CI/CD)
-Conectar el repositorio de GitHub **a cada Worker** (Settings → Build). Configuración:
+### 3.4 Workers Builds (CI/CD), solo producción
+Flujo de trabajo para una persona ([ADR 0004](../adr/0004-flujo-de-trabajo-una-persona.md)): Cloudflare
+construye **solo `main`**. QA no se conecta a Workers Builds y se publica a mano.
 
-| Campo | `bioing-web` (producción) | `bioing-web-qa` (QA) |
-|---|---|---|
-| Rama de producción | `main` | `develop` |
-| Root directory | `app/web` | `app/web` |
-| Build command | `npm run build && npm run postbuild` | `npm run build && npm run postbuild` |
-| Deploy command | `npx wrangler deploy` | `npx wrangler deploy --env qa` |
-| Preview builds | desactivadas (por ahora) | desactivadas |
-| Variable de build `SITE_URL` | `https://bioing-web.<sub>.workers.dev` | `https://bioing-web-qa.<sub>.workers.dev` |
-| Variable de build `NODE_VERSION` | `22` | `22` |
+Conectar el repositorio de GitHub al Worker `bioing-web` (Settings → Build):
 
-- El `postbuild` (Pagefind) va explícito: npm 11 no lo dispara solo.
+| Campo | Valor |
+|---|---|
+| Rama de producción | `main` |
+| Root directory | `app/web` |
+| Build command | `npm run build && npm run postbuild` |
+| Deploy command | `npx wrangler deploy` |
+| Preview builds | **desactivadas** (si no, cada push a `develop` u otra rama gastaría minutos) |
+| Build watch paths | incluir `*`; excluir `docs/*`, `.github/*`, `AGENTS.md`, `README.md` |
+| Variable de build `SITE_URL` | `https://bioing-web.<sub>.workers.dev` (luego, el dominio) |
+| Variable de build `NODE_VERSION` | `22` |
+
+- El `postbuild` (Pagefind y CSP) va explícito: npm 11 no lo dispara solo.
 - `NODE_VERSION=22` porque Workers Builds usa Node 24 por defecto y el proyecto se probó en 22 (`engines`:
-  `>=22.12`). Cambiar a 24 solo después de probar.
+  `>=22.18`). Cambiar a 24 solo después de probar.
 - Las variables de build no llegan al runtime (no hacen falta: el sitio es estático).
-- Un push a `develop` publica QA; un push o merge a `main` publica producción.
+- **Watch paths:** no excluir `*.md` en general, porque el contenido del sitio es Markdown
+  (`app/web/src/content/`). Cloudflare los ignora y construye igual si el push trae más de 20 commits o más
+  de 3 000 archivos cambiados.
+- **No existe `[skip ci]`** documentado en Workers Builds: el control se hace por rama.
+- **QA:** `npm run deploy:dev` desde `app/web`, con `SITE_URL` de QA en `.env`, cuando haya algo que mostrar.
+
+**Qué dispara un build (≈ 30–60 al mes, menos del 5 % de los 3 000 minutos gratuitos):**
+- un push a `main` (merge de `develop`), que es un build por push sin importar cuántos commits traiga;
+- una publicación desde el panel (commit del Encargado en `main`);
+- la reconstrucción diaria (Deploy Hook).
+
+**Protección de `main` en GitHub:** un ruleset que solo prohíba el force-push y el borrado. Sin exigir PR ni
+checks, porque eso bloquearía las publicaciones del panel, que hace commits directos a `main`.
 
 ### 3.5 Reconstrucción diaria (Agenda, Anuncios, Banners)
 - [ ] En `bioing-web` → Settings → Builds → **Deploy Hooks**: crear uno para la rama `main`. La URL es un
@@ -167,14 +184,16 @@ Conectar el repositorio de GitHub **a cada Worker** (Settings → Build). Config
 **Ojo con el panel en QA.** El `config.yml` es el mismo en los dos ambientes y escribe en `main`: lo que se
 edite desde el `/admin/` de QA se publica en producción. Regla: **el contenido se edita solo desde
 producción**; QA sirve para revisar código. Para que QA muestre el contenido nuevo, integrar `main` en
-`develop` de vez en cuando.
+`develop` antes de publicarla (`git merge main`).
 
 ## Etapa 5 — Verificación
 
-- [ ] Checklist del §5 de [`despliegue-cloudflare.md`](../despliegue-cloudflare.md) en **ambas** URLs
+- [ ] Checklist del §5 de [`despliegue-cloudflare.md`](../despliegue-cloudflare.md) en **ambas** URLs (QA
+      publicada a mano)
       (canonical, sitemap, RSS y JSON-LD con la URL correcta de cada ambiente; `/buscar`; 404; encabezados).
 - [ ] `curl -I` a ambas: `x-robots-tag: noindex` (correcto mientras no haya dominio).
-- [ ] Un push de prueba a `develop` publica solo QA; un merge a `main` publica solo producción.
+- [ ] Un push a `develop` **no** dispara builds; un merge a `main` publica producción (un build); un cambio
+      solo en `docs/` no dispara build (watch paths).
 - [ ] El Deploy Hook reconstruye producción.
 - [ ] Actualizar `pendientes-infra.md`, `architecture.md` §10 y el ADR 0001 (repositorio en GitHub).
 

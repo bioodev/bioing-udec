@@ -39,6 +39,7 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 - [`0001-sveltia-cms-astro.md`](adr/0001-sveltia-cms-astro.md) — el stack del sitio.
 - [`0002-estructura-de-la-documentacion.md`](adr/0002-estructura-de-la-documentacion.md) — esta estructura.
 - [`0003-cuenta-central-anticipada-y-ambientes.md`](adr/0003-cuenta-central-anticipada-y-ambientes.md) — cuenta central adelantada; ambientes QA y producción.
+- [`0004-flujo-de-trabajo-una-persona.md`](adr/0004-flujo-de-trabajo-una-persona.md) — solo `main` se construye; QA a mano; agentes sin push.
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)
 
