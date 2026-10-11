@@ -368,6 +368,15 @@ reintroducir efectos de puntos/impresión en el hero.
 - **"Te puede interesar"**: tres `TarjetaNoticia` (3 columnas en `md`, 1 en móvil) con enlace "Ver todas las
   noticias". El ranking está en `src/lib/relacionadas.ts` (Temas ×3, Etiquetas ×2, Áreas ×1).
 - La imagen de la noticia es la `og:image` de la página (se pasa a `Base`).
+- **Texto alternativo** de la imagen destacada: campo `imagen_alt` (en el detalle y en la tarjeta); sin él, la
+  imagen es decorativa (`alt=""`).
+- **Video** (`video`, enlace de YouTube): `VideoModal` debajo del cuerpo, con el mismo comportamiento que en
+  Inicio/¿Qué es la Bioingeniería? (centrado, bloquea el desplazamiento del fondo). Si `idYouTube` no reconoce
+  el enlace, no se muestra nada.
+- **Galería** (`galeria`, hasta 12 imágenes con texto alternativo): grilla de miniaturas optimizadas (2 columnas en
+  móvil, 3 en escritorio) debajo del video. Al hacer clic se abre un `<dialog>` con la versión de 1600 px (WebP):
+  anterior/siguiente con botones o con ← →, cierre con Esc o el botón, contador «N de M» y el foco vuelve a la
+  miniatura al cerrar. Navegación circular (`src/lib/galeria.ts`). Sin librerías; `GaleriaImagenes.astro`.
 
 ### Animaciones
 

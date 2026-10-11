@@ -77,19 +77,19 @@ Cada campo nuevo va en `config.yml`, en `content.config.ts` y en `context.md`. T
 el contenido existente sigue siendo válido.
 
 ### T7. Texto alternativo de la imagen
-- [ ] Campo `imagen_alt` (texto, opcional, con ayuda en el CMS: "describe lo que se ve, no repitas el
+- [x] Campo `imagen_alt` (texto, opcional, con ayuda en el CMS: "describe lo que se ve, no repitas el
       título"). La imagen destacada usa `alt={imagen_alt ?? ''}`. Lo mismo en `TarjetaNoticia`.
 
 ### T8. Video en modal
-- [ ] Campo `video` (URL de YouTube). Se reutiliza `VideoModal` y `idYouTube()` (ya usados en
+- [x] Campo `video` (URL de YouTube). Se reutiliza `VideoModal` y `idYouTube()` (ya usados en
       `bioingenieria.astro`). Va debajo de la imagen o del cuerpo.
-- [ ] Revisar `frame-src`/`img-src` de la CSP (ya permite `youtube-nocookie` e `i.ytimg.com`).
+- [x] Revisar `frame-src`/`img-src` de la CSP (ya permite `youtube-nocookie` e `i.ytimg.com`).
 
 ### T9. Galería de imágenes con ampliación
-- [ ] Campo `galeria`: lista de `{ imagen, alt }` (máximo sugerido: 12). Grilla de miniaturas con
+- [x] Campo `galeria`: lista de `{ imagen, alt }` (máximo sugerido: 12). Grilla de miniaturas con
       `astro:assets`. Al hacer clic se abre un `<dialog>` modal con la imagen grande, anterior/siguiente con
       teclado (← →) y cierre con Esc. Sin librerías; el script se inicia en `astro:page-load`.
-- [ ] La optimización al subir (WebP, 2048 px) ya está configurada en Sveltia.
+- [x] La optimización al subir (WebP, 2048 px) ya está configurada en Sveltia.
 
 ---
 
