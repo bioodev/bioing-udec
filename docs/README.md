@@ -19,6 +19,7 @@ el porqué, el cómo y el estado.
 | [`preguntas-reunion.md`](preguntas-reunion.md) | Preguntas abiertas con el equipo BIOING+, cada una con propuesta por defecto |
 | [`bitacora.md`](bitacora.md) | Requisitos acordados en reuniones + ajustes y decisiones de cada sesión |
 | [`despliegue-cloudflare.md`](despliegue-cloudflare.md) | Procedimiento paso a paso del despliegue (ambiente de desarrollo y camino a producción) |
+| [`guia-evolucion.md`](guia-evolucion.md) | Cómo agregar o quitar funciones sin romper nada: principios, tabla de decisión y recetas para quien mantiene el sitio |
 
 ## Guías de entrega (entregables de cierre)
 

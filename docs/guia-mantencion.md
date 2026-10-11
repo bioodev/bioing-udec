@@ -8,7 +8,7 @@
 > **Relacionados:** [`architecture.md`](architecture.md) (estado del sistema) ·
 > [`guia-usuario.md`](guia-usuario.md) ·
 > [`pendientes-infra.md`](pendientes-infra.md) · [`../AGENTS.md`](../AGENTS.md) (comandos) ·
-> [`adr/`](adr/) (decisiones).
+> [`adr/`](adr/) (decisiones) · [`guia-evolucion.md`](guia-evolucion.md) (cómo agregar o quitar funciones).
 
 **Convención de esta guía:** cada procedimiento en formato *cuándo → cómo → cómo saber que salió bien →
 cómo revertir*. Los incidentes van como tabla en §9.
@@ -46,7 +46,7 @@ cómo revertir*. Los incidentes van como tabla en §9.
 ## 3. Entorno y comandos
 
 ### 3.1 Puesta en marcha
-- Requisitos (Node ≥ 22.12), `npm ci`, `npm run dev`, variables de entorno (`SITE_URL`).
+- Requisitos (Node ≥ 22.18, el valor de `engines` en `app/web/package.json`), `npm ci`, `npm run dev`, variables de entorno (`SITE_URL`).
 - Comandos de verificación (`npm test`, `astro check`, `build` + `postbuild`, `verificar:jsonld`,
   `preview`) y el detalle de que npm 11 no dispara `postbuild` solo. Referencia: [`../AGENTS.md`](../AGENTS.md).
 
