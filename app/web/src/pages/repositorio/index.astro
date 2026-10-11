@@ -1,6 +1,7 @@
 ---
 import { getEntries } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import FiltrosPlegables from '@/components/FiltrosPlegables.astro';
 import TarjetaDocumento from '@/components/TarjetaDocumento.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
@@ -42,31 +43,33 @@ const textoDe = (d: (typeof documentos)[number]) =>
             <Label for="texto">Buscar</Label>
             <Input id="texto" name="texto" type="search" placeholder="Título, descripción o palabra clave" autocomplete="off" />
           </div>
-          <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
-            <Label for="tipo">Tipo</Label>
-            <NativeSelect id="tipo" name="tipo">
-              <NativeSelectOption value={TODOS}>Todos</NativeSelectOption>
-              {tipos.map((t) => <NativeSelectOption value={t}>{TIPOS_DOCUMENTO[t]}</NativeSelectOption>)}
-            </NativeSelect>
-          </div>
-          <div class="grid gap-2 [&>*]:min-w-0">
-            <Label id="etiqueta-tema" for="tema-input">Tema</Label>
-            <Combobox id="tema" name="tema" defaultValue={TODOS}>
-              <ComboboxInput id="tema-input" placeholder="Todos" showClear />
-              <ComboboxContent>
-                <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
-                <ComboboxItem value={TODOS}>Todos</ComboboxItem>
-                {temas.map((t) => <ComboboxItem value={t.id}>{t.data.nombre}</ComboboxItem>)}
-              </ComboboxContent>
-            </Combobox>
-          </div>
-          <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
-            <Label for="anio">Año</Label>
-            <NativeSelect id="anio" name="anio">
-              <NativeSelectOption value={TODOS}>Todos los años</NativeSelectOption>
-              {anios.map((a) => <NativeSelectOption value={String(a)}>{a}</NativeSelectOption>)}
-            </NativeSelect>
-          </div>
+          <FiltrosPlegables id="filtros-repositorio-mas" neutros={[TODOS]}>
+            <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
+              <Label for="tipo">Tipo</Label>
+              <NativeSelect id="tipo" name="tipo">
+                <NativeSelectOption value={TODOS}>Todos</NativeSelectOption>
+                {tipos.map((t) => <NativeSelectOption value={t}>{TIPOS_DOCUMENTO[t]}</NativeSelectOption>)}
+              </NativeSelect>
+            </div>
+            <div class="grid gap-2 [&>*]:min-w-0">
+              <Label id="etiqueta-tema" for="tema-input">Tema</Label>
+              <Combobox id="tema" name="tema" defaultValue={TODOS}>
+                <ComboboxInput id="tema-input" placeholder="Todos" showClear />
+                <ComboboxContent>
+                  <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+                  <ComboboxItem value={TODOS}>Todos</ComboboxItem>
+                  {temas.map((t) => <ComboboxItem value={t.id}>{t.data.nombre}</ComboboxItem>)}
+                </ComboboxContent>
+              </Combobox>
+            </div>
+            <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
+              <Label for="anio">Año</Label>
+              <NativeSelect id="anio" name="anio">
+                <NativeSelectOption value={TODOS}>Todos los años</NativeSelectOption>
+                {anios.map((a) => <NativeSelectOption value={String(a)}>{a}</NativeSelectOption>)}
+              </NativeSelect>
+            </div>
+          </FiltrosPlegables>
           <input type="hidden" id="opciones-tema" value={JSON.stringify(temas.map((t) => t.id))} />
         </form>
 

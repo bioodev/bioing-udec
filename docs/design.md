@@ -378,6 +378,18 @@ reintroducir efectos de puntos/impresión en el hero.
   anterior/siguiente con botones o con ← →, cierre con Esc o el botón, contador «N de M» y el foco vuelve a la
   miniatura al cerrar. Navegación circular (`src/lib/galeria.ts`). Sin librerías; `GaleriaImagenes.astro`.
 
+### Filtros de los listados y modales
+
+- **Filtros plegables en móvil** (`FiltrosPlegables.astro` + `src/scripts/filtros-plegables.ts`): en Noticias,
+  Repositorio y Directorio, el buscador de texto queda siempre visible y el resto de los filtros se agrupa en
+  un acordeón con el botón "Filtros · N activos". En móvil parte cerrado; en escritorio (≥ md) el contenedor
+  es `display: contents` y los campos se ubican en la grilla del formulario como antes. Sin JavaScript, los
+  filtros quedan visibles. Agenda y Anuncios no lo usan porque tienen uno o dos campos.
+- **Modales** (VideoModal, galería): tamaño con unidades dinámicas `dvw`/`dvh` y `max-w-none max-h-none` para
+  anular el tope que el navegador pone a los `<dialog>`. El video toma el 16:9 más grande que cabe; la galería
+  ocupa casi toda la pantalla con la imagen en `object-contain`. Mientras hay un modal abierto, el fondo no se
+  desplaza (`html:has(dialog[open]:modal)` en `starwind.css`).
+
 ### Animaciones
 
 GSAP + ScrollTrigger con **fade solo** (sin deslizamientos), marcadas de forma declarativa en el HTML:

@@ -1,0 +1,30 @@
+---
+// Agrupa filtros en un acordeón solo en móvil (< md). En escritorio el contenedor es `display: contents`:
+// sus campos se acomodan en la grilla del formulario como si no existiera, y el botón se oculta.
+// Sin JavaScript los filtros quedan visibles. Lógica en src/scripts/filtros-plegables.ts.
+import CaretDown from 'phosphor-astro/CaretDown.astro';
+import FunnelSimple from 'phosphor-astro/FunnelSimple.astro';
+
+interface Props {
+  id: string;
+  /** Valores que significan "sin filtrar" (además del vacío), para contar los filtros activos. */
+  neutros?: string[];
+}
+const { id, neutros = [] } = Astro.props;
+---
+<button
+  type="button"
+  data-plegable-boton
+  aria-controls={id}
+  aria-expanded="true"
+  class="flex h-11 w-full items-center justify-between rounded-lg border border-input px-4 text-sm font-medium md:hidden"
+>
+  <span class="flex items-center gap-2">
+    <FunnelSimple class="size-4" aria-hidden="true" />
+    <span data-plegable-texto>Filtros</span>
+  </span>
+  <CaretDown class="size-4 transition-transform [[aria-expanded=true]>&]:rotate-180" aria-hidden="true" />
+</button>
+<div id={id} data-plegable data-neutros={neutros.join(',')} class="grid gap-4 data-[plegado]:max-md:hidden md:contents">
+  <slot />
+</div>

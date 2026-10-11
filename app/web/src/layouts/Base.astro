@@ -178,6 +178,7 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
   </body>
   <script>
     import { iniciarAnimaciones, limpiarAnimaciones } from '@/scripts/animaciones';
+    import { iniciarFiltrosPlegables } from '@/scripts/filtros-plegables';
 
     // Tema claro/oscuro: ClientRouter (View Transitions) puede resetear las clases del
     // <html> al navegar (lo mismo que pasa con .anima), así que se re-aplica la preferencia
@@ -196,6 +197,7 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
     document.addEventListener('astro:page-load', () => {
       aplicarTema();
       iniciarAnimaciones();
+      iniciarFiltrosPlegables();
     });
 
     // Los formularios de filtros (role="search") filtran en el cliente: Enter no debe enviarlos.

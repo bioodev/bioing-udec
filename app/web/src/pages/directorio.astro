@@ -1,6 +1,7 @@
 ---
 import { getEntries, getEntry } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import FiltrosPlegables from '@/components/FiltrosPlegables.astro';
 import TarjetaEgresado from '@/components/TarjetaEgresado.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
@@ -47,39 +48,41 @@ const jsonLdPagina = listaElementos(
         <Label for="texto">Nombre</Label>
         <Input id="texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
       </div>
-      <div class="grid gap-2 [&>*]:min-w-0">
-        <Label id="etiqueta-generacion" for="generacion-input">Generación</Label>
-        <Combobox id="generacion" name="generacion" defaultValue={TODAS}>
-          <ComboboxInput id="generacion-input" placeholder="Todas" showClear />
-          <ComboboxContent>
-            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
-            <ComboboxItem value={TODAS}>Todas</ComboboxItem>
-            {generaciones.map((g) => <ComboboxItem value={String(g)}>{g}</ComboboxItem>)}
-          </ComboboxContent>
-        </Combobox>
-      </div>
-      <div class="grid gap-2 [&>*]:min-w-0">
-        <Label id="etiqueta-area" for="area-input">Área</Label>
-        <Combobox id="area" name="area" defaultValue={TODAS}>
-          <ComboboxInput id="area-input" placeholder="Todas" showClear />
-          <ComboboxContent>
-            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
-            <ComboboxItem value={TODAS}>Todas</ComboboxItem>
-            {areas.map((a) => <ComboboxItem value={a.id}>{a.data.nombre}</ComboboxItem>)}
-          </ComboboxContent>
-        </Combobox>
-      </div>
-      <div class="grid gap-2 [&>*]:min-w-0">
-        <Label id="etiqueta-organizacion" for="organizacion-input">Organización</Label>
-        <Combobox id="organizacion" name="organizacion" defaultValue={TODAS}>
-          <ComboboxInput id="organizacion-input" placeholder="Todas" showClear />
-          <ComboboxContent>
-            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
-            <ComboboxItem value={TODAS}>Todas</ComboboxItem>
-            {organizaciones.map((o) => <ComboboxItem value={o.id}>{o.data.nombre}</ComboboxItem>)}
-          </ComboboxContent>
-        </Combobox>
-      </div>
+      <FiltrosPlegables id="filtros-directorio-mas" neutros={[TODAS]}>
+        <div class="grid gap-2 [&>*]:min-w-0">
+          <Label id="etiqueta-generacion" for="generacion-input">Generación</Label>
+          <Combobox id="generacion" name="generacion" defaultValue={TODAS}>
+            <ComboboxInput id="generacion-input" placeholder="Todas" showClear />
+            <ComboboxContent>
+              <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+              <ComboboxItem value={TODAS}>Todas</ComboboxItem>
+              {generaciones.map((g) => <ComboboxItem value={String(g)}>{g}</ComboboxItem>)}
+            </ComboboxContent>
+          </Combobox>
+        </div>
+        <div class="grid gap-2 [&>*]:min-w-0">
+          <Label id="etiqueta-area" for="area-input">Área</Label>
+          <Combobox id="area" name="area" defaultValue={TODAS}>
+            <ComboboxInput id="area-input" placeholder="Todas" showClear />
+            <ComboboxContent>
+              <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+              <ComboboxItem value={TODAS}>Todas</ComboboxItem>
+              {areas.map((a) => <ComboboxItem value={a.id}>{a.data.nombre}</ComboboxItem>)}
+            </ComboboxContent>
+          </Combobox>
+        </div>
+        <div class="grid gap-2 [&>*]:min-w-0">
+          <Label id="etiqueta-organizacion" for="organizacion-input">Organización</Label>
+          <Combobox id="organizacion" name="organizacion" defaultValue={TODAS}>
+            <ComboboxInput id="organizacion-input" placeholder="Todas" showClear />
+            <ComboboxContent>
+              <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+              <ComboboxItem value={TODAS}>Todas</ComboboxItem>
+              {organizaciones.map((o) => <ComboboxItem value={o.id}>{o.data.nombre}</ComboboxItem>)}
+            </ComboboxContent>
+          </Combobox>
+        </div>
+      </FiltrosPlegables>
     </form>
 
     <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{egresados.length} egresados/as</p>

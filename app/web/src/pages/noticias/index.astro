@@ -1,6 +1,7 @@
 ---
 import { getEntries } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import FiltrosPlegables from '@/components/FiltrosPlegables.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
@@ -43,56 +44,58 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
         <Label for="texto">Buscar</Label>
         <Input id="texto" name="texto" type="search" placeholder="Título o bajada" autocomplete="off" />
       </div>
-      <div class="grid gap-2 [&>*]:min-w-0">
-        <Label for="persona-input">Persona mencionada</Label>
-        <Combobox id="persona" name="persona">
-          <ComboboxInput id="persona-input" placeholder="Buscar persona" showClear />
-          <ComboboxContent>
-            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
-            {personas.map((p) => <ComboboxItem value={p.id}>{p.data.nombre}</ComboboxItem>)}
-          </ComboboxContent>
-        </Combobox>
-      </div>
-      <div class="grid gap-2 [&>*]:min-w-0">
-        <Label id="etiqueta-tema" for="tema-input">Categoría</Label>
-        <Combobox id="tema" name="tema" defaultValue={TODAS}>
-          <ComboboxInput id="tema-input" placeholder="Todas" showClear />
-          <ComboboxContent>
-            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
-            <ComboboxItem value={TODAS}>Todas</ComboboxItem>
-            {temas.map((t) => <ComboboxItem value={t.id}>{t.data.nombre}</ComboboxItem>)}
-          </ComboboxContent>
-        </Combobox>
-      </div>
-      <div class="grid gap-2 [&>*]:min-w-0">
-        <Label for="etiqueta-input">Tag</Label>
-        <Combobox id="etiqueta" name="etiqueta">
-          <ComboboxInput id="etiqueta-input" placeholder="Filtrar por etiqueta" showClear />
-          <ComboboxContent>
-            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
-            {etiquetas.map((e) => <ComboboxItem value={e}>#{e}</ComboboxItem>)}
-          </ComboboxContent>
-        </Combobox>
-      </div>
-      <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
-        <Label for="anio">Año</Label>
-        <NativeSelect id="anio" name="anio">
-          <NativeSelectOption value={TODAS}>Todos</NativeSelectOption>
-          {anios.map((a) => <NativeSelectOption value={String(a)}>{a}</NativeSelectOption>)}
-        </NativeSelect>
-      </div>
-      <div class="grid gap-2">
-        <Label id="etiqueta-orden" for="orden">Ordenar por</Label>
-        <Select id="orden" name="orden" defaultValue="recientes">
-          <SelectTrigger class="w-full" aria-labelledby="etiqueta-orden"><SelectValue placeholder="Recientes" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="recientes">Recientes</SelectItem>
-            <SelectItem value="antiguas">Antiguas</SelectItem>
-            <SelectItem value="alfabetico">A-Z</SelectItem>
-            <SelectItem value="relevancia">Relevancia</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <FiltrosPlegables id="filtros-noticias-mas" neutros={[TODAS, 'recientes']}>
+        <div class="grid gap-2 [&>*]:min-w-0">
+          <Label for="persona-input">Persona mencionada</Label>
+          <Combobox id="persona" name="persona">
+            <ComboboxInput id="persona-input" placeholder="Buscar persona" showClear />
+            <ComboboxContent>
+              <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+              {personas.map((p) => <ComboboxItem value={p.id}>{p.data.nombre}</ComboboxItem>)}
+            </ComboboxContent>
+          </Combobox>
+        </div>
+        <div class="grid gap-2 [&>*]:min-w-0">
+          <Label id="etiqueta-tema" for="tema-input">Categoría</Label>
+          <Combobox id="tema" name="tema" defaultValue={TODAS}>
+            <ComboboxInput id="tema-input" placeholder="Todas" showClear />
+            <ComboboxContent>
+              <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+              <ComboboxItem value={TODAS}>Todas</ComboboxItem>
+              {temas.map((t) => <ComboboxItem value={t.id}>{t.data.nombre}</ComboboxItem>)}
+            </ComboboxContent>
+          </Combobox>
+        </div>
+        <div class="grid gap-2 [&>*]:min-w-0">
+          <Label for="etiqueta-input">Tag</Label>
+          <Combobox id="etiqueta" name="etiqueta">
+            <ComboboxInput id="etiqueta-input" placeholder="Filtrar por etiqueta" showClear />
+            <ComboboxContent>
+              <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+              {etiquetas.map((e) => <ComboboxItem value={e}>#{e}</ComboboxItem>)}
+            </ComboboxContent>
+          </Combobox>
+        </div>
+        <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
+          <Label for="anio">Año</Label>
+          <NativeSelect id="anio" name="anio">
+            <NativeSelectOption value={TODAS}>Todos</NativeSelectOption>
+            {anios.map((a) => <NativeSelectOption value={String(a)}>{a}</NativeSelectOption>)}
+          </NativeSelect>
+        </div>
+        <div class="grid gap-2">
+          <Label id="etiqueta-orden" for="orden">Ordenar por</Label>
+          <Select id="orden" name="orden" defaultValue="recientes">
+            <SelectTrigger class="w-full" aria-labelledby="etiqueta-orden"><SelectValue placeholder="Recientes" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="recientes">Recientes</SelectItem>
+              <SelectItem value="antiguas">Antiguas</SelectItem>
+              <SelectItem value="alfabetico">A-Z</SelectItem>
+              <SelectItem value="relevancia">Relevancia</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </FiltrosPlegables>
       <input type="hidden" id="opciones-etiqueta" value={JSON.stringify(etiquetas)} />
       <input type="hidden" id="opciones-tema" value={JSON.stringify(temas.map((t) => t.id))} />
     </form>
