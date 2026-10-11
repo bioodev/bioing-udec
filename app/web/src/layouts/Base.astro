@@ -197,5 +197,14 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
       aplicarTema();
       iniciarAnimaciones();
     });
+
+    // Los formularios de filtros (role="search") filtran en el cliente: Enter no debe enviarlos.
+    // Va delegado aquí y no como onsubmit="…" en el HTML, porque la CSP pública no admite
+    // manejadores de eventos inline.
+    document.addEventListener('submit', (evento) => {
+      if (evento.target instanceof HTMLFormElement && evento.target.matches('form[role="search"]')) {
+        evento.preventDefault();
+      }
+    });
   </script>
 </html>

@@ -28,7 +28,11 @@ const { titulo, enlace, fecha, imagen } = Astro.props.publicacion.data;
     document.body.append(s);
   }));
 
-  for (const tarjeta of document.querySelectorAll<HTMLElement>('.publicacion-ig')) {
+  // Los <script> de Astro corren una sola vez; con ClientRouter hay que reiniciar en cada
+  // astro:page-load (también la primera carga). La marca data-iniciado evita listeners dobles.
+  document.addEventListener('astro:page-load', () => {
+  for (const tarjeta of document.querySelectorAll<HTMLElement>('.publicacion-ig:not([data-iniciado])')) {
+    tarjeta.dataset.iniciado = '';
     const boton = tarjeta.querySelector<HTMLButtonElement>('[data-cargar]')!;
     boton.addEventListener('click', async () => {
       const bq = document.createElement('blockquote');
@@ -42,4 +46,5 @@ const { titulo, enlace, fecha, imagen } = Astro.props.publicacion.data;
       try { await cargarScript(); window.instgrm?.Embeds.process(); } catch { /* queda el enlace */ }
     });
   }
+  });
 </script>

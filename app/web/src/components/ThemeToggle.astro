@@ -18,22 +18,27 @@ import Luna from 'phosphor-astro/Moon.astro';
 </button>
 
 <script>
-  const boton = document.querySelector<HTMLButtonElement>('[data-tema-toggle]');
+  // Hay dos botones (navbar y menú móvil) y ClientRouter reemplaza el DOM al navegar, mientras
+  // este módulo corre una sola vez: por eso el clic se escucha delegado en el documento y las
+  // etiquetas se renuevan en cada astro:page-load.
   const oscuro = () => document.documentElement.classList.contains('dark');
 
-  function etiqueta() {
-    boton?.setAttribute('aria-label', oscuro() ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+  function etiquetas() {
+    for (const boton of document.querySelectorAll('[data-tema-toggle]')) {
+      boton.setAttribute('aria-label', oscuro() ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+    }
   }
 
-  boton?.addEventListener('click', () => {
+  document.addEventListener('click', (evento) => {
+    if (!(evento.target instanceof Element) || !evento.target.closest('[data-tema-toggle]')) return;
     const activo = document.documentElement.classList.toggle('dark', !oscuro());
     try {
       localStorage.setItem('tema', activo ? 'oscuro' : 'claro');
     } catch {
       // almacenamiento no disponible (p. ej. modo privado): solo cambia en esta sesión
     }
-    etiqueta();
+    etiquetas();
   });
 
-  etiqueta();
+  document.addEventListener('astro:page-load', etiquetas);
 </script>

@@ -44,7 +44,7 @@ const conteoInicial = contarAgenda(
         <button type="button" data-estado-filtro="pasada" aria-pressed="false" class="chip-pestana">Pasados (<span data-conteo="pasadas">{conteoInicial.pasadas}</span>)</button>
       </div>
 
-      <form id="filtros" class="grid w-full gap-4 sm:w-auto sm:grid-cols-2" role="search" onsubmit="return false">
+      <form id="filtros" class="grid w-full gap-4 sm:w-auto sm:grid-cols-2" role="search">
         <div class="grid gap-2">
           <Label for="texto">Buscar</Label>
           <Input id="texto" name="texto" type="search" placeholder="Nombre o lugar de la actividad" autocomplete="off" />

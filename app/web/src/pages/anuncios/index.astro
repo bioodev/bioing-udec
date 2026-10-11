@@ -37,7 +37,7 @@ const textos = new Map(await Promise.all([...vigentes, ...vencidos].map(async (a
     <p class="mt-2 text-muted-foreground">Oportunidades para la comunidad de Bioingeniería UdeC.</p>
     <p class="mt-2 text-muted-foreground">¿Tienes una oportunidad para la comunidad? Escríbele a la persona encargada de comunicaciones.</p>
 
-    <form id="filtros" class="mt-8 max-w-md" role="search" onsubmit="return false">
+    <form id="filtros" class="mt-8 max-w-md" role="search">
       <div class="grid gap-2">
         <Label for="texto">Buscar</Label>
         <Input id="texto" name="texto" type="search" placeholder="Título u Oferente" autocomplete="off" />

@@ -91,5 +91,8 @@ const fecha = new Date().toLocaleDateString('es-CL', { timeZone: 'America/Santia
   }
 </style>
 <script>
-  document.querySelector('#imprimir')?.addEventListener('click', () => window.print());
+  // Delegado en el documento: sigue funcionando tras las navegaciones de ClientRouter.
+  document.addEventListener('click', (e) => {
+    if (e.target instanceof Element && e.target.closest('#imprimir')) window.print();
+  });
 </script>

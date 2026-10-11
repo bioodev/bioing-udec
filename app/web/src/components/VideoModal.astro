@@ -22,7 +22,11 @@ const { id, titulo } = Astro.props;
 </div>
 
 <script>
-  for (const raiz of document.querySelectorAll<HTMLElement>('.video-modal')) {
+  // Los <script> de Astro corren una sola vez; con ClientRouter hay que reiniciar en cada
+  // astro:page-load (también la primera carga). La marca data-iniciado evita listeners dobles.
+  document.addEventListener('astro:page-load', () => {
+  for (const raiz of document.querySelectorAll<HTMLElement>('.video-modal:not([data-iniciado])')) {
+    raiz.dataset.iniciado = '';
     const dialogo = raiz.querySelector('dialog')!;
     const reproductor = raiz.querySelector<HTMLElement>('[data-reproductor]')!;
     raiz.querySelector('[data-abrir]')!.addEventListener('click', () => {
@@ -39,4 +43,5 @@ const { id, titulo } = Astro.props;
     dialogo.addEventListener('click', (e) => { if (e.target === dialogo) dialogo.close(); }); // clic fuera
     dialogo.addEventListener('close', () => reproductor.replaceChildren()); // detiene el video
   }
+  });
 </script>
