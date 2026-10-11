@@ -7,3 +7,9 @@ export function enlaceInstagram(url: string): string | null {
   const [, tipo, codigo] = new URL(url).pathname.match(/^\/(p|reel)\/([\w-]+)/)!;
   return `https://www.instagram.com/${tipo}/${codigo}/`;
 }
+
+/** URL del embed oficial por iframe (con texto), o null si el enlace no es de publicación o reel. */
+export function embedInstagram(url: string): string | null {
+  const canonica = enlaceInstagram(url);
+  return canonica && `${canonica}embed/captioned/`;
+}

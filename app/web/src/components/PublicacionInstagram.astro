@@ -4,16 +4,18 @@ import { Image } from 'astro:assets';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
 import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
 import { formatoFecha } from '@/lib/contenido';
+import { embedInstagram } from '@/lib/instagram';
 
 interface Props { publicacion: CollectionEntry<'instagram'> }
 const { titulo, enlace, fecha, imagen } = Astro.props.publicacion.data;
+const embed = embedInstagram(enlace);
 ---
-<article class="publicacion-ig rounded-lg border border-border bg-card p-5" data-enlace={enlace}>
+<article class="publicacion-ig rounded-lg border border-border bg-card p-5" data-enlace={enlace} data-embed-src={embed} data-titulo={titulo}>
   {imagen && <Image src={imagen} alt="" widths={[320, 640]} sizes="(min-width: 768px) 33vw, 100vw" class="mb-4 aspect-square w-full rounded-md object-cover" />}
   <p class="flex items-center gap-1.5 text-sm text-muted-foreground"><InstagramLogo class="size-4" aria-hidden="true" />{formatoFecha(fecha)}</p>
   <h3 class="mt-2 font-semibold leading-snug">{titulo}</h3>
   <div class="mt-4 flex flex-wrap gap-3 text-sm">
-    <button type="button" data-cargar class="rounded-full bg-primary px-4 py-1.5 text-primary-foreground hover:opacity-90">Ver publicación aquí</button>
+    {embed && <button type="button" data-cargar class="rounded-full bg-primary px-4 py-1.5 text-primary-foreground hover:opacity-90">Ver publicación aquí</button>}
     <a href={enlace} target="_blank" rel="noopener" class="inline-flex items-center gap-1 hover:text-primary">Abrir en Instagram<ArrowSquareOut class="size-4" aria-hidden="true" /></a>
   </div>
   <p class="mt-2 text-xs text-muted-foreground">Al verla aquí se carga contenido de Instagram (Meta).</p>
@@ -21,30 +23,42 @@ const { titulo, enlace, fecha, imagen } = Astro.props.publicacion.data;
 </article>
 
 <script>
-  declare global { interface Window { instgrm?: { Embeds: { process(): void } } } }
-  let script: Promise<void> | undefined;
-  const cargarScript = () => (script ??= new Promise((ok, error) => {
-    const s = Object.assign(document.createElement('script'), { src: 'https://www.instagram.com/embed.js', async: true, onload: () => ok(), onerror: error });
-    document.body.append(s);
-  }));
+  // Instagram informa su altura con postMessage. Un solo listener para toda la página: el
+  // script corre una vez y la ventana persiste entre navegaciones de ClientRouter.
+  window.addEventListener('message', (event) => {
+    if (event.origin !== 'https://www.instagram.com') return;
+    let datos: unknown = event.data;
+    if (typeof datos === 'string') {
+      try { datos = JSON.parse(datos); } catch { return; }
+    }
+    const { type, details } = (datos ?? {}) as { type?: unknown; details?: { height?: unknown } };
+    if (type !== 'MEASURE' || typeof details?.height !== 'number') return;
+    const iframe = [...document.querySelectorAll<HTMLIFrameElement>('iframe[data-instagram]')]
+      .find((f) => f.contentWindow === event.source);
+    if (iframe) iframe.style.height = `${details.height}px`;
+  });
 
   // Los <script> de Astro corren una sola vez; con ClientRouter hay que reiniciar en cada
   // astro:page-load (también la primera carga). La marca data-iniciado evita listeners dobles.
   document.addEventListener('astro:page-load', () => {
-  for (const tarjeta of document.querySelectorAll<HTMLElement>('.publicacion-ig:not([data-iniciado])')) {
-    tarjeta.dataset.iniciado = '';
-    const boton = tarjeta.querySelector<HTMLButtonElement>('[data-cargar]')!;
-    boton.addEventListener('click', async () => {
-      const bq = document.createElement('blockquote');
-      bq.className = 'instagram-media';
-      bq.dataset.instgrmPermalink = tarjeta.dataset.enlace;
-      bq.dataset.instgrmVersion = '14';
-      bq.innerHTML = `<a href="${tarjeta.dataset.enlace}">Ver en Instagram</a>`;
-      tarjeta.querySelector('[data-embed]')!.append(bq);
-      boton.remove();
-      tarjeta.querySelector<HTMLAnchorElement>('a')?.focus();
-      try { await cargarScript(); window.instgrm?.Embeds.process(); } catch { /* queda el enlace */ }
-    });
-  }
+    for (const tarjeta of document.querySelectorAll<HTMLElement>('.publicacion-ig:not([data-iniciado])')) {
+      tarjeta.dataset.iniciado = '';
+      const boton = tarjeta.querySelector<HTMLButtonElement>('[data-cargar]');
+      boton?.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.src = tarjeta.dataset.embedSrc!;
+        iframe.title = `Publicación de Instagram: ${tarjeta.dataset.titulo}`;
+        iframe.loading = 'lazy';
+        iframe.setAttribute('allowtransparency', 'true');
+        iframe.setAttribute('scrolling', 'no');
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.className = 'mx-auto mt-4 block w-full max-w-[540px] rounded-lg border-0';
+        iframe.style.height = '640px';
+        iframe.dataset.instagram = '';
+        tarjeta.querySelector('[data-embed]')!.append(iframe);
+        boton.remove();
+        tarjeta.querySelector<HTMLAnchorElement>('a')?.focus();
+      });
+    }
   });
 </script>
