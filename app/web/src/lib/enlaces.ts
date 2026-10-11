@@ -15,3 +15,17 @@ export function vistaPreviaDrive(url: string): string | null {
   }
   return null;
 }
+
+const ID_YT = /^[\w-]{11}$/;
+
+/** ID de 11 caracteres de un video de YouTube, o null si el enlace no es de un video. */
+export function idYouTube(url: string): string | null {
+  let u: URL;
+  try { u = new URL(url); } catch { return null; }
+  const host = u.hostname.replace(/^www\./, '');
+  let id: string | null | undefined;
+  if (host === 'youtu.be') id = u.pathname.slice(1);
+  else if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'youtube-nocookie.com')
+    id = u.pathname === '/watch' ? u.searchParams.get('v') : u.pathname.match(/^\/(?:shorts|embed)\/([\w-]+)/)?.[1];
+  return id && ID_YT.test(id) ? id : null;
+}

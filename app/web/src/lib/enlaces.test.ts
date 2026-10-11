@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { vistaPreviaDrive } from './enlaces';
+import { idYouTube, vistaPreviaDrive } from './enlaces';
 
 describe('vistaPreviaDrive', () => {
   test('archivo de Drive', () =>
@@ -16,5 +16,19 @@ describe('vistaPreviaDrive', () => {
     expect(vistaPreviaDrive('https://drive.google.com/drive/folders/XyZ')).toBeNull();
     expect(vistaPreviaDrive('https://example.com/file/d/XyZ/view')).toBeNull();
     expect(vistaPreviaDrive('no es url')).toBeNull();
+  });
+});
+
+describe('idYouTube', () => {
+  test('formatos habituales', () => {
+    expect(idYouTube('https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s')).toBe('dQw4w9WgXcQ');
+    expect(idYouTube('https://youtu.be/dQw4w9WgXcQ?si=abc')).toBe('dQw4w9WgXcQ');
+    expect(idYouTube('https://youtube.com/shorts/dQw4w9WgXcQ')).toBe('dQw4w9WgXcQ');
+    expect(idYouTube('https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ')).toBe('dQw4w9WgXcQ');
+  });
+  test('no reconocidos', () => {
+    expect(idYouTube('https://vimeo.com/123')).toBeNull();
+    expect(idYouTube('https://www.youtube.com/@canal')).toBeNull();
+    expect(idYouTube('nada')).toBeNull();
   });
 });
