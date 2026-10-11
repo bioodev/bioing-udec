@@ -1,0 +1,95 @@
+---
+import { getEntries, getEntry } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import { Button } from '@/components/starwind/button';
+import { egresadosDelDirectorio } from '@/lib/contenido';
+import { existentes } from '@/lib/reglas';
+import { agruparPorGeneracion } from '@/lib/anuario';
+import FilePdf from 'phosphor-astro/FilePdf.astro';
+
+const egresados = await Promise.all(
+  (await egresadosDelDirectorio()).map(async (persona) => {
+    const perfil = persona.data.perfil_egresado!;
+    const areas = perfil.areas ? existentes(await getEntries(perfil.areas)) : [];
+    const organizacion = perfil.organizacion ? await getEntry(perfil.organizacion) : undefined;
+    return { persona, areas, organizacion };
+  }),
+);
+
+const datos = egresados.map((e) => {
+  const perfil = e.persona.data.perfil_egresado!;
+  return {
+    id: e.persona.id,
+    nombre: e.persona.data.nombre,
+    generacion: perfil.generacion,
+    anioEgreso: perfil.anio_egreso,
+    cargo: perfil.cargo,
+    organizacion: e.organizacion?.data.nombre,
+    areas: e.areas.map((a) => a.data.nombre),
+    enlaces: perfil.enlaces ?? [],
+  };
+});
+
+const grupos = agruparPorGeneracion(datos);
+const fecha = new Date().toLocaleDateString('es-CL', { timeZone: 'America/Santiago', dateStyle: 'long' });
+---
+<Base titulo="Anuario" descripcion="Anuario imprimible de egresados/as de Bioingeniería de la Universidad de Concepción.">
+  <div class="mx-auto max-w-5xl px-4 py-12">
+    <header class="anuario-portada">
+      <h1 class="text-4xl font-semibold tracking-tight">Anuario de egresados/as</h1>
+      <p class="mt-2 text-muted-foreground">Bioingeniería · Universidad de Concepción</p>
+      <p class="mt-4 text-sm text-muted-foreground">{datos.length} egresados/as · Actualizado al {fecha}</p>
+      {datos.length > 0 && (
+        <div class="mt-8 print:hidden">
+          <Button id="imprimir" type="button" variant="primary">
+            <FilePdf class="size-4" aria-hidden="true" />Descargar PDF
+          </Button>
+          <p class="mt-2 text-sm text-muted-foreground">Se abrirá la ventana de impresión: elige «Guardar como PDF».</p>
+        </div>
+      )}
+    </header>
+
+    {datos.length === 0 ? (
+      <p class="mt-12 text-center text-muted-foreground">Aún no hay egresados/as en el Directorio.</p>
+    ) : (
+      grupos.map((grupo) => (
+        <section class="anuario-grupo mt-12">
+          <h2 class="text-2xl font-semibold tracking-tight">{grupo.generacion === null ? 'Generación no informada' : `Generación ${grupo.generacion}`}</h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2 print:grid-cols-2">
+            {grupo.personas.map((d) => (
+              <article class="anuario-ficha rounded-lg border border-border p-4">
+                <h3 class="font-semibold"><a href={`/personas/${d.id}`} class="hover:text-primary">{d.nombre}</a></h3>
+                <p class="mt-1 text-sm text-muted-foreground">Egreso {d.anioEgreso}</p>
+                {(d.cargo || d.organizacion) && (
+                  <p class="text-sm text-muted-foreground">{[d.cargo, d.organizacion].filter(Boolean).join(' · ')}</p>
+                )}
+                {d.areas.length > 0 && <p class="mt-2 text-xs text-muted-foreground">{d.areas.join(', ')}</p>}
+                {d.enlaces.length > 0 && (
+                  <ul class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                    {d.enlaces.map((enlace) => (
+                      <li><a href={enlace.url} class="text-primary hover:underline">{enlace.etiqueta}</a></li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      ))
+    )}
+  </div>
+</Base>
+
+<style>
+  @media print {
+    @page { size: A4; margin: 16mm 14mm; }
+    :global(body) { background: white; color: black; font-size: 10pt; }
+    .anuario-portada { break-after: page; padding-top: 30vh; text-align: center; }
+    .anuario-grupo + .anuario-grupo { break-before: page; }
+    .anuario-ficha { break-inside: avoid; border-color: #ccc; }
+    .anuario-ficha a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 8pt; word-break: break-all; }
+  }
+</style>
+<script>
+  document.querySelector('#imprimir')?.addEventListener('click', () => window.print());
+</script>

@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { egresadosDelDirectorio } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { TODAS } from '@/lib/filtro-directorio';
+import FilePdf from 'phosphor-astro/FilePdf.astro';
 
 const egresados = await Promise.all(
   (await egresadosDelDirectorio()).map(async (persona) => {
@@ -27,6 +28,11 @@ const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.orga
   <section class="mx-auto max-w-6xl px-4 py-12">
     <h1 class="text-4xl font-semibold tracking-tight">Directorio de bioingenieros/as</h1>
     <p class="mt-2 text-muted-foreground">Egresados/as que autorizaron publicar su perfil.</p>
+    <p class="mt-2">
+      <a href="/anuario" class="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+        <FilePdf class="size-4" aria-hidden="true" />Ver anuario en PDF
+      </a>
+    </p>
 
     <form id="filtros" class="mt-8 grid gap-4 md:grid-cols-4" role="search" onsubmit="return false">
       <div class="grid gap-2">
