@@ -72,6 +72,7 @@ const noticias = defineCollection({
       fecha: z.coerce.date(),
       publicado,
       imagen: image().optional(),
+      imagen_alt: z.string().optional(), // describe la imagen destacada; sin él, la imagen se trata como decorativa
       bajada: z.string().optional(),
       etiquetas: z.array(z.string()).optional(), // tags de texto libre; la categoría editorial sigue siendo `temas`
       temas: referencias('temas'),

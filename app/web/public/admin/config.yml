@@ -137,6 +137,7 @@ collections:
       - { name: fecha, label: Fecha de publicación, widget: datetime, type: date }
       - { name: publicado, label: Publicado, widget: boolean, default: false }
       - { name: imagen, label: Imagen destacada, widget: image, required: false }
+      - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título. }
       - { name: bajada, label: Bajada, widget: text, required: false }
       - name: etiquetas
         label: Etiquetas (tags)

@@ -59,7 +59,7 @@ const jsonLdPagina = [
       <Migas items={rutas} />
       <h1 class="mt-6 text-4xl font-semibold tracking-tight">{noticia.data.titulo}</h1>
       {noticia.data.bajada && <p class="mt-4 text-xl text-muted-foreground">{noticia.data.bajada}</p>}
-      {noticia.data.imagen && <Image src={noticia.data.imagen} alt="" class="mt-8 aspect-video w-full rounded-lg object-cover" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
+      {noticia.data.imagen && <Image src={noticia.data.imagen} alt={noticia.data.imagen_alt ?? ''} class="mt-8 aspect-video w-full rounded-lg object-cover" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
     </header>
 
     {/* En móvil va antes del cuerpo; en escritorio, columna lateral fija junto al texto. */}
