@@ -101,6 +101,9 @@ hacer login).
 - [ ] Encabezados reales (`curl -I https://bioing-web.<subdominio>.workers.dev/`):
       `content-security-policy`, `strict-transport-security`, `x-content-type-options`,
       `x-frame-options: DENY`.
+- [ ] Caché larga en los assets con hash: `curl -I .../_astro/<archivo>` debe traer
+      `cache-control: public, max-age=31536000, immutable`. Los del buscador (`/pagefind/*`) siguen sin caché
+      larga a propósito (cambian en cada reconstrucción).
 - [ ] Un `curl -I` a la raíz trae `x-robots-tag: noindex` (el ambiente no se indexa).
 - [ ] Recorrido rápido con teclado y en el celular.
 - [ ] Lighthouse de una pasada en `/` (aquí sí se ven los números con CDN y compresión reales).
@@ -110,7 +113,8 @@ hacer login).
 - **El panel (`/admin/`) no inicia sesión**: el CMS necesita el repositorio definitivo y el CORS/PKCE del
   Worker de autenticación (Fase C). Se edita contenido en local (`npm run dev`).
 - **No es producción**: el contenido será el de prueba y la URL es provisional.
-- **Sin analítica**: Cloudflare Web Analytics se activa con la cuenta definitiva.
+- **Sin analítica**: Cloudflare Web Analytics se activa con la cuenta definitiva (ver
+  [`guia-mantencion.md`](guia-mantencion.md) §8, que incluye el ajuste de CSP que hace falta).
 - No hay dominio propio ni cachés optimizadas a largo plazo (eso se configura en la Fase C).
 
 ## 7. Alternativa sin cuenta: túnel temporal
@@ -137,10 +141,21 @@ Sirve para una revisión rápida desde el celular, pero muestra el **dev**, no e
 
 ## 9. Costos y límites
 
-- Plan gratuito de Workers: **100 000 solicitudes/día**; un sitio estático como este queda muy por debajo.
-  Cloudflare **no cobra automáticamente** al superar una cuota de plan gratuito: primero avisa/limita.
+- **Este Worker no ejecuta código**: `wrangler.jsonc` solo sirve archivos, sin `main`, así que servir los
+  assets **no genera invocaciones facturables**. El límite de **100 000 invocaciones/día** del plan gratuito
+  solo aplicaría si algún día se agrega un script de Worker.
+- Cuotas del plan gratuito que sí conviene vigilar: **20 000 archivos** en `dist/` (100 000 en plan pago) y
+  **25 MiB por archivo**. Hoy el build produce ~724 archivos: holgado.
+- Al superar una cuota del plan gratuito, Cloudflare **limita** (p. ej. responde `429`); no cobra
+  automáticamente.
 - El subdominio `workers.dev` es gratis; el dominio propio se paga aparte (Fase C).
 - No se necesita R2 ni base de datos para este ambiente.
+- Deploys muy grandes: Wrangler ≥ 4.34 renueva el token solo (el proyecto usa 4.148, así que no aplica el
+  clásico "JWT expired during deployment"). Si alguna vez hay demasiados archivos, se pueden excluir del
+  subida con `.assetsignore` (misma sintaxis que `.gitignore`).
+- Si algún día se agrega un script de Worker (p. ej. el de autenticación del CMS), configurar
+  `assets.run_worker_first` para que **solo** las rutas dinámicas invoquen el script y el resto se siga
+  sirviendo como asset.
 
 ## 10. Cómo deshacerlo
 
@@ -161,5 +176,8 @@ El ambiente es prescindible: si se borra, no afecta al repositorio ni al sitio d
    reconstrucción **diaria** poco después de medianoche de Chile.
 4. `SITE_URL` con el dominio definitivo (y quitar el `noindex` si se usara un subdominio público).
 5. Avisos por correo ante fallas de build y alertas de facturación.
+6. Opcional: separar **staging y producción** con entornos de Wrangler (`env.staging` con su propio `name`,
+   como recomienda la documentación de Cloudflare) si se quiere un preview estable además del dominio; con
+   Workers Builds también hay URLs de preview por despliegue.
 
 Detalle y checklist completo: [`pendientes-infra.md`](pendientes-infra.md).

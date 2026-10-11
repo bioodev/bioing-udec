@@ -16,6 +16,13 @@
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https:; frame-src 'self' https:
 
+# Caché larga para los assets con hash en el nombre que genera el build de Astro
+# (app/_astro/foo.a1b2c3d4.css, imágenes optimizadas, etc.): son inmutables.
+# Se dejan SIN caché larga los del buscador (/pagefind/*): cambian con cada
+# reconstrucción y llevarían a servir resultados viejos.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # Ambiente de desarrollo en Cloudflare (*.workers.dev): no indexar. No afecta al
 # dominio definitivo (el patrón no lo alcanza), así que puede quedarse igual.
 https://*.workers.dev/*

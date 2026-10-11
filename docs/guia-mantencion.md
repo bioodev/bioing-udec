@@ -107,7 +107,21 @@ cómo revertir*. Los incidentes van como tabla en §9.
 - Tamaño del repositorio (aviso al pasar 1 GB) y caché de imágenes optimizadas.
 - Buscador Pagefind (se regenera en `postbuild`), sitemap, `robots.txt`, `llms.txt`, feeds RSS y JSON-LD
   (`npm run verificar:jsonld`).
-- Analítica sin cookies (Cloudflare Web Analytics) — _pendiente de activar_.
+- **Analítica sin cookies (Cloudflare Web Analytics)** — _pendiente de activar_. Pasos concretos:
+  1. Cuenta de Cloudflare de la carrera. En un sitio *proxied*, la inyección se activa desde el panel
+     (*Web Analytics → Add site → hostname*); la alternativa para hostnames no proxied es el snippet manual
+     con token (el token **no** es un secreto: está atado al dominio).
+  2. **Ampliar la CSP** de `app/web/public/_headers` o el navegador bloqueará el beacon: agregar
+     `https://static.cloudflareinsights.com` y `https://cloudflareinsights.com` a `script-src` y a
+     `connect-src` (hoy son `'self'`).
+  3. Dos detalles documentados: la inyección automática **solo** aplica en dominios proxied (no en
+     `*.workers.dev`) y falla si la respuesta lleva `Cache-Control: public, no-transform`; y como el sitio
+     navega en el cliente (View Transitions), hay que revisar el modo `spa` del beacon para no subcontar
+     páginas vistas.
+  4. Retención: 6 meses en el panel, sin exportación de datos crudos (si se necesitara más, habría que
+     evaluar otra herramienta).
+  5. Verificar en DevTools (llamadas a `cloudflareinsights`), sin errores de CSP, y que el panel registre
+     visitas a los 5–10 minutos.
 
 ## 9. Incidentes (runbook)
 

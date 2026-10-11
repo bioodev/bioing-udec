@@ -12,3 +12,9 @@ app/web/src/content/**/sint-*
 # Originales de las imágenes demo (fuente local; las copias optimizadas van en
 # app/web/src/assets/media/demo-*.jpg)
 docs/biotech-imgs-demo/
+
+# Skills de IA instalados con autoskills (herramienta local, no entregable)
+.opencode/
+app/web/.agents/
+app/web/.claude/
+app/web/skills-lock.json
