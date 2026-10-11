@@ -1,0 +1,96 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import CaretLeft from 'phosphor-astro/CaretLeft.astro';
+import CaretRight from 'phosphor-astro/CaretRight.astro';
+import X from 'phosphor-astro/X.astro';
+
+interface Item { imagen: ImageMetadata; alt: string }
+interface Props { items: Item[] }
+const { items } = Astro.props;
+// Para el lightbox se usa una versión optimizada de ~1600 px, no el original.
+const grandes = await Promise.all(items.map((item) => getImage({ src: item.imagen, width: 1600, format: 'webp' })));
+---
+<div data-galeria>
+  <ul class="grid grid-cols-2 gap-3 md:grid-cols-3">
+    {items.map((item, i) => (
+      <li>
+        <button
+          type="button"
+          data-abrir
+          data-src={grandes[i].src}
+          data-ancho={grandes[i].attributes.width}
+          data-alto={grandes[i].attributes.height}
+          data-alt={item.alt}
+          aria-label={item.alt ? `Ampliar: ${item.alt}` : `Ampliar imagen ${i + 1} de ${items.length}`}
+          class="block w-full overflow-hidden rounded-lg transition-opacity hover:opacity-90"
+        >
+          <Image src={item.imagen} alt="" widths={[320, 480]} sizes="(min-width: 768px) 33vw, 50vw" class="aspect-square w-full object-cover" />
+        </button>
+      </li>
+    ))}
+  </ul>
+
+  <dialog aria-label="Galería de imágenes" class="m-auto w-[min(64rem,calc(100vw-2rem))] rounded-lg bg-black p-0 text-white backdrop:bg-black/80">
+    <div class="flex items-center justify-between px-4 py-2 text-sm">
+      <p data-contador aria-live="polite"></p>
+      <button type="button" data-cerrar aria-label="Cerrar galería" class="p-1"><X class="size-5" aria-hidden="true" /></button>
+    </div>
+    <div class="relative flex items-center justify-center">
+      <img data-grande alt="" class="max-h-[75vh] w-auto max-w-full" />
+      {items.length > 1 && (
+        <>
+          <button type="button" data-anterior aria-label="Imagen anterior" class="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 hover:bg-black/80"><CaretLeft class="size-6" aria-hidden="true" /></button>
+          <button type="button" data-siguiente aria-label="Imagen siguiente" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 hover:bg-black/80"><CaretRight class="size-6" aria-hidden="true" /></button>
+        </>
+      )}
+    </div>
+  </dialog>
+</div>
+
+<script>
+  import { indiceAnterior, indiceSiguiente, textoContador } from '@/lib/galeria';
+
+  // Los <script> de Astro corren una sola vez; con ClientRouter hay que reiniciar en cada
+  // astro:page-load (también la primera carga). La marca data-iniciado evita listeners dobles.
+  document.addEventListener('astro:page-load', () => {
+    for (const raiz of document.querySelectorAll<HTMLElement>('[data-galeria]:not([data-iniciado])')) {
+      raiz.dataset.iniciado = '';
+      const dialogo = raiz.querySelector('dialog')!;
+      const miniaturas = [...raiz.querySelectorAll<HTMLButtonElement>('[data-abrir]')];
+      const grande = dialogo.querySelector<HTMLImageElement>('[data-grande]')!;
+      const contador = dialogo.querySelector<HTMLElement>('[data-contador]')!;
+      let actual = 0;
+      let disparador: HTMLElement | null = null; // miniatura que abrió el lightbox; ahí vuelve el foco
+
+      const mostrar = (i: number) => {
+        actual = i;
+        const { src, ancho, alto, alt } = miniaturas[i].dataset;
+        Object.assign(grande, { src, width: Number(ancho), height: Number(alto), alt: alt ?? '' });
+        contador.textContent = textoContador(i, miniaturas.length);
+      };
+      const anterior = () => mostrar(indiceAnterior(actual, miniaturas.length));
+      const siguiente = () => mostrar(indiceSiguiente(actual, miniaturas.length));
+
+      miniaturas.forEach((boton, i) => boton.addEventListener('click', () => {
+        disparador = boton;
+        mostrar(i);
+        dialogo.showModal();
+        document.documentElement.style.overflow = 'hidden'; // el fondo no se desplaza mientras está abierto
+      }));
+      dialogo.querySelector('[data-anterior]')?.addEventListener('click', anterior);
+      dialogo.querySelector('[data-siguiente]')?.addEventListener('click', siguiente);
+      dialogo.querySelector('[data-cerrar]')!.addEventListener('click', () => dialogo.close());
+      dialogo.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); anterior(); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); siguiente(); }
+      });
+      dialogo.addEventListener('click', (e) => { if (e.target === dialogo) dialogo.close(); }); // clic fuera
+      // Esc ya cierra el <dialog> de forma nativa; el evento "close" cubre todos los cierres.
+      dialogo.addEventListener('close', () => {
+        document.documentElement.style.overflow = '';
+        disparador?.focus();
+      });
+    }
+  });
+</script>
