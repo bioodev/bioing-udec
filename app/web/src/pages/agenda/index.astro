@@ -3,122 +3,144 @@ import Base from '@/layouts/Base.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/starwind/select';
 import { actividadesRealizadas, proximasActividades } from '@/lib/contenido';
-import { normalizar } from '@/lib/reglas';
+import { actividadEsProxima, normalizar } from '@/lib/reglas';
 import { TIPOS_ACTIVIDAD } from '@/lib/agenda';
-import { TODAS } from '@/lib/filtro-agenda';
+import { contarAgenda, TODAS, type EstadoActividad } from '@/lib/filtro-agenda';
 
-const proximas = await proximasActividades();
-const realizadas = await actividadesRealizadas();
+// Un único "ahora" para particionar: próximas en orden ascendente y pasadas en descendente.
+const ahora = new Date();
+const proximas = await proximasActividades(ahora);
+const realizadas = await actividadesRealizadas(ahora);
 
-const secciones = [
-  { id: 'proximas', titulo: 'Próximas actividades', items: proximas, vacio: 'No hay actividades próximas por ahora.' },
-  { id: 'realizadas', titulo: 'Actividades realizadas', items: realizadas, vacio: 'Aún no hay actividades en el archivo.' },
-];
+const todas = [...proximas, ...realizadas].map((actividad) => ({
+  actividad,
+  estado: (actividadEsProxima(actividad.data, ahora) ? 'proxima' : 'pasada') as EstadoActividad,
+}));
 
-// Tipos presentes en la Agenda, en el orden del esquema (para los botones de filtro).
-const presentes = new Set([...proximas, ...realizadas].map((a) => a.data.tipo));
+// Tipos presentes en la Agenda, en el orden del esquema (para el Select de Tipo).
+const presentes = new Set(todas.map((a) => a.actividad.data.tipo));
 const tipos = (Object.keys(TIPOS_ACTIVIDAD) as (keyof typeof TIPOS_ACTIVIDAD)[]).filter((t) => presentes.has(t));
 
-const total = proximas.length + realizadas.length;
-const textoDe = (a: (typeof proximas)[number]) => normalizar(`${a.data.titulo} ${a.data.lugar ?? ''}`);
+const textoDe = (a: (typeof todas)[number]) => normalizar(`${a.actividad.data.titulo} ${a.actividad.data.lugar ?? ''}`);
+const conteoInicial = contarAgenda(
+  todas.map((a) => ({ texto: textoDe(a), tipo: a.actividad.data.tipo, estado: a.estado })),
+  { texto: '', tipo: TODAS },
+);
 ---
 <Base titulo="Agenda" descripcion="Actividades de la comunidad de Bioingeniería UdeC: seminarios, charlas, congresos y más.">
   <section class="mx-auto max-w-6xl px-4 py-12">
     <h1 class="text-4xl font-semibold tracking-tight">Agenda</h1>
     <p class="mt-2 text-muted-foreground">Actividades de la comunidad de Bioingeniería UdeC.</p>
 
-    <form id="filtros" class="mt-8 max-w-md" role="search" onsubmit="return false">
-      <div class="grid gap-2">
-        <Label for="texto">Buscar</Label>
-        <Input id="texto" name="texto" type="search" placeholder="Nombre o lugar de la actividad" autocomplete="off" />
+    <div class="mt-8 flex flex-wrap items-end justify-between gap-4">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Vista de la agenda">
+        <button type="button" data-estado-filtro="todas" aria-pressed="true" class="chip-pestana">Todos (<span data-conteo="todas">{conteoInicial.todas}</span>)</button>
+        <button type="button" data-estado-filtro="proxima" aria-pressed="false" class="chip-pestana">Próximos (<span data-conteo="proximas">{conteoInicial.proximas}</span>)</button>
+        <button type="button" data-estado-filtro="pasada" aria-pressed="false" class="chip-pestana">Pasados (<span data-conteo="pasadas">{conteoInicial.pasadas}</span>)</button>
       </div>
-    </form>
 
-    <div class="mt-4 flex flex-wrap gap-2" role="group" aria-label="Filtrar por tipo de actividad">
-      <button type="button" data-tipo={TODAS} aria-pressed="true" class="chip-tipo">Todas</button>
-      {tipos.map((t) => <button type="button" data-tipo={t} aria-pressed="false" class="chip-tipo">{TIPOS_ACTIVIDAD[t]}</button>)}
+      <form id="filtros" class="grid w-full gap-4 sm:w-auto sm:grid-cols-2" role="search" onsubmit="return false">
+        <div class="grid gap-2">
+          <Label for="texto">Buscar</Label>
+          <Input id="texto" name="texto" type="search" placeholder="Nombre o lugar de la actividad" autocomplete="off" />
+        </div>
+        <div class="grid gap-2">
+          <Label id="etiqueta-tipo" for="tipo">Tipo</Label>
+          <Select id="tipo" name="tipo" defaultValue={TODAS}>
+            <SelectTrigger class="w-full" aria-labelledby="etiqueta-tipo"><SelectValue placeholder="Todos" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value={TODAS}>Todos</SelectItem>
+              {tipos.map((t) => <SelectItem value={t}>{TIPOS_ACTIVIDAD[t]}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>
+      </form>
     </div>
 
-    <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{total === 1 ? '1 actividad' : `${total} actividades`}</p>
-
-    {secciones.map((s) => (
-      <section data-seccion id={s.id} class="mt-10" aria-labelledby={`${s.id}-titulo`}>
-        <h2 id={`${s.id}-titulo`} class="text-2xl font-semibold tracking-tight">{s.titulo}</h2>
-        <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {s.items.map((a) => (
-            <li data-texto={textoDe(a)} data-tipo={a.data.tipo}>
-              <TarjetaActividad actividad={a} />
-            </li>
-          ))}
-        </ul>
-        <p data-vacio class="mt-6 hidden text-muted-foreground">{s.vacio}</p>
-      </section>
-    ))}
+    <h2 class="sr-only">Resultados</h2>
+    <ul id="lista" class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {todas.map(({ actividad, estado }) => (
+        <li data-texto={textoDe({ actividad, estado })} data-tipo={actividad.data.tipo} data-estado={estado}>
+          <TarjetaActividad actividad={actividad} />
+        </li>
+      ))}
+    </ul>
 
     <p id="sin-resultados" class="mt-10 hidden text-center text-muted-foreground">No hay actividades que coincidan con los filtros.</p>
   </section>
 </Base>
 
 <style>
-  .chip-tipo {
+  .chip-pestana {
     border: 1px solid var(--border);
     border-radius: 9999px;
-    padding: 0.25rem 0.875rem;
+    padding: 0.375rem 1rem;
     font-size: 0.875rem;
   }
-  .chip-tipo:hover { background: var(--muted); }
-  .chip-tipo[aria-pressed='true'] { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
-  .chip-tipo:focus-visible { outline: 2px solid var(--outline); outline-offset: 2px; }
+  .chip-pestana:hover { background: var(--muted); }
+  .chip-pestana[aria-pressed='true'] { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+  .chip-pestana:focus-visible { outline: 2px solid var(--outline); outline-offset: 2px; }
 </style>
 
 <script>
-  import { coincideActividad, TODAS } from '@/lib/filtro-agenda';
+  import { coincideActividad, contarAgenda, TODAS, type EstadoActividad } from '@/lib/filtro-agenda';
 
   const form = document.querySelector<HTMLFormElement>('#filtros')!;
   const texto = document.querySelector<HTMLInputElement>('#texto')!;
-  const chips = [...document.querySelectorAll<HTMLButtonElement>('.chip-tipo')];
-  const items = [...document.querySelectorAll<HTMLLIElement>('[data-seccion] li')];
-  const secciones = [...document.querySelectorAll<HTMLElement>('[data-seccion]')];
-  const contador = document.querySelector('#contador')!;
+  const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
+  const pestanas = [...document.querySelectorAll<HTMLButtonElement>('[data-estado-filtro]')];
   const sinResultados = document.querySelector('#sin-resultados')!;
-  let tipo = TODAS;
+  let estado: EstadoActividad | typeof TODAS = TODAS;
+
+  const datosDe = (li: HTMLLIElement) => ({
+    texto: li.dataset.texto ?? '',
+    tipo: li.dataset.tipo ?? '',
+    estado: (li.dataset.estado ?? 'pasada') as EstadoActividad,
+  });
 
   function aplicar() {
-    const f = { texto: texto.value, tipo };
+    const tipo = (new FormData(form).get('tipo') as string | null) || TODAS;
     let visibles = 0;
     for (const li of items) {
-      const coincide = coincideActividad({ texto: li.dataset.texto ?? '', tipo: li.dataset.tipo ?? '' }, f);
-      li.hidden = !coincide;
-      if (coincide) visibles++;
+      const ok = coincideActividad(datosDe(li), { texto: texto.value, tipo, estado });
+      li.hidden = !ok;
+      if (ok) visibles++;
     }
-    for (const s of secciones) {
-      const lis = [...s.querySelectorAll<HTMLLIElement>('li')];
-      const vacio = s.querySelector<HTMLElement>('[data-vacio]')!;
-      if (lis.length > 0) s.hidden = lis.every((li) => li.hidden);
-      vacio.classList.toggle('hidden', lis.length > 0);
+    const conteo = contarAgenda(items.map(datosDe), { texto: texto.value, tipo });
+    for (const span of [...document.querySelectorAll<HTMLElement>('[data-conteo]')]) {
+      span.textContent = String(conteo[span.dataset.conteo as keyof typeof conteo]);
     }
-
-    contador.textContent = visibles === 1 ? '1 actividad' : `${visibles} actividades`;
-    // "Sin filtros" solo cuando hay actividades pero ninguna coincide; sin actividades, lo dice cada sección.
     sinResultados.classList.toggle('hidden', !(items.length > 0 && visibles === 0));
-    for (const c of chips) c.setAttribute('aria-pressed', String(c.dataset.tipo === tipo));
+    for (const p of pestanas) p.setAttribute('aria-pressed', String(p.dataset.estadoFiltro === estado));
 
     // Los filtros quedan en la URL para compartir el listado filtrado.
     const url = new URL(location.href);
-    for (const [k, v] of Object.entries({ q: texto.value, tipo })) {
+    for (const [k, v] of Object.entries({ q: texto.value, tipo, vista: estado === TODAS ? '' : estado })) {
       if (v && v !== TODAS) url.searchParams.set(k, v); else url.searchParams.delete(k);
     }
     history.replaceState(null, '', url);
   }
 
-  // Estado inicial desde la URL (p. ej. /agenda?tipo=seminario).
+  // Estado inicial desde la URL (p. ej. /agenda?tipo=seminario&vista=proxima).
   const params = new URLSearchParams(location.search);
   texto.value = params.get('q') ?? '';
-  if (params.get('tipo') && chips.some((c) => c.dataset.tipo === params.get('tipo'))) tipo = params.get('tipo')!;
+  if (params.get('vista') === 'proxima' || params.get('vista') === 'pasada') estado = params.get('vista')! as EstadoActividad;
+  if (params.get('tipo')) {
+    document.querySelector('#tipo')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tipo') } }));
+  }
 
-  for (const c of chips) c.addEventListener('click', () => { tipo = c.dataset.tipo ?? TODAS; aplicar(); });
+  for (const p of pestanas) {
+    p.addEventListener('click', () => {
+      const valor = p.dataset.estadoFiltro ?? TODAS;
+      estado = valor === 'proxima' || valor === 'pasada' ? valor : TODAS;
+      aplicar();
+    });
+  }
   form.addEventListener('input', () => aplicar());
   form.addEventListener('change', () => aplicar());
-  aplicar();
+  // Starwind v3: el Select emite starwind:value-change antes de fijar el valor.
+  form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
+  setTimeout(() => aplicar(), 0);
 </script>
