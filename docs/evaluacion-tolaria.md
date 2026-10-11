@@ -1,9 +1,11 @@
-# Evaluación — Tolaria como herramienta del Encargado de comunicaciones
+# Evaluación — Tolaria como herramienta de edición (interna, del proveedor)
 
-**Estado: A EVALUAR** (no reemplaza la decisión de `docs/adr/0001-sveltia-cms-astro.md`).
+**Estado: A EVALUAR (interno, solo el proveedor).** No se lleva a la carrera por ahora.
+Tampoco reemplaza la decisión de `docs/adr/0001-sveltia-cms-astro.md` (Sveltia CMS).
 
-> Añadido 2026-10-11. El equipo lo sugirió como posible forma de "actualizar el sitio"; se documenta
-> objetivamente para decidir en una reunión con la carrera (ver `docs/preguntas-reunion.md` §7).
+> Añadido 2026-10-11. Evaluación personal: si Tolaria sirve como herramienta del Encargado de
+> comunicaciones (o del respaldo), y en el futuro si conviene crear un **skill** que la
+> complemente para que los agentes también editen contenido/Git cuando se requiera.
 
 ## Qué es Tolaria
 
@@ -51,29 +53,34 @@ editor de bloques tipo Notion, wikilinks/relaciones, y soporte de agentes IA. Gr
 | Historial/undo por contenido | Git | Git integrado por nota |
 | Costo/licencia | Open source (MIT/Apache) | AGPL-3.0 (gratis) |
 
-## Criterios para decidir (con la carrera)
+## Criterios de evaluación (internos, del proveedor)
 
-1. **Perfil del Encargado**: ¿prefiere un editor de formularios en la web o una app de escritorio
-   "como Notion"? ¿Necesita trabajar **offline**?
-2. **Mapeo real**: probar un vault de ejemplo con 2–3 entradas reales (campos y relaciones exactas
-   del frontmatter) y una imagen, para ver cuánto frontmatter hay que escribir a mano.
+1. **¿Para qué caso?** El Encargado usa Sveltia (web, formularios, validado) — Tolaria solo
+   tendría sentido si la edición migrara al escritorio/offline o a un editor de bloques, o como
+   herramienta del respaldo.
+2. **Mapeo real**: probar un vault de ejemplo con 2–3 entradas reales (campos y relaciones
+   exactas del frontmatter) y una imagen, para ver cuánto frontmatter hay que escribir a mano.
 3. **Media y referencias**: confirmar que las rutas de imagen (`../../assets/media/…`) y los slugs
    de las relaciones salen bien tras el push.
-4. **Respaldo**: ¿el respaldo usaría la misma herramienta?
+4. **Agentes**: si los agentes (p. ej. opencode) editan contenido/Git directamente, ¿hace falta un
+   skill de Tolaria (vault + frontmatter + commit/push) o alcanza con editar los archivos a mano
+   como hoy?
 
 ## Acciones pendientes
 
 - [ ] Probar un vault de ejemplo con la estructura real de `src/content` (una Noticia con
       personas/áreas/actividad, una Persona con perfil de egresado, un Documento).
 - [ ] Validar subida de imagen → `src/assets/media` y commit/push desde Tolaria.
-- [ ] Llevar la comparación a la reunión con la carrera (preguntas-reunion §7) y decidir si se
-      mantiene Sveltia (recomendado por defecto) o se adopta Tolaria para el encargado/respaldo.
+- [ ] Evaluar (más adelante) si conviene **crear un skill** que documente Tolaria + el modelo de
+      contenido del repo, para que los agentes puedan editar contenido y Git con esa herramienta
+      cuando se requiera (vault, frontmatter exacto, rutas de media, commit+push).
 - [ ] Si se adopta: definir capacitación (Fase D) y ajustar `config.yml`/documentación.
       Si no: cerrar la evaluación y dejar el ADR-0001 como está.
 
 ## Veredicto provisional
 
 Por defecto **seguimos con Sveltia CMS** (decidido y probado: A4/A6, web sin instalar, esquema
-validado). Tolaria es atractivo por formato/Git/editor, pero **solo se justifica** si la carrera
-prefiere el escritorio/offline o un editor de bloques y acepta escribir/mantener el frontmatter
-con sus tipos. Decidir antes de la Fase D (capacitación); no bloquea Fases A–C.
+validado). Tolaria es atractivo por formato/Git/editor, pero **solo se justifica** si se prefiere
+el escritorio/offline o un editor de bloques y se acepta escribir/mantener el frontmatter con sus
+types. Evaluación interna del proveedor; **no bloquea Fases A–C** y no requiere decisión de la
+carrera por ahora. La posible creación de un skill complementario se evalúa más adelante.

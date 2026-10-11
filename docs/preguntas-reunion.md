@@ -116,15 +116,3 @@ _Propuesta:_ Sí, solo en español.
 **6.6 ¿Qué es imprescindible para marzo de 2027?**
 Si no alcanza el tiempo, ¿qué secciones pueden quedar para una segunda etapa?
 _Propuesta:_ Para marzo de 2027: Inicio, ¿Qué es la Bioingeniería?, Directorio y Noticias. En la segunda etapa: Agenda, Anuncios, Repositorio y el anuario PDF.
-
----
-
-## 7. Herramienta de edición del contenido (a evaluar)
-
-**7.1 ¿Con qué herramienta publica el Encargado de comunicaciones?**
-Por defecto, **Sveltia CMS** en el navegador (`/admin/`, formularios, login GitHub; ver
-`docs/adr/0001-sveltia-cms-astro.md`). El equipo sugirió evaluar **Tolaria** (app de escritorio,
-Markdown + Git). Pros y contras objetivo en `docs/evaluacion-tolaria.md`.
-_Propuesta:_ Mantener Sveltia como herramienta por defecto; evaluar Tolaria solo si el Encargado
-prefiere escritorio/offline o un editor de bloques y acepta el frontmatter. Decidir antes de la
-Fase D (capacitación); no bloquea Fases A–C.
