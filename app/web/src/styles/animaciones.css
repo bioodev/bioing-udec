@@ -6,11 +6,11 @@
    módulo de GSAP no llega a ejecutarse. El desplazamiento usa transform, que no
    provoca layout shift (CLS). */
 @media (prefers-reduced-motion: no-preference) {
-  /* El contenedor de grilla no se oculta a sí mismo (solo sus hijos); si no,
-     la sección entera quedaría invisible aunque los hijos se animen. */
+  /* Fade solo (sin desplazamiento vertical, a pedido del equipo). El contenedor de
+     grilla no se oculta a sí mismo (solo sus hijos); si no, la sección entera
+     quedaría invisible aunque los hijos se animen. */
   .anima [data-animar]:not([data-animar='grilla']),
   .anima [data-animar='grilla'] > * {
     opacity: 0;
-    transform: translateY(20px);
   }
 }

@@ -40,35 +40,34 @@ export function iniciarAnimaciones(): void {
   document.documentElement.setAttribute('data-animaciones', '1');
 
   try {
-    // Ojo: NO usar clearProps:'transform' al terminar: la clase .anima sigue aplicando
-    // translateY(20px) por CSS, y al limpiar el transform inline el contenido volvería a
-    // bajarse. El transform inline final (translate(0,0)) queda como ancla sobre el CSS.
+    // Fade solo: los elementos se ocultan solo con opacity (CSS .anima) y GSAP los lleva
+    // a opacity:1. Sin transform, así que no hay deslizamiento ni retrocesos.
     contexto = gsap.context(() => {
-    // HERO: entrada al cargar, con ligero escalonado entre título, texto y botón.
+    // HERO: entrada al cargar (fade solo), con ligero escalonado entre título, texto y botón.
     const hero = gsap.utils.toArray<HTMLElement>('[data-animar="hero"]');
     if (hero.length) {
       gsap.to(hero, {
-        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+        opacity: 1, duration: 0.8, ease: 'power3.out',
         stagger: 0.12, delay: 0.1, overwrite: 'auto',
       });
     }
 
-    // SECCIONES: elementos individuales que aparecen al scrollear.
+    // SECCIONES: elementos individuales que aparecen al scrollear (fade solo).
     gsap.utils.toArray<HTMLElement>('[data-animar="fade-up"]').forEach((el) => {
       gsap.to(el, {
-        opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+        opacity: 1, duration: 0.7, ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 85%', once: true },
         overwrite: 'auto',
       });
     });
 
-    // GRILLAS: los hijos aparecen escalonados cuando la grilla entra en vista. Se limita el
-    // escalonado en el tiempo para que las listas largas no tarden (stagger total ≈ 0.45 s).
+    // GRILLAS: los hijos aparecen escalonados (fade solo) cuando la grilla entra en vista. Se
+    // limita el escalonado en el tiempo para que las listas largas no tarden (stagger ≈ 0.45 s).
     gsap.utils.toArray<HTMLElement>('[data-animar="grilla"]').forEach((contenedor) => {
       const hijos = Array.from(contenedor.children).filter((h): h is HTMLElement => h instanceof HTMLElement);
       if (!hijos.length) return;
       gsap.to(hijos, {
-        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+        opacity: 1, duration: 0.6, ease: 'power3.out',
         stagger: Math.min(0.06, 0.45 / hijos.length),
         scrollTrigger: { trigger: contenedor, start: 'top 88%', once: true },
         overwrite: 'auto',
