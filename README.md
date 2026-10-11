@@ -82,5 +82,6 @@ Ver `docs/pendientes-infra.md` (checklist completo) y `docs/superpowers/plans/20
 - `docs/DESIGN.md` — sistema de diseño de referencia.
 - `docs/notas.md` y `docs/preguntas-reunion.md` — acuerdos y preguntas abiertas con el equipo.
 - `docs/adr/` — decisiones de arquitectura.
+- `docs/evaluacion-tolaria.md` — a evaluar: Tolaria como alternativa de edición para el Encargado (ver preguntas-reunion §7).
 - `docs/superpowers/plans/` — planes de ejecución (historial de trabajo por hito).
 - `app/web/auditoria/` — evidencia de la auditoría Lighthouse (Fase A, A6).
