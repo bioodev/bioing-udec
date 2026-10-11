@@ -11,6 +11,9 @@ const CONTENIDO = new URL('../src/content/', import.meta.url).pathname;
 const PREFIJO = 'sint-';
 const AVISO = 'Contenido sintético generado por scripts/datos-sinteticos.mjs.';
 const IMAGENES = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg', 'ejemplo-azul.png', 'ejemplo-verde.png', 'ejemplo-gris.png'];
+// Fotos demo siempre presentes en publicaciones (noticias, actividades, banners) para que
+// ninguna publicación quede sin imagen.
+const DEMOS = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg'];
 const COLECCIONES = ['areas', 'temas', 'organizaciones', 'personas', 'actividades', 'noticias', 'anuncios', 'documentos', 'banners'];
 
 const CANTIDAD = { organizaciones: 15, personas: 70, actividades: 24, noticias: 40, anuncios: 18, documentos: 30, banners: 7 };
@@ -148,7 +151,7 @@ function generar() {
       expositores: algunos(personas, 0, 3),
       areas: algunos(areas, 1, 2),
       enlace_inscripcion: quizas(0.5, 'https://forms.gle/ejemplo'),
-      imagen: quizas(0.5, `../../assets/media/${alguno(IMAGENES)}`),
+      imagen: `../../assets/media/${alguno(DEMOS)}`,
     }, cuerpo(2));
   }
 
@@ -161,7 +164,7 @@ function generar() {
     const cobertura = quizas(0.25, pasadas.length ? alguno(pasadas).id : undefined);
     escribir('noticias', id, {
       titulo, fecha: fechaSola(fecha), publicado: en.datatype.boolean({ probability: 0.95 }),
-      imagen: quizas(0.7, `../../assets/media/${alguno(IMAGENES)}`),
+      imagen: `../../assets/media/${alguno(DEMOS)}`,
       bajada: quizas(0.8, en.lorem.sentence({ min: 10, max: 20 })),
       temas: algunos(temas, 1, 2), areas: algunos(areas, 0, 2),
       personas_mencionadas: algunos(personas, 0, 4),
@@ -210,7 +213,7 @@ function generar() {
     ['Convocatoria de anuncios', 'Trabajo, prácticas y proyectos', '/anuncios'],
     ['Conoce la carrera', '¿Qué es la Bioingeniería en la UdeC?', '/bioingenieria'],
   ];
-  const imagenesBanner = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg'];
+  const imagenesBanner = DEMOS;
   plantillasBanner.forEach(([titulo, texto, enlace], i) => {
     const id = idUnico('banners', titulo);
     banners.push(id);
