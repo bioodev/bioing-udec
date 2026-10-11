@@ -21,6 +21,37 @@ sin esperar la Fase B. De la carrera solo quedan pendientes el **dominio**, la *
 
 ---
 
+## Etapa P — Vista previa personal (provisional, fuera de la entrega)
+
+Mientras no exista la cuenta central, el Worker de QA corre en la **cuenta personal de Cloudflare del
+proveedor**, con un subdominio de su dominio de desarrollo. Sirve para mostrar el sitio a la carrera. **No es
+parte de la entrega**: se desmonta al pasar a la cuenta central.
+
+| | Valor |
+|---|---|
+| URL | `https://bioing.bioodev.work` (dominio propio del Worker; `workers.dev` desactivado) |
+| Worker | `bioing-web-qa` (`env.qa`), cuenta personal del proveedor |
+| Indexación | `noindex` (regla temporal en `public/_headers`) |
+| Publicado | 2026-10-11, con el contenido sintético `sint-*` del equipo local |
+
+**Publicar o actualizar** (desde `app/web`, con `wrangler login` en la cuenta personal):
+```sh
+echo 'SITE_URL=https://bioing.bioodev.work' > .env    # una vez; .env está en .gitignore
+npm run build && npm run postbuild
+npx wrangler deploy --env qa --domain bioing.bioodev.work
+```
+Usar **siempre** el `--domain`. El dominio no está en `wrangler.jsonc` a propósito (no se mete el dominio
+del proveedor en la configuración de la entrega). `npm run deploy:dev` no lo lleva: sirve para la cuenta
+central.
+
+**Desmontar al migrar** (antes o justo después de la etapa 3):
+1. `npx wrangler delete --env qa` **con la sesión de la cuenta personal** (`wrangler whoami` antes). Borra el
+   Worker y su dominio propio. El comodín DNS de `bioodev.work` sigue igual.
+2. Quitar de `public/_headers` el bloque `https://bioing.bioodev.work/*` (marcado TEMPORAL).
+3. Cambiar `SITE_URL` en `app/web/.env` por la URL de QA de la cuenta central (o borrar el `.env`).
+4. `npx wrangler logout` y `npx wrangler login` con la cuenta central (ventana privada).
+5. Avisar a la carrera de la URL nueva de QA.
+
 ## Etapa 0 — Visto bueno de la carrera (antes de crear nada)
 
 - [ ] **(persona)** Confirmar por escrito (correo o mensaje) el **nombre del correo** de la cuenta central.

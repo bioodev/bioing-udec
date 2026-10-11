@@ -68,14 +68,15 @@ Si `whoami` responde `Not logged in` (token caducado), repetir `wrangler login`.
 el JSON-LD. Si se olvida, el build queda apuntando a `https://bioing.example` y el ambiente sirve metadatos
 incorrectos.
 
-Opción A — archivo local (recomendada; `app/web/.env` está en `.gitignore`):
+Opción A — archivo local (recomendada; `app/web/.env` está en `.gitignore`; `astro.config.mjs` lo lee con
+`loadEnv` de Vite desde el 2026-10-11 — antes se ignoraba en silencio):
 
 ```sh
 cd app/web
 echo 'SITE_URL=https://bioing-web-qa.<subdominio>.workers.dev' > .env
 ```
 
-Opción B — solo para un comando:
+Opción B — solo para un comando (la variable del entorno gana sobre `.env`):
 
 ```sh
 SITE_URL=https://bioing-web-qa.<subdominio>.workers.dev npm run deploy:dev

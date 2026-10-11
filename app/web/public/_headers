@@ -27,3 +27,7 @@
 # dominio definitivo (el patrón no lo alcanza), así que puede quedarse igual.
 https://*.workers.dev/*
   X-Robots-Tag: noindex
+# TEMPORAL — vista previa personal del proveedor (cuenta Cloudflare personal, fuera de la entrega).
+# Quitar al migrar a la cuenta central: docs/plans/2026-10-11-plan-ambientes-qa-produccion.md, "Etapa P".
+https://bioing.bioodev.work/*
+  X-Robots-Tag: noindex
