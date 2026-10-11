@@ -33,7 +33,7 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)
 
-- [`planes/`](plans/) — planes de ejecución por hito (`YYYY-MM-DD-plan-tema.md`).
+- [`plans/`](plans/) — planes de ejecución por hito (`YYYY-MM-DD-plan-tema.md`).
 - [`analisis/`](analisis/) — wireframes acordados, comparativa EmDash y evaluación de Tolaria.
 - [`biotech-imgs-demo/`](biotech-imgs-demo/) — fotos originales (Unsplash) usadas como material de prueba; la
   versión optimizada que usa el sitio está en `app/web/src/assets/media/`.

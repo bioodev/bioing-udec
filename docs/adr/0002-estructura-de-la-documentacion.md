@@ -26,7 +26,7 @@ documentos *evergreen* por tema.
   - Evergreen (sin fecha, se actualizan en sitio): `README.md` (índice), `context.md` (propósito, alcance y
     glosario canónico), `architecture.md` (estado actual del sistema), `design.md` (UI/UX: referencia +
     implementación).
-  - Fechados: `planes/YYYY-MM-DD-plan-tema.md` y `analisis/YYYY-MM-DD-tema.md`.
+  - Fechados: `plans/YYYY-MM-DD-plan-tema.md` y `analisis/YYYY-MM-DD-tema.md`.
   - Decisiones: `adr/NNNN-titulo-kebab-case.md` con Estado, Contexto, Decisión, Consecuencias y Alternativas.
   - Referencia operativa vigente: `pendientes-infra.md`, `preguntas-reunion.md`, `bitacora.md`, y las
     propuestas y documentos originales de la carrera (`propuesta-*.md/.pdf/.docx`).
