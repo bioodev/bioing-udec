@@ -1,0 +1,23 @@
+---
+import CaretRight from 'phosphor-astro/CaretRight.astro';
+import type { Miga } from '@/lib/schema';
+
+// Migas visibles. Las mismas rutas viajan al JSON-LD (BreadcrumbList) con `migas()` en schema.ts.
+interface Props { items: Miga[] }
+const { items } = Astro.props;
+---
+<nav aria-label="Migas de pan" class="text-sm text-muted-foreground">
+  <ol class="flex flex-wrap items-center gap-1.5">
+    {items.map((item, i) => {
+      const actual = i === items.length - 1;
+      return (
+        <li class="flex items-center gap-1.5">
+          {i > 0 && <CaretRight class="size-3.5 shrink-0" aria-hidden="true" />}
+          {actual
+            ? <span aria-current="page" class="text-foreground">{item.name}</span>
+            : <a href={item.url} class="hover:text-primary hover:underline">{item.name}</a>}
+        </li>
+      );
+    })}
+  </ol>
+</nav>

@@ -2,7 +2,7 @@
 
 > Para opencode. TDD en la lógica pura (filtros/orden) con su `*.test.ts`; UI se valida con build. Casillas `- [ ]`.
 
-**Meta:** aplicar el feedback de la reunión capturado en `docs/analisis/2026-10-11-docs/analisis/2026-10-11-wireframes.md`: hero en carrusel, tarjetas de actividad completas, orden y etiquetas en Noticias, pestañas en Agenda y comboboxes en filtros largos. Guía visual: `docs/design.md`. Referencia: farmacia.udec.cl.
+**Meta:** aplicar el feedback de la reunión capturado en `docs/analisis/2026-10-11-wireframes.md`: hero en carrusel, tarjetas de actividad completas, orden y etiquetas en Noticias, pestañas en Agenda y comboboxes en filtros largos. Guía visual: `docs/design.md`. Referencia: farmacia.udec.cl.
 
 ## Resultado (ejecutado 2026-10-11, opencode en worktree `rediseno-v2`)
 
@@ -19,16 +19,16 @@
   `app/web/src/lib/filtro-noticias.ts` (+ `.test.ts`), `app/web/src/lib/filtro-agenda.ts` (+ `.test.ts`).
   **No edites** `Base.astro`, `astro.config.mjs`, `package.json`, `404.astro`, `buscar.astro`, `public/_headers/_redirects/robots.txt`, `wrangler.jsonc`.
 - Usa componentes Starwind ya instalados (`combobox`, `select`, `card`, `badge`, `sheet`). Sin dependencias nuevas. Íconos Phosphor. Textos en español.
-- No commitees `CLAUDE.md` ni `AGENTS.md`. Leer antes: `app/web/AGENTS.md`, `docs/context.md`, `docs/analisis/2026-10-11-docs/analisis/2026-10-11-wireframes.md` (fuente de verdad del diseño), `docs/context.md`.
+- No commitees `CLAUDE.md` ni `AGENTS.md`. Leer antes: `app/web/AGENTS.md`, `docs/context.md`, `docs/analisis/2026-10-11-wireframes.md` (fuente de verdad del diseño), `docs/context.md`.
 - Mantén la convención: en colecciones con `publicado` usar helpers de `contenido.ts`, no `getCollection` directo. Commits en español, imperativo, uno por tarea.
 
 ## Tareas
-- [ ] **T1 — Hero en carrusel (Inicio).** `HeroCarrusel.astro`: recibe los Banners vigentes y muestra un slide por banner (imagen a sangre + título + bajada + botón "Conoce más"), autoplay con pausa al hover, flechas, puntos, accesible por teclado y `prefers-reduced-motion`. En `index.astro`, reemplaza el bloque de banner único por el carrusel. Si no hay banners vigentes, no renderiza hero. Verifica con build + revisión.
-- [ ] **T2 — Tarjeta de actividad completa.** `TarjetaActividad.astro`: imagen, [tipo], título, 📅 fecha · 🕒 hora, 📍 lugar/modalidad, 👤 organizador(es), descripción corta (del cuerpo markdown, soporta emojis), y botón "Más información ↗" (usa `enlace_inscripcion` si existe). Reutilizable en Inicio y Agenda. Mantener accesible.
-- [ ] **T3 — Etiquetas (tags) en Noticias.** En `content.config.ts` añade a `noticias` el campo `etiquetas: z.array(z.string()).optional()` (tags de texto libre; Categoría sigue siendo `temas`). Refleja el campo en `public/admin/config.yml` (lista de strings, `required: false`). Muestra categoría (Tema) y tags en `TarjetaNoticia.astro` y permite filtrar por tag. Valida `config.yml` (JSON Schema + cargar `/admin/`).
-- [ ] **T4 — Orden en Noticias.** En `filtro-noticias.ts` añade función pura de orden: `recientes` (por fecha desc, por defecto), `antiguas` (fecha asc), `alfabetico` (título localeCompare 'es'), `relevancia` (solo con búsqueda activa; si no, cae a recientes). Test primero (`filtro-noticias.test.ts`). En `noticias/index.astro` añade el control "Ordenar por" (Select) y el filtro por tag (Combobox) además de los existentes.
-- [ ] **T5 — Pestañas en Agenda.** En `agenda/index.astro`: pestañas Todos / Próximos / Pasados con conteo, buscador y filtro por tipo (Combobox). Lógica pura de partición/cuenta en `filtro-agenda.ts` con test. Próximos ascendente, pasados descendente.
-- [ ] **T6 — Comboboxes en filtros largos.** Cambiar a `Combobox` de Starwind los selectores de lista larga: Directorio (Generación, Área, Organización), Noticias (Categoría, Tag), Repositorio (Tema). Dejar `Select` en listas cortas (Año, Tipo de actividad, Tipo de documento, "Ordenar por"). Mantener accesibilidad y el filtrado en cliente existente.
+- [x] **T1 — Hero en carrusel (Inicio).** `HeroCarrusel.astro`: recibe los Banners vigentes y muestra un slide por banner (imagen a sangre + título + bajada + botón "Conoce más"), autoplay con pausa al hover, flechas, puntos, accesible por teclado y `prefers-reduced-motion`. En `index.astro`, reemplaza el bloque de banner único por el carrusel. Si no hay banners vigentes, no renderiza hero. Verifica con build + revisión.
+- [x] **T2 — Tarjeta de actividad completa.** `TarjetaActividad.astro`: imagen, [tipo], título, 📅 fecha · 🕒 hora, 📍 lugar/modalidad, 👤 organizador(es), descripción corta (del cuerpo markdown, soporta emojis), y botón "Más información ↗" (usa `enlace_inscripcion` si existe). Reutilizable en Inicio y Agenda. Mantener accesible.
+- [x] **T3 — Etiquetas (tags) en Noticias.** En `content.config.ts` añade a `noticias` el campo `etiquetas: z.array(z.string()).optional()` (tags de texto libre; Categoría sigue siendo `temas`). Refleja el campo en `public/admin/config.yml` (lista de strings, `required: false`). Muestra categoría (Tema) y tags en `TarjetaNoticia.astro` y permite filtrar por tag. Valida `config.yml` (JSON Schema + cargar `/admin/`).
+- [x] **T4 — Orden en Noticias.** En `filtro-noticias.ts` añade función pura de orden: `recientes` (por fecha desc, por defecto), `antiguas` (fecha asc), `alfabetico` (título localeCompare 'es'), `relevancia` (solo con búsqueda activa; si no, cae a recientes). Test primero (`filtro-noticias.test.ts`). En `noticias/index.astro` añade el control "Ordenar por" (Select) y el filtro por tag (Combobox) además de los existentes.
+- [x] **T5 — Pestañas en Agenda.** En `agenda/index.astro`: pestañas Todos / Próximos / Pasados con conteo, buscador y filtro por tipo (Combobox). Lógica pura de partición/cuenta en `filtro-agenda.ts` con test. Próximos ascendente, pasados descendente.
+- [x] **T6 — Comboboxes en filtros largos.** Cambiar a `Combobox` de Starwind los selectores de lista larga: Directorio (Generación, Área, Organización), Noticias (Categoría, Tag), Repositorio (Tema). Dejar `Select` en listas cortas (Año, Tipo de actividad, Tipo de documento, "Ordenar por"). Mantener accesibilidad y el filtrado en cliente existente.
 
 ## Cierre
-- [ ] `npm test` verde (incluye tests nuevos), `npx astro check` 0/0, `npm run build`. Commits por tarea en `rediseno-v2`. Reporta en una línea qué quedó y cualquier decisión tomada.
+- [x] `npm test` verde (incluye tests nuevos), `npx astro check` 0/0, `npm run build`. Commits por tarea en `rediseno-v2`. Reporta en una línea qué quedó y cualquier decisión tomada.
