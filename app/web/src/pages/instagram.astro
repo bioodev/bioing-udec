@@ -16,9 +16,12 @@ const publicaciones = await publicacionesInstagram();
     </p>
 
     {publicaciones.length > 0 ? (
-      <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {publicaciones.map((p) => <PublicacionInstagram publicacion={p} />)}
-      </div>
+      <>
+        <h2 class="sr-only">Publicaciones seleccionadas</h2>
+        <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {publicaciones.map((p) => <PublicacionInstagram publicacion={p} />)}
+        </div>
+      </>
     ) : (
       <p class="mt-8 text-muted-foreground">Aún no hay publicaciones seleccionadas.</p>
     )}
