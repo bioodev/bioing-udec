@@ -4,6 +4,11 @@
 
 **Meta:** dejar el sitio "listo para publicar" en lo que no depende de cuentas: 404, encabezados de seguridad, SEO (sitemap + Open Graph), buscador general (Pagefind) y config de servir en Cloudflare. Base: `docs/superpowers/plans/2026-10-11-hito-4-produccion.md` (Fase A, tareas A1–A3, A5) y `docs/propuesta-desarrollo.md` §3.
 
+## Resultado (ejecutado 2026-10-11, opencode en worktree `faseA-infra-seo`)
+
+**COMPLETADO y validado.** Commits: 404 + encabezados de seguridad · SEO (sitemap, canonical, OG) · buscador Pagefind · config Cloudflare. Extras: `scripts/postbuild-pagefind.mjs` y `src/assets/og-default.png` (placeholder 1200×630). Verificación en `develop` combinado: `npm test` 69 ✓ · `astro check` 0/0 · `build` 30 páginas · sitemap sin `/admin` ni `/componentes` · Pagefind 30 páginas indexadas.
+**Notas del agente:** `SITE_URL` por defecto `https://bioing.example` hasta fijar el dominio real (Fase C); si el preview de Sveltia necesita enmarcar páginas públicas, revisar `frame-ancestors`/XFO en la Fase C.
+
 ## Restricciones (IMPORTANTES)
 - Rama de trabajo: **`faseA-infra-seo`**. Carpeta: `app/web`.
 - **Toca SOLO estos archivos** (para no chocar con el otro workstream):

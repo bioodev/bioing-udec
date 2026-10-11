@@ -30,6 +30,8 @@ El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase 
 
 ## FASE A — Producción en código (sin cuentas) — SE HACE YA
 
+> **Estado (2026-10-11):** A1, A2, A3 y A5 **hechas** (ver `2026-10-11-faseA-infra-seo.md`) e integradas en `develop`. En paralelo se ejecutó el **rediseño v2** de los wireframes (ver `2026-10-11-rediseno-v2.md`). **Pendientes de la Fase A:** A4 (optimización de imágenes al subir en `config.yml`) y A6 (auditoría A11y/Lighthouse). A7 (limpiar ejemplo) queda para el final.
+
 ### Tarea A1: Página 404, encabezados de seguridad y redirecciones
 
 **Archivos:** crear `app/web/src/pages/404.astro`, `app/web/public/_headers`, `app/web/public/_redirects`.
