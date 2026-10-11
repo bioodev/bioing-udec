@@ -212,7 +212,7 @@ sin que la persona editora escriba HTML.
 
 | Elemento | Estado | Cómo |
 |---|---|---|
-| **Imágenes en el texto** | Soportado por Astro, **sin comprobar en este repositorio** | Astro optimiza las imágenes locales de Markdown cuando la ruta es relativa o usa un alias de importación (`src/assets/…`); el panel escribe `@/assets/media/…` (`public_folder` global de `config.yml`). Ningún `.md` de `src/content/` usa todavía `![…]`. **Verificar** creando una noticia de prueba con una imagen en el cuerpo y revisando en `dist/` que salga una versión optimizada. |
+| **Imágenes en el texto** | Funciona (comprobado el 2026-10-11) | El editor del panel inserta `![alt](@/assets/media/…)` (`public_folder` global de `config.yml`) y Astro la optimiza a WebP con `width`/`height` y `loading="lazy"`. Los datos sintéticos incluyen imágenes en el cuerpo para verlo. |
 | **Emojis** | Funciona | Son Unicode y no necesitan configuración. Regla de accesibilidad: un emoji nunca es el único portador de un significado; acompañarlo con texto. |
 | **Video (YouTube)** | Ya existe como campo | Noticias tiene el campo `video` y se muestra con `VideoModal` debajo del cuerpo. Para incrustar un video *dentro* del texto, ver la propuesta de componente de editor más abajo. |
 | **PDF** | Parcial | Para Documentos, `src/lib/enlaces.ts` (`vistaPreviaDrive`) convierte el enlace de Drive en vista previa (`src/pages/repositorio/[id].astro`). Un PDF propio (R2) **no está implementado**. |

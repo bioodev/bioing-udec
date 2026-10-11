@@ -142,7 +142,7 @@ organizaciones.
 6. Vincula **Personas mencionadas** y **Organizaciones mencionadas**. Solo se pueden elegir entradas que ya
    existen: si falta alguna, créala antes (ver §4.8 y §4.9).
    _(por verificar en el panel: crear una Persona nueva desde la misma Noticia, sin salir de ella)._
-7. Si la Noticia es la cobertura de una Actividad ya realizada, elígala en **Actividad que cubre**. Si
+7. Si la Noticia es la cobertura de una Actividad ya realizada, elígela en **Actividad que cubre**. Si
    corresponde a una publicación de Instagram, elígela en **Publicación de Instagram relacionada**.
 8. Opcional: en **Video (YouTube)** pega el enlace del video (solo YouTube; se muestra debajo del cuerpo, en una
    ventana que se abre al hacer clic). En **Galería de imágenes** agrega hasta 12 imágenes; cada una lleva su

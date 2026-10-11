@@ -31,7 +31,8 @@ const DEMO_ALT = {
 const VIDEOS = ['https://www.youtube.com/watch?v=yLxPo7uBv-Q', 'https://www.youtube.com/watch?v=SyYaQjP3MoU', 'https://youtu.be/mO-W-WL7Alk'];
 const EMOJIS = ['🧬', '🔬', '🌊', '🧪'];
 const ETIQUETAS = ['biomateriales', 'acuicultura', 'bioprocesos', 'salud pública', 'medio ambiente', 'industria alimentaria', 'innovación', 'egresados', 'investigación', 'vinculación'];
-const SUJETOS_NOTICIA = ['Estudiantes de Bioingeniería', 'El laboratorio de biomateriales', 'Egresados de la carrera', 'Un equipo de la FCB', 'Investigadores de la UdeC', 'La carrera de Bioingeniería'];
+// En singular: los verbos de VERBOS_NOTICIA van en tercera persona singular.
+const SUJETOS_NOTICIA = ['Un grupo de estudiantes de Bioingeniería', 'El laboratorio de biomateriales', 'Una egresada de la carrera', 'Un equipo de la FCB', 'Un equipo de investigación de la UdeC', 'La carrera de Bioingeniería'];
 const VERBOS_NOTICIA = ['presentó', 'consolidó', 'publicó', 'obtuvo', 'celebró', 'lanzó'];
 const OBJETOS_NOTICIA = ['avances en hidrogeles para heridas', 'un estudio sobre cultivos de salmónidos', 'un proyecto de envases biodegradables', 'resultados sobre fermentación industrial', 'una nueva línea de biosensores', 'un programa de tutorías para primer año', 'una jornada de vinculación con la industria alimentaria', 'su primera patente en bioprocesos'];
 const CIERRES_NOTICIA = ['', ' en la Región del Biobío', ' con fondos concursables', ' durante 2026'];
