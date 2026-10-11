@@ -22,7 +22,8 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 
 ## Build y despliegue (Cloudflare)
 
-- [ ] `wrangler.jsonc` para servir `app/web/dist` como assets estáticos (o Cloudflare Pages si el dominio tuviera DNS externo).
+- [x] `wrangler.jsonc` para servir `app/web/dist` como assets estáticos (o Cloudflare Pages si el dominio tuviera DNS externo). _Hecho; con 404 propio (`not_found_handling: "404-page"`) desde el 2026-10-11._
+- [ ] **Ambiente de desarrollo en Cloudflare** (no depende de la carrera): `npm run deploy:dev` desde `app/web` con una cuenta propia (plan gratuito) → `https://bioing-web.<cuenta>.workers.dev`, con `SITE_URL` apuntando a esa URL y `noindex` en `_headers`. _Preparado 2026-10-11; falta la sesión de `wrangler login` y decidir si el proveedor lo mantiene hasta la Fase C (el panel no inicia sesión desde ahí: sirve para ver y revisar el sitio)._
 - [ ] Workers Builds conectado al repositorio de GitHub: build y deploy en cada push a `main`.
 - [ ] Reconstrucción diaria poco después de las 00:00 **de Chile** (≈ 04:00 UTC en invierno, 03:00 UTC en verano; p. ej. `15 4 * * *`), no a las 00:00 UTC, o un Anuncio vencido seguiría visible hasta ~21 horas.
 - [ ] Avisos por correo ante fallas de build. Si el build registra `Invalid content reference`, avisar sin fallar (el sitio ya descarta esas referencias y un build caído congela Agenda y Anuncios).

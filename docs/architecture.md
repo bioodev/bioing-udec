@@ -166,6 +166,14 @@ shaders WebGL y la textura halftone por rendimiento y por decisión del equipo.
   `npm run build`, `npm run postbuild`, `npm run preview`, `npm run datos:generar`/`datos:limpiar`,
   `npm run verificar:jsonld`, `npm run dev:tunel`.
 - **Pagefind y verificar:jsonld** solo existen sobre `dist/`: con npm 11, `postbuild` no se dispara solo.
+- **Ambiente de desarrollo en Cloudflare** (sin depender de la carrera): `npm run deploy:dev`
+  (`build` + `postbuild` + `wrangler deploy`) publica en `https://<name>.<cuenta>.workers.dev`. Antes de
+  construir, fijar `SITE_URL` con esa URL para que canonical, sitemap, `robots.txt`/`llms.txt`, feeds y
+  JSON-LD apunten ahí. `wrangler.jsonc` sirve el 404 propio (`assets.not_found_handling: "404-page"`) y
+  `_headers` marca `*.workers.dev` como `noindex` (el patrón no alcanza al dominio definitivo). Requiere
+  sesión de `wrangler login` o `CLOUDFLARE_API_TOKEN`. **El panel (`/admin/`) no inicia sesión desde ese
+  origen** (necesita el repositorio y CORS/PKCE de la Fase C): el ambiente dev es para ver y revisar el
+  sitio, no para editar contenido.
 - **Publicación**: cada cambio en el repositorio dispara build + deploy en Cloudflare; una reconstrucción
   diaria poco después de medianoche de Chile actualiza lo que depende de la fecha.
 - **Contenido de prueba**: `npm run datos:generar` crea contenido `sint-*` (ignorado por git) y

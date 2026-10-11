@@ -25,6 +25,7 @@ npm run build             # sitio estático en dist/
 npm run postbuild         # índice de Pagefind (npm 11 NO lo dispara solo: correr ambos juntos)
 npm run preview           # sirve dist/ en localhost:4322 (el buscador /buscar solo existe aquí)
 npm run verificar:jsonld  # valida el JSON-LD del build
+npm run deploy:dev        # build + postbuild + deploy a Cloudflare (*.workers.dev; requiere wrangler login)
 npm run datos:generar     # contenido sintético de prueba (sint-*, ignorado por git)
 npm run datos:limpiar     # borra solo el contenido sint-
 npm run dev:tunel         # expone el dev por cloudflared (revisión desde el celular)

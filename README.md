@@ -47,7 +47,8 @@ npm run preview      # sirve dist/ (con buscador) → http://localhost:4322
 ```sh
 npx astro check          # tipos y esquemas de contenido (objetivo: 0 errores)
 npm test                 # Vitest: reglas puras en src/lib/*.test.ts
-npm run verificar:jsonld # valida el JSON-LD generado en dist/
+npm run verificar:jsonld  # valida el JSON-LD generado en dist/
+npm run deploy:dev       # build + postbuild + deploy a Cloudflare (ambiente de desarrollo, *.workers.dev)
 npm run datos:generar    # contenido sintético de prueba (prefijo sint-), ignorado por git
 npm run datos:limpiar    # borra solo el contenido sint-
 npm run dev:tunel        # expone el dev en una URL pública de cloudflared (para celular/sharing)
