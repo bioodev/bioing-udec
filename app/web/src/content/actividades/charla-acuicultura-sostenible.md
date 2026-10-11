@@ -5,7 +5,7 @@ tipo: charla
 inicio: 2026-06-12T17:00:00-04:00
 modalidad: hibrida
 lugar: Sala 201, FCB
-imagen: ../../assets/media/demo-05.jpg
+imagen: '@/assets/media/demo-05.jpg'
 organizadores:
   - tipo: persona
     persona: profesora-lopez

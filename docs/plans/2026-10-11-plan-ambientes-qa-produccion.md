@@ -180,7 +180,7 @@ checks, porque eso bloquearía las publicaciones del panel, que hace commits dir
       `base_url: https://sveltia-cms-auth.<sub>.workers.dev`. Validar con el JSON Schema de Sveltia y cargando
       `/admin/` (ver `AGENTS.md`).
 - [ ] Probar desde **producción** (`bioing-web.<sub>.workers.dev/admin/`): iniciar sesión, subir una imagen
-      (ruta `../../assets/media/…`), "Agregar Persona" desde una Noticia (mismo commit). Son las pruebas de C6
+      (ruta `@/assets/media/…`), "Agregar Persona" desde una Noticia (mismo commit). Son las pruebas de C6
       que hoy están pendientes.
 
 **Ojo con el panel en QA.** El `config.yml` es el mismo en los dos ambientes y escribe en `main`: lo que se

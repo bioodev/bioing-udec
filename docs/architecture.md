@@ -128,8 +128,10 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 
 ## 7. Imágenes y medios
 
-- Las imágenes del sitio viven en `app/web/src/assets/media/` y se referencian con ruta relativa
-  (`../../assets/media/…`) para que `image()` las optimice; se publican con `<Image>` (o `getImage`) con
+- Las imágenes del sitio viven en `app/web/src/assets/media/` y se referencian con el alias del tsconfig
+  (`'@/assets/media/…'`, entre comillas en YAML) para que `image()` las optimice. Es el `public_folder` global
+  de `config.yml`; las colecciones no lo redefinen (Sveltia ignoraba la ruta relativa por colección y
+  escribía `/media/…`, que rompía el build); se publican con `<Image>` (o `getImage`) con
   `widths`/`sizes`. El **hero** (slide 0) va con `priority` y un `<link rel="preload">` del LCP; el resto
   carga `lazy`. Mantener estos atributos al agregar imágenes.
 - Al **subir** desde el panel, `config.yml` reduce a 2048 px, convierte a WebP calidad 85 y acepta HEIC.

@@ -51,7 +51,6 @@ function yaml(obj, sangria = '') {
   }).join('');
 }
 function escalar(v) {
-  if (typeof v === 'string' && v.startsWith('../../assets/')) return v; // rutas de imagen sin comillas, como Sveltia
   return typeof v === 'string' ? JSON.stringify(v) : String(v);
 }
 function escribir(coleccion, id, datos, cuerpo) {
@@ -151,7 +150,7 @@ function generar() {
       expositores: algunos(personas, 0, 3),
       areas: algunos(areas, 1, 2),
       enlace_inscripcion: quizas(0.5, 'https://forms.gle/ejemplo'),
-      imagen: `../../assets/media/${alguno(DEMOS)}`,
+      imagen: `@/assets/media/${alguno(DEMOS)}`,
     }, cuerpo(2));
   }
 
@@ -164,7 +163,7 @@ function generar() {
     const cobertura = quizas(0.25, pasadas.length ? alguno(pasadas).id : undefined);
     escribir('noticias', id, {
       titulo, fecha: fechaSola(fecha), publicado: en.datatype.boolean({ probability: 0.95 }),
-      imagen: `../../assets/media/${alguno(DEMOS)}`,
+      imagen: `@/assets/media/${alguno(DEMOS)}`,
       bajada: quizas(0.8, en.lorem.sentence({ min: 10, max: 20 })),
       temas: algunos(temas, 1, 2), areas: algunos(areas, 0, 2),
       personas_mencionadas: algunos(personas, 0, 4),
@@ -222,7 +221,7 @@ function generar() {
     const diasFin = vigente ? en.number.int({ min: 30, max: 150 }) : i % 2 === 0 ? 40 : -10;
     escribir('banners', id, {
       titulo, publicado: true, texto,
-      imagen: `../../assets/media/${alguno(imagenesBanner)}`,
+      imagen: `@/assets/media/${alguno(imagenesBanner)}`,
       enlace,
       inicio: fechaHora(dias(diasVigencia), 0),
       fin: fechaHora(dias(diasFin), 23),

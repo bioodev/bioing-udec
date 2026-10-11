@@ -1,6 +1,6 @@
 titulo: Admisión 2027
 publicado: true
-imagen: ../../assets/media/demo-01.jpg
+imagen: '@/assets/media/demo-01.jpg'
 enlace: https://admision.udec.cl
 inicio: 2027-01-01T00:00:00-03:00
 fin: 2027-03-31T23:59:00-03:00

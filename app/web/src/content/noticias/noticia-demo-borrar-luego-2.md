@@ -2,7 +2,7 @@
 titulo: Noticia demo borrar luego 2
 fecha: 2026-10-11
 publicado: true
-imagen: /media/dmitriy-suponnikov-_-1zQPK8tMc-unsplash.webp
+imagen: '@/assets/media/dmitriy-suponnikov-_-1zQPK8tMc-unsplash.webp'
 imagen_alt: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
 bajada: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 temas:
@@ -27,9 +27,9 @@ organizaciones_mencionadas:
 instagram: publicacion-udec
 video: https://youtu.be/mO-W-WL7Alk
 galeria:
-  - imagen: /media/demo-03.jpg
+  - imagen: '@/assets/media/demo-03.jpg'
     alt: test
-  - imagen: /media/demo-01.jpg
+  - imagen: '@/assets/media/demo-01.jpg'
     alt: demo
 ---
 

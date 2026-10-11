@@ -2,7 +2,7 @@
 titulo: Charla de acuicultura sostenible convocó a más de 80 estudiantes
 fecha: 2026-06-15
 publicado: true
-imagen: ../../assets/media/ejemplo-verde.png
+imagen: '@/assets/media/ejemplo-verde.png'
 temas:
   - logros
 personas_mencionadas:

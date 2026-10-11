@@ -73,7 +73,7 @@ El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase 
 
 - [x] Activar `media_libraries.all.transformations`: formato **WebP**, máximo **2048 px**, **calidad 85**; aceptar HEIC. (El schema de Sveltia no admite `all.config`; Sveltia elimina metadatos EXIF/GPS al transformar; confirmar en la prueba de la Fase C.)
 - [x] Validar `config.yml` de las dos formas de `AGENTS.md`: contra el JSON Schema de Sveltia y cargando `/admin/` (servir `public`); la pantalla de login aparece sin errores de consola.
-- [ ] **Nota:** la prueba real de subida (ruta `../../assets/media/…`, EXIF borrado) queda en la Fase C (necesita login real al repositorio). Aquí solo se deja la configuración.
+- [ ] **Nota:** la prueba real de subida (ruta `@/assets/media/…`, EXIF borrado) queda en la Fase C (necesita login real al repositorio). Aquí solo se deja la configuración.
 
 ### Tarea A5: Configuración de publicación en Cloudflare (sin desplegar)
 
@@ -198,7 +198,7 @@ Para cada requisito: **qué entrega la carrera · cómo lo verifica el proveedor
 ### C6: Carga inicial y pruebas en el admin real  _(requiere B6, B7, B8 y C1–C4)_
 - [ ] **Paso 1:** importar el listado de egresados/as (planilla → entradas de `personas`, solo datos autorizados).
 - [ ] **Paso 2:** carga inicial del resto por el Encargado durante la capacitación, con apoyo del proveedor.
-- [ ] **Paso 3 (prueba imagen):** subir una imagen desde Sveltia → la ruta queda `../../assets/media/…` (si no, ajustar `media_folder`/`public_folder`) y se eliminan EXIF/GPS (verifica A4).
+- [ ] **Paso 3 (prueba imagen):** subir una imagen desde Sveltia → la ruta queda `@/assets/media/…` y se eliminan EXIF/GPS (verifica A4).
 - [ ] **Paso 4 (prueba relación):** "Agregar Persona" desde una Noticia queda en el **mismo commit** que la Noticia.
 - [ ] **Paso 5 (aceptación Hito 4):** el Encargado publica un contenido **de principio a fin sin ayuda**.
 - [ ] **Paso 6:** cargar `_redirects` con las URLs del sitio antiguo que entregue la carrera (A1).

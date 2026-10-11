@@ -70,6 +70,9 @@ levantar): no detecta cientos de archivos nuevos de una vez.
 - **`config.yml` se valida de dos formas**: contra el JSON Schema de Sveltia
   (`https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json`) y cargando `/admin/` (p. ej.
   `python3 -m http.server` en `app/web/public`).
+- **Rutas de imagen**: `'@/assets/media/…'` (alias del tsconfig, con comillas en YAML), que es el `public_folder` global
+  de `config.yml`. No redefinir `media_folder`/`public_folder` por colección con la misma carpeta: Sveltia lo
+  ignora y escribe la ruta global.
 - **Una referencia rota no rompe el build**: se registra como `[ERROR] [content] Invalid content reference` y
   la página la descarta (`existentes()`); revisar la salida del build para limpiarla.
 - **`/componentes` solo existe en `npm run dev`**; `/admin/` y el buscador de Pagefind, solo sobre el build.

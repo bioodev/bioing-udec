@@ -10,10 +10,12 @@ backend:
   # token de acceso" (fine-grained PAT con Contents: Read and write sobre este repo). En la Etapa 4 del plan
   # de ambientes pasa a <org>/<repo> con base_url del Worker sveltia-cms-auth (OAuth).
 
-# Imágenes en src/assets para que Astro las optimice (image()). Las colecciones con imágenes
-# declaran public_folder relativo a su carpeta de contenido (src/content/<colección>/).
+# Imágenes en src/assets para que Astro las optimice (image()). La ruta pública usa el alias `@/` del
+# tsconfig (`@/assets/media/…`), que image() resuelve. No declarar media_folder/public_folder por colección
+# con la misma carpeta: Sveltia asigna el archivo a la carpeta global y escribe la ruta global igual.
+# (El public_folder global no puede ser relativo, `../../…`; con `@` sí se permite.)
 media_folder: /app/web/src/assets/media
-public_folder: /media # no se usa: cada colección con imágenes lo sobrescribe
+public_folder: '@/assets/media'
 
 media_libraries:
   all:
@@ -41,8 +43,6 @@ collections:
     label: Personas
     label_singular: Persona
     folder: /app/web/src/content/personas
-    media_folder: /app/web/src/assets/media
-    public_folder: ../../assets/media
     format: yml
     identifier_field: nombre
     summary: '{{nombre}}'
@@ -102,8 +102,6 @@ collections:
     label: Organizaciones
     label_singular: Organización
     folder: /app/web/src/content/organizaciones
-    media_folder: /app/web/src/assets/media
-    public_folder: ../../assets/media
     format: yml
     identifier_field: nombre
     summary: '{{nombre}} ({{tipo}})'
@@ -127,8 +125,6 @@ collections:
     label: Noticias
     label_singular: Noticia
     folder: /app/web/src/content/noticias
-    media_folder: /app/web/src/assets/media
-    public_folder: ../../assets/media
     identifier_field: titulo
     summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
     fields:
@@ -185,8 +181,6 @@ collections:
     label: Agenda
     label_singular: Actividad
     folder: /app/web/src/content/actividades
-    media_folder: /app/web/src/assets/media
-    public_folder: ../../assets/media
     identifier_field: titulo
     summary: "{{titulo}} · {{inicio | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
     fields:
@@ -318,8 +312,6 @@ collections:
     label: Banners
     label_singular: Banner
     folder: /app/web/src/content/banners
-    media_folder: /app/web/src/assets/media
-    public_folder: ../../assets/media
     format: yml
     identifier_field: titulo
     summary: "{{titulo}} · {{inicio | date('YYYY-MM-DD')}} → {{fin | date('YYYY-MM-DD')}}"
@@ -360,8 +352,6 @@ collections:
     label: Instagram
     label_singular: Publicación de Instagram
     folder: /app/web/src/content/instagram
-    media_folder: /app/web/src/assets/media
-    public_folder: ../../assets/media
     format: yml
     identifier_field: titulo
     summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"

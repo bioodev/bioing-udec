@@ -10,6 +10,6 @@ organizadores:
     organizacion: centro-de-estudiantes-bioingenieria
   - tipo: persona
     persona: camila-herrera
-imagen: ../../assets/media/ejemplo-verde.png
+imagen: '@/assets/media/ejemplo-verde.png'
 ---
 Contenido de ejemplo. Borrar cuando haya contenido real.

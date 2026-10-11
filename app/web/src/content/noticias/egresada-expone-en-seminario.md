@@ -2,7 +2,7 @@
 titulo: Egresada expone en seminario de biomateriales
 fecha: 2027-04-12
 publicado: true
-imagen: ../../assets/media/ejemplo-seminario.png
+imagen: '@/assets/media/ejemplo-seminario.png'
 temas:
   - logros
 areas:

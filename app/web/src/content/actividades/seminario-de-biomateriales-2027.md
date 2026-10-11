@@ -14,6 +14,6 @@ expositores:
   - ana-perez
 areas:
   - biomateriales
-imagen: ../../assets/media/ejemplo-seminario.png
+imagen: '@/assets/media/ejemplo-seminario.png'
 ---
 Contenido de ejemplo. Borrar cuando haya contenido real.
