@@ -20,6 +20,7 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
 ---
 <Base titulo="BIOING+">
   {banners.length > 0 && <HeroCarrusel banners={banners} />}
+  {banners.length === 0 && <h1 class="sr-only">BIOING+</h1>}
 
   {noticias.length > 0 && (
     <section class="mx-auto max-w-6xl px-4 py-16">

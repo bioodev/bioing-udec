@@ -175,4 +175,10 @@
     background: var(--background);
     color: var(--foreground);
   }
+  /* Foco visible explícito para enlaces que no definen su propio indicador
+     (los controles Starwind ya usan focus-visible:ring-* con outline-none). */
+  a:focus-visible:not(.outline-none) {
+    outline: 2px solid var(--outline);
+    outline-offset: 2px;
+  }
 }

@@ -9,4 +9,4 @@ const { coleccion, entrada } = Astro.props;
 // Por ahora solo existe la Ficha de Persona (la de Organización está fuera de alcance).
 const href = coleccion === 'personas' && entrada.data.ficha_activa ? `/personas/${entrada.id}` : undefined;
 ---
-{href ? <a href={href} class="text-primary hover:underline">{entrada.data.nombre}</a> : <span>{entrada.data.nombre}</span>}
+{href ? <a href={href} class="text-primary underline underline-offset-2">{entrada.data.nombre}</a> : <span>{entrada.data.nombre}</span>}

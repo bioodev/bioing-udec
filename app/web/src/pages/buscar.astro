@@ -44,9 +44,11 @@ import Base from '@/layouts/Base.astro';
     // Accesibilidad: anuncia los cambios en el conteo de resultados (aria-live).
     const raiz = document.querySelector('#pagefind');
     const observer = new MutationObserver(() => {
-      const conteo = raiz?.querySelector('.pagefind-ui__result-count');
-      if (conteo && !conteo.hasAttribute('aria-live')) conteo.setAttribute('aria-live', 'polite');
+      const mensaje = raiz?.querySelector('.pagefind-ui__message, .pagefind-ui__result-count');
+      if (mensaje && !mensaje.hasAttribute('aria-live')) mensaje.setAttribute('aria-live', 'polite');
     });
-    observer.observe(raiz, { childList: true, subtree: true });
+    // childList+subtree+characterData: Pagefind actualiza el texto del mensaje en su
+    // render de Svelte; el observador reaplica aria-live si el nodo se recrea.
+    observer.observe(raiz, { childList: true, subtree: true, characterData: true });
   });
 </script>

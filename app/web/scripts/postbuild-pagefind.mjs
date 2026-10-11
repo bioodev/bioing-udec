@@ -1,12 +1,25 @@
 // Postbuild: indexa dist/ con Pagefind excluyendo /admin y /componentes (filtro de ruta).
 // Ejecutar tras `astro build` (script package.json: postbuild).
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { createIndex, close } from 'pagefind';
 
 const SITIO = 'dist';
 // Rutas (relativas al sitio) que no deben indexarse.
 const EXCLUIDAS = new Set(['admin', 'componentes']);
+
+// La Sitemap de robots.txt debe ser una URL absoluta (Lighthouse y otros validadores
+// rechazan la relativa). Se deriva de SITE_URL, la misma fuente que astro.config.mjs.
+function reescribirRobotsSitemap() {
+  const ruta = join(SITIO, 'robots.txt');
+  if (!existsSync(ruta)) return;
+  const sitio = (process.env.SITE_URL ?? 'https://bioing.example').replace(/\/$/, '');
+  const actualizado = readFileSync(ruta, 'utf8')
+    .replace(/^Sitemap:\s*\S+.*$/m, `Sitemap: ${sitio}/sitemap-index.xml`);
+  writeFileSync(ruta, actualizado);
+  console.log(`[postbuild] robots.txt: Sitemap → ${sitio}/sitemap-index.xml`);
+}
+reescribirRobotsSitemap();
 
 /** Recorre `dir` (relativo a cwd) y devuelve los .html indexables. */
 function htmlIndexables(dir) {

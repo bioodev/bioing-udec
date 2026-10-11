@@ -1,0 +1,14 @@
+pagina,url,rend_antes,acc_antes,bp_antes,seo_antes,rend_despues,acc_despues,bp_despues,seo_despues
+inicio,/,98,95,100,85,98,100,100,100
+noticias,/noticias,93,100,100,92,95,100,100,100
+noticia-detalle,/noticias/egresada-premio-innovacion,98,100,100,92,98,100,100,100
+agenda,/agenda,93,96,100,85,94,100,100,100
+agenda-detalle,/agenda/charla-acuicultura-sostenible,98,100,100,92,98,100,100,100
+directorio,/directorio,93,100,100,92,97,100,100,100
+ficha-persona,/personas/ana-perez,98,100,100,85,98,100,100,100
+repositorio,/repositorio,98,100,100,92,98,100,100,100
+anuncios,/anuncios,98,100,100,92,97,100,100,100
+bioingenieria,/bioingenieria,98,100,100,92,98,100,100,100
+instagram,/instagram,99,98,100,92,98,100,100,100
+buscar,/buscar,94,100,100,92,95,100,100,100
+404,/404.html,99,100,100,92,99,100,100,100
