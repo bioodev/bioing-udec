@@ -89,61 +89,62 @@ const conteoInicial = contarAgenda(
 
 <script>
   import { coincideActividad, contarAgenda, TODAS, type EstadoActividad } from '@/lib/filtro-agenda';
+  import { sincronizarFiltrosEnUrl } from '@/scripts/url-filtros';
 
-  const form = document.querySelector<HTMLFormElement>('#filtros')!;
-  const texto = document.querySelector<HTMLInputElement>('#texto')!;
-  const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
-  const pestanas = [...document.querySelectorAll<HTMLButtonElement>('[data-estado-filtro]')];
-  const sinResultados = document.querySelector('#sin-resultados')!;
-  let estado: EstadoActividad | typeof TODAS = TODAS;
+  document.addEventListener('astro:page-load', () => {
+    // El listener queda registrado en todas las navegaciones: solo actúa en su propio listado.
+    if (location.pathname.replace(/\/$/, '') !== '/agenda') return;
+    const form = document.querySelector<HTMLFormElement>('#filtros')!;
+    const texto = document.querySelector<HTMLInputElement>('#texto')!;
+    const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
+    const pestanas = [...document.querySelectorAll<HTMLButtonElement>('[data-estado-filtro]')];
+    const sinResultados = document.querySelector('#sin-resultados')!;
+    let estado: EstadoActividad | typeof TODAS = TODAS;
 
-  const datosDe = (li: HTMLLIElement) => ({
-    texto: li.dataset.texto ?? '',
-    tipo: li.dataset.tipo ?? '',
-    estado: (li.dataset.estado ?? 'pasada') as EstadoActividad,
-  });
-
-  function aplicar() {
-    const tipo = (new FormData(form).get('tipo') as string | null) || TODAS;
-    let visibles = 0;
-    for (const li of items) {
-      const ok = coincideActividad(datosDe(li), { texto: texto.value, tipo, estado });
-      li.hidden = !ok;
-      if (ok) visibles++;
-    }
-    const conteo = contarAgenda(items.map(datosDe), { texto: texto.value, tipo });
-    for (const span of [...document.querySelectorAll<HTMLElement>('[data-conteo]')]) {
-      span.textContent = String(conteo[span.dataset.conteo as keyof typeof conteo]);
-    }
-    sinResultados.classList.toggle('hidden', !(items.length > 0 && visibles === 0));
-    for (const p of pestanas) p.setAttribute('aria-pressed', String(p.dataset.estadoFiltro === estado));
-
-    // Los filtros quedan en la URL para compartir el listado filtrado.
-    const url = new URL(location.href);
-    for (const [k, v] of Object.entries({ q: texto.value, tipo, vista: estado === TODAS ? '' : estado })) {
-      if (v && v !== TODAS) url.searchParams.set(k, v); else url.searchParams.delete(k);
-    }
-    history.replaceState(null, '', url);
-  }
-
-  // Estado inicial desde la URL (p. ej. /agenda?tipo=seminario&vista=proxima).
-  const params = new URLSearchParams(location.search);
-  texto.value = params.get('q') ?? '';
-  if (params.get('vista') === 'proxima' || params.get('vista') === 'pasada') estado = params.get('vista')! as EstadoActividad;
-  if (params.get('tipo')) {
-    document.querySelector('#tipo')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tipo') } }));
-  }
-
-  for (const p of pestanas) {
-    p.addEventListener('click', () => {
-      const valor = p.dataset.estadoFiltro ?? TODAS;
-      estado = valor === 'proxima' || valor === 'pasada' ? valor : TODAS;
-      aplicar();
+    const datosDe = (li: HTMLLIElement) => ({
+      texto: li.dataset.texto ?? '',
+      tipo: li.dataset.tipo ?? '',
+      estado: (li.dataset.estado ?? 'pasada') as EstadoActividad,
     });
-  }
-  form.addEventListener('input', () => aplicar());
-  form.addEventListener('change', () => aplicar());
-  // Starwind v3: el Select emite starwind:value-change antes de fijar el valor.
-  form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
-  setTimeout(() => aplicar(), 0);
+
+    function aplicar() {
+      const tipo = (new FormData(form).get('tipo') as string | null) || TODAS;
+      let visibles = 0;
+      for (const li of items) {
+        const ok = coincideActividad(datosDe(li), { texto: texto.value, tipo, estado });
+        li.hidden = !ok;
+        if (ok) visibles++;
+      }
+      const conteo = contarAgenda(items.map(datosDe), { texto: texto.value, tipo });
+      for (const span of [...document.querySelectorAll<HTMLElement>('[data-conteo]')]) {
+        span.textContent = String(conteo[span.dataset.conteo as keyof typeof conteo]);
+      }
+      sinResultados.classList.toggle('hidden', !(items.length > 0 && visibles === 0));
+      for (const p of pestanas) p.setAttribute('aria-pressed', String(p.dataset.estadoFiltro === estado));
+
+      // Los filtros quedan en la URL para compartir el listado filtrado.
+      sincronizarFiltrosEnUrl({ q: texto.value, tipo, vista: estado === TODAS ? '' : estado }, [TODAS]);
+    }
+
+    // Estado inicial desde la URL (p. ej. /agenda?tipo=seminario&vista=proxima).
+    const params = new URLSearchParams(location.search);
+    texto.value = params.get('q') ?? '';
+    if (params.get('vista') === 'proxima' || params.get('vista') === 'pasada') estado = params.get('vista')! as EstadoActividad;
+    if (params.get('tipo')) {
+      document.querySelector('#tipo')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tipo') } }));
+    }
+
+    for (const p of pestanas) {
+      p.addEventListener('click', () => {
+        const valor = p.dataset.estadoFiltro ?? TODAS;
+        estado = valor === 'proxima' || valor === 'pasada' ? valor : TODAS;
+        aplicar();
+      });
+    }
+    form.addEventListener('input', () => aplicar());
+    form.addEventListener('change', () => aplicar());
+    // Starwind v3: el Select emite starwind:value-change antes de fijar el valor.
+    form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
+    setTimeout(() => aplicar(), 0);
+  });
 </script>

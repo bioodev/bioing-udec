@@ -92,68 +92,69 @@ const textoDe = (d: (typeof documentos)[number]) =>
 
 <script>
   import { coincideDocumento, TODOS, type FiltrosRepositorio } from '@/lib/filtro-repositorio';
+  import { sincronizarFiltrosEnUrl } from '@/scripts/url-filtros';
 
-  const form = document.querySelector<HTMLFormElement>('#filtros');
-  if (form) {
-    const texto = document.querySelector<HTMLInputElement>('#texto')!;
-    const tipo = document.querySelector<HTMLSelectElement>('#tipo')!;
-    const anio = document.querySelector<HTMLSelectElement>('#anio')!;
-    const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
-    const contador = document.querySelector('#contador')!;
-    const sinResultados = document.querySelector('#sin-resultados')!;
-    const temasValidos = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-tema')!.value) as string[];
+  document.addEventListener('astro:page-load', () => {
+    // El listener queda registrado en todas las navegaciones: solo actúa en su propio listado.
+    if (location.pathname.replace(/\/$/, '') !== '/repositorio') return;
+    const form = document.querySelector<HTMLFormElement>('#filtros');
+    if (form) {
+      const texto = document.querySelector<HTMLInputElement>('#texto')!;
+      const tipo = document.querySelector<HTMLSelectElement>('#tipo')!;
+      const anio = document.querySelector<HTMLSelectElement>('#anio')!;
+      const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
+      const contador = document.querySelector('#contador')!;
+      const sinResultados = document.querySelector('#sin-resultados')!;
+      const temasValidos = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-tema')!.value) as string[];
 
-    function filtros(): FiltrosRepositorio {
-      const d = new FormData(form!);
-      return {
-        texto: (d.get('texto') as string | null) ?? '',
-        tipo: (d.get('tipo') as string | null) || TODOS,
-        tema: (d.get('tema') as string | null) || TODOS,
-        anio: (d.get('anio') as string | null) || TODOS,
+      function filtros(): FiltrosRepositorio {
+        const d = new FormData(form!);
+        return {
+          texto: (d.get('texto') as string | null) ?? '',
+          tipo: (d.get('tipo') as string | null) || TODOS,
+          tema: (d.get('tema') as string | null) || TODOS,
+          anio: (d.get('anio') as string | null) || TODOS,
+        };
+      }
+
+      function aplicar() {
+        const f = filtros();
+        let visibles = 0;
+        for (const li of items) {
+          const ok = coincideDocumento({
+            texto: li.dataset.texto ?? '',
+            tipo: li.dataset.tipo ?? '',
+            temas: (li.dataset.temas ?? '').split(' ').filter(Boolean),
+            anio: li.dataset.anio ?? '',
+          }, f);
+          li.hidden = !ok;
+          if (ok) visibles++;
+        }
+        contador.textContent = visibles === 1 ? '1 documento' : `${visibles} documentos`;
+        sinResultados.classList.toggle('hidden', visibles > 0);
+
+        // Los filtros quedan en la URL para compartir el listado filtrado.
+        sincronizarFiltrosEnUrl({ q: f.texto, tipo: f.tipo, tema: f.tema, anio: f.anio }, [TODOS]);
+      }
+
+      // Estado inicial desde la URL (p. ej. /repositorio?tipo=reglamento). Un valor que no
+      // está entre las opciones del select se ignora.
+      const params = new URLSearchParams(location.search);
+      texto.value = params.get('q') ?? '';
+      const elegir = (select: HTMLSelectElement, valor: string | null) => {
+        if (valor && [...select.options].some((o) => o.value === valor)) select.value = valor;
       };
-    }
-
-    function aplicar() {
-      const f = filtros();
-      let visibles = 0;
-      for (const li of items) {
-        const ok = coincideDocumento({
-          texto: li.dataset.texto ?? '',
-          tipo: li.dataset.tipo ?? '',
-          temas: (li.dataset.temas ?? '').split(' ').filter(Boolean),
-          anio: li.dataset.anio ?? '',
-        }, f);
-        li.hidden = !ok;
-        if (ok) visibles++;
+      elegir(tipo, params.get('tipo'));
+      elegir(anio, params.get('anio'));
+      if (params.get('tema') && temasValidos.includes(params.get('tema')!)) {
+        document.querySelector('#tema')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tema') } }));
       }
-      contador.textContent = visibles === 1 ? '1 documento' : `${visibles} documentos`;
-      sinResultados.classList.toggle('hidden', visibles > 0);
 
-      // Los filtros quedan en la URL para compartir el listado filtrado.
-      const url = new URL(location.href);
-      for (const [k, v] of Object.entries({ q: f.texto, tipo: f.tipo, tema: f.tema, anio: f.anio })) {
-        if (v && v !== TODOS) url.searchParams.set(k, v); else url.searchParams.delete(k);
-      }
-      history.replaceState(null, '', url);
+      form.addEventListener('input', aplicar);
+      form.addEventListener('change', aplicar);
+      // Starwind v3: el Combobox emite starwind:value-change antes de fijar el valor.
+      form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
+      aplicar();
     }
-
-    // Estado inicial desde la URL (p. ej. /repositorio?tipo=reglamento). Un valor que no
-    // está entre las opciones del select se ignora.
-    const params = new URLSearchParams(location.search);
-    texto.value = params.get('q') ?? '';
-    const elegir = (select: HTMLSelectElement, valor: string | null) => {
-      if (valor && [...select.options].some((o) => o.value === valor)) select.value = valor;
-    };
-    elegir(tipo, params.get('tipo'));
-    elegir(anio, params.get('anio'));
-    if (params.get('tema') && temasValidos.includes(params.get('tema')!)) {
-      document.querySelector('#tema')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tema') } }));
-    }
-
-    form.addEventListener('input', aplicar);
-    form.addEventListener('change', aplicar);
-    // Starwind v3: el Combobox emite starwind:value-change antes de fijar el valor.
-    form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
-    aplicar();
-  }
+  });
 </script>

@@ -126,98 +126,102 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
 
 <script>
   import { coincideNoticia, ordenarNoticias, paginar, TODAS, type FiltrosNoticias, type OrdenNoticias } from '@/lib/filtro-noticias';
+  import { sincronizarFiltrosEnUrl } from '@/scripts/url-filtros';
 
-  const POR_PAGINA = 12;
-  const ORDENES = ['recientes', 'antiguas', 'alfabetico', 'relevancia'];
-  const form = document.querySelector<HTMLFormElement>('#filtros')!;
-  const anio = document.querySelector<HTMLSelectElement>('#anio')!;
-  const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
-  const lista = document.querySelector<HTMLUListElement>('#lista')!;
-  const contador = document.querySelector('#contador')!;
-  const sinResultados = document.querySelector('#sin-resultados')!;
-  const paginacion = document.querySelector<HTMLElement>('#paginacion')!;
-  const anterior = document.querySelector<HTMLButtonElement>('#anterior')!;
-  const siguiente = document.querySelector<HTMLButtonElement>('#siguiente')!;
-  const textoPagina = document.querySelector('#pagina')!;
-  const etiquetasValidas = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-etiqueta')!.value) as string[];
-  const temasValidos = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-tema')!.value) as string[];
-  let pagina = 1;
+  document.addEventListener('astro:page-load', () => {
+    // El listener queda registrado en todas las navegaciones: solo actúa en su propio listado.
+    if (location.pathname.replace(/\/$/, '') !== '/noticias') return;
+    const POR_PAGINA = 12;
+    const ORDENES = ['recientes', 'antiguas', 'alfabetico', 'relevancia'];
+    const form = document.querySelector<HTMLFormElement>('#filtros')!;
+    const anio = document.querySelector<HTMLSelectElement>('#anio')!;
+    const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
+    const lista = document.querySelector<HTMLUListElement>('#lista')!;
+    const contador = document.querySelector('#contador')!;
+    const sinResultados = document.querySelector('#sin-resultados')!;
+    const paginacion = document.querySelector<HTMLElement>('#paginacion')!;
+    const anterior = document.querySelector<HTMLButtonElement>('#anterior')!;
+    const siguiente = document.querySelector<HTMLButtonElement>('#siguiente')!;
+    const textoPagina = document.querySelector('#pagina')!;
+    const etiquetasValidas = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-etiqueta')!.value) as string[];
+    const temasValidos = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-tema')!.value) as string[];
+    let pagina = 1;
 
-  function filtros(): FiltrosNoticias {
-    const d = new FormData(form);
-    return {
-      texto: (d.get('texto') as string | null) ?? '',
-      tema: (d.get('tema') as string | null) || TODAS,
-      etiqueta: (d.get('etiqueta') as string | null) || TODAS,
-      persona: (d.get('persona') as string | null) ?? '',
-      anio: (d.get('anio') as string | null) || TODAS,
-    };
-  }
-
-  const datosDe = (li: HTMLLIElement) => ({
-    texto: li.dataset.texto ?? '',
-    temas: (li.dataset.temas ?? '').split(' ').filter(Boolean),
-    etiquetas: JSON.parse(li.dataset.etiquetas ?? '[]') as string[],
-    personas: (li.dataset.personas ?? '').split(' ').filter(Boolean),
-    anio: li.dataset.anio ?? '',
-  });
-
-  function aplicar(desdePrimera = true) {
-    if (desdePrimera) pagina = 1;
-    const f = filtros();
-    const orden = ((new FormData(form)).get('orden') as string | null) || 'recientes';
-    const visibles = items.filter((li) => coincideNoticia(datosDe(li), f));
-    // Se reordenan en el DOM para que la paginación siga el orden elegido.
-    const ordenados = ordenarNoticias(
-      visibles.map((li) => ({ li, fecha: new Date(Number(li.dataset.fecha ?? 0)), titulo: li.dataset.titulo ?? '' })),
-      orden as OrdenNoticias,
-      f.texto !== '',
-    );
-    for (const o of ordenados) lista.appendChild(o.li);
-    const p = paginar(ordenados.map((o) => o.li), pagina, POR_PAGINA);
-    pagina = p.pagina;
-    const mostrar = new Set(p.items);
-    for (const li of items) li.hidden = !mostrar.has(li);
-
-    contador.textContent = visibles.length === 1 ? '1 noticia' : `${visibles.length} noticias`;
-    sinResultados.classList.toggle('hidden', visibles.length > 0);
-    paginacion.hidden = p.totalPaginas <= 1;
-    textoPagina.textContent = `Página ${p.pagina} de ${p.totalPaginas}`;
-    anterior.disabled = p.pagina === 1;
-    siguiente.disabled = p.pagina === p.totalPaginas;
-
-    // Los filtros quedan en la URL para compartir el listado filtrado.
-    const url = new URL(location.href);
-    for (const [k, v] of Object.entries({ q: f.texto, tema: f.tema, etiqueta: f.etiqueta, persona: f.persona, anio: f.anio, orden: orden === 'recientes' ? '' : orden, pagina: String(p.pagina) })) {
-      if (v && v !== TODAS && !(k === 'pagina' && v === '1')) url.searchParams.set(k, v); else url.searchParams.delete(k);
+    function filtros(): FiltrosNoticias {
+      const d = new FormData(form);
+      return {
+        texto: (d.get('texto') as string | null) ?? '',
+        tema: (d.get('tema') as string | null) || TODAS,
+        etiqueta: (d.get('etiqueta') as string | null) || TODAS,
+        persona: (d.get('persona') as string | null) ?? '',
+        anio: (d.get('anio') as string | null) || TODAS,
+      };
     }
-    history.replaceState(null, '', url);
-  }
 
-  // Estado inicial desde la URL (p. ej. /noticias?tema=logros desde el detalle de una Noticia).
-  const params = new URLSearchParams(location.search);
-  (document.querySelector<HTMLInputElement>('#texto')!).value = params.get('q') ?? '';
-  if (params.get('anio') && [...anio.options].some((o) => o.value === params.get('anio'))) anio.value = params.get('anio')!;
-  if (params.get('persona')) {
-    document.querySelector('#persona')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('persona') } }));
-  }
-  if (params.get('tema') && temasValidos.includes(params.get('tema')!)) {
-    document.querySelector('#tema')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tema') } }));
-  }
-  if (params.get('etiqueta') && etiquetasValidas.includes(params.get('etiqueta')!)) {
-    document.querySelector('#etiqueta')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('etiqueta') } }));
-  }
-  if (params.get('orden') && ORDENES.includes(params.get('orden')!)) {
-    document.querySelector('#orden')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('orden') } }));
-  }
-  pagina = Number(params.get('pagina')) || 1;
+    const datosDe = (li: HTMLLIElement) => ({
+      texto: li.dataset.texto ?? '',
+      temas: (li.dataset.temas ?? '').split(' ').filter(Boolean),
+      etiquetas: JSON.parse(li.dataset.etiquetas ?? '[]') as string[],
+      personas: (li.dataset.personas ?? '').split(' ').filter(Boolean),
+      anio: li.dataset.anio ?? '',
+    });
 
-  form.addEventListener('input', () => aplicar());
-  form.addEventListener('change', () => aplicar());
-  // Starwind v3: el Combobox/Select emite starwind:value-change antes de fijar el valor.
-  form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
-  anterior.addEventListener('click', () => { pagina--; aplicar(false); scrollTo({ top: 0 }); });
-  siguiente.addEventListener('click', () => { pagina++; aplicar(false); scrollTo({ top: 0 }); });
-  // El Combobox termina de inicializarse después; se aplica cuando el navegador queda libre.
-  setTimeout(() => aplicar(false), 0);
+    function aplicar(desdePrimera = true) {
+      if (desdePrimera) pagina = 1;
+      const f = filtros();
+      const orden = ((new FormData(form)).get('orden') as string | null) || 'recientes';
+      const visibles = items.filter((li) => coincideNoticia(datosDe(li), f));
+      // Se reordenan en el DOM para que la paginación siga el orden elegido.
+      const ordenados = ordenarNoticias(
+        visibles.map((li) => ({ li, fecha: new Date(Number(li.dataset.fecha ?? 0)), titulo: li.dataset.titulo ?? '' })),
+        orden as OrdenNoticias,
+        f.texto !== '',
+      );
+      for (const o of ordenados) lista.appendChild(o.li);
+      const p = paginar(ordenados.map((o) => o.li), pagina, POR_PAGINA);
+      pagina = p.pagina;
+      const mostrar = new Set(p.items);
+      for (const li of items) li.hidden = !mostrar.has(li);
+
+      contador.textContent = visibles.length === 1 ? '1 noticia' : `${visibles.length} noticias`;
+      sinResultados.classList.toggle('hidden', visibles.length > 0);
+      paginacion.hidden = p.totalPaginas <= 1;
+      textoPagina.textContent = `Página ${p.pagina} de ${p.totalPaginas}`;
+      anterior.disabled = p.pagina === 1;
+      siguiente.disabled = p.pagina === p.totalPaginas;
+
+      // Los filtros quedan en la URL para compartir el listado filtrado.
+      sincronizarFiltrosEnUrl(
+        { q: f.texto, tema: f.tema, etiqueta: f.etiqueta, persona: f.persona, anio: f.anio, orden: orden === 'recientes' ? '' : orden, pagina: p.pagina === 1 ? '' : String(p.pagina) },
+        [TODAS],
+      );
+    }
+
+    // Estado inicial desde la URL (p. ej. /noticias?tema=logros desde el detalle de una Noticia).
+    const params = new URLSearchParams(location.search);
+    (document.querySelector<HTMLInputElement>('#texto')!).value = params.get('q') ?? '';
+    if (params.get('anio') && [...anio.options].some((o) => o.value === params.get('anio'))) anio.value = params.get('anio')!;
+    if (params.get('persona')) {
+      document.querySelector('#persona')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('persona') } }));
+    }
+    if (params.get('tema') && temasValidos.includes(params.get('tema')!)) {
+      document.querySelector('#tema')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tema') } }));
+    }
+    if (params.get('etiqueta') && etiquetasValidas.includes(params.get('etiqueta')!)) {
+      document.querySelector('#etiqueta')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('etiqueta') } }));
+    }
+    if (params.get('orden') && ORDENES.includes(params.get('orden')!)) {
+      document.querySelector('#orden')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('orden') } }));
+    }
+    pagina = Number(params.get('pagina')) || 1;
+
+    form.addEventListener('input', () => aplicar());
+    form.addEventListener('change', () => aplicar());
+    // Starwind v3: el Combobox/Select emite starwind:value-change antes de fijar el valor.
+    form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
+    anterior.addEventListener('click', () => { pagina--; aplicar(false); scrollTo({ top: 0 }); });
+    siguiente.addEventListener('click', () => { pagina++; aplicar(false); scrollTo({ top: 0 }); });
+    // El Combobox termina de inicializarse después; se aplica cuando el navegador queda libre.
+    setTimeout(() => aplicar(false), 0);
+  });
 </script>
