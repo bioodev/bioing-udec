@@ -51,6 +51,17 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
         </Combobox>
       </div>
       <div class="grid gap-2">
+        <Label id="etiqueta-tema" for="tema-input">Categoría</Label>
+        <Combobox id="tema" name="tema" defaultValue={TODAS}>
+          <ComboboxInput id="tema-input" placeholder="Todas" showClear />
+          <ComboboxContent>
+            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+            <ComboboxItem value={TODAS}>Todas</ComboboxItem>
+            {temas.map((t) => <ComboboxItem value={t.id}>{t.data.nombre}</ComboboxItem>)}
+          </ComboboxContent>
+        </Combobox>
+      </div>
+      <div class="grid gap-2">
         <Label for="etiqueta-input">Tag</Label>
         <Combobox id="etiqueta" name="etiqueta">
           <ComboboxInput id="etiqueta-input" placeholder="Filtrar por etiqueta" showClear />
@@ -79,14 +90,9 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
           </SelectContent>
         </Select>
       </div>
-      <input type="hidden" name="tema" id="tema" value={TODAS} />
       <input type="hidden" id="opciones-etiqueta" value={JSON.stringify(etiquetas)} />
+      <input type="hidden" id="opciones-tema" value={JSON.stringify(temas.map((t) => t.id))} />
     </form>
-
-    <div class="mt-4 flex flex-wrap gap-2" role="group" aria-label="Filtrar por tema">
-      <button type="button" data-tema={TODAS} aria-pressed="true" class="chip-tema">Todos</button>
-      {temas.map((t) => <button type="button" data-tema={t.id} aria-pressed="false" class="chip-tema">{t.data.nombre}</button>)}
-    </div>
 
     <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{noticias.length} noticias</p>
     <h2 class="sr-only">Resultados</h2>
@@ -115,27 +121,13 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
   </section>
 </Base>
 
-<style>
-  .chip-tema {
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    padding: 0.25rem 0.875rem;
-    font-size: 0.875rem;
-  }
-  .chip-tema:hover { background: var(--muted); }
-  .chip-tema[aria-pressed='true'] { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
-  .chip-tema:focus-visible { outline: 2px solid var(--outline); outline-offset: 2px; }
-</style>
-
 <script>
   import { coincideNoticia, ordenarNoticias, paginar, TODAS, type FiltrosNoticias, type OrdenNoticias } from '@/lib/filtro-noticias';
 
   const POR_PAGINA = 12;
   const ORDENES = ['recientes', 'antiguas', 'alfabetico', 'relevancia'];
   const form = document.querySelector<HTMLFormElement>('#filtros')!;
-  const tema = document.querySelector<HTMLInputElement>('#tema')!;
   const anio = document.querySelector<HTMLSelectElement>('#anio')!;
-  const chips = [...document.querySelectorAll<HTMLButtonElement>('.chip-tema')];
   const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
   const lista = document.querySelector<HTMLUListElement>('#lista')!;
   const contador = document.querySelector('#contador')!;
@@ -145,6 +137,7 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
   const siguiente = document.querySelector<HTMLButtonElement>('#siguiente')!;
   const textoPagina = document.querySelector('#pagina')!;
   const etiquetasValidas = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-etiqueta')!.value) as string[];
+  const temasValidos = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-tema')!.value) as string[];
   let pagina = 1;
 
   function filtros(): FiltrosNoticias {
@@ -189,7 +182,6 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
     textoPagina.textContent = `Página ${p.pagina} de ${p.totalPaginas}`;
     anterior.disabled = p.pagina === 1;
     siguiente.disabled = p.pagina === p.totalPaginas;
-    for (const c of chips) c.setAttribute('aria-pressed', String(c.dataset.tema === f.tema));
 
     // Los filtros quedan en la URL para compartir el listado filtrado.
     const url = new URL(location.href);
@@ -202,10 +194,12 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
   // Estado inicial desde la URL (p. ej. /noticias?tema=logros desde el detalle de una Noticia).
   const params = new URLSearchParams(location.search);
   (document.querySelector<HTMLInputElement>('#texto')!).value = params.get('q') ?? '';
-  if (params.get('tema') && chips.some((c) => c.dataset.tema === params.get('tema'))) tema.value = params.get('tema')!;
   if (params.get('anio') && [...anio.options].some((o) => o.value === params.get('anio'))) anio.value = params.get('anio')!;
   if (params.get('persona')) {
     document.querySelector('#persona')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('persona') } }));
+  }
+  if (params.get('tema') && temasValidos.includes(params.get('tema')!)) {
+    document.querySelector('#tema')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tema') } }));
   }
   if (params.get('etiqueta') && etiquetasValidas.includes(params.get('etiqueta')!)) {
     document.querySelector('#etiqueta')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('etiqueta') } }));
@@ -215,7 +209,6 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
   }
   pagina = Number(params.get('pagina')) || 1;
 
-  for (const c of chips) c.addEventListener('click', () => { tema.value = c.dataset.tema ?? TODAS; aplicar(); });
   form.addEventListener('input', () => aplicar());
   form.addEventListener('change', () => aplicar());
   // Starwind v3: el Combobox/Select emite starwind:value-change antes de fijar el valor.
