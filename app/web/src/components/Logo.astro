@@ -1,0 +1,25 @@
+---
+// Marca del sitio: una sola fuente de verdad (src/assets/logo.svg).
+// Para cambiarla basta reemplazar ese archivo (mismo nombre); este componente
+// y las páginas no requieren ningún cambio.
+// Props: variante 'navbar' (tamaño compacto) | 'footer' (tamaño de pie).
+// El texto "BIOING+" va en HTML (accesible y listo para SEO); el SVG es decorativo (alt="").
+import logo from '@/assets/logo.svg';
+
+interface Props {
+  variante?: 'navbar' | 'footer';
+}
+
+const { variante = 'navbar' } = Astro.props;
+const esNavbar = variante === 'navbar';
+---
+<img
+  src={logo.src}
+  width={logo.width}
+  height={logo.height}
+  alt=""
+  class={esNavbar ? 'size-8 shrink-0' : 'size-9 shrink-0'}
+/>
+<span class={esNavbar ? 'text-lg font-semibold tracking-tight' : 'text-base font-semibold tracking-tight'}>
+  BIOING+
+</span>

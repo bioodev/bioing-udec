@@ -5,6 +5,7 @@ import IconMenu from 'phosphor-astro/List.astro';
 import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
 import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
+import Logo from '@/components/Logo.astro';
 import { MENU, URL_FCB } from '@/lib/navegacion';
 import ogPorDefecto from '@/assets/og-default.png';
 
@@ -41,7 +42,7 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
     <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2 focus:shadow-lg print:hidden">Saltar al contenido</a>
     <header class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur print:hidden">
       <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
-        <a href="/" class="font-semibold tracking-tight text-lg">BIOING+</a>
+        <a href="/" class="flex items-center gap-2" aria-label="BIOING+ — Inicio"><Logo variante="navbar" /></a>
         <nav aria-label="Principal" class="hidden lg:flex flex-1 items-center gap-5 text-sm">
           {MENU.map((item) => (
             <a href={item.href} aria-current={esActual(item.href) ? 'page' : undefined}
@@ -82,7 +83,7 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
     <footer class="bg-muted text-sm print:hidden">
       <div class="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:grid-cols-3">
         <div>
-          <p class="font-semibold">BIOING+</p>
+          <div class="flex items-center gap-2"><Logo variante="footer" /></div>
           <p class="text-muted-foreground">FCB UdeC · Universidad de Concepción</p>
         </div>
         <nav aria-label="Pie de página" class="grid gap-1">

@@ -13,7 +13,7 @@ const AVISO = 'Contenido sintético generado por scripts/datos-sinteticos.mjs.';
 const IMAGENES = ['ejemplo-azul.png', 'ejemplo-verde.png', 'ejemplo-gris.png'];
 const COLECCIONES = ['areas', 'temas', 'organizaciones', 'personas', 'actividades', 'noticias', 'anuncios', 'documentos', 'banners'];
 
-const CANTIDAD = { organizaciones: 15, personas: 70, actividades: 24, noticias: 40, anuncios: 18, documentos: 30 };
+const CANTIDAD = { organizaciones: 15, personas: 70, actividades: 24, noticias: 40, anuncios: 18, documentos: 30, banners: 7 };
 
 // ── utilidades ───────────────────────────────────────────────────────
 function limpiar() {
@@ -197,7 +197,40 @@ function generar() {
     });
   }
 
-  return { areas: areas.length, organizaciones: organizaciones.length, personas: CANTIDAD.personas, ...Object.fromEntries(['actividades', 'noticias', 'anuncios', 'documentos'].map((k) => [k, CANTIDAD[k]])) };
+  // Banners (slides del carrusel del Inicio): 5 vigentes para probar autoplay,
+  // flechas y puntos; los últimos 2 prueban la visibilidad (uno futuro y uno vencido,
+  // que no deben mostrarse). `estaVigente()` los filtra en el build.
+  const banners = [];
+  const plantillasBanner = [
+    ['Admisión 2027', 'Postula a Bioingeniería UdeC', 'https://admision.udec.cl'],
+    ['Semana de la Bioingeniería', 'Charlas, talleres y encuentros con egresados', '/agenda'],
+    ['Novedades de la comunidad', 'Lo último en noticias', '/noticias'],
+    ['Directorio de egresados', 'Busca y conéctate con la comunidad', '/directorio'],
+    ['Repositorio de documentos', 'Reglamentos, informes y publicaciones', '/repositorio'],
+    ['Convocatoria de anuncios', 'Trabajo, prácticas y proyectos', '/anuncios'],
+    ['Conoce la carrera', '¿Qué es la Bioingeniería en la UdeC?', '/bioingenieria'],
+  ];
+  const imagenesBanner = [...IMAGENES, 'ejemplo-seminario.png'];
+  plantillasBanner.forEach(([titulo, texto, enlace], i) => {
+    const id = idUnico('banners', titulo);
+    banners.push(id);
+    const vigente = i < 5;
+    const diasVigencia = vigente ? -en.number.int({ min: 2, max: 15 }) : i % 2 === 0 ? 20 : -90;
+    const diasFin = vigente ? en.number.int({ min: 30, max: 150 }) : i % 2 === 0 ? 40 : -10;
+    escribir('banners', id, {
+      titulo, publicado: true, texto,
+      imagen: `../../assets/media/${alguno(imagenesBanner)}`,
+      enlace,
+      inicio: fechaHora(dias(diasVigencia), 0),
+      fin: fechaHora(dias(diasFin), 23),
+    });
+  });
+
+  return {
+    areas: areas.length, organizaciones: organizaciones.length, personas: CANTIDAD.personas,
+    banners: banners.length,
+    ...Object.fromEntries(['actividades', 'noticias', 'anuncios', 'documentos'].map((k) => [k, CANTIDAD[k]])),
+  };
 }
 
 for (const c of COLECCIONES) mkdirSync(join(CONTENIDO, c), { recursive: true });

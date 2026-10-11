@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Marca placeholder de BIOING+: matraz erlenmeyer sobre el acento del sitio (#0066cc).
+       Para cambiarla, reemplaza este archivo (mantén el mismo nombre); el resto no se toca. -->
+  <rect width="48" height="48" rx="12" fill="#0066cc"/>
+  <path fill="#ffffff" d="M20.5 9.5h7V21l8.4 13.6a4 4 0 0 1-3.4 6.2H15.5a4 4 0 0 1-3.4-6.2L20.5 21z"/>
+  <circle cx="19" cy="33" r="2.2" fill="#0066cc"/>
+  <circle cx="27" cy="36.5" r="1.6" fill="#0066cc"/>
+</svg>

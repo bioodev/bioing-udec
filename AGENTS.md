@@ -38,6 +38,7 @@ No hay linter todavía. Una referencia rota entre colecciones (un slug que no ex
 - Íconos: solo **Phosphor** vía `phosphor-astro` (`import MapPin from 'phosphor-astro/MapPin.astro'`), también dentro de los componentes de Starwind (se reemplazó Tabler). Son SVG sin tamaño propio: dimensionar con `size-*` y marcar `aria-hidden="true"` cuando son decorativos. Ojo: `npx starwind@latest add` trae componentes nuevos con íconos Tabler; hay que cambiarlos a Phosphor.
 - Las reglas con fechas o filtros van en módulos puros (`src/lib/reglas.ts`, `src/lib/filtro-directorio.ts`) con tests; las páginas solo consultan `src/lib/contenido.ts`.
 - `/componentes` es un catálogo que solo existe en `npm run dev`.
+- **Logo**: la marca vive en una sola fuente, `src/assets/logo.svg`, y se renderiza con `src/components/Logo.astro` en navbar y footer. Para cambiarla, reemplaza ese archivo (manteniendo el nombre); no hay que tocar código. Es un placeholder hasta la identidad definitiva (Fase B/C2).
 - El contenido que dice "Contenido de ejemplo" en `src/content/` es de prueba y se borra cuando haya contenido real.
 
 ## Sveltia CMS
