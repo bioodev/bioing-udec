@@ -177,7 +177,7 @@ Para cada requisito: **qué entrega la carrera · cómo lo verifica el proveedor
 - [ ] **Paso 3:** **Workers Builds** conectado al repo de GitHub: en cada push a `main`, `npm ci && npm run build && npm run postbuild` y publicar `dist`.
 - [ ] **Paso 4:** **reconstrucción diaria** poco después de medianoche de Chile (≈ `15 4 * * *` UTC en invierno / `15 3 * * *` en verano) — **no** a las 00:00 UTC, o un Anuncio vencido seguiría visible ~21 h. Documentar que el cron se ajusta en el cambio de horario.
 - [ ] **Paso 5:** avisos por correo ante fallas de build/deploy; el log de `Invalid content reference` **avisa sin fallar** (el sitio ya descarta esas referencias; un build caído congela Agenda y Anuncios).
-- [ ] **Paso 6:** caché de imágenes optimizadas entre builds si el tiempo crece; aviso cuando el repositorio supere 1 GB.
+- [ ] **Paso 6:** caché de imágenes optimizadas entre builds si el tiempo crece; aviso cuando el repositorio supere 1 GB. **Opcional, condicionado:** si el build crece, activar el **build incremental de Astro** (`experimental.incrementalBuild`) — requiere persistir `node_modules/.astro` entre builds + `cacheKey` en los `getStaticPaths()` + `build.concurrency: 1`; es experimental. Ver `docs/pendientes-infra.md`.
 - [ ] **Paso 7:** **Cloudflare Web Analytics** (sin cookies): inyectar el snippet con el token de la cuenta vía variable de entorno, no incrustado en el código.
 - [ ] **Verificación:** un push a `main` publica en 1–2 min; una edición con fecha (Anuncio que vence hoy) desaparece tras el cron; un build roto **no** cambia el sitio publicado y llega el aviso; analítica registra visitas sin cookies.
 

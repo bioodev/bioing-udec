@@ -29,6 +29,11 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 - [ ] Revisión periódica de enlaces rotos (documentos de Drive).
 - [ ] Aviso cuando el repositorio supere 1 GB.
 - [ ] Caché de imágenes optimizadas entre builds, si el tiempo de build crece.
+- [ ] **Build incremental de Astro** (`experimental.incrementalBuild`, disponible desde Astro 7.2.0; el proyecto usa 7.3.5) — **solo cuando el build crezca**. No activar suelto: requiere las tres cosas juntas o no rinde (hoy el build es ~1 s / 28 páginas):
+  - persistir el `cacheDir` (`node_modules/.astro/`) entre builds de Cloudflare (cada build arranca limpio; sin esto se re-renderiza todo);
+  - `cacheKey` en los `getStaticPaths()` de las rutas dinámicas (noticias, agenda, personas, anuncios, repositorio), que cambie cuando cambie el contenido;
+  - `build.concurrency: 1` (el incremental se desactiva con concurrencia > 1).
+  - Es experimental: su API puede cambiar; revisar antes de la entrega.
 - [ ] Encabezados de seguridad (`_headers`), redirecciones (`_redirects`) y página 404.
 
 ## Contenido y medios
