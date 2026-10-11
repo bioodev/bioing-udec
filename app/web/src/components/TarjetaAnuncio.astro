@@ -3,11 +3,13 @@ import type { CollectionEntry } from 'astro:content';
 import { Badge } from '@/components/starwind/badge';
 import { formatoFecha } from '@/lib/contenido';
 import { TIPOS_ANUNCIO } from '@/lib/anuncios';
+import { anuncioVigente } from '@/lib/reglas';
 import Clock from 'phosphor-astro/Clock.astro';
 import EnvelopeSimple from 'phosphor-astro/EnvelopeSimple.astro';
 
 interface Props { anuncio: CollectionEntry<'anuncios'>; vencido?: boolean }
-const { anuncio, vencido = false } = Astro.props;
+// Por defecto se calcula al construir; así cualquier listado (p. ej. la Ficha) marca los vencidos.
+const { anuncio, vencido = !anuncioVigente(anuncio.data, new Date()) } = Astro.props;
 ---
 <article class="rounded-lg border border-border bg-card p-5">
   <p class="flex flex-wrap items-center gap-2">
