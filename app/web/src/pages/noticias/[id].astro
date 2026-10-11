@@ -39,7 +39,7 @@ const cobertura = actividad?.data.publicado ? actividad : undefined;
     {cobertura && (
       <aside class="mt-10 rounded-lg bg-muted p-5">
         <p class="flex items-center gap-1.5 text-sm text-muted-foreground"><CalendarBlank class="size-4" aria-hidden="true" />Cobertura de la actividad</p>
-        <p class="font-semibold">{cobertura.data.titulo} · {formatoFechaHora(cobertura.data.inicio)}</p>
+        <p class="font-semibold"><a href={`/agenda/${cobertura.id}`} class="hover:text-primary">{cobertura.data.titulo}</a> · {formatoFechaHora(cobertura.data.inicio)}</p>
       </aside>
     )}
 

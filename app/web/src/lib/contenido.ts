@@ -96,6 +96,17 @@ export async function proximasActividades(ahora = new Date()) {
   return actividades.sort((a, b) => a.data.inicio.valueOf() - b.data.inicio.valueOf());
 }
 
+/** Actividades publicadas que ya terminaron (archivo histórico), más recientes primero. */
+export async function actividadesRealizadas(ahora = new Date()) {
+  const actividades = (await publicados('actividades')).filter((a) => !actividadEsProxima(a.data, ahora));
+  return actividades.sort((a, b) => b.data.inicio.valueOf() - a.data.inicio.valueOf());
+}
+
+/** Noticias publicadas que cubren una Actividad (campo `actividad` de la Noticia). */
+export async function noticiasDeActividad(id: string) {
+  return (await noticiasVisibles()).filter((n) => n.data.actividad?.id === id);
+}
+
 export async function anunciosVigentes(ahora = new Date()) {
   const anuncios = (await anunciosVisibles(ahora)).filter((a) => anuncioVigente(a.data, ahora));
   return anuncios.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());

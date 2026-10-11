@@ -3,7 +3,7 @@ export const MENU = [
   { etiqueta: 'Inicio', href: '/', disponible: true },
   { etiqueta: '¿Qué es la Bioingeniería?', href: '/bioingenieria', disponible: false },
   { etiqueta: 'Noticias', href: '/noticias', disponible: true },
-  { etiqueta: 'Agenda', href: '/agenda', disponible: false },
+  { etiqueta: 'Agenda', href: '/agenda', disponible: true },
   { etiqueta: 'Instagram', href: '/instagram', disponible: false },
   { etiqueta: 'Directorio', href: '/directorio', disponible: true },
   { etiqueta: 'Anuncios', href: '/anuncios', disponible: false },

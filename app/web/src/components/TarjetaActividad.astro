@@ -2,18 +2,18 @@
 import type { CollectionEntry } from 'astro:content';
 import { Badge } from '@/components/starwind/badge';
 import { formatoFechaHora } from '@/lib/contenido';
+import { MODALIDADES } from '@/lib/agenda';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import MapPin from 'phosphor-astro/MapPin.astro';
 
 interface Props { actividad: CollectionEntry<'actividades'> }
 const { actividad } = Astro.props;
-const MODALIDAD = { presencial: 'Presencial', 'en-linea': 'En línea', hibrida: 'Híbrida' } as const;
 ---
 <article class="rounded-lg border border-border bg-card p-5">
   <p class="flex items-center gap-1.5 text-sm font-medium text-primary"><CalendarBlank class="size-4 shrink-0" aria-hidden="true" /><time datetime={actividad.data.inicio.toISOString()}>{formatoFechaHora(actividad.data.inicio)}</time></p>
-  <h3 class="mt-1 text-lg font-semibold leading-snug">{actividad.data.titulo}</h3>
+  <h3 class="mt-1 text-lg font-semibold leading-snug"><a href={`/agenda/${actividad.id}`} class="hover:text-primary">{actividad.data.titulo}</a></h3>
   <p class="mt-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-    <Badge variant="default">{MODALIDAD[actividad.data.modalidad]}</Badge>
+    <Badge variant="default">{MODALIDADES[actividad.data.modalidad]}</Badge>
     {actividad.data.lugar && <span class="inline-flex items-center gap-1"><MapPin class="size-4 shrink-0" aria-hidden="true" />{actividad.data.lugar}</span>}
   </p>
 </article>
