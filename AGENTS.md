@@ -1,7 +1,5 @@
 # AGENTS.md
 
-> Reemplaza al antiguo `CLAUDE.md` (misma guía, nuevo nombre canónico para agentes).
-
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Estado del proyecto
@@ -18,9 +16,12 @@ Desde `app/web` (Astro 7, Node ≥ 22.12):
 npm run dev          # servidor local en localhost:4321 (admin en /admin/index.html; /admin/ solo funciona en el build)
 npx astro check      # tipos y esquemas de contenido
 npm run build        # sitio estático en dist/
+npm run postbuild    # índice de Pagefind en dist/pagefind/ (no se dispara solo con npm 11: correr build+postbuild)
+npm run preview      # sirve dist/ en localhost:4322; el buscador /buscar solo funciona aquí (o en producción)
 npm test             # Vitest: reglas puras en src/lib/*.test.ts
 npm run datos:generar  # contenido sintético (Faker + lorem ipsum) con prefijo sint-, ignorado por git
 npm run datos:limpiar  # borra solo el contenido sint-
+npm run dev:tunel      # expone el dev en una URL pública de cloudflared (revisar desde el celular; requiere cloudflared)
 ```
 
 Tras `datos:generar` con el servidor de desarrollo corriendo, reiniciarlo (`npx astro dev stop` y volver a levantar): no detecta bien cientos de archivos nuevos de una vez.
