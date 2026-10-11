@@ -210,7 +210,7 @@ function generar() {
     ['Convocatoria de anuncios', 'Trabajo, prácticas y proyectos', '/anuncios'],
     ['Conoce la carrera', '¿Qué es la Bioingeniería en la UdeC?', '/bioingenieria'],
   ];
-  const imagenesBanner = [...IMAGENES, 'ejemplo-seminario.png'];
+  const imagenesBanner = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg'];
   plantillasBanner.forEach(([titulo, texto, enlace], i) => {
     const id = idUnico('banners', titulo);
     banners.push(id);
