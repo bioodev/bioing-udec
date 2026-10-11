@@ -1,0 +1,136 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { Button } from '@/components/starwind/button';
+import ArrowRight from 'phosphor-astro/ArrowRight.astro';
+import CaretLeft from 'phosphor-astro/CaretLeft.astro';
+import CaretRight from 'phosphor-astro/CaretRight.astro';
+
+interface Props { banners: CollectionEntry<'banners'>[] }
+const { banners } = Astro.props;
+const externo = (enlace: string) => /^https?:\/\//.test(enlace);
+const varios = banners.length > 1;
+---
+<!-- Hero en carrusel: un slide por Banner vigente. Autoplay con pausa al hover/foco,
+     flechas y puntos; respeta prefers-reduced-motion (wireframes: Inicio). -->
+<section
+  class="relative isolate overflow-hidden bg-foreground text-background"
+  data-carrusel
+  aria-roledescription="carrusel"
+  aria-label="Destacados"
+>
+  <div class="flex transition-transform duration-500 ease-out motion-reduce:transition-none" data-carrusel-track>
+    {banners.map((banner, i) => (
+      <div
+        class="relative min-w-full"
+        data-slide
+        aria-roledescription="diapositiva"
+        aria-label={`${i + 1} de ${banners.length}`}
+        inert={i !== 0 ? '' : undefined}
+      >
+        <Image
+          src={banner.data.imagen}
+          alt=""
+          class="absolute inset-0 -z-10 h-full w-full object-cover opacity-40"
+          widths={[640, 1280, 1920]}
+          sizes="100vw"
+          priority={i === 0}
+        />
+        <div class="mx-auto flex min-h-[32rem] max-w-6xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[36rem]">
+          <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">{banner.data.titulo}</h1>
+          {banner.data.texto && <p class="mx-auto mt-4 max-w-2xl text-lg opacity-90">{banner.data.texto}</p>}
+          <Button
+            href={banner.data.enlace}
+            variant="primary"
+            class="mt-8 rounded-full"
+            {...(externo(banner.data.enlace) ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            Conoce más<ArrowRight class="size-4" aria-hidden="true" />
+          </Button>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {varios && (
+    <>
+      <div class="absolute inset-y-0 left-0 flex items-center">
+        <button
+          type="button"
+          data-carrusel-anterior
+          aria-label="Anterior"
+          class="m-3 flex size-11 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition hover:bg-background/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
+        >
+          <CaretLeft class="size-6" aria-hidden="true" />
+        </button>
+      </div>
+      <div class="absolute inset-y-0 right-0 flex items-center">
+        <button
+          type="button"
+          data-carrusel-siguiente
+          aria-label="Siguiente"
+          class="m-3 flex size-11 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition hover:bg-background/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
+        >
+          <CaretRight class="size-6" aria-hidden="true" />
+        </button>
+      </div>
+      <div class="absolute inset-x-0 bottom-4 flex justify-center gap-2" role="group" aria-label="Elegir diapositiva">
+        {banners.map((_, i) => (
+          <button
+            type="button"
+            data-punto
+            aria-label={`Ir a la diapositiva ${i + 1}`}
+            aria-current={i === 0 ? 'true' : undefined}
+            class="h-2.5 w-2.5 rounded-full bg-background/40 transition hover:bg-background/70 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none aria-[current=true]:bg-background"
+          ></button>
+        ))}
+      </div>
+    </>
+  )}
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-carrusel]');
+  if (root) {
+    const track = root.querySelector<HTMLElement>('[data-carrusel-track]')!;
+    const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
+    const anterior = root.querySelector<HTMLButtonElement>('[data-carrusel-anterior]');
+    const siguiente = root.querySelector<HTMLButtonElement>('[data-carrusel-siguiente]');
+    const puntos = [...root.querySelectorAll<HTMLButtonElement>('[data-punto]')];
+    const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const INTERVALO = 6000;
+    let actual = 0;
+    let temporizador: number | undefined;
+
+    function mostrar(i: number) {
+      if (slides.length === 0) return;
+      actual = (i + slides.length) % slides.length;
+      track.style.transform = `translateX(-${actual * 100}%)`;
+      slides.forEach((s, j) => {
+        s.toggleAttribute('inert', j !== actual);
+        s.setAttribute('aria-hidden', String(j !== actual));
+      });
+      puntos.forEach((p, j) => p.setAttribute('aria-current', String(j === actual)));
+    }
+
+    function detener() {
+      window.clearInterval(temporizador);
+    }
+    function reanudar() {
+      detener();
+      if (reducirMovimiento || slides.length <= 1) return;
+      temporizador = window.setInterval(() => mostrar(actual + 1), INTERVALO);
+    }
+
+    anterior?.addEventListener('click', () => { mostrar(actual - 1); reanudar(); });
+    siguiente?.addEventListener('click', () => { mostrar(actual + 1); reanudar(); });
+    puntos.forEach((p, j) => p.addEventListener('click', () => { mostrar(j); reanudar(); }));
+    root.addEventListener('mouseenter', detener);
+    root.addEventListener('mouseleave', reanudar);
+    root.addEventListener('focusin', detener);
+    root.addEventListener('focusout', reanudar);
+
+    mostrar(0);
+    reanudar();
+  }
+</script>

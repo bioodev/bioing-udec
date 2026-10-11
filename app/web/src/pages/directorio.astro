@@ -4,7 +4,7 @@ import Base from '@/layouts/Base.astro';
 import TarjetaEgresado from '@/components/TarjetaEgresado.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/starwind/select';
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
 import { egresadosDelDirectorio } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { TODAS } from '@/lib/filtro-directorio';
@@ -40,34 +40,37 @@ const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.orga
         <Input id="texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
       </div>
       <div class="grid gap-2">
-        <Label id="etiqueta-generacion" for="generacion">Generación</Label>
-        <Select id="generacion" name="generacion" defaultValue={TODAS}>
-          <SelectTrigger class="w-full" aria-labelledby="etiqueta-generacion"><SelectValue placeholder="Todas" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value={TODAS}>Todas</SelectItem>
-            {generaciones.map((g) => <SelectItem value={String(g)}>{g}</SelectItem>)}
-          </SelectContent>
-        </Select>
+        <Label id="etiqueta-generacion" for="generacion-input">Generación</Label>
+        <Combobox id="generacion" name="generacion" defaultValue={TODAS}>
+          <ComboboxInput id="generacion-input" placeholder="Todas" showClear />
+          <ComboboxContent>
+            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+            <ComboboxItem value={TODAS}>Todas</ComboboxItem>
+            {generaciones.map((g) => <ComboboxItem value={String(g)}>{g}</ComboboxItem>)}
+          </ComboboxContent>
+        </Combobox>
       </div>
       <div class="grid gap-2">
-        <Label id="etiqueta-area" for="area">Área</Label>
-        <Select id="area" name="area" defaultValue={TODAS}>
-          <SelectTrigger class="w-full" aria-labelledby="etiqueta-area"><SelectValue placeholder="Todas" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value={TODAS}>Todas</SelectItem>
-            {areas.map((a) => <SelectItem value={a.id}>{a.data.nombre}</SelectItem>)}
-          </SelectContent>
-        </Select>
+        <Label id="etiqueta-area" for="area-input">Área</Label>
+        <Combobox id="area" name="area" defaultValue={TODAS}>
+          <ComboboxInput id="area-input" placeholder="Todas" showClear />
+          <ComboboxContent>
+            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+            <ComboboxItem value={TODAS}>Todas</ComboboxItem>
+            {areas.map((a) => <ComboboxItem value={a.id}>{a.data.nombre}</ComboboxItem>)}
+          </ComboboxContent>
+        </Combobox>
       </div>
       <div class="grid gap-2">
-        <Label id="etiqueta-organizacion" for="organizacion">Organización</Label>
-        <Select id="organizacion" name="organizacion" defaultValue={TODAS}>
-          <SelectTrigger class="w-full" aria-labelledby="etiqueta-organizacion"><SelectValue placeholder="Todas" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value={TODAS}>Todas</SelectItem>
-            {organizaciones.map((o) => <SelectItem value={o.id}>{o.data.nombre}</SelectItem>)}
-          </SelectContent>
-        </Select>
+        <Label id="etiqueta-organizacion" for="organizacion-input">Organización</Label>
+        <Combobox id="organizacion" name="organizacion" defaultValue={TODAS}>
+          <ComboboxInput id="organizacion-input" placeholder="Todas" showClear />
+          <ComboboxContent>
+            <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+            <ComboboxItem value={TODAS}>Todas</ComboboxItem>
+            {organizaciones.map((o) => <ComboboxItem value={o.id}>{o.data.nombre}</ComboboxItem>)}
+          </ComboboxContent>
+        </Combobox>
       </div>
     </form>
 

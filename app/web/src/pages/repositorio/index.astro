@@ -5,6 +5,7 @@ import TarjetaDocumento from '@/components/TarjetaDocumento.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { NativeSelect, NativeSelectOption } from '@/components/starwind/native-select';
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
 import { documentosDelRepositorio } from '@/lib/contenido';
 import { existentes, normalizar } from '@/lib/reglas';
 import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
@@ -48,12 +49,16 @@ const textoDe = (d: (typeof documentos)[number]) =>
               {tipos.map((t) => <NativeSelectOption value={t}>{TIPOS_DOCUMENTO[t]}</NativeSelectOption>)}
             </NativeSelect>
           </div>
-          <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
-            <Label for="tema">Tema</Label>
-            <NativeSelect id="tema" name="tema">
-              <NativeSelectOption value={TODOS}>Todos</NativeSelectOption>
-              {temas.map((t) => <NativeSelectOption value={t.id}>{t.data.nombre}</NativeSelectOption>)}
-            </NativeSelect>
+          <div class="grid gap-2">
+            <Label id="etiqueta-tema" for="tema-input">Tema</Label>
+            <Combobox id="tema" name="tema" defaultValue={TODOS}>
+              <ComboboxInput id="tema-input" placeholder="Todos" showClear />
+              <ComboboxContent>
+                <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
+                <ComboboxItem value={TODOS}>Todos</ComboboxItem>
+                {temas.map((t) => <ComboboxItem value={t.id}>{t.data.nombre}</ComboboxItem>)}
+              </ComboboxContent>
+            </Combobox>
           </div>
           <div class="grid gap-2 [&>[data-slot=native-select-wrapper]]:w-full">
             <Label for="anio">Año</Label>
@@ -62,6 +67,7 @@ const textoDe = (d: (typeof documentos)[number]) =>
               {anios.map((a) => <NativeSelectOption value={String(a)}>{a}</NativeSelectOption>)}
             </NativeSelect>
           </div>
+          <input type="hidden" id="opciones-tema" value={JSON.stringify(temas.map((t) => t.id))} />
         </form>
 
         <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{total === 1 ? '1 documento' : `${total} documentos`}</p>
@@ -91,11 +97,11 @@ const textoDe = (d: (typeof documentos)[number]) =>
   if (form) {
     const texto = document.querySelector<HTMLInputElement>('#texto')!;
     const tipo = document.querySelector<HTMLSelectElement>('#tipo')!;
-    const tema = document.querySelector<HTMLSelectElement>('#tema')!;
     const anio = document.querySelector<HTMLSelectElement>('#anio')!;
     const items = [...document.querySelectorAll<HTMLLIElement>('#lista > li')];
     const contador = document.querySelector('#contador')!;
     const sinResultados = document.querySelector('#sin-resultados')!;
+    const temasValidos = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-tema')!.value) as string[];
 
     function filtros(): FiltrosRepositorio {
       const d = new FormData(form!);
@@ -139,11 +145,15 @@ const textoDe = (d: (typeof documentos)[number]) =>
       if (valor && [...select.options].some((o) => o.value === valor)) select.value = valor;
     };
     elegir(tipo, params.get('tipo'));
-    elegir(tema, params.get('tema'));
     elegir(anio, params.get('anio'));
+    if (params.get('tema') && temasValidos.includes(params.get('tema')!)) {
+      document.querySelector('#tema')?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: params.get('tema') } }));
+    }
 
     form.addEventListener('input', aplicar);
     form.addEventListener('change', aplicar);
+    // Starwind v3: el Combobox emite starwind:value-change antes de fijar el valor.
+    form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
     aplicar();
   }
 </script>
