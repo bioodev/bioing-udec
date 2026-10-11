@@ -8,15 +8,75 @@ import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const CONTENIDO = new URL('../src/content/', import.meta.url).pathname;
+const MEDIOS = new URL('../src/assets/media/', import.meta.url).pathname;
 const PREFIJO = 'sint-';
 const AVISO = 'Contenido sintético generado por scripts/datos-sinteticos.mjs.';
-const IMAGENES = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg', 'ejemplo-azul.png', 'ejemplo-verde.png', 'ejemplo-gris.png'];
-// Fotos demo siempre presentes en publicaciones (noticias, actividades, banners) para que
-// ninguna publicación quede sin imagen.
-const DEMOS = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg'];
-const COLECCIONES = ['areas', 'temas', 'organizaciones', 'personas', 'actividades', 'noticias', 'anuncios', 'documentos', 'banners'];
+const COLECCIONES = ['areas', 'temas', 'organizaciones', 'personas', 'actividades', 'noticias', 'anuncios', 'documentos', 'banners', 'instagram'];
 
-const CANTIDAD = { organizaciones: 15, personas: 70, actividades: 24, noticias: 40, anuncios: 18, documentos: 30, banners: 7 };
+const CANTIDAD = { organizaciones: 15, personas: 70, actividades: 24, noticias: 40, anuncios: 18, documentos: 30, banners: 7, instagram: 7 };
+
+// Fotos demo (src/assets/media). El texto alternativo describe lo que se ve en cada una.
+const DEMOS = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg'];
+const DEMO_ALT = {
+  'demo-01.jpg': 'Cultivo en placa de Petri con colonias de colores intensos',
+  'demo-02.jpg': 'Bacterias en forma de bastón teñidas de color magenta',
+  'demo-03.jpg': 'Manos con guantes sosteniendo una placa de Petri en un laboratorio',
+  'demo-04.jpg': 'Profesional con guantes preparando una jeringa desde un vial',
+  'demo-05.jpg': 'Planta joven de albahaca sostenida entre dos manos sobre tierra',
+  'demo-06.jpg': 'Pipeta depositando muestras en tubos de microcentrífuga de colores',
+  'demo-07.jpg': 'Núcleos celulares teñidos con fluorescencia en microscopía confocal',
+};
+
+// Pools curados en español (bioingeniería: acuicultura, biomateriales, alimentos, salud, medio ambiente, bioprocesos).
+const VIDEOS = ['https://www.youtube.com/watch?v=yLxPo7uBv-Q', 'https://www.youtube.com/watch?v=SyYaQjP3MoU', 'https://youtu.be/mO-W-WL7Alk'];
+const EMOJIS = ['🧬', '🔬', '🌊', '🧪'];
+const ETIQUETAS = ['biomateriales', 'acuicultura', 'bioprocesos', 'salud pública', 'medio ambiente', 'industria alimentaria', 'innovación', 'egresados', 'investigación', 'vinculación'];
+const SUJETOS_NOTICIA = ['Estudiantes de Bioingeniería', 'El laboratorio de biomateriales', 'Egresados de la carrera', 'Un equipo de la FCB', 'Investigadores de la UdeC', 'La carrera de Bioingeniería'];
+const VERBOS_NOTICIA = ['presentó', 'consolidó', 'publicó', 'obtuvo', 'celebró', 'lanzó'];
+const OBJETOS_NOTICIA = ['avances en hidrogeles para heridas', 'un estudio sobre cultivos de salmónidos', 'un proyecto de envases biodegradables', 'resultados sobre fermentación industrial', 'una nueva línea de biosensores', 'un programa de tutorías para primer año', 'una jornada de vinculación con la industria alimentaria', 'su primera patente en bioprocesos'];
+const CIERRES_NOTICIA = ['', ' en la Región del Biobío', ' con fondos concursables', ' durante 2026'];
+const BAJADAS = [
+  'Los resultados abren nuevas líneas de trabajo para la comunidad de la carrera.',
+  'La iniciativa reúne a estudiantes, académicos y egresados en torno a un mismo desafío.',
+  'Un avance que combina laboratorio, terreno y colaboración con la industria.',
+  'La carrera sigue ampliando su vínculo con el sector productivo de la región.',
+  'Una experiencia que deja aprendizajes para próximas generaciones de bioingenieros.',
+  'Conoce el detalle de la actividad y cómo participar de las próximas instancias.',
+  'El trabajo se desarrolla con financiamiento de programas concursables y apoyo institucional.',
+  'Una mirada a los resultados preliminares y a los desafíos que vienen.',
+];
+const SUBTITULOS = ['Contexto', 'Qué se hizo', 'Resultados', 'Próximos pasos', 'Participantes', 'Aprendizajes', 'Metodología', 'Impacto para la comunidad'];
+const PARRAFOS = [
+  'El trabajo parte de una pregunta concreta sobre el comportamiento de los materiales en contacto con tejidos vivos. Durante varios meses, el equipo comparó distintas formulaciones en condiciones controladas.',
+  'Las jornadas combinaron sesiones de laboratorio con visitas a plantas de proceso, lo que permitió contrastar los resultados con las condiciones reales de producción.',
+  'Quienes participaron destacan que el enfoque práctico fue clave para entender cómo se traducen los parámetros de laboratorio a escala industrial.',
+  'El proyecto se apoya en el trabajo de estudiantes de distintos años de la carrera, que aportaron análisis de datos, revisión bibliográfica y diseño experimental.',
+  'Los datos recogidos en terreno muestran una variación estacional que obliga a repetir las mediciones antes de sacar conclusiones definitivas.',
+  'La formación de nuevos bioingenieros requiere espacios como este, donde la teoría se contrasta con problemas que tienen un impacto concreto en el entorno.',
+  'El equipo trabajó con protocolos de bioseguridad y registros de trazabilidad, siguiendo las pautas de los comités de ética y seguridad de la Facultad.',
+  'Los resultados preliminares serán presentados en una próxima instancia abierta a la comunidad, con espacio para preguntas y propuestas de colaboración.',
+  'La producción de biomasa a pequeña escala permitió evaluar costos, rendimientos y consumo energético antes de proyectar una etapa piloto.',
+  'Para los egresados que se incorporan a la industria, experiencias de este tipo facilitan la transición entre la formación universitaria y el trabajo profesional.',
+];
+const ITEMS = ['Ensayos reproducibles en tres laboratorios', 'Participación de estudiantes de primer a quinto año', 'Datos abiertos para la comunidad académica', 'Acuerdos de colaboración con empresas de la región', 'Protocolos de bioseguridad actualizados', 'Material de difusión en formato accesible', 'Evaluación de costos y rendimientos', 'Seguimiento de egresados en su primer empleo'];
+const SITIOS = ['sitio de la Universidad de Concepción', 'portal institucional de la UdeC'];
+const CITAS = [
+  'La investigación aplicada es la mejor forma de formar bioingenieros capaces de resolver problemas reales.',
+  'Cada dato recogido en terreno nos recuerda por qué vale la pena medir con cuidado.',
+  'Trabajar junto a la industria cambia la pregunta, y eso enriquece la ciencia.',
+  'Una buena comunidad académica se construye con espacios de encuentro como este.',
+];
+const INDICADORES = ['Muestras analizadas', 'Estudiantes participantes', 'Ensayos completados', 'Empresas vinculadas', 'Horas de laboratorio', 'Publicaciones en preparación'];
+const ASUNTOS_DOC = ['sobre bioseguridad en laboratorios', 'del programa de tutorías', 'de cultivos acuícolas sostenibles', 'de gestión de residuos biológicos', 'de prácticas profesionales', 'sobre propiedad intelectual', 'del plan de estudios de Bioingeniería', 'de calidad alimentaria', 'de biotecnología industrial'];
+const TIPO_DOC = { decreto: 'Decreto', reglamento: 'Reglamento', ley: 'Ley', informe: 'Informe', publicacion: 'Publicación', institucional: 'Documento institucional', historico: 'Registro histórico', academico: 'Documento académico', otro: 'Documento' };
+const DESCRIPCIONES_DOC = ['Versión vigente con sus modificaciones consolidadas.', 'Resumen de resultados y recomendaciones para la comunidad.', 'Texto oficial disponible para consulta pública.', 'Documento de referencia para estudiantes y académicos.', 'Informe anual con indicadores de gestión y ejecución.', 'Registro de acuerdos y decisiones adoptadas en la instancia.'];
+const PALABRAS_CLAVE = ['bioingeniería', 'bioseguridad', 'acuicultura', 'biomateriales', 'reglamento', 'egresados', 'investigación', 'industria alimentaria', 'bioprocesos', 'medio ambiente'];
+const TEMAS_ACTIVIDAD = ['biomateriales para la regeneración de tejidos', 'cultivo sostenible de salmónidos', 'fermentaciones industriales y escalamiento', 'bioinformática aplicada a la salud', 'tratamiento biológico de efluentes', 'inocuidad en la industria alimentaria', 'biosensores para diagnóstico rápido', 'ética en la investigación biomédica', 'inserción laboral de bioingenieros', 'energías renovables de origen biológico', 'mejoramiento genético de cultivos', 'envases biodegradables a partir de residuos'];
+const ETIQUETA_ACTIVIDAD = { seminario: 'Seminario', charla: 'Charla', congreso: 'Congreso', taller: 'Taller', estudiantes: 'Actividad de estudiantes', egresados: 'Encuentro de egresados', academica: 'Actividad académica', encuentro: 'Encuentro', otra: 'Actividad' };
+const PREFIJO_ANUNCIO = ['Se busca', 'Convocatoria:', 'Oportunidad:', 'Se necesita', 'Proyecto:'];
+const OFERTAS = ['analista de datos biomédicos', 'técnico de laboratorio de microbiología', 'práctica en control de calidad alimentaria', 'ayudante de investigación en biomateriales', 'pasantía en planta de bioprocesos', 'proyecto de monitoreo ambiental en humedales', 'asistente de cultivos en acuicultura', 'colaboración en estudio de biosensores'];
+const IG_TITULOS = ['Resumen de la semana en Bioingeniería', 'Cosecha de datos en el laboratorio', 'Un día en la planta piloto', 'Egresados que inspiran', 'Preparando la jornada de vinculación', 'Así se cultivan las microalgas', 'Premiación a estudiantes destacados'];
+const PALETA = ['#1f4e79', '#2e6b5e', '#5b4a7a', '#7a4e2d', '#3d5a6c', '#4a6b3a', '#6b3d4e', '#37474f'];
 
 // ── utilidades ───────────────────────────────────────────────────────
 function limpiar() {
@@ -25,6 +85,7 @@ function limpiar() {
     const dir = join(CONTENIDO, c);
     for (const f of safeReaddir(dir)) if (f.startsWith(PREFIJO)) { rmSync(join(dir, f)); n++; }
   }
+  for (const f of safeReaddir(MEDIOS)) if (f.startsWith(PREFIJO)) { rmSync(join(MEDIOS, f)); n++; }
   return n;
 }
 function safeReaddir(dir) { try { return readdirSync(dir); } catch { return []; } }
@@ -69,7 +130,40 @@ const fechaSola = (d) => d.toISOString().slice(0, 10);
 const alguno = (xs) => en.helpers.arrayElement(xs);
 const algunos = (xs, min, max) => en.helpers.arrayElements(xs, { min, max });
 const quizas = (p, v) => (en.datatype.boolean({ probability: p }) ? v : undefined);
-const cuerpo = (parrafos) => `${en.lorem.paragraphs(parrafos, '\n\n')}\n\n_${AVISO}_`;
+
+// Cuerpo Markdown: subtítulos, párrafos, lista, enlace externo, cita y, opcionalmente, imagen, emoji y tabla.
+// Las imágenes van con el alias @/assets/media (lo que inserta el editor del panel).
+function cuerpo({ secciones = 2, imagen, emoji = en.datatype.boolean({ probability: 0.4 }), tabla = en.datatype.boolean({ probability: 0.25 }) } = {}) {
+  const partes = [];
+  for (let i = 0; i < secciones; i++) {
+    const emojiTitulo = i === 0 && emoji ? ` ${alguno(EMOJIS)}` : '';
+    partes.push(`## ${alguno(SUBTITULOS)}${emojiTitulo}`);
+    const parrafo = alguno(PARRAFOS);
+    partes.push(i === 0 ? `${parrafo} Más información en el [${alguno(SITIOS)}](https://www.udec.cl).` : parrafo);
+    if (i === 0) partes.push(algunos(ITEMS, 3, 4).map((x) => `- ${x}`).join('\n'));
+    if (i === 1) {
+      if (imagen) partes.push(`![${DEMO_ALT[imagen]}](@/assets/media/${imagen})`);
+      partes.push(`> ${alguno(CITAS)}`);
+    }
+  }
+  if (tabla) {
+    const filas = algunos(INDICADORES, 2, 3).map((x) => `| ${x} | ${en.number.int({ min: 1, max: 500 })} |`);
+    partes.push(['| Indicador | Valor |', '| --- | --- |', ...filas].join('\n'));
+  }
+  partes.push(`_${AVISO}_`);
+  return partes.join('\n\n');
+}
+
+// Medios SVG: iniciales sobre un color sobrio. Se escapan por si el texto trae caracteres especiales.
+const escapar = (t) => t.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const iniciales = (t) => t.split(/\s+/).filter((w) => /^\p{Lu}/u.test(w)).slice(0, 2).map((w) => w[0]).join('') || 'S';
+function svg(texto, color) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<rect width="256" height="256" fill="${color}"/>
+<text x="128" y="128" dy="0.35em" text-anchor="middle" font-family="sans-serif" font-size="96" font-weight="bold" fill="#ffffff">${escapar(texto)}</text>
+</svg>
+`;
+}
 
 // ── generación ───────────────────────────────────────────────────────
 function generar() {
@@ -87,7 +181,7 @@ function generar() {
     const id = idUnico('temas', nombre); temas.push(id); escribir('temas', id, { nombre });
   }
 
-  // Organizaciones
+  // Organizaciones (logo SVG en ~70 %)
   const tipos = ['empresa', 'institucion', 'laboratorio', 'agrupacion'];
   const organizaciones = ['laboratorio-de-biomateriales-udec', 'acuicola-del-sur-ejemplo', 'alimentos-bio-ejemplo', 'centro-de-estudiantes-bioingenieria'];
   for (let i = 0; i < CANTIDAD.organizaciones; i++) {
@@ -98,10 +192,17 @@ function generar() {
       : es.company.name();
     const id = idUnico('organizaciones', nombre);
     organizaciones.push(id);
-    escribir('organizaciones', id, { nombre, tipo, sitio_web: quizas(0.6, `https://www.${slug(nombre).slice(0, 20)}.cl`), ficha_activa: true });
+    const conLogo = en.datatype.boolean({ probability: 0.7 });
+    if (conLogo) writeFileSync(join(MEDIOS, `${PREFIJO}logo-${id.slice(PREFIJO.length)}.svg`), svg(iniciales(nombre), alguno(PALETA)));
+    escribir('organizaciones', id, {
+      nombre, tipo, sitio_web: quizas(0.6, `https://www.${slug(nombre).slice(0, 20)}.cl`),
+      logo: conLogo ? `@/assets/media/${PREFIJO}logo-${id.slice(PREFIJO.length)}.svg` : undefined,
+      ficha_activa: true,
+    });
   }
 
   // Personas: la mayoría egresados; algunos sin autorizar, sin generación o con Ficha desactivada.
+  // Foto SVG en ~70 %.
   const personas = [];
   const cargos = ['Investigador/a', 'Jefe/a de producción', 'Ingeniero/a de procesos', 'Gerente de calidad', 'Consultor/a', 'Académico/a', 'Analista de datos', 'Emprendedor/a', 'Encargado/a ambiental', 'Tesista de doctorado'];
   for (let i = 0; i < CANTIDAD.personas; i++) {
@@ -109,11 +210,14 @@ function generar() {
     const nombre = `${es.person.firstName().split(' ')[0]} ${apellido()} ${apellido()}`;
     const id = idUnico('personas', nombre);
     personas.push(id);
+    const conFoto = en.datatype.boolean({ probability: 0.7 });
+    if (conFoto) writeFileSync(join(MEDIOS, `${PREFIJO}foto-${id.slice(PREFIJO.length)}.svg`), svg(iniciales(nombre), alguno(PALETA)));
     const egresado = en.datatype.boolean({ probability: 0.8 });
     const generacion = en.number.int({ min: 2005, max: 2019 });
     escribir('personas', id, {
       nombre,
       descripcion: egresado ? 'Bioingeniero/a UdeC' : alguno(['Académico/a FCB', 'Estudiante de Bioingeniería', 'Invitado/a externo/a']),
+      foto: conFoto ? `@/assets/media/${PREFIJO}foto-${id.slice(PREFIJO.length)}.svg` : undefined,
       ficha_activa: en.datatype.boolean({ probability: 0.92 }),
       perfil_egresado: egresado ? {
         autorizado: en.datatype.boolean({ probability: 0.85 }),
@@ -130,12 +234,28 @@ function generar() {
     ? { tipo: 'persona', persona: alguno(personas) }
     : { tipo: 'organizacion', organizacion: alguno(organizaciones) });
 
+  // Publicaciones de Instagram (6–8 según CANTIDAD): enlaces con la forma de una publicación real.
+  const instagramIds = [];
+  for (let i = 0; i < CANTIDAD.instagram; i++) {
+    const id = `${PREFIJO}publicacion-${i + 1}`;
+    instagramIds.push(id);
+    const demo = alguno(DEMOS);
+    const conImagen = en.datatype.boolean({ probability: 0.5 });
+    escribir('instagram', id, {
+      titulo: IG_TITULOS[i % IG_TITULOS.length],
+      enlace: `https://www.instagram.com/p/${en.string.alphanumeric({ length: 11 })}/`,
+      fecha: fechaSola(dias(-en.number.int({ min: 2, max: 200 }))),
+      publicado: true,
+      imagen: conImagen ? `@/assets/media/${demo}` : undefined,
+    });
+  }
+
   // Actividades: pasadas y futuras, algunas de varios días.
   const actividades = [];
-  const tiposActividad = ['seminario', 'charla', 'congreso', 'taller', 'estudiantes', 'egresados', 'academica', 'encuentro', 'otra'];
+  const tiposActividad = Object.keys(ETIQUETA_ACTIVIDAD);
   for (let i = 0; i < CANTIDAD.actividades; i++) {
     const tipo = alguno(tiposActividad);
-    const titulo = `${tipo[0].toUpperCase()}${tipo.slice(1)}: ${en.lorem.words({ min: 2, max: 5 })}`.replace(/^(\w+):/, (m) => ({ Estudiantes: 'Actividad de estudiantes:', Egresados: 'Actividad de egresados:', Academica: 'Actividad académica:', Otra: 'Actividad:' })[m.slice(0, -1)] ?? m);
+    const titulo = `${ETIQUETA_ACTIVIDAD[tipo]}: ${alguno(TEMAS_ACTIVIDAD)}`;
     const id = idUnico('actividades', titulo);
     const inicio = dias(en.number.int({ min: -240, max: 180 }));
     const variosDias = tipo === 'congreso';
@@ -151,31 +271,52 @@ function generar() {
       areas: algunos(areas, 1, 2),
       enlace_inscripcion: quizas(0.5, 'https://forms.gle/ejemplo'),
       imagen: `@/assets/media/${alguno(DEMOS)}`,
-    }, cuerpo(2));
+    }, cuerpo({ secciones: 2 }));
   }
 
   // Noticias: casi todas pasadas; un par futuras (no deben verse) y algunas como Cobertura.
+  // Imagen destacada con alt en casi todas; video ~30 %, galería ~30 %, Instagram ~20 %.
   const pasadas = actividades.filter((a) => a.inicio < hoy);
   for (let i = 0; i < CANTIDAD.noticias; i++) {
-    const titulo = en.lorem.sentence({ min: 5, max: 10 }).replace(/\.$/, '');
+    const titulo = `${alguno(SUJETOS_NOTICIA)} ${alguno(VERBOS_NOTICIA)} ${alguno(OBJETOS_NOTICIA)}${alguno(CIERRES_NOTICIA)}`;
     const id = idUnico('noticias', titulo);
     const fecha = dias(i < 2 ? en.number.int({ min: 5, max: 60 }) : -en.number.int({ min: 1, max: 365 }));
     const cobertura = quizas(0.25, pasadas.length ? alguno(pasadas).id : undefined);
+    const demo = alguno(DEMOS);
+    const galeria = en.datatype.boolean({ probability: 0.3 })
+      ? algunos(DEMOS, 3, 7).map((d) => ({ imagen: `@/assets/media/${d}`, alt: DEMO_ALT[d] }))
+      : undefined;
     escribir('noticias', id, {
       titulo, fecha: fechaSola(fecha), publicado: en.datatype.boolean({ probability: 0.95 }),
-      imagen: `@/assets/media/${alguno(DEMOS)}`,
-      bajada: quizas(0.8, en.lorem.sentence({ min: 10, max: 20 })),
+      imagen: `@/assets/media/${demo}`,
+      imagen_alt: DEMO_ALT[demo],
+      video: quizas(0.3, alguno(VIDEOS)),
+      galeria,
+      bajada: quizas(0.8, alguno(BAJADAS)),
+      etiquetas: algunos(ETIQUETAS, 2, 4),
       temas: algunos(temas, 1, 2), areas: algunos(areas, 0, 2),
       personas_mencionadas: algunos(personas, 0, 4),
       organizaciones_mencionadas: algunos(organizaciones, 0, 2),
       actividad: cobertura,
-    }, cuerpo(en.number.int({ min: 3, max: 6 })));
+      instagram: quizas(0.2, alguno(instagramIds)),
+    }, cuerpo({ secciones: en.number.int({ min: 2, max: 4 }), imagen: en.datatype.boolean({ probability: 0.4 }) ? alguno(DEMOS) : undefined }));
   }
 
-  // Anuncios: vigentes, vencidos y sin fecha límite.
+  // Noticia de prueba fija (galería, video, alt, cuerpo con imagen, emoji y enlace).
+  escribir('noticias', `${PREFIJO}prueba-galeria-video`, {
+    titulo: 'Prueba: galería y video', fecha: fechaSola(dias(-3)), publicado: true,
+    imagen: '@/assets/media/demo-05.jpg', imagen_alt: DEMO_ALT['demo-05.jpg'],
+    video: VIDEOS[0],
+    galeria: DEMOS.slice(0, 4).map((d) => ({ imagen: `@/assets/media/${d}`, alt: DEMO_ALT[d] })),
+    bajada: 'Noticia de prueba para revisar la galería, el video y el cuerpo con imagen, emoji y enlace.',
+    etiquetas: ['prueba', 'galería', 'video'],
+    temas: ['logros'], areas: ['biomateriales'],
+  }, cuerpo({ secciones: 2, imagen: 'demo-06.jpg', emoji: true, tabla: false }));
+
+  // Anuncios: vigentes, vencidos y sin fecha límite; enlace y contacto del mismo dominio.
   const tiposAnuncio = ['trabajo', 'practica', 'pasantia', 'proyecto', 'convocatoria', 'colaboracion', 'otra'];
   for (let i = 0; i < CANTIDAD.anuncios; i++) {
-    const titulo = `${alguno(['Se busca', 'Convocatoria:', 'Oportunidad:', 'Práctica en', 'Proyecto'])} ${en.lorem.words({ min: 2, max: 5 })}`;
+    const titulo = `${alguno(PREFIJO_ANUNCIO)} ${alguno(OFERTAS)}`;
     const id = idUnico('anuncios', titulo);
     const fecha = dias(-en.number.int({ min: 0, max: 120 }));
     escribir('anuncios', id, {
@@ -183,19 +324,21 @@ function generar() {
       areas: algunos(areas, 1, 2), fecha: fechaSola(fecha),
       fecha_limite: quizas(0.75, fechaSola(dias(en.number.int({ min: -30, max: 90 })))),
       contacto: es.internet.email({ provider: 'ejemplo.cl' }).toLowerCase(),
-      enlace: quizas(0.4, 'https://www.ejemplo.cl/postular'),
-    }, cuerpo(2));
+      enlace: quizas(0.4, `https://www.ejemplo.cl/postular/${slug(titulo).slice(0, 40)}`),
+    }, cuerpo({ secciones: 2 }));
   }
 
   // Documentos del Repositorio (aún sin página, pero listos para cuando exista).
-  const tiposDoc = ['decreto', 'reglamento', 'ley', 'informe', 'publicacion', 'institucional', 'historico', 'academico', 'otro'];
+  // Enlace con forma de archivo de Drive (id de 33 caracteres).
+  const tiposDoc = Object.keys(TIPO_DOC);
   for (let i = 0; i < CANTIDAD.documentos; i++) {
     const tipo = alguno(tiposDoc);
-    const titulo = `${tipo[0].toUpperCase()}${tipo.slice(1)} ${en.lorem.words({ min: 2, max: 4 })} ${en.number.int({ min: 1, max: 999 })}`;
+    const titulo = `${TIPO_DOC[tipo]} ${alguno(ASUNTOS_DOC)} N.º ${en.number.int({ min: 1, max: 999 })}`;
     escribir('documentos', idUnico('documentos', titulo), {
       titulo, publicado: true, tipo, anio: en.number.int({ min: 1995, max: hoy.getFullYear() }),
-      enlace: 'https://drive.google.com/', descripcion: quizas(0.7, en.lorem.sentence()),
-      temas: algunos(temas, 0, 1), areas: algunos(areas, 0, 2), palabras_clave: en.lorem.words(3).split(' '),
+      enlace: `https://drive.google.com/file/d/${en.string.alphanumeric({ length: 33 })}/view`,
+      descripcion: quizas(0.7, alguno(DESCRIPCIONES_DOC)),
+      temas: algunos(temas, 0, 1), areas: algunos(areas, 0, 2), palabras_clave: algunos(PALABRAS_CLAVE, 2, 4),
     });
   }
 
@@ -230,12 +373,13 @@ function generar() {
 
   return {
     areas: areas.length, organizaciones: organizaciones.length, personas: CANTIDAD.personas,
-    banners: banners.length,
+    banners: banners.length, instagram: instagramIds.length,
     ...Object.fromEntries(['actividades', 'noticias', 'anuncios', 'documentos'].map((k) => [k, CANTIDAD[k]])),
   };
 }
 
 for (const c of COLECCIONES) mkdirSync(join(CONTENIDO, c), { recursive: true });
+mkdirSync(MEDIOS, { recursive: true });
 const borrados = limpiar();
 if (process.argv.includes('--limpiar')) {
   console.log(`Borrados ${borrados} archivos sintéticos.`);
