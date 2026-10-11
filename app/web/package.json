@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "node scripts/postbuild-pagefind.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
@@ -16,6 +17,7 @@
     "dev:tunel": "bash scripts/dev-tunel.sh"
   },
   "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
     "@starwind-ui/astro": "^1.2.1",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.3.3",
@@ -32,7 +34,9 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@faker-js/faker": "^10.6.0",
+    "pagefind": "1.5.2",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "wrangler": "4.148.0"
   }
 }

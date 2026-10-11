@@ -4,12 +4,18 @@ import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger 
 import IconMenu from 'phosphor-astro/List.astro';
 import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
+import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
 import { MENU, URL_FCB } from '@/lib/navegacion';
+import ogPorDefecto from '@/assets/og-default.png';
 
-interface Props { titulo: string; descripcion?: string }
-const { titulo, descripcion = 'Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción.' } = Astro.props;
+interface Props { titulo: string; descripcion?: string; imagen?: string }
+const { titulo, descripcion = 'Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción.', imagen } = Astro.props;
+const tituloPagina = titulo === 'BIOING+' ? titulo : `${titulo} · BIOING+`;
 const actual = Astro.url.pathname;
 const esActual = (href: string) => (href === '/' ? actual === '/' : actual.startsWith(href));
+// URL absoluta para canonical y Open Graph (Astro.site está definido en astro.config.mjs).
+const canonical = new URL(actual, Astro.site).href;
+const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefecto.src, Astro.site).href;
 ---
 <html lang="es">
   <head>
@@ -17,7 +23,19 @@ const esActual = (href: string) => (href === '/' ? actual === '/' : actual.start
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={descripcion} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{titulo === 'BIOING+' ? titulo : `${titulo} · BIOING+`}</title>
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BIOING+" />
+    <meta property="og:title" content={tituloPagina} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagenOG} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={tituloPagina} />
+    <meta name="twitter:description" content={descripcion} />
+    <meta name="twitter:image" content={imagenOG} />
+    <title>{tituloPagina}</title>
+    <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
     <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2 focus:shadow-lg print:hidden">Saltar al contenido</a>
@@ -31,6 +49,7 @@ const esActual = (href: string) => (href === '/' ? actual === '/' : actual.start
               {item.etiqueta}
             </a>
           ))}
+          <a href="/buscar" aria-label="Buscar en el sitio" title="Buscar" class="text-muted-foreground hover:text-primary"><MagnifyingGlass class="size-4" aria-hidden="true" /></a>
         </nav>
         <a href={URL_FCB} class="ml-auto hidden lg:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">FCB UdeC <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
         <div class="ml-auto lg:hidden">
@@ -45,6 +64,9 @@ const esActual = (href: string) => (href === '/' ? actual === '/' : actual.start
                        class="rounded-md px-2 py-2 hover:bg-muted">{item.etiqueta}</a>
                   </SheetClose>
                 ))}
+                <SheetClose asChild>
+                  <a href="/buscar" class="inline-flex items-center gap-2 rounded-md px-2 py-2 hover:bg-muted"><MagnifyingGlass class="size-4" aria-hidden="true" />Buscar</a>
+                </SheetClose>
                 <a href={URL_FCB} class="mt-4 inline-flex items-center gap-1 px-2 py-2 text-muted-foreground">Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
               </nav>
             </SheetContent>
@@ -53,7 +75,7 @@ const esActual = (href: string) => (href === '/' ? actual === '/' : actual.start
       </div>
     </header>
 
-    <main id="contenido" class="flex-1">
+    <main id="contenido" data-pagefind-body class="flex-1">
       <slot />
     </main>
 
