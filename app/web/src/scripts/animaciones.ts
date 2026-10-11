@@ -1,27 +1,32 @@
-// Animaciones del sitio (GSAP). Convención declarativa:
-//   data-animar="hero"     → entrada al cargar (título, texto y botón del hero), con stagger
-//   data-animar="fade-up"  → el elemento aparece (fade + slide-up) al entrar en el viewport
+// Animaciones del sitio (GSAP, fade solo). Convención declarativa:
+//   data-animar="hero"     → entrada al cargar (primer slide del carrusel), con stagger
+//   data-animar="fade-up"  → el elemento aparece (fade) al entrar en el viewport
 //   data-animar="grilla"   → contenedor: sus hijos aparecen escalonados al entrar en vista
 //
 // Se integra con View Transitions (ClientRouter de Astro 7): se limpia en
 // `astro:before-swap` y se reinicializa en `astro:page-load` (carga inicial y navegación),
-// usando gsap.context() para no dejar triggers apuntando al DOM anterior.
+// usando gsap.context() para no dejar animaciones apuntando al DOM anterior.
+//
+// Rendimiento: los reveals usan un único IntersectionObserver nativo (sin ScrollTrigger,
+// que medir posiciones y refrescar era lo que inflaba el TBT de Lighthouse); GSAP solo
+// ejecuta el tween de opacity. El hero anima únicamente el primer slide (el resto se deja
+// visible con gsap.set, sin costo por frame).
 //
 // Accesibilidad: con prefers-reduced-motion no se crea ninguna animación y se quita la clase
 // .anima (todo visible). Sin JavaScript el contenido nunca se oculta: la clase .anima la pone
 // un script inline del <head> de Base.astro, y un guard con timeout la quita si este módulo
 // no llega a ejecutarse.
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 let contexto: gsap.Context | undefined;
+let observador: IntersectionObserver | undefined;
 
-/** Limpia las animaciones y los ScrollTrigger de la página actual. */
+/** Limpia las animaciones de la página actual. */
 export function limpiarAnimaciones(): void {
   contexto?.revert();
   contexto = undefined;
+  observador?.disconnect();
+  observador = undefined;
 }
 
 /** Crea (o recrea) las animaciones de la página actual. Idempotente. */
@@ -40,44 +45,46 @@ export function iniciarAnimaciones(): void {
   document.documentElement.setAttribute('data-animaciones', '1');
 
   try {
-    // Fade solo: los elementos se ocultan solo con opacity (CSS .anima) y GSAP los lleva
-    // a opacity:1. Sin transform, así que no hay deslizamiento ni retrocesos.
     contexto = gsap.context(() => {
-    // HERO: entrada al cargar (fade solo), con ligero escalonado entre título, texto y botón.
-    const hero = gsap.utils.toArray<HTMLElement>('[data-animar="hero"]');
-    if (hero.length) {
-      gsap.to(hero, {
-        opacity: 1, duration: 0.8, ease: 'power3.out',
-        stagger: 0.12, delay: 0.1, overwrite: 'auto',
-      });
-    }
+      // HERO: entrada al cargar (fade solo). Por rendimiento se anima SOLO el primer slide
+      // (el visible al cargar); el resto de los elementos del carrusel se dejan visibles
+      // con un set instantáneo (están fuera de pantalla y no deberían costar frames).
+      const todos = gsap.utils.toArray<HTMLElement>('[data-animar="hero"]');
+      if (todos.length) {
+        const slideInicial = document.querySelector('[data-slide]');
+        const visibles = todos.filter((el) => el.closest('[data-slide]') === slideInicial);
+        const resto = todos.filter((el) => !visibles.includes(el));
+        gsap.set(resto, { opacity: 1, overwrite: 'auto' });
+        if (visibles.length) {
+          gsap.to(visibles, {
+            opacity: 1, duration: 0.6, ease: 'power3.out',
+            stagger: 0.08, delay: 0.05, overwrite: 'auto',
+          });
+        }
+      }
 
-    // SECCIONES: elementos individuales que aparecen al scrollear (fade solo).
-    gsap.utils.toArray<HTMLElement>('[data-animar="fade-up"]').forEach((el) => {
-      gsap.to(el, {
-        opacity: 1, duration: 0.7, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        overwrite: 'auto',
-      });
-    });
+      // REVEALS (fade): un único IntersectionObserver nativo observa títulos y grillas.
+      // rootMargin inferior -15% ≈ "el elemento entró al 85% del viewport", una sola vez.
+      observador = new IntersectionObserver((entradas) => {
+        for (const entrada of entradas) {
+          if (!entrada.isIntersecting) continue;
+          observador?.unobserve(entrada.target);
+          const elemento = entrada.target as HTMLElement;
+          if (elemento.dataset.animar === 'grilla') {
+            const hijos = Array.from(elemento.children).filter((h): h is HTMLElement => h instanceof HTMLElement);
+            if (!hijos.length) continue;
+            gsap.to(hijos, {
+              opacity: 1, duration: 0.6, ease: 'power3.out',
+              stagger: Math.min(0.06, 0.45 / hijos.length), overwrite: 'auto',
+            });
+          } else {
+            gsap.to(elemento, { opacity: 1, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          }
+        }
+      }, { rootMargin: '0px 0px -15% 0px', threshold: 0.05 });
 
-    // GRILLAS: los hijos aparecen escalonados (fade solo) cuando la grilla entra en vista. Se
-    // limita el escalonado en el tiempo para que las listas largas no tarden (stagger ≈ 0.45 s).
-    gsap.utils.toArray<HTMLElement>('[data-animar="grilla"]').forEach((contenedor) => {
-      const hijos = Array.from(contenedor.children).filter((h): h is HTMLElement => h instanceof HTMLElement);
-      if (!hijos.length) return;
-      gsap.to(hijos, {
-        opacity: 1, duration: 0.6, ease: 'power3.out',
-        stagger: Math.min(0.06, 0.45 / hijos.length),
-        scrollTrigger: { trigger: contenedor, start: 'top 88%', once: true },
-        overwrite: 'auto',
-      });
-    });
-  }, document.body);
-
-  // Recalcular posiciones cuando termina de cargar (imágenes, fuentes): cambian los triggers.
-  window.addEventListener('load', () => ScrollTrigger.refresh());
-  ScrollTrigger.refresh();
+      document.querySelectorAll('[data-animar="grilla"], [data-animar="fade-up"]').forEach((el) => observador!.observe(el));
+    }, document.body);
   } catch {
     // Si algo falla al crear las animaciones, nunca dejar contenido oculto.
     document.documentElement.classList.remove('anima');

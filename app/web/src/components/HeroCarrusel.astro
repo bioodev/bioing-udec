@@ -31,7 +31,7 @@ const varios = banners.length > 1;
         <Image
           src={banner.data.imagen}
           alt=""
-          class="absolute inset-0 -z-10 h-full w-full object-cover opacity-40"
+          class="hero-imagen absolute inset-0 -z-10 h-full w-full object-cover opacity-40"
           widths={[640, 1280, 1920]}
           sizes="100vw"
           priority={i === 0}
@@ -52,6 +52,11 @@ const varios = banners.length > 1;
       </div>
     ))}
   </div>
+
+  <!-- Textura halftone cálida (CSS, puntos estilo impresión): sustituye al shader WebGL
+       de Paper Shaders, que al compilar bloqueaba el hilo principal y rompía Lighthouse
+       (TBT). Mismo aire de impresión, coste cero. -->
+  <div class="hero-halftone absolute inset-0 -z-10" aria-hidden="true"></div>
 
   {varios && (
     <>
@@ -120,6 +125,7 @@ const varios = banners.length > 1;
         s.setAttribute('aria-hidden', String(j !== actual));
       });
       puntos.forEach((p, j) => p.setAttribute('aria-current', String(j === actual)));
+      void refrescarFondo(actual);
     }
 
     function detener() {
@@ -159,3 +165,22 @@ const varios = banners.length > 1;
   document.addEventListener('astro:page-load', iniciarCarrusel);
   iniciarCarrusel();
 </script>
+
+<style>
+  /* Tinte cálido sutil para las imágenes del hero (pedido de prueba). */
+  .hero-imagen {
+    filter: sepia(0.3) saturate(1.12) brightness(0.9);
+  }
+  /* Textura halftone de puntos (dos tramas desfasadas, tinta magenta/amarilla cálidas)
+     sobre las imágenes; mezcla soft-light para que no ensucie el texto. */
+  .hero-halftone {
+    background-image:
+      radial-gradient(circle, rgb(235 130 175 / 0.5) 1px, transparent 1.6px),
+      radial-gradient(circle, rgb(255 205 90 / 0.45) 1px, transparent 1.6px);
+    background-size: 9px 9px, 9px 9px;
+    background-position: 0 0, 4px 4px;
+    mix-blend-mode: soft-light;
+    opacity: 0.65;
+    pointer-events: none;
+  }
+</style>
