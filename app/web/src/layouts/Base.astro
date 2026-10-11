@@ -4,6 +4,7 @@ import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger 
 import IconMenu from 'phosphor-astro/List.astro';
 import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
+import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
 import { MENU, URL_FCB } from '@/lib/navegacion';
 import ogPorDefecto from '@/assets/og-default.png';
 
@@ -48,6 +49,7 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
               {item.etiqueta}
             </a>
           ))}
+          <a href="/buscar" aria-label="Buscar en el sitio" title="Buscar" class="text-muted-foreground hover:text-primary"><MagnifyingGlass class="size-4" aria-hidden="true" /></a>
         </nav>
         <a href={URL_FCB} class="ml-auto hidden lg:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">FCB UdeC <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
         <div class="ml-auto lg:hidden">
@@ -62,6 +64,9 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
                        class="rounded-md px-2 py-2 hover:bg-muted">{item.etiqueta}</a>
                   </SheetClose>
                 ))}
+                <SheetClose asChild>
+                  <a href="/buscar" class="inline-flex items-center gap-2 rounded-md px-2 py-2 hover:bg-muted"><MagnifyingGlass class="size-4" aria-hidden="true" />Buscar</a>
+                </SheetClose>
                 <a href={URL_FCB} class="mt-4 inline-flex items-center gap-1 px-2 py-2 text-muted-foreground">Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
               </nav>
             </SheetContent>
@@ -70,7 +75,7 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
       </div>
     </header>
 
-    <main id="contenido" class="flex-1">
+    <main id="contenido" data-pagefind-body class="flex-1">
       <slot />
     </main>
 
