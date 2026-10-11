@@ -1,0 +1,59 @@
+---
+import { getEntries, getEntry, render, type CollectionEntry } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import EnlaceFicha from '@/components/EnlaceFicha.astro';
+import { Badge } from '@/components/starwind/badge';
+import { Button } from '@/components/starwind/button';
+import { anunciosVisibles, formatoFecha } from '@/lib/contenido';
+import { anuncioVigente, existentes } from '@/lib/reglas';
+import { TIPOS_ANUNCIO } from '@/lib/anuncios';
+import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
+
+export async function getStaticPaths() {
+  const anuncios = await anunciosVisibles();
+  return anuncios.map((anuncio) => ({ params: { id: anuncio.id }, props: { anuncio } }));
+}
+
+interface Props { anuncio: CollectionEntry<'anuncios'> }
+const { anuncio } = Astro.props;
+const { Content } = await render(anuncio);
+
+const vigente = anuncioVigente(anuncio.data, new Date());
+const areas = existentes(await getEntries(anuncio.data.areas ?? []));
+
+// EnlaceFicha necesita saber la colección del Oferente (Persona u Organización).
+const o = anuncio.data.oferente;
+const entrada = await (o.tipo === 'persona' ? getEntry(o.persona) : getEntry(o.organizacion));
+const oferente = entrada && { coleccion: o.tipo === 'persona' ? ('personas' as const) : ('organizaciones' as const), entrada };
+
+const esCorreo = /^\S+@\S+$/.test(anuncio.data.contacto);
+---
+<Base titulo={anuncio.data.titulo} descripcion={`${TIPOS_ANUNCIO[anuncio.data.tipo]} · ${anuncio.data.titulo}`}>
+  <article class="mx-auto max-w-3xl px-4 py-12">
+    <p class="flex flex-wrap items-center gap-2">
+      <Badge variant="outline">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Badge>
+      {!vigente && <Badge variant="secondary">Vencido</Badge>}
+    </p>
+    <h1 class="mt-3 text-4xl font-semibold tracking-tight">{anuncio.data.titulo}</h1>
+
+    <dl class="mt-6 grid gap-2 text-sm">
+      <div><dt class="inline text-muted-foreground">Publicado el </dt><dd class="inline"><time datetime={anuncio.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha)}</time></dd></div>
+      {anuncio.data.fecha_limite && <div><dt class="inline text-muted-foreground">Postula hasta el </dt><dd class="inline"><time datetime={anuncio.data.fecha_limite.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha_limite)}</time></dd></div>}
+      {oferente && <div><dt class="inline text-muted-foreground">Oferente: </dt><dd class="inline"><EnlaceFicha coleccion={oferente.coleccion} entrada={oferente.entrada} /></dd></div>}
+      {areas.length > 0 && <div><dt class="inline text-muted-foreground">Áreas: </dt><dd class="inline">{areas.map((a) => a.data.nombre).join(' · ')}</dd></div>}
+      <div><dt class="inline text-muted-foreground">Contacto: </dt><dd class="inline">{esCorreo ? <a href={`mailto:${anuncio.data.contacto}`} class="text-primary hover:underline">{anuncio.data.contacto}</a> : anuncio.data.contacto}</dd></div>
+    </dl>
+
+    {anuncio.data.enlace && vigente && (
+      <p class="mt-6">
+        <Button as="a" href={anuncio.data.enlace} target="_blank" rel="noopener" class="rounded-full">
+          Más información<ArrowSquareOut class="size-4" aria-hidden="true" />
+        </Button>
+      </p>
+    )}
+
+    <div class="prose mt-8 max-w-none"><Content /></div>
+
+    <p class="mt-10 border-t border-border pt-6 text-sm"><a href="/anuncios" class="text-primary hover:underline">← Volver a Anuncios</a></p>
+  </article>
+</Base>
