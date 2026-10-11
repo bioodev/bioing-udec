@@ -1,0 +1,11 @@
+// Configuración de despliegue en Cloudflare (Workers Static Assets).
+// Comando provisional: npm run build && npm run postbuild && npx wrangler deploy
+// El deploy real se conectará a Workers Builds en la Fase C (sin secretos aquí).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bioing-web",
+  "compatibility_date": "2026-10-11",
+  "assets": {
+    "directory": "./dist"
+  }
+}
