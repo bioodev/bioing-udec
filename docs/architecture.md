@@ -182,8 +182,10 @@ shaders WebGL y la textura halftone por rendimiento y por decisión del equipo.
   alcanza al dominio definitivo). El panel (`/admin/`) inicia sesión recién cuando el backend sea `github`
   con el Worker de autenticación (etapa 4 del plan); el contenido se edita **solo desde producción**, porque
   el `config.yml` de ambos ambientes escribe en `main`.
-- **Publicación**: cada cambio en el repositorio dispara build + deploy en Cloudflare; una reconstrucción
-  diaria poco después de medianoche de Chile actualiza lo que depende de la fecha.
+- **Publicación**: cada push al repositorio (también los commits que hace Sveltia al publicar) dispara build +
+  deploy en Cloudflare, mediante la app de GitHub de Workers Builds. Lo que depende de la fecha se actualiza con
+  una reconstrucción diaria: `.github/workflows/reconstruccion-diaria.yml` (GitHub Actions, `15 4 * * *` UTC =
+  00:15/01:15 de Chile) hace `POST` al Deploy Hook de `bioing-web`, guardado en el secret `CF_DEPLOY_HOOK_URL`.
 - **Contenido de prueba**: `npm run datos:generar` crea contenido `sint-*` (ignorado por git) y
   `datos:limpiar` lo borra. Con el servidor de dev corriendo, reiniciarlo después de generar (no detecta
   cientos de archivos nuevos de una vez).

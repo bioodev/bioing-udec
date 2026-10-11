@@ -1,0 +1,44 @@
+# Reconstrucción diaria del sitio de producción.
+#
+# Lo que depende de la fecha (Agenda próxima/realizada, Anuncios vencidos, Banners) se
+# resuelve en el build. Si nadie publica, no hay commit y el sitio no se actualiza, así que
+# este workflow dispara cada noche el Deploy Hook de Workers Builds del Worker "bioing-web"
+# (rama main). Workers Builds hace el build y el deploy; aquí solo se hace el POST.
+#
+# Horario: 04:15 UTC todo el año = 00:15 en Chile en invierno (UTC-4) y 01:15 en verano
+# (UTC-3). Siempre después de medianoche de Chile, sin ajustes al cambiar la hora.
+# GitHub puede atrasar unos minutos los cron programados; para esto da lo mismo.
+#
+# Requisito: secret del repositorio CF_DEPLOY_HOOK_URL con la URL del Deploy Hook
+# (Workers & Pages → bioing-web → Settings → Builds → Deploy Hooks). Es un secreto:
+# quien la tenga puede disparar builds. Sin el secret, el workflow avisa y no falla.
+#
+# Detalle: docs/plans/2026-10-11-plan-ambientes-qa-produccion.md, etapa 3.5.
+
+name: Reconstrucción diaria
+
+on:
+  schedule:
+    - cron: '15 4 * * *'
+  workflow_dispatch: # prueba manual: Actions → Reconstrucción diaria → Run workflow
+
+permissions: {}
+
+jobs:
+  disparar-build:
+    # Solo en GitHub (el Gitea de desarrollo también lee .github/workflows).
+    if: github.server_url == 'https://github.com'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: POST al Deploy Hook de Workers Builds
+        env:
+          CF_DEPLOY_HOOK_URL: ${{ secrets.CF_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$CF_DEPLOY_HOOK_URL" ]; then
+            echo "::warning::Falta el secret CF_DEPLOY_HOOK_URL: no se disparó la reconstrucción."
+            exit 0
+          fi
+          curl --fail-with-body --silent --show-error --retry 3 --retry-delay 30 \
+            -X POST "$CF_DEPLOY_HOOK_URL"
+          echo "Reconstrucción solicitada a Workers Builds."

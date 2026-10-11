@@ -68,7 +68,9 @@ cómo revertir*. Los incidentes van como tabla en §9.
   de `wrangler`, `SITE_URL`, `npm run deploy:dev`, verificación, incidentes y camino a producción).
 - Cloudflare Workers (Static Assets) con `app/web/wrangler.jsonc`; Workers Builds conectado al repositorio.
 - Variables y secretos (dónde vive `SITE_URL` y cualquier token; nunca en el repositorio).
-- Reconstrucción **diaria** programada poco después de medianoche de Chile (y por qué no a las 00:00 UTC).
+- Reconstrucción **diaria** programada poco después de medianoche de Chile (y por qué no a las 00:00 UTC):
+  workflow `.github/workflows/reconstruccion-diaria.yml` + secret `CF_DEPLOY_HOOK_URL`; cómo probarlo a mano
+  (*Run workflow*) y cómo rotar el hook si se filtra.
 - Avisos por correo ante fallas de build; qué hacer si el build falla (el sitio publicado no cambia).
 - Dominio, DNS y certificados (renovación automática); qué revisar cada año antes del vencimiento.
 - _Pendiente:_ completar con las cuentas y URLs reales (Fase C).

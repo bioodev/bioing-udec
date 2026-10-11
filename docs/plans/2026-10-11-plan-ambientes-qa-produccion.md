@@ -128,10 +128,22 @@ Conectar el repositorio de GitHub **a cada Worker** (Settings → Build). Config
 ### 3.5 Reconstrucción diaria (Agenda, Anuncios, Banners)
 - [ ] En `bioing-web` → Settings → Builds → **Deploy Hooks**: crear uno para la rama `main`. La URL es un
       **secreto** (cualquiera que la tenga puede disparar builds): va al gestor, nunca al repositorio.
-- [ ] Dispararlo a diario poco después de las 00:00 de Chile (`15 4 * * *` UTC en invierno; ver
-      `pendientes-infra.md`). Opción recomendada: un Worker mínimo con Cron Trigger que haga `POST` al hook,
-      con la URL como secret (`wrangler secret put DEPLOY_HOOK_URL`). Es una invocación al día: dentro del plan
-      gratuito.
+- [ ] Dispararlo a diario con **GitHub Actions**: el workflow ya está en el repositorio
+      (`.github/workflows/reconstruccion-diaria.yml`). Solo falta cargar la URL del hook como secret del
+      repositorio: GitHub → repo → Settings → Secrets and variables → Actions → *New repository secret*,
+      nombre `CF_DEPLOY_HOOK_URL`. Sin el secret, el workflow avisa y no falla.
+- [ ] Probarlo a mano: Actions → *Reconstrucción diaria* → *Run workflow*. Debe aparecer un build nuevo en
+      `bioing-web` → Deployments, con origen "Deploy Hook".
+- Horario: `15 4 * * *` UTC **todo el año**, que en Chile es 00:15 en invierno (UTC-4) y 01:15 en verano
+  (UTC-3). Siempre queda después de medianoche de Chile, así que no hay que ajustarlo al cambiar la hora.
+- Los cron de GitHub corren **solo desde la rama por defecto** (`main`): el workflow se activa cuando llegue a
+  `main` (etapa 2). GitHub puede atrasarlos unos minutos. En repos privados no se desactivan por inactividad
+  (eso aplica a repos públicos sin actividad en 60 días).
+- Costo: segundos por día de los 2 000 minutos/mes gratuitos de Actions en repos privados.
+- El Gitea también lee `.github/workflows`: el job lleva `if: github.server_url == 'https://github.com'` para
+  que no corra ahí.
+- Alternativa descartada: un Worker con Cron Trigger. Funciona igual, pero suma otro Worker que mantener
+  fuera del repositorio.
 
 ### 3.6 Avisos de build fallido
 - [ ] Workers Builds publica eventos (`build.failed`, etc.) mediante **Event Subscriptions** a una Queue;
