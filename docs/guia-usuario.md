@@ -2,8 +2,7 @@
 
 > **Para quién es:** la persona Encargada de comunicaciones de la carrera (y su respaldo). No hace falta
 > saber programar ni usar Git.
-> **Estado:** _esqueleto — pendiente de escribir el contenido_ (los pantallazos del panel se agregan en la
-> Fase C, cuando exista el repositorio definitivo y el login real).
+> **Estado:** primera versión (2026-10-11); pantallazos pendientes
 > **Relacionados:** [`context.md`](context.md) (términos del dominio) ·
 > [`architecture.md`](architecture.md) (cómo funciona por dentro) · [`pendientes-infra.md`](pendientes-infra.md).
 
@@ -26,105 +25,464 @@ inventan pantallas).
 
 ### 2.1 Tu cuenta y cómo se entra
 
-- Cuenta de GitHub (en producción) con **doble factor**; quién la crea y quién puede dar acceso.
-- Dirección del panel (`https://<dominio>/admin/`) y qué hacer si no carga o si no te reconoce.
-- Diferencia entre entrar al **panel** (editar) y ver el **sitio público**.
-- _Pendiente:_ botón de inicio de sesión y pantallazos (Fase C).
+- Necesitas una cuenta de GitHub (en producción) con **doble factor** activado. La cuenta la crea la carrera
+  y decide quién tiene acceso al repositorio del sitio.
+- Dirección del panel: `https://<dominio>/admin/`. Hoy, en la vista previa, es `https://bioing.bioodev.work/admin/`.
+  Si no carga, revisa que la dirección termine en `/admin/` y recarga la página; si sigue sin cargar, avisa a
+  soporte (§11).
+- Diferencia entre entrar al **panel** (editar, con tu cuenta) y ver el **sitio público** (cualquiera puede
+  verlo, sin entrar).
+
+**Hoy: entrar con un token de acceso.** Mientras no esté conectado el inicio de sesión con GitHub, en
+**«Iniciar sesión con un token de acceso»** pegas un token. Para crearlo:
+
+1. En GitHub, haz clic en tu foto (arriba a la derecha) → **Settings** → **Developer settings** →
+   **Personal access tokens** → **Fine-grained tokens** → **Generate new token**.
+2. Ponle un nombre que reconozcas (por ejemplo, «Panel BIOING+») y elige un **vencimiento**. Conviene una fecha
+   corta, con un recordatorio para renovarlo.
+3. En **Repository access**, elige **Only select repositories** y selecciona **solo el repositorio del sitio**.
+4. En **Repository permissions**, busca **Contents** y ponlo en **Read and write**. No necesita otros permisos.
+5. Haz clic en **Generate token** y copia el token. GitHub solo lo muestra una vez: guárdalo en tu gestor de
+   contraseñas.
+6. En el panel, elige **«Iniciar sesión con un token de acceso»** y pega el token.
+
+> **Nunca compartas el token.** Quien lo tenga puede editar el repositorio en tu nombre. Si lo pierdes o
+> sospechas que alguien lo vio, revócalo en la misma página de GitHub y crea uno nuevo.
+
+**En producción** habrá un botón **«Iniciar sesión con GitHub»** (OAuth), sin crear tokens. **Hoy ese botón no
+funciona**: no lo uses.
+
+> _Pantallazo pendiente: pantalla de inicio de sesión del panel (`/admin/`) y la opción de token._
+
+**Cómo comprobar que quedó bien:** al entrar ves la lista de colecciones del panel (Personas, Noticias, Agenda…)
+y puedes abrir una entrada sin error.
+
+**Errores típicos:**
+- El token no tiene permiso *Contents: Read and write*: el panel no deja guardar.
+- El token venció: pide uno nuevo y reemplázalo.
+- El token es de otro repositorio o quedó sin seleccionar el repositorio del sitio: no aparece el contenido.
 
 ### 2.2 Cómo se publica (reglas que conviene saber de memoria)
 
-- **Borrador vs Publicado**: el interruptor `Publicado` es lo que hace visible un contenido.
-- Un cambio publicado tarda **1 o 2 minutos** en verse en el sitio.
-- Lo que depende de la fecha (Actividades próximas/realizadas, Anuncios vencidos, Banners vigentes) se
-  actualiza **una vez al día**, en la reconstrucción nocturna; un Anuncio vencido puede seguir visible hasta
-  esa hora.
-- Cada cambio queda guardado con historial: se puede revertir (ver §8 y la guía de mantención).
+- **Borrador vs Publicado**: el interruptor `Publicado` es lo que hace visible un contenido. Si está
+  desactivado, el contenido queda como borrador y no aparece en el sitio. (Las ¿Qué es la Bioingeniería?
+  no tienen interruptor: su contenido se publica al guardar.)
+- **Cada guardado es un cambio en el repositorio.** Cada vez que guardas, el panel registra un cambio en la
+  rama `main` del repositorio del sitio.
+- **El sitio se actualiza solo cuando el despliegue automático esté conectado.** Hoy, en la vista previa, **no
+  lo está**: después de publicar, la persona técnica construye y despliega el sitio a mano. Mientras tanto, un
+  cambio hecho en el panel puede no verse en el sitio (ver §8). Cuando el despliegue automático esté conectado,
+  la meta es que un cambio se vea en 1 a 3 minutos.
+- **Lo que depende de la fecha** (Actividades próximas o realizadas, Anuncios vencidos, Banners vigentes) se
+  calcula en una **reconstrucción diaria**, poco después de medianoche (hora de Chile). **Esa reconstrucción
+  todavía no está activa**: hasta entonces, un Anuncio vencido puede seguir visible y una Actividad ya
+  realizada puede seguir en «Próximas».
+- **Historial:** cada cambio queda registrado y se puede revertir, pero la reversión la hace soporte (ver §11).
 
 ### 2.3 La pantalla del panel
 
-- Cómo está organizado (colecciones a la izquierda, buscador interno, botón de guardar).
-- Cómo se guarda un borrador y cómo se ve la vista previa.
-- Qué significa que el panel escriba en el repositorio del proyecto (los cambios quedan registrados a tu
-  nombre).
-- _Pendiente:_ pantallazos (Fase C).
+- Cómo está organizado: las colecciones (Personas, Organizaciones, Noticias, Agenda, Anuncios, Repositorio,
+  Banners, Páginas, Instagram, Áreas, Temas) en una lista, un buscador interno y el botón de guardar
+  _(por verificar en el panel: disposición exacta)_.
+- Cómo se guarda un borrador: deja **Publicado** desactivado y guarda. Para revisar cómo se ve, usa la vista
+  previa del panel, pero **recuerda que no es idéntica al sitio**: revisa el resultado en el sitio, en celular
+  y en computador.
+- Qué significa que el panel escriba en el repositorio: cada guardado queda registrado con la cuenta con la que
+  entraste (tu token). Por eso el token es personal.
+
+> _Pantallazo pendiente: vista general del panel (lista de colecciones, editor y botón de guardar)._
 
 ## 3. Los conceptos del modelo, en lenguaje llano
 
 > El detalle canónico está en [`context.md`](context.md); acá va la versión corta y con ejemplos.
 
-- **Persona** vs **Organización** (y cuándo usar cada una).
-- **Ficha**: existe por defecto; se puede desactivar y el nombre deja de enlazar.
+- **Persona** vs **Organización**: una **Persona** es alguien de la comunidad (estudiante, egresado/a,
+  académico/a o invitado/a externo/a). Una **Organización** es una empresa, institución, laboratorio o
+  agrupación. Si tiene nombre y apellido, es una Persona.
+- **Ficha**: página pública de una Persona u Organización que reúne sus vínculos (Noticias, Actividades,
+  Anuncios). Existe por defecto. Si la desactivas, su nombre aparece en los contenidos **sin enlace**.
 - **Área** (campo profesional: acuicultura, biomateriales…) vs **Tema** (editorial: institucional, logros,
-  vida estudiantil…). De qué sirve cada uno y dónde se usan.
-- **Oferente** (quien ofrece un Anuncio) y **Organizador** (quien hace una Actividad).
-- **Contacto** de un Anuncio: es texto libre, nunca una Persona.
+  vida estudiantil…). Pregúntate: ¿describe la profesión o el tipo de contenido? La profesión es un Área; el
+  tipo de contenido, un Tema. Las Áreas cruzan Perfiles, Noticias, Actividades, Anuncios y Documentos; los
+  Temas clasifican Noticias y Documentos.
+- **Etiquetas (tags)** de una Noticia: texto libre para etiquetarla (p. ej. «simulación»). **No reemplazan a los
+  Temas** y no crean nada en otra parte.
+- **Oferente** (quien ofrece un Anuncio) y **Organizador** (quien hace una Actividad). Ambos son una Persona u
+  una Organización.
+- **Expositor**: quien presenta, dicta o modera en una Actividad. Los asistentes no se registran.
+- **Cobertura**: una Noticia que relata una Actividad ya realizada. Una Noticia cubre como máximo una Actividad.
+- **Contacto** de un Anuncio: es texto libre (correo, teléfono o enlace), nunca una Persona.
 - **Perfil de egresado** y **autorización**: nadie aparece en el Directorio sin autorización previa.
-- **Publicación de Instagram**: se pega el enlace, el sitio arma el embed.
+- **Publicación de Instagram**: se pega el enlace de la publicación y el sitio la muestra con su tarjeta y su
+  embed.
 
 ## 4. Tareas paso a paso
 
-> Cada una con: dónde ir, qué campos llenar, qué es obligatorio, cómo comprobar, errores típicos.
+> Cada una con: objetivo, campos, pasos, cómo comprobar y errores típicos. Los campos marcados como
+> obligatorios no dejan guardar la entrada si están vacíos.
 
 ### 4.1 Publicar una Noticia
-- Campos: título, fecha, imagen, bajada, Temas, Áreas, personas mencionadas, organizaciones mencionadas,
-  Actividad (si cubre una), Publicación de Instagram, etiquetas libres.
-- **Crear una Persona nueva sin salir de la Noticia** (el caso más frecuente).
-- Cómo se ve en Inicio, en `/noticias` y en la Ficha de la Persona.
-- Fechas futuras: la Noticia no aparece hasta ese día.
+
+**Objetivo:** dejar publicada una noticia con su imagen, sus clasificaciones y sus vínculos a personas y
+organizaciones.
+
+**Campos.**
+- Obligatorios: Título, Fecha de publicación, Publicado, Cuerpo.
+- Opcionales: Imagen destacada y su Texto alternativo de la imagen, Bajada, Etiquetas (tags), Temas, Áreas,
+  Personas mencionadas, Organizaciones mencionadas, Actividad que cubre, Publicación de Instagram relacionada,
+  Video (YouTube) y Galería de imágenes (hasta 12).
+
+**Pasos.**
+1. Ve a la colección **Noticias** y crea una entrada nueva.
+2. Escribe el **Título** y la **Fecha de publicación**.
+3. Sube la **Imagen destacada** y escribe su **Texto alternativo de la imagen**: describe lo que se ve, sin
+   repetir el título.
+4. Escribe la **Bajada**: una o dos frases que acompañan el título.
+5. Asigna **Temas** (editoriales) y **Áreas** (profesionales).
+6. Vincula **Personas mencionadas** y **Organizaciones mencionadas**. Solo se pueden elegir entradas que ya
+   existen: si falta alguna, créala antes (ver §4.8 y §4.9).
+   _(por verificar en el panel: crear una Persona nueva desde la misma Noticia, sin salir de ella)._
+7. Si la Noticia es la cobertura de una Actividad ya realizada, elígala en **Actividad que cubre**. Si
+   corresponde a una publicación de Instagram, elígela en **Publicación de Instagram relacionada**.
+8. Opcional: en **Video (YouTube)** pega el enlace del video (solo YouTube; se muestra debajo del cuerpo, en una
+   ventana que se abre al hacer clic). En **Galería de imágenes** agrega hasta 12 imágenes; cada una lleva su
+   **Texto alternativo**.
+9. Escribe el **Cuerpo** (ver §5 para imágenes, enlaces y listas).
+10. Activa **Publicado** y guarda.
+
+> _Pantallazo pendiente: formulario de la Noticia (imagen destacada, Galería y Cuerpo)._
+
+**Cómo comprobar que quedó bien.** Espera unos minutos y revisa la noticia en el sitio: aparece en `/noticias`,
+en Inicio si es reciente, y en la Ficha de cada Persona u Organización vinculada. Si la fecha es futura, no
+aparece hasta ese día. Ábrela también en el celular.
+
+**Errores típicos:**
+- Dejar **Publicado** desactivado y esperar que aparezca.
+- Una foto de la galería sin texto alternativo: ese campo es obligatorio.
+- Más de 12 imágenes en la galería: el límite es 12.
+- Un video que no es de YouTube: no se muestra.
+- Crear una Persona o Organización duplicada en vez de elegir la que ya existe (ver §6).
+- Una fecha futura: la Noticia no aparece hasta ese día.
 
 ### 4.2 Publicar una Actividad en la Agenda
-- Campos: tipo, inicio, fin (si dura varios días), modalidad, lugar, organizadores, expositores, Áreas,
-  enlace de inscripción, imagen.
-- Próximas vs realizadas; qué pasa cuando la fecha pasa.
+
+**Objetivo:** anunciar una actividad (seminario, charla, congreso, taller…) en la Agenda, con su fecha, su lugar
+o modalidad y sus organizadores.
+
+**Campos.**
+- Obligatorios: Nombre de la actividad, Publicado, Tipo, Inicio, Modalidad, Organizadores (al menos uno),
+  Descripción.
+- Opcionales: Término, Lugar, Expositores, Áreas, Enlace de inscripción o información, Imagen.
+
+**Pasos.**
+1. Ve a la colección **Agenda** y crea una entrada nueva.
+2. Escribe el **Nombre de la actividad**.
+3. Elige el **Tipo**: Seminario, Charla, Congreso, Taller, Actividad de estudiantes, Actividad de egresados/as,
+   Actividad académica, Encuentro de la comunidad u Otra.
+4. Escribe el **Inicio** (fecha y hora). Las horas se entienden en hora de Chile.
+5. Si la actividad dura varios días, escribe el **Término**. Si no, déjalo vacío.
+6. Elige la **Modalidad**: Presencial, En línea o Híbrida. Si es presencial o híbrida, escribe el **Lugar**.
+7. En **Organizadores**, agrega una entrada por cada organizador y elige si es una Persona o una Organización.
+8. En **Expositores**, elige a las personas que presentan, dictan o modera la actividad.
+9. Asigna **Áreas**. Si hay inscripción, pega el **Enlace de inscripción o información** (con `https://`).
+   Opcional: sube una **Imagen**.
+10. Escribe la **Descripción**.
+11. Activa **Publicado** y guarda.
+
+> _Pantallazo pendiente: formulario de una Actividad (fechas, Modalidad y Organizadores)._
+
+**Cómo comprobar que quedó bien.** La actividad aparece en **Agenda**, dentro de **Próximas**, en orden
+cronológico. Cuando termina, pasa a **Realizadas**; ese paso se hace en la reconstrucción diaria, que todavía
+no está activa (ver §2.2).
+
+**Errores típicos:**
+- Olvidar un organizador: el campo es obligatorio.
+- Escribir el enlace de inscripción sin `https://`.
+- Dejar el **Término** con la fecha de otro día: revisa que las fechas sean las correctas antes de publicar.
+- Esperar que una actividad terminada pase a Realizadas de inmediato (ver §2.2).
 
 ### 4.3 Publicar un Anuncio
-- Campos: tipo de oportunidad, oferente, Áreas, fecha, fecha límite, contacto, enlace.
-- Regla de vencimiento: sin fecha límite, vence a los 60 días; al vencer pasa al archivo.
+
+**Objetivo:** publicar una oportunidad para la comunidad (trabajo, práctica, pasantía, proyecto, convocatoria o
+colaboración) con su fecha límite y su forma de contacto.
+
+**Campos.**
+- Obligatorios: Título, Publicado, Tipo de oportunidad, Oferente, Fecha de publicación, Contacto, Descripción.
+- Opcionales: Áreas, Fecha límite, Enlace externo.
+
+**Pasos.**
+1. Ve a la colección **Anuncios** y crea una entrada nueva.
+2. Escribe el **Título**.
+3. Elige el **Tipo de oportunidad**: Oferta de trabajo, Práctica profesional, Pasantía, Proyecto de investigación,
+   Convocatoria, Solicitud de colaboración u Otra.
+4. En **Oferente**, elige si es una Persona o una Organización y luego cuál. Si no existe, créala antes.
+5. Asigna **Áreas**.
+6. Escribe la **Fecha de publicación**.
+7. Escribe la **Fecha límite** si la hay. Si no la pones, el Anuncio vence **60 días después de la Fecha de
+   publicación**.
+8. Escribe el **Contacto**: un correo, un teléfono o un enlace. Es texto libre; no lo llenes con una Persona.
+9. Si hay un sitio o formulario externo, pégalo en **Enlace externo**.
+10. Escribe la **Descripción** y activa **Publicado**.
+
+> _Pantallazo pendiente: formulario de un Anuncio (Oferente y fechas)._
+
+**Cómo comprobar que quedó bien.** El Anuncio aparece en la lista de **Anuncios** mientras esté vigente. Vigente
+significa que hoy (hora de Chile) no pasó la fecha límite; el día límite todavía cuenta. Al vencer, pasa al
+archivo, y ese cambio se hace en la reconstrucción diaria (ver §2.2).
+
+**Errores típicos:**
+- Dejar el **Contacto** vacío: el campo es obligatorio.
+- No poner **Fecha límite** y no saber por qué vence antes o después: sin fecha límite, vence a los 60 días.
+- Poner el nombre de una persona en **Contacto**: ese campo es texto libre. La persona va en **Oferente**.
 
 ### 4.4 Agregar un Documento al Repositorio
-- Campos: título, tipo, año, enlace (Google Drive), descripción, Temas, Áreas, palabras clave.
-- Reglas de Drive: propiedad de la cuenta central, carpeta pública dedicada, permiso "cualquiera con el
-  enlace".
+
+**Objetivo:** dejar disponible un documento (decreto, reglamento, informe, publicación…) en el **Repositorio**,
+que enlaza al archivo que está en Google Drive.
+
+**Campos.**
+- Obligatorios: Título, Publicado, Tipo de documento, Año, Enlace al archivo (Drive).
+- Opcionales: Descripción, Temas, Áreas, Palabras clave.
+
+**Regla de Drive:** los archivos quedan en la cuenta central de Google Drive del proyecto, en una carpeta pública
+dedicada, con el permiso **«Cualquiera con el enlace»**.
+
+**Pasos.**
+1. En Google Drive, sube el archivo a la carpeta pública del proyecto.
+2. Abre **Compartir** sobre el archivo y en acceso general elige **Cualquiera con el enlace** _(por verificar en Drive: nombres exactos de los menús)_.
+3. Copia el enlace del archivo (debe ser el enlace del archivo, no de una carpeta).
+4. En el panel, ve a la colección **Repositorio** y crea una entrada nueva.
+5. Escribe el **Título**, elige el **Tipo de documento** y escribe el **Año**.
+6. Pega el enlace en **Enlace al archivo (Drive)**.
+7. Opcional: escribe la **Descripción**, asigna **Temas** y **Áreas**, y agrega **Palabras clave** (una por
+   entrada).
+8. Activa **Publicado** y guarda.
+
+**Cómo comprobar que quedó bien.** El documento aparece en **Repositorio** y se encuentra con el buscador y los
+filtros. Abre el enlace en una ventana de incógnito (sin tu cuenta): si pide iniciar sesión, el permiso no está
+bien.
+
+**Errores típicos:**
+- Pegar el enlace de una carpeta: no se puede previsualizar.
+- Permiso restringido: el archivo no se abre para la comunidad.
+- Enlace que no empieza con `https://`: el campo no lo acepta.
+- Vista previa que no carga: ver §8.
 
 ### 4.5 Editar ¿Qué es la Bioingeniería?
-- Bajada, video (YouTube/Vimeo) y bloques de características.
+
+**Objetivo:** mantener al día la página institucional de la carrera.
+
+**Campos.**
+- Obligatorios: Título, Bajada, Presentación.
+- Opcionales: Video institucional (YouTube), Características de la carrera (bloques con Título y Texto).
+
+**Pasos.**
+1. Ve a **Páginas** → **¿Qué es la Bioingeniería?**.
+2. Revisa el **Título** y escribe la **Bajada**.
+3. En **Video institucional (YouTube)**, pega el enlace del video. Solo se reconocen enlaces de YouTube.
+4. En **Características de la carrera**, agrega un bloque por cada característica: **Título** y **Texto**.
+5. Escribe la **Presentación** (el texto principal).
+6. Guarda. Esta página no tiene interruptor **Publicado**: se publica al guardar.
+
+**Cómo comprobar que quedó bien.** Abre **¿Qué es la Bioingeniería?** en el sitio, en el celular y en el
+computador. Si hay video, se abre en una ventana al hacer clic.
+
+**Errores típicos:**
+- Pegar un enlace de otra plataforma de video: solo se reconoce YouTube, así que el video no se muestra.
+- Dejar la **Bajada** vacía: es obligatoria.
+- Un bloque de característica con el Texto vacío: ambos campos son obligatorios.
 
 ### 4.6 Seleccionar una publicación de Instagram
-- Pegar el enlace (`/p/…` o `/reel/…`), título y fecha; qué pasa si el embed deja de funcionar.
+
+**Objetivo:** mostrar en el sitio una publicación o reel de la cuenta de la carrera.
+
+**Campos.**
+- Obligatorios: Descripción breve, Enlace de la publicación, Fecha, Publicado.
+- Opcional: Miniatura (opcional).
+
+**Pasos.**
+1. En Instagram, abre la publicación o el reel y toca **Compartir** → **Copiar enlace**.
+2. En el panel, ve a la colección **Instagram** y crea una entrada nueva.
+3. Pega el enlace en **Enlace de la publicación**. Debe ser de una publicación (`/p/…`) o de un reel (`/reel/…`).
+   Las historias y los perfiles no se aceptan.
+4. Escribe la **Descripción breve**: es el texto de la tarjeta y lo leen los lectores de pantalla.
+5. Escribe la **Fecha**.
+6. Opcional: sube una **Miniatura** (una captura de la publicación) para la tarjeta liviana.
+7. Activa **Publicado** y guarda.
+
+> _Pantallazo pendiente: tarjeta de una publicación de Instagram en el sitio._
+
+**Cómo comprobar que quedó bien.** La publicación aparece en la sección **Instagram** del sitio. Al abrirla, se
+carga el embed oficial _(por verificar en el sitio: cuándo se carga el embed)_. Si el embed no carga, la tarjeta
+sigue enlazando a la publicación en Instagram.
+
+**Errores típicos:**
+- Pegar el enlace de una historia o de un perfil: el campo lo rechaza.
+- Olvidar la **Descripción breve**: es obligatoria.
 
 ### 4.7 Banners del Inicio
-- Cómo se elige qué se destaca; campos de vigencia (inicio y fin) y enlace interno o externo.
+
+**Objetivo:** destacar algo en la portada (un evento, una convocatoria, una noticia).
+
+**Campos.**
+- Obligatorios: Título, Publicado, Imagen, Enlace, Inicio de vigencia, Fin de vigencia.
+- Opcional: Texto.
+
+**Cómo se elige qué se destaca.** Cada Banner que esté **publicado** y dentro de su **vigencia** se muestra como
+una diapositiva del carrusel del Inicio. El código no tiene un límite de banners: si hay muchos vigentes, se
+muestran todos. Para destacar pocas cosas, mantén pocos Banners vigentes _(por verificar en el sitio: cómo se
+ve el carrusel con varios banners en el celular)_.
+
+**Pasos.**
+1. Ve a la colección **Banners** y crea una entrada nueva.
+2. Escribe el **Título** y activa **Publicado** cuando esté listo.
+3. Sube la **Imagen**.
+4. Escribe el **Texto** (opcional).
+5. En **Enlace**, escribe una ruta interna (p. ej. `/noticias/mi-noticia`) o una dirección completa externa
+   (p. ej. `https://…`).
+6. Escribe el **Inicio de vigencia** y el **Fin de vigencia** (fecha y hora, hora de Chile).
+7. Guarda.
+
+**Cómo comprobar que quedó bien.** El banner aparece en el Inicio durante su vigencia, y el enlace lleva a donde
+corresponde. Antes del inicio y después del fin, no aparece.
+
+**Errores típicos:**
+- Un **Fin de vigencia** anterior al **Inicio de vigencia**: el banner nunca se muestra.
+- Un enlace externo sin `https://`: el enlace no lleva a ningún lado.
+- Un banner vencido que sigue visible: la actualización de fechas es diaria y todavía no está activa (ver §2.2).
 
 ### 4.8 Directorio: altas y cambios de egresados/as
-- Ficha de la Persona + Perfil de egresado (generación, año de egreso, Áreas, Organización, cargo, enlaces).
-- **Autorización de datos**: dónde se registra y qué datos nunca se publican.
-- Cómo llegan los cambios de la comunidad (Google Form) y qué revisar antes de publicar.
-- Pedidos de baja o fallecimiento: qué hacer.
+
+**Objetivo:** dar de alta o actualizar a un egresado o egresada en el Directorio, solo con su autorización.
+
+**Campos de la Persona.**
+- Obligatorios: Nombre y apellido, Ficha pública activa (por defecto: sí).
+- Opcionales: Descripción breve, Foto.
+- Perfil de egresado (bloque opcional): Autoriza publicar su perfil (por defecto: no), Año de egreso
+  (obligatorio dentro del perfil), Generación, Áreas, Organización, Cargo / profesión y Enlaces profesionales
+  (cada uno con Etiqueta y URL).
+
+**Autorización de datos.** La autorización se registra en el campo **Autoriza publicar su perfil**, dentro del
+Perfil de egresado. El respaldo de esa autorización (correo, formulario) lo define la carrera _(por verificar)_.
+La Ficha pública solo muestra el nombre, una descripción breve y los contenidos del sitio donde aparece. Los
+datos de egresado aparecen **solo con autorización**.
+
+**Pasos.**
+1. Confirma que tienes la autorización de la persona. Sin ella, no marques **Autoriza publicar su perfil**.
+2. Ve a **Personas**. Busca primero: si la persona ya existe, edita su entrada; no crees una nueva.
+3. Escribe el **Nombre y apellido**. Opcional: escribe la **Descripción breve** y sube la **Foto**.
+4. Abre **Perfil de egresado**. Marca **Autoriza publicar su perfil**.
+5. Escribe el **Año de egreso**. La **Generación** es opcional; su significado todavía se confirma con la carrera.
+6. Asigna **Áreas**, elige la **Organización** y escribe el **Cargo / profesión**.
+7. En **Enlaces profesionales**, agrega cada enlace con su **Etiqueta** y su **URL** (con `https://`).
+8. Guarda y revisa que la persona aparece en el **Directorio**.
+
+> _Pantallazo pendiente: formulario de Persona con el Perfil de egresado desplegado._
+
+**Cómo llegan los cambios de la comunidad.** Las altas, bajas y cambios llegan por un Google Form, al que se
+llega desde la página de contacto. Antes de publicar un cambio, revisa la identidad de quien lo envía y que
+tenga la autorización (checklist de §7).
+
+**Pedidos de baja o fallecimiento.** Si alguien pide salir del Directorio, desactiva **Ficha pública activa**: la
+persona sale del Directorio y su nombre queda sin enlace en los contenidos donde aparece. Las menciones en
+Noticias o Actividades no se borran solas: revísalas caso a caso. En caso de fallecimiento, la decisión se toma
+caso a caso; consulta antes de cambiar nada _(por verificar: política de la carrera)_.
+
+**Cómo comprobar que quedó bien.** La persona aparece en el Directorio con su Ficha, y el buscador la encuentra
+por nombre, generación, Área u Organización. Si la Ficha está desactivada, su nombre aparece sin enlace y no
+aparece en el Directorio.
+
+**Errores típicos:**
+- Marcar **Autoriza publicar su perfil** sin tener la autorización.
+- Crear dos veces la misma persona.
+- Dejar el **Año de egreso** vacío dentro del perfil: ese campo es obligatorio cuando el perfil está lleno.
+- Desactivar la Ficha y esperar que el nombre siga apareciendo con enlace.
 
 ### 4.9 Organizaciones
-- Cuándo crear una Organización en vez de escribir el nombre; tipo, sitio web, logo.
+
+**Objetivo:** registrar una empresa, institución, laboratorio o agrupación para vincularla a otros contenidos.
+
+**Cuándo crear una Organización.** Cuando aparece como lugar de trabajo de una Persona, como organizadora de una
+Actividad, como oferente de un Anuncio o como mencionada en una Noticia. En los campos de vínculo solo se pueden
+elegir Organizaciones que ya existen, así que no hay manera de escribir su nombre a mano.
+
+**Campos.**
+- Obligatorios: Nombre, Tipo (Empresa, Institución, Laboratorio o Agrupación), Ficha pública activa (por defecto:
+  sí).
+- Opcionales: Sitio web (con `https://`), Logo.
+
+**Pasos.**
+1. Ve a la colección **Organizaciones** y busca primero si ya existe.
+2. Si no existe, crea una entrada nueva y escribe el **Nombre**.
+3. Elige el **Tipo**.
+4. Opcional: pega el **Sitio web** y sube el **Logo**.
+5. Guarda.
+
+**Cómo comprobar que quedó bien.** La organización aparece al elegirla en un Anuncio, una Actividad, una Noticia o
+un Perfil de egresado, y su Ficha reúne esos vínculos.
+
+**Errores típicos:**
+- Crear una segunda entrada para la misma organización con otro nombre (p. ej. con y sin sigla).
+- Olvidar el **Tipo**: es obligatorio.
 
 ### 4.10 Listas de Áreas y Temas
-- Quién las edita, cómo agregar una nueva y por qué conviene mantenerlas cortas.
+
+**Objetivo:** mantener las listas que clasifican el contenido: **Áreas** (campos profesionales) y **Temas**
+(clasificación editorial).
+
+**Quién las edita.** La propuesta es que la persona Encargada de comunicaciones las edite _(por confirmar con la
+carrera)_.
+
+**Pasos para agregar una entrada.**
+1. Ve a la colección **Áreas** o **Temas** y crea una entrada nueva.
+2. Escribe el **Nombre**.
+3. Guarda. Aparece al elegirla en los campos correspondientes.
+
+**Por qué conviene mantenerlas cortas.** Cada entrada es una opción más para elegir y para cruzar contenidos. Con
+pocas entradas bien elegidas, el buscador y los filtros funcionan mejor. Si dos entradas significan lo mismo,
+conserva una y reasigna el contenido.
+
+**Cómo comprobar que quedó bien.** La nueva entrada aparece en el campo correspondiente de otra colección.
+
+**Errores típicos:**
+- Crear una entrada que ya existe con otra escritura (p. ej. «Acuicultura» y «acuicultura»).
+- Confundir una Área con un Tema: revisa §3.
+- Borrar una entrada que está en uso: los contenidos que la usaban quedan con una referencia rota, y el build
+  muestra un aviso (ver §8).
 
 ## 5. Imágenes y archivos
 
-- Qué se puede subir (formatos, HEIC de iPhone) y qué se evita (capturas ilegibles, fotos sin permiso).
-- El panel **optimiza solo**: reduce a 2048 px, convierte a WebP y borra los metadatos (incluida la
-  ubicación GPS).
-- Tamaño y orientación recomendados; cómo se ve cada imagen en las tarjetas (aspecto reservado).
-- Texto alternativo: cuándo el sitio lo pone solo y cuándo conviene describirlo.
-- Documentos: Drive vs subida al servidor (R2) — cuál usar en cada caso.
+- **Qué se puede subir.** Imágenes de mapa de bits (JPG, PNG y similares). Las fotos de iPhone en HEIC se
+  convierten solas. Se evitan las capturas de pantalla ilegibles y las fotos de personas sin su permiso.
+- **Qué hace el panel al subir una imagen.** Reduce el ancho a 2048 px como máximo, la convierte a WebP con calidad
+  85 y la optimiza para el sitio. El borrado de los metadatos (incluida la ubicación GPS) _(por verificar en el
+  panel)_.
+- **Tamaño y orientación recomendados.** _(por verificar en el panel y en el sitio: cómo se ve cada imagen en las
+  tarjetas)_.
+- **Texto alternativo.** En la Imagen destacada de una Noticia, el texto alternativo describe la imagen para
+  quien usa lector de pantalla. Si la Noticia no tiene texto alternativo, la imagen se trata como decorativa: el
+  lector la omite. En la Galería, el texto alternativo es obligatorio para cada imagen.
+- **Imágenes dentro del texto.** Con el botón de imagen del editor del **Cuerpo** puedes insertar una imagen. Se
+  optimiza igual que las demás. _(por verificar en el panel: el campo de texto alternativo que pide el editor)_.
+- **Emojis.** Se escriben o se pegan directamente en el texto (🧬 🔬 🌊 se ven bien).
+- **Enlaces.** Usa un texto descriptivo: «Ver las bases», no «clic aquí».
+- **Listas, citas y tablas.** Se pueden usar en el **Cuerpo**. Las tablas, simples.
+- **Qué no se puede** dentro del texto: pegar HTML, iframes, PDFs o mapas incrustados. Hoy no está soportado. La
+  forma de agregarlos se describe en la guía de evolución `docs/guia-evolucion.md` (en preparación).
+- **Documentos.** Hoy los Documentos se enlazan desde Google Drive (campo **Enlace al archivo (Drive)**). La
+  subida de archivos al servidor (R2) no está en el panel; ver [`pendientes-infra.md`](pendientes-infra.md).
 
 ## 6. Buenas prácticas de redacción
 
-- Título y bajada: de ahí salen el título de la pestaña, la tarjeta social (Open Graph) y los datos
-  estructurados que usan buscadores y asistentes de IA.
-- Imagen destacada: la primera impresión de la tarjeta.
-- Temas y Áreas: clasifican y permiten encontrar el contenido; no son etiquetas decorativas.
-- Fechas: cómo se escriben y cómo se muestran.
-- Enlaces: texto descriptivo ("Ver las bases"), no "clic aquí".
-- Nombres propios: buscar primero si la Persona u Organización ya existe, para no duplicar.
+- **Título y bajada**: de ahí salen el título de la pestaña del navegador, la tarjeta que se muestra al
+  compartir el enlace (Open Graph) y los datos estructurados que usan buscadores y asistentes de IA. Escríbelos
+  para que se entiendan solos.
+- **Imagen destacada**: es la primera impresión de la tarjeta de la noticia.
+- **Temas y Áreas**: clasifican y permiten encontrar el contenido. No son etiquetas decorativas.
+- **Fechas**: las que se escriben solo con día se muestran tal cual. Las que llevan hora se muestran en hora de
+  Chile.
+- **Enlaces**: texto descriptivo («Ver las bases»), no «clic aquí».
+- **Nombres propios**: busca primero si la Persona u Organización ya existe, para no duplicarla.
 
 ## 7. Checklist antes de publicar
 
@@ -141,38 +499,202 @@ inventan pantallas).
 
 | Síntoma | Causa probable | Qué hacer |
 |---|---|---|
-| Publiqué y no lo veo en el sitio | Tarda 1–2 minutos, o quedó en borrador | Esperar y recargar; revisar `Publicado` |
+| Publiqué y no lo veo en el sitio | Quedó en borrador, o el despliegue todavía no se hizo (ver la fila siguiente) | Revisar `Publicado`; si está activado, seguir con «Guardé y el sitio no cambió» |
+| Guardé y el sitio no cambió | En la vista previa, el despliegue lo hace la persona técnica a mano; el despliegue automático todavía no está conectado. También puede ser que el build falló | Esperar unos minutos y recargar. Si sigue igual, avisar a soporte con el nombre del contenido |
+| Error de imagen al publicar | La imagen se escribió con una ruta a mano, en vez de subirse desde el panel | Subir la imagen desde el panel; no escribir rutas a mano. Si ya escribiste una, avisar a soporte |
 | Una Noticia con fecha futura no aparece | Es el comportamiento previsto | Nada: aparece ese día |
-| Un Anuncio vencido sigue visible | La actualización de fechas es diaria | Esperar la reconstrucción nocturna |
-| El nombre de una Persona "no enlaza" | Su Ficha está desactivada | Revisar `Ficha activa` en la Persona |
+| Un Anuncio vencido sigue visible | La actualización de fechas es diaria y todavía no está activa | Avisar a soporte si persiste; hasta entonces, es esperable |
+| El nombre de una Persona «no enlaza» | Su Ficha está desactivada | Revisar `Ficha pública activa` en la Persona |
 | Falta un contenido o aparece un aviso de error en el build | Alguna referencia quedó apuntando a algo que se borró | Avisar a soporte con el detalle (el sitio no se cae) |
-| La vista previa de un PDF/Documento no carga | Permisos de Drive | Compartir como "cualquiera con el enlace" |
+| La vista previa de un PDF/Documento no carga | Permisos de Drive | Compartir como «Cualquiera con el enlace» |
 | El embed de Instagram no aparece | Bloqueador del navegador o cambio de Meta | La tarjeta sigue enlazando a la publicación |
 
 ## 9. Qué no se puede hacer (y por qué)
 
-- Pegar HTML, iframes o scripts: solo enlaces de proveedores de la lista cerrada.
+- Pegar HTML, iframes o scripts: solo enlaces de proveedores de la lista cerrada (YouTube, Google Drive e
+  Instagram, según el campo).
 - Cambiar el diseño, agregar secciones o campos nuevos: es un cambio de alcance (se cotiza).
 - Publicar datos personales sin autorización.
 - Gestionar cuentas, accesos o facturación del servicio.
 
 ## 10. Glosario mínimo
 
-- Tabla corta: Noticia, Actividad, Anuncio, Documento, Persona, Organización, Ficha, Directorio, Área, Tema,
-  Banner, Publicación de Instagram, Borrador, Publicado. (Enlaza a [`context.md`](context.md).)
+| Término | Qué es |
+|---|---|
+| Noticia | Publicación de actualidad de la comunidad, con fecha y clasificaciones |
+| Actividad | Evento con fecha, modalidad y organizadores; aparece en la Agenda |
+| Anuncio | Oportunidad para la comunidad (trabajo, práctica, pasantía…), con fecha límite opcional |
+| Documento | Archivo de interés (decreto, reglamento, informe…) que aparece en el Repositorio |
+| Persona | Integrante de la comunidad que puede aparecer en otros contenidos |
+| Organización | Empresa, institución, laboratorio o agrupación |
+| Ficha | Página pública de una Persona u Organización con sus vínculos |
+| Directorio | Buscador público de egresados/as con autorización y Ficha activa |
+| Área | Campo profesional de la Bioingeniería |
+| Tema | Clasificación editorial de Noticias y Documentos |
+| Banner | Pieza de portada con vigencia que enlaza a un contenido o a una URL externa |
+| Publicación de Instagram | Publicación o reel de la cuenta de la carrera que se muestra en el sitio |
+| Borrador | Contenido que todavía no es visible en el sitio |
+| Publicado | Contenido visible en el sitio |
+
+Los términos completos están en [`context.md`](context.md).
 
 ## 11. ¿A quién pedir ayuda?
 
-- Canal de soporte, qué se considera una falla (y qué no) y tiempos de respuesta de la garantía.
-- Qué información adjuntar al reportar (URL, nombre del contenido, qué esperabas ver, captura).
-- Cómo pedir la reversión de un cambio publicado por error.
+- **Canal de soporte:** _(por definir con la carrera)_. La garantía y el soporte cubren seis meses desde la entrega
+  (propuesta de desarrollo, §15).
+- **Qué se considera una falla:** lo que impide publicar, editar o ver el contenido, o que rompe el sitio público.
+  Un cambio de diseño o una función nueva no es una falla. _(por confirmar en el contrato)_.
+- **Tiempos de respuesta:** _(por definir con la carrera)_.
+- **Qué información adjuntar al reportar:** la dirección de la página, el nombre del contenido, qué esperabas ver
+  y qué viste, y una captura de pantalla.
+- **Cómo pedir la reversión de un cambio publicado por error:** indica el nombre del contenido, la hora aproximada
+  en que lo guardaste y qué quieres recuperar. La reversión la hace soporte.
 
 ---
 
 ## Apéndice A · Campos de cada tipo de contenido
 
-- Tabla por colección, generada desde `app/web/public/admin/config.yml` (obligatorio/opcional y qué
-  significa cada campo). _Pendiente._
+> Generada a mano desde `config.yml` el 2026-10-11; revisar si cambia el modelo.
+>
+> **Obligatorio:** «Sí» si el campo no tiene `required: false` en `config.yml`. Los campos con «por defecto»
+> traen un valor inicial. Los campos marcados «↳» están dentro de un bloque o de una lista.
+
+### Personas
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Nombre y apellido | Sí | Nombre que aparece en la Ficha y en los contenidos donde se menciona |
+| Descripción breve | No | Línea corta bajo el nombre (p. ej. «Académica FCB») |
+| Foto | No | Imagen de la Ficha |
+| Ficha pública activa | Sí (por defecto: sí) | Si se desactiva, el nombre queda sin enlace y la persona sale del Directorio |
+| Perfil de egresado | No | Bloque de datos profesionales; solo se publica con autorización |
+| ↳ Autoriza publicar su perfil | Sí dentro del perfil (por defecto: no) | Condición para aparecer en el Directorio |
+| ↳ Generación | No | Generación (significado por confirmar con la carrera) |
+| ↳ Año de egreso | Sí dentro del perfil | Año de egreso |
+| ↳ Áreas | No | Campos profesionales de la persona |
+| ↳ Organización | No | Organización donde trabaja |
+| ↳ Cargo / profesión | No | Cargo o profesión |
+| ↳ Enlaces profesionales | No | Lista de enlaces; cada uno con Etiqueta y URL |
+
+### Organizaciones
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Nombre | Sí | Nombre que aparece en la Ficha y en los vínculos |
+| Tipo | Sí | Empresa, Institución, Laboratorio o Agrupación |
+| Sitio web | No | Enlace a la web de la organización |
+| Logo | No | Imagen de la Ficha |
+| Ficha pública activa | Sí (por defecto: sí) | Si se desactiva, el nombre queda sin enlace |
+
+### Noticias
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Título | Sí | Título de la noticia y de la pestaña del navegador |
+| Fecha de publicación | Sí | Fecha desde la que la noticia es visible |
+| Publicado | Sí (por defecto: no) | Hace visible la noticia |
+| Imagen destacada | No | Imagen de la tarjeta y de la noticia |
+| Texto alternativo de la imagen | No | Describe la imagen para lectores de pantalla |
+| Bajada | No | Texto breve que acompaña el título |
+| Etiquetas (tags) | No | Texto libre para etiquetar la noticia (no reemplaza a los Temas) |
+| Temas | No | Clasificación editorial |
+| Áreas | No | Campos profesionales |
+| Personas mencionadas | No | Personas que aparecen en la noticia (se muestra en su Ficha) |
+| Organizaciones mencionadas | No | Organizaciones que aparecen en la noticia (se muestra en su Ficha) |
+| Actividad que cubre | No | Actividad realizada que relata la noticia (Cobertura) |
+| Publicación de Instagram relacionada | No | Publicación de Instagram vinculada a la noticia |
+| Video (YouTube) | No | Video que se muestra debajo del cuerpo |
+| Galería de imágenes | No | Hasta 12 imágenes en una grilla que se amplía al hacer clic |
+| ↳ Imagen | Sí dentro de cada entrada | Imagen de la galería |
+| ↳ Texto alternativo | Sí dentro de cada entrada | Describe la imagen de la galería |
+| Cuerpo | Sí | Texto principal de la noticia |
+
+### Agenda (colección de Actividades)
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Nombre de la actividad | Sí | Título de la actividad |
+| Publicado | Sí (por defecto: no) | Hace visible la actividad |
+| Tipo | Sí | Seminario, Charla, Congreso, Taller, etc. |
+| Inicio | Sí | Fecha y hora de inicio (hora de Chile) |
+| Término | No | Fecha y hora de término, si dura varios días o tiene un cierre |
+| Modalidad | Sí | Presencial, En línea o Híbrida |
+| Lugar | No | Dirección o sala, si aplica |
+| Organizadores | Sí (al menos uno) | Personas u Organizaciones responsables |
+| Expositores | No | Personas que presentan, dictan o modera |
+| Áreas | No | Campos profesionales |
+| Enlace de inscripción o información | No | Enlace externo para inscribirse o informarse |
+| Imagen | No | Imagen de la actividad |
+| Descripción | Sí | Texto principal de la actividad |
+
+### Anuncios
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Título | Sí | Título del anuncio |
+| Publicado | Sí (por defecto: no) | Hace visible el anuncio |
+| Tipo de oportunidad | Sí | Oferta de trabajo, Práctica profesional, Pasantía, etc. |
+| Oferente | Sí | Persona u Organización que ofrece la oportunidad |
+| Áreas | No | Campos profesionales |
+| Fecha de publicación | Sí | Fecha desde la que el anuncio existe |
+| Fecha límite | No | Último día vigente; sin ella, vence 60 días después de la fecha de publicación |
+| Contacto | Sí | Correo, teléfono o enlace (texto libre) |
+| Enlace externo | No | Sitio o formulario externo |
+| Descripción | Sí | Texto principal del anuncio |
+
+### Repositorio (colección de Documentos)
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Título | Sí | Título del documento |
+| Publicado | Sí (por defecto: no) | Hace visible el documento |
+| Tipo de documento | Sí | Decreto, Reglamento, Ley, Informe, etc. |
+| Año | Sí | Año del documento |
+| Enlace al archivo (Drive) | Sí | Enlace al archivo en Google Drive |
+| Descripción | No | Resumen del documento |
+| Temas | No | Clasificación editorial |
+| Áreas | No | Campos profesionales |
+| Palabras clave | No | Términos para encontrar el documento |
+
+### Banners
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Título | Sí | Título del banner |
+| Publicado | Sí (por defecto: no) | Hace visible el banner |
+| Texto | No | Texto que acompaña la imagen |
+| Imagen | Sí | Imagen de la diapositiva |
+| Enlace | Sí | Ruta interna (`/noticias/…`) o URL externa |
+| Inicio de vigencia | Sí | Desde cuándo se muestra |
+| Fin de vigencia | Sí | Hasta cuándo se muestra |
+
+### ¿Qué es la Bioingeniería? (página institucional)
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Título | Sí | Título de la página |
+| Bajada | Sí | Texto breve que acompaña el título |
+| Video institucional (YouTube) | No | Video que se abre en una ventana |
+| Características de la carrera | No | Bloques de características |
+| ↳ Título | Sí dentro de cada bloque | Título de la característica |
+| ↳ Texto | Sí dentro de cada bloque | Texto de la característica |
+| Presentación | Sí | Texto principal de la página |
+
+### Instagram (Publicaciones de Instagram)
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Descripción breve | Sí | Texto de la tarjeta y para lectores de pantalla |
+| Enlace de la publicación | Sí | Enlace de una publicación (`/p/…`) o reel (`/reel/…`) |
+| Fecha | Sí | Fecha de la publicación |
+| Publicado | Sí (por defecto: no) | Hace visible la publicación |
+| Miniatura (opcional) | No | Captura para la tarjeta liviana |
+
+### Áreas y Temas
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Nombre | Sí | Nombre de la entrada en la lista (Áreas o Temas) |
 
 ## Apéndice B · Preguntas frecuentes
 
