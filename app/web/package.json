@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "postbuild": "node scripts/postbuild-pagefind.mjs",
+    "postbuild": "node scripts/postbuild-pagefind.mjs && node scripts/postbuild-csp.mjs",
     "deploy:dev": "npm run build && npm run postbuild && wrangler deploy --env qa",
     "verificar:jsonld": "node scripts/verificar-jsonld.mjs",
     "preview": "astro preview",
