@@ -74,4 +74,10 @@ levantar): no detecta cientos de archivos nuevos de una vez.
 - **Lo que depende de la fecha se resuelve en el build** (Agenda, Anuncios vencidos, Banners): el sitio
   necesita una reconstrucción diaria.
 - **Filtros en la URL** (Noticias, Agenda, Anuncios, Repositorio): reflejarlos con `sincronizarFiltrosEnUrl` (`src/scripts/url-filtros.ts`), nunca con `history.replaceState(null, …)`: ClientRouter guarda su estado en `history.state` y, sin él, el «atrás» no navega. Los `<script>` son módulos que corren una vez: el init va en `astro:page-load` con una guarda de ruta.
+- **CSP pública sin `'unsafe-inline'`** (`public/_headers`): en `dev` no se aplica, así que lo que se rompe por
+  CSP solo se ve sobre el build servido (`wrangler dev` o el ambiente desplegado). Nada de `onclick=`/`onsubmit=`
+  en el HTML. Los `<script>` procesados salen como archivo externo (`assetsInlineLimit` en `astro.config.mjs`) y
+  los `is:inline` llevan su hash, que `postbuild-csp.mjs` calcula y agrega a `dist/_headers`.
+- **Scripts y ClientRouter**: un `<script>` corre una sola vez; lo que toque el DOM se inicia en
+  `astro:page-load` (con una marca para no duplicar listeners) o se escucha delegado en `document`.
 - **Sin comprobación de tipos en el CMS**: el esquema Zod del build es la red de seguridad; `astro check` en 0.
