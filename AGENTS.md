@@ -1,4 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
+
+> Reemplaza al antiguo `CLAUDE.md` (misma guía, nuevo nombre canónico para agentes).
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 

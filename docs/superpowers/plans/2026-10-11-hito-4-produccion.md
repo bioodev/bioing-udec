@@ -10,7 +10,7 @@
 
 ## Restricciones globales
 
-- Rama `demo-frontend`, carpeta `app/web`. Sin push salvo que se pida. No commitear `CLAUDE.md` ni `AGENTS.md`.
+- Rama `demo-frontend`, carpeta `app/web`. Sin push salvo que se pida. No tocar `AGENTS.md` (raíz) ni `app/web/AGENTS.md`.
 - Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `CONTEXT.md`.
 - **TDD donde hay lógica pura** (convención del repo: cada helper con su `*.test.ts`). Infra y config se verifican con build + prueba manual.
 - Sin dependencias nuevas salvo las que este plan nombra (todas oficiales/estables).
@@ -67,7 +67,7 @@ El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase 
 **Archivos:** `app/web/public/admin/config.yml`.
 
 - [ ] Activar `media_libraries.all.config.transformations`: formato **WebP**, máximo **2048 px**, **calidad 85**; aceptar HEIC. (Sveltia elimina metadatos EXIF/GPS al transformar; confirmar en la prueba de la Fase C.)
-- [ ] Validar `config.yml` de las dos formas de `CLAUDE.md`: contra el JSON Schema de Sveltia y cargando `/admin/` (servir `public`); la pantalla de login aparece sin errores de consola.
+- [ ] Validar `config.yml` de las dos formas de `AGENTS.md`: contra el JSON Schema de Sveltia y cargando `/admin/` (servir `public`); la pantalla de login aparece sin errores de consola.
 - [ ] **Nota:** la prueba real de subida (ruta `../../assets/media/…`, EXIF borrado) queda en la Fase C (necesita login real al repositorio). Aquí solo se deja la configuración.
 
 ### Tarea A5: Configuración de publicación en Cloudflare (sin desplegar)
@@ -208,7 +208,7 @@ Para cada requisito: **qué entrega la carrera · cómo lo verifica el proveedor
 
 ### D1: Documentación técnica y de arquitectura
 - [ ] Documentación técnica del proyecto (cómo se construye, se publica y se mantiene).
-- [ ] Arquitectura: diagramas y **ADR actualizados** — `docs/adr/0001-sveltia-cms-astro.md` pasa a "repositorio en GitHub; Gitea solo desarrollo"; actualizar `CLAUDE.md` y `pendientes-infra.md` (marcar lo hecho).
+- [ ] Arquitectura: diagramas y **ADR actualizados** — `docs/adr/0001-sveltia-cms-astro.md` pasa a "repositorio en GitHub; Gitea solo desarrollo"; actualizar `AGENTS.md` y `pendientes-infra.md` (marcar lo hecho).
 
 ### D2: Guías de uso y mantención
 - [ ] **Guía de usuario** del Encargado de comunicaciones: publicar cada tipo de contenido, borradores, relaciones, imágenes, documentos, revertir un cambio.

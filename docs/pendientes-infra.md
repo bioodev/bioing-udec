@@ -17,7 +17,7 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 - [ ] Crear el repositorio privado en la organización de GitHub y subir el historial completo (`git push --mirror`).
 - [ ] `config.yml`: backend `github` con `repo: <org>/<repo>` y `base_url` del Worker de autenticación.
 - [ ] Desplegar Sveltia CMS Authenticator (Worker de Cloudflare) en la ruta `/auth` del dominio, con la OAuth App de GitHub (callback a esa ruta) y los dominios permitidos.
-- [ ] Actualizar `docs/adr/0001-sveltia-cms-astro.md` (repositorio en GitHub; el Gitea queda solo como entorno de desarrollo) y `CLAUDE.md`.
+- [ ] Actualizar `docs/adr/0001-sveltia-cms-astro.md` (repositorio en GitHub; el Gitea queda solo como entorno de desarrollo) y `AGENTS.md`.
 - [ ] Revisar `Cross-Origin-Opener-Policy` en `/admin` (`same-origin-allow-popups`) para que funcione la ventana de inicio de sesión.
 
 ## Build y despliegue (Cloudflare)
