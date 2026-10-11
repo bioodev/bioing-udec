@@ -16,6 +16,18 @@ backend:
 media_folder: /app/web/src/assets/media
 public_folder: /media # no se usa: cada colección con imágenes lo sobrescribe
 
+media_libraries:
+  all:
+    transformations:
+      raster_image:
+        format: webp
+        width: 2048
+        quality: 85
+      heic:
+        format: webp
+        width: 2048
+        quality: 85
+
 slug:
   encoding: ascii
   clean_accents: true
