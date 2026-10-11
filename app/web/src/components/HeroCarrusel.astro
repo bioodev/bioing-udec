@@ -53,13 +53,13 @@ const varios = banners.length > 1;
     ))}
   </div>
 
+  <!-- Velo oscuro plano: mantiene el contraste del texto sobre la foto (la imagen se ve,
+       pero el blanco del hero sigue legible). Va DEBAJO de la textura halftone. -->
+  <div class="absolute inset-0 -z-10 bg-foreground/35" aria-hidden="true"></div>
   <!-- Textura halftone cálida (CSS, puntos estilo impresión): sustituye al shader WebGL
        de Paper Shaders, que al compilar bloqueaba el hilo principal y rompía Lighthouse
        (TBT). Mismo aire de impresión, coste cero. -->
   <div class="hero-halftone absolute inset-0 -z-10" aria-hidden="true"></div>
-  <!-- Velo oscuro plano: mantiene el contraste del texto sobre la foto (la imagen se ve,
-       pero el blanco del hero sigue legible). -->
-  <div class="absolute inset-0 -z-10 bg-foreground/35" aria-hidden="true"></div>
 
   {varios && (
     <>
@@ -173,16 +173,17 @@ const varios = banners.length > 1;
   .hero-imagen {
     filter: sepia(0.22) saturate(1.06) brightness(0.95);
   }
-  /* Textura halftone de puntos (dos tramas desfasadas, tinta magenta/amarilla cálidas);
-     se mantiene tenue para no velar la foto (mezcla soft-light, baja opacidad). */
+  /* Textura halftone de puntos (dos tramas desfasadas, tinta magenta/amarilla cálidas).
+     Va por encima del velo oscuro y debajo del texto; overlay deja ver los puntos
+     sobre la foto sin quemar el contraste del título. */
   .hero-halftone {
     background-image:
-      radial-gradient(circle, rgb(235 130 175 / 0.4) 1px, transparent 1.6px),
-      radial-gradient(circle, rgb(255 205 90 / 0.35) 1px, transparent 1.6px);
-    background-size: 9px 9px, 9px 9px;
-    background-position: 0 0, 4px 4px;
-    mix-blend-mode: soft-light;
-    opacity: 0.35;
+      radial-gradient(circle, rgb(235 120 170 / 0.6) 1.1px, transparent 1.7px),
+      radial-gradient(circle, rgb(255 200 80 / 0.5) 1.1px, transparent 1.7px);
+    background-size: 10px 10px, 10px 10px;
+    background-position: 0 0, 5px 5px;
+    mix-blend-mode: overlay;
+    opacity: 0.55;
     pointer-events: none;
   }
 </style>
