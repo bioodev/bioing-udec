@@ -149,6 +149,7 @@ collections:
         display_fields: [titulo]
         required: false
         hint: Solo si la Noticia es la Cobertura de una Actividad ya realizada.
+      - { name: instagram, label: Publicación de Instagram relacionada, widget: relation, collection: instagram, display_fields: [titulo], required: false }
       - { name: body, label: Cuerpo, widget: richtext }
 
   - name: actividades
@@ -325,6 +326,26 @@ collections:
               - { name: titulo, label: Título, widget: string }
               - { name: texto, label: Texto, widget: text }
           - { name: body, label: Presentación, widget: richtext }
+
+  - name: instagram
+    label: Instagram
+    label_singular: Publicación de Instagram
+    folder: /app/web/src/content/instagram
+    media_folder: /app/web/src/assets/media
+    public_folder: ../../assets/media
+    format: yml
+    identifier_field: titulo
+    summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
+    fields:
+      - { name: titulo, label: Descripción breve, widget: string, hint: Se usa como texto de la tarjeta y para lectores de pantalla. }
+      - name: enlace
+        label: Enlace de la publicación
+        widget: string
+        hint: Copia el enlace desde Instagram (Compartir → Copiar enlace). Solo publicaciones o reels.
+        pattern: ['^https://(www\.)?instagram\.com/(p|reel)/[\w-]+/?(\?.*)?$', 'Debe ser el enlace de una publicación o reel de Instagram']
+      - { name: fecha, label: Fecha, widget: datetime, type: date }
+      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - { name: imagen, label: Miniatura (opcional), widget: image, required: false, hint: Captura de la publicación para la tarjeta liviana. }
 
   # ── Clasificación ───────────────────────────────────────────
 

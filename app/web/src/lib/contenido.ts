@@ -3,7 +3,7 @@
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './reglas';
 
-type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners';
+type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram';
 
 export function publicados<C extends ColeccionPublicable>(coleccion: C) {
   return getCollection(coleccion, ({ data }) => data.publicado) as Promise<CollectionEntry<C>[]>;
@@ -122,6 +122,12 @@ export async function anunciosVencidos(ahora = new Date()) {
 export async function documentosDelRepositorio() {
   const docs = await publicados('documentos');
   return docs.sort((a, b) => b.data.anio - a.data.anio || a.data.titulo.localeCompare(b.data.titulo, 'es'));
+}
+
+/** Publicaciones de Instagram seleccionadas, más recientes primero. */
+export async function publicacionesInstagram(cantidad?: number) {
+  const pubs = (await publicados('instagram')).sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+  return cantidad ? pubs.slice(0, cantidad) : pubs;
 }
 
 /** Personas con Perfil de egresado autorizado y Ficha activa. */

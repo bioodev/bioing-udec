@@ -80,6 +80,10 @@ _Avoid_: Biblioteca, archivo, drive
 Pieza de portada con vigencia (inicio y fin) que enlaza a un contenido del sitio o a una URL externa; es el único mecanismo para destacar algo en el Inicio.
 _Avoid_: Destacado, slider, hero
 
+**Publicación de Instagram**:
+Publicación o reel de la cuenta de Instagram de la carrera que el Encargado de comunicaciones selecciona para mostrar en el sitio pegando su enlace; una Noticia puede tener una relacionada.
+_Avoid_: Post, feed
+
 ### Clasificación
 
 **Área**:

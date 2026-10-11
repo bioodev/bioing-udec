@@ -8,6 +8,7 @@
 import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { PATRON_INSTAGRAM, enlaceInstagram } from './lib/instagram';
 
 const yml = (coleccion: string) => glob({ base: `./src/content/${coleccion}`, pattern: '**/*.yml' });
 const md = (coleccion: string) => glob({ base: `./src/content/${coleccion}`, pattern: '**/*.md' });
@@ -77,6 +78,7 @@ const noticias = defineCollection({
       personas_mencionadas: referencias('personas'),
       organizaciones_mencionadas: referencias('organizaciones'),
       actividad: reference('actividades').optional(), // Cobertura
+      instagram: reference('instagram').optional(),
     }),
 });
 
@@ -161,11 +163,23 @@ const paginas = defineCollection({
   }),
 });
 
+const instagram = defineCollection({
+  loader: yml('instagram'),
+  schema: ({ image }) =>
+    z.object({
+      titulo: z.string(),
+      enlace: z.string().regex(new RegExp(PATRON_INSTAGRAM)).transform((u) => enlaceInstagram(u)!),
+      fecha: z.coerce.date(),
+      publicado,
+      imagen: image().optional(),
+    }),
+});
+
 // ── Clasificación ─────────────────────────────────────────
 
 const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre: z.string() }) });
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginas, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginas, instagram, areas, temas,
 };
