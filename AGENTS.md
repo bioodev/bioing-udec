@@ -73,4 +73,5 @@ levantar): no detecta cientos de archivos nuevos de una vez.
   no crear archivos con esos nombres en `public/` (el estático gana al generado).
 - **Lo que depende de la fecha se resuelve en el build** (Agenda, Anuncios vencidos, Banners): el sitio
   necesita una reconstrucción diaria.
+- **Filtros en la URL** (Noticias, Agenda, Anuncios, Repositorio): reflejarlos con `sincronizarFiltrosEnUrl` (`src/scripts/url-filtros.ts`), nunca con `history.replaceState(null, …)`: ClientRouter guarda su estado en `history.state` y, sin él, el «atrás» no navega. Los `<script>` son módulos que corren una vez: el init va en `astro:page-load` con una guarda de ruta.
 - **Sin comprobación de tipos en el CMS**: el esquema Zod del build es la red de seguridad; `astro check` en 0.

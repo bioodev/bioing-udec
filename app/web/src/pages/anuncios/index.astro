@@ -83,51 +83,52 @@ const textos = new Map(await Promise.all([...vigentes, ...vencidos].map(async (a
 
 <script>
   import { coincideAnuncio, TODOS } from '@/lib/filtro-anuncios';
+  import { sincronizarFiltrosEnUrl } from '@/scripts/url-filtros';
 
-  const form = document.querySelector<HTMLFormElement>('#filtros')!;
-  const texto = document.querySelector<HTMLInputElement>('#texto')!;
-  const chips = [...document.querySelectorAll<HTMLButtonElement>('.chip-tipo')];
-  const items = [...document.querySelectorAll<HTMLLIElement>('[data-seccion] li')];
-  const secciones = [...document.querySelectorAll<HTMLElement>('[data-seccion]')];
-  const contador = document.querySelector('#contador')!;
-  const sinResultados = document.querySelector('#sin-resultados')!;
-  let tipo = TODOS;
+  document.addEventListener('astro:page-load', () => {
+    // El listener queda registrado en todas las navegaciones: solo actúa en su propio listado.
+    if (location.pathname.replace(/\/$/, '') !== '/anuncios') return;
+    const form = document.querySelector<HTMLFormElement>('#filtros')!;
+    const texto = document.querySelector<HTMLInputElement>('#texto')!;
+    const chips = [...document.querySelectorAll<HTMLButtonElement>('.chip-tipo')];
+    const items = [...document.querySelectorAll<HTMLLIElement>('[data-seccion] li')];
+    const secciones = [...document.querySelectorAll<HTMLElement>('[data-seccion]')];
+    const contador = document.querySelector('#contador')!;
+    const sinResultados = document.querySelector('#sin-resultados')!;
+    let tipo = TODOS;
 
-  function aplicar() {
-    const f = { texto: texto.value, tipo };
-    let visibles = 0;
-    for (const li of items) {
-      const coincide = coincideAnuncio({ texto: li.dataset.texto ?? '', tipo: li.dataset.tipo ?? '' }, f);
-      li.hidden = !coincide;
-      if (coincide) visibles++;
+    function aplicar() {
+      const f = { texto: texto.value, tipo };
+      let visibles = 0;
+      for (const li of items) {
+        const coincide = coincideAnuncio({ texto: li.dataset.texto ?? '', tipo: li.dataset.tipo ?? '' }, f);
+        li.hidden = !coincide;
+        if (coincide) visibles++;
+      }
+      for (const s of secciones) {
+        const lis = [...s.querySelectorAll<HTMLLIElement>('li')];
+        const vacio = s.querySelector<HTMLElement>('[data-vacio]')!;
+        if (lis.length > 0) s.hidden = lis.every((li) => li.hidden);
+        vacio.classList.toggle('hidden', lis.length > 0);
+      }
+
+      contador.textContent = visibles === 1 ? '1 anuncio' : `${visibles} anuncios`;
+      // "Sin filtros" solo cuando hay anuncios pero ninguno coincide; sin anuncios, lo dice cada sección.
+      sinResultados.classList.toggle('hidden', !(items.length > 0 && visibles === 0));
+      for (const c of chips) c.setAttribute('aria-pressed', String(c.dataset.tipo === tipo));
+
+      // Los filtros quedan en la URL para compartir el listado filtrado.
+      sincronizarFiltrosEnUrl({ q: texto.value, tipo }, [TODOS]);
     }
-    for (const s of secciones) {
-      const lis = [...s.querySelectorAll<HTMLLIElement>('li')];
-      const vacio = s.querySelector<HTMLElement>('[data-vacio]')!;
-      if (lis.length > 0) s.hidden = lis.every((li) => li.hidden);
-      vacio.classList.toggle('hidden', lis.length > 0);
-    }
 
-    contador.textContent = visibles === 1 ? '1 anuncio' : `${visibles} anuncios`;
-    // "Sin filtros" solo cuando hay anuncios pero ninguno coincide; sin anuncios, lo dice cada sección.
-    sinResultados.classList.toggle('hidden', !(items.length > 0 && visibles === 0));
-    for (const c of chips) c.setAttribute('aria-pressed', String(c.dataset.tipo === tipo));
+    // Estado inicial desde la URL (p. ej. /anuncios?tipo=practica).
+    const params = new URLSearchParams(location.search);
+    texto.value = params.get('q') ?? '';
+    if (params.get('tipo') && chips.some((c) => c.dataset.tipo === params.get('tipo'))) tipo = params.get('tipo')!;
 
-    // Los filtros quedan en la URL para compartir el listado filtrado.
-    const url = new URL(location.href);
-    for (const [k, v] of Object.entries({ q: texto.value, tipo })) {
-      if (v && v !== TODOS) url.searchParams.set(k, v); else url.searchParams.delete(k);
-    }
-    history.replaceState(null, '', url);
-  }
-
-  // Estado inicial desde la URL (p. ej. /anuncios?tipo=practica).
-  const params = new URLSearchParams(location.search);
-  texto.value = params.get('q') ?? '';
-  if (params.get('tipo') && chips.some((c) => c.dataset.tipo === params.get('tipo'))) tipo = params.get('tipo')!;
-
-  for (const c of chips) c.addEventListener('click', () => { tipo = c.dataset.tipo ?? TODOS; aplicar(); });
-  form.addEventListener('input', () => aplicar());
-  form.addEventListener('change', () => aplicar());
-  aplicar();
+    for (const c of chips) c.addEventListener('click', () => { tipo = c.dataset.tipo ?? TODOS; aplicar(); });
+    form.addEventListener('input', () => aplicar());
+    form.addEventListener('change', () => aplicar());
+    aplicar();
+  });
 </script>
