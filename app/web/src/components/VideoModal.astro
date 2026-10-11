@@ -38,14 +38,10 @@ const { id, titulo } = Astro.props;
       });
       reproductor.replaceChildren(iframe);
       dialogo.showModal();
-      document.documentElement.style.overflow = 'hidden'; // el fondo no se desplaza mientras está abierto
     });
     raiz.querySelector('[data-cerrar]')!.addEventListener('click', () => dialogo.close());
     dialogo.addEventListener('click', (e) => { if (e.target === dialogo) dialogo.close(); }); // clic fuera
-    dialogo.addEventListener('close', () => {
-      reproductor.replaceChildren(); // detiene el video
-      document.documentElement.style.overflow = '';
-    });
+    dialogo.addEventListener('close', () => reproductor.replaceChildren()); // detiene el video
   }
   });
 </script>
