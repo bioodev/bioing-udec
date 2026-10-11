@@ -2,19 +2,19 @@
 import type { CollectionEntry } from 'astro:content';
 import { Badge } from '@/components/starwind/badge';
 import { formatoFecha } from '@/lib/contenido';
+import { TIPOS_ANUNCIO } from '@/lib/anuncios';
 import Clock from 'phosphor-astro/Clock.astro';
 import EnvelopeSimple from 'phosphor-astro/EnvelopeSimple.astro';
 
-interface Props { anuncio: CollectionEntry<'anuncios'> }
-const { anuncio } = Astro.props;
-const TIPO = {
-  trabajo: 'Trabajo', practica: 'Práctica', pasantia: 'Pasantía', proyecto: 'Proyecto',
-  convocatoria: 'Convocatoria', colaboracion: 'Colaboración', otra: 'Oportunidad',
-} as const;
+interface Props { anuncio: CollectionEntry<'anuncios'>; vencido?: boolean }
+const { anuncio, vencido = false } = Astro.props;
 ---
 <article class="rounded-lg border border-border bg-card p-5">
-  <Badge variant="default">{TIPO[anuncio.data.tipo]}</Badge>
-  <h3 class="mt-2 text-lg font-semibold leading-snug">{anuncio.data.titulo}</h3>
-  {anuncio.data.fecha_limite && <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />Postula hasta el {formatoFecha(anuncio.data.fecha_limite)}</p>}
+  <p class="flex flex-wrap items-center gap-2">
+    <Badge variant="default">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Badge>
+    {vencido && <Badge variant="secondary">Vencido</Badge>}
+  </p>
+  <h3 class="mt-2 text-lg font-semibold leading-snug"><a href={`/anuncios/${anuncio.id}`} class="hover:text-primary">{anuncio.data.titulo}</a></h3>
+  {anuncio.data.fecha_limite && <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />{vencido ? 'Cerró el' : 'Postula hasta el'} {formatoFecha(anuncio.data.fecha_limite)}</p>}
   <p class="mt-2 flex items-center gap-1.5 text-sm"><EnvelopeSimple class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" /><span class="sr-only">Contacto: </span>{anuncio.data.contacto}</p>
 </article>
