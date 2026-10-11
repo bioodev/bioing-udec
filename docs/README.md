@@ -19,6 +19,13 @@ el porqué, el cómo y el estado.
 | [`preguntas-reunion.md`](preguntas-reunion.md) | Preguntas abiertas con el equipo BIOING+, cada una con propuesta por defecto |
 | [`bitacora.md`](bitacora.md) | Requisitos acordados en reuniones + ajustes y decisiones de cada sesión |
 
+## Guías de entrega (entregables de cierre)
+
+| Documento | Para quién | Estado |
+|---|---|---|
+| [`guia-usuario.md`](guia-usuario.md) | Encargado/a de comunicaciones: cómo publicar desde el panel | Esqueleto (los pantallazos llegan en la Fase C) |
+| [`guia-mantencion.md`](guia-mantencion.md) | Quien tome el proyecto después: rutinas, despliegue, incidentes, traspaso | Esqueleto |
+
 ## Propuestas y documentos de la carrera
 
 - [`propuesta-arquitectura-y-contenidos.md`](propuesta-arquitectura-y-contenidos.md) (+ [`.pdf`](propuesta-arquitectura-y-contenidos.pdf)) — especificación funcional principal; leerla antes de diseñar cualquier sección.
