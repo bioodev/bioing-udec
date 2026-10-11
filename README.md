@@ -2,7 +2,7 @@
 
 Plataforma digital de la comunidad de Bioingeniería de la Universidad de Concepción (FCB): noticias, actividades, oportunidades, documentos, Instagram y el directorio de egresados/as.
 
-**Stack**: sitio estático **Astro 7** en `app/web`, contenido en archivos editados con **Sveltia CMS** (sin backend ni base de datos). Repositorio en Gitea propio (`gitea.bioodev.work/bioing/bioing-udec`), despliegue previsto en Cloudflare. **Plazo: marzo 2027.**
+**Stack**: sitio estático **Astro 7** en `app/web`, contenido en archivos editados con **Sveltia CMS** (sin backend ni base de datos). Repositorio en Gitea propio (`gitea.bioodev.work/bioing/bioing-udec`) con espejo de prueba en GitHub (`bioodev/bioing-udec`), despliegue previsto en Cloudflare. **Plazo: marzo 2027.**
 
 > **Documentación**: índice en **[`docs/README.md`](docs/README.md)** · cómo trabajar en el repo, en [`AGENTS.md`](AGENTS.md) · dominio y glosario, en [`docs/context.md`](docs/context.md) · arquitectura, en [`docs/architecture.md`](docs/architecture.md) · sistema visual, en [`docs/design.md`](docs/design.md).
 

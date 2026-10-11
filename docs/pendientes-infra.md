@@ -2,7 +2,7 @@
 
 Producción según `docs/propuesta-desarrollo.md` (secciones 6 y 8): repositorio en **GitHub**, build y hosting en **Cloudflare**, imágenes en el repositorio, documentos en Google Drive o R2, todo a nombre de la **cuenta central** del proyecto.
 
-Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioing/bioing-udec`, backend `gitea` en `config.yml`) y se publica a mano si hace falta (`npm run build` + `wrangler deploy`). El Gitea **no** es parte de la entrega.
+Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioing/bioing-udec`, remoto `origin`) con un espejo de prueba en GitHub (`bioodev/bioing-udec`, cuenta personal del proveedor, remoto `github`); el panel apunta a ese espejo (backend `github`, rama `main`, login con token) y se publica a mano si hace falta (`npm run build` + `wrangler deploy`). El Gitea **no** es parte de la entrega.
 
 ## Cuentas
 

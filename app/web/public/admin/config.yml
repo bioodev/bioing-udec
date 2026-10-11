@@ -3,13 +3,12 @@
 # Modelo de dominio: ver docs/context.md. Decisión de stack: docs/adr/0001-sveltia-cms-astro.md
 
 backend:
-  name: gitea
-  repo: bioing/bioing-udec
+  name: github
+  repo: bioodev/bioing-udec
   branch: main
-  base_url: https://gitea.bioodev.work
-  api_root: https://gitea.bioodev.work/api/v1
-  # TODO: registrar una OAuth app pública en Gitea (redirect URI = URL del admin) y poner aquí app_id.
-  # Mientras tanto se entra con "Iniciar sesión con un token de acceso".
+  # PROVISIONAL: repo de prueba del proveedor (cuenta personal bioodev). Se entra con "Iniciar sesión con un
+  # token de acceso" (fine-grained PAT con Contents: Read and write sobre este repo). En la Etapa 4 del plan
+  # de ambientes pasa a <org>/<repo> con base_url del Worker sveltia-cms-auth (OAuth).
 
 # Imágenes en src/assets para que Astro las optimice (image()). Las colecciones con imágenes
 # declaran public_folder relativo a su carpeta de contenido (src/content/<colección>/).
