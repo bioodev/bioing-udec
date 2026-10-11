@@ -136,7 +136,7 @@ Conectar el repositorio de GitHub **a cada Worker** (Settings → Build). Config
 ### 3.6 Avisos de build fallido
 - [ ] Workers Builds publica eventos (`build.failed`, etc.) mediante **Event Subscriptions** a una Queue;
       Cloudflare tiene una plantilla (`workers-builds-notifications-template`) que los reenvía. Definir el
-      destino (correo de la cuenta central o un webhook). Revisar al configurarlo si Queues exige plan pago.
+      destino (correo de la cuenta central o un webhook). Queues está en el plan gratuito desde feb-2026 (10 000 operaciones/día, retención 24 h): sin costo para este volumen.
 
 ## Etapa 4 — Panel (Sveltia CMS) contra GitHub
 
