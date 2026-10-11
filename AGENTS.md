@@ -56,7 +56,9 @@ levantar): no detecta cientos de archivos nuevos de una vez.
 - Textos de interfaz en español y **términos del dominio según `docs/context.md`** (evitar los listados
   `_Avoid_`).
 - No commitear el contenido sintético `sint-*`; no borrar contenido real sin consultar.
-- Nunca commitear secretos ni credenciales (la cuenta y el dominio son de la carrera).
+- Nunca commitear secretos ni credenciales (la cuenta y el dominio son de la carrera). Revisar con
+  **gitleaks** (`.gitleaks.toml` en la raíz) antes de subir a un remoto nuevo:
+  `gitleaks git --log-opts="--all" --redact` y `gitleaks dir . --redact`.
 
 ## Trampas conocidas (leer antes de tocar)
 

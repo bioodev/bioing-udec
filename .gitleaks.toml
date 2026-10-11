@@ -1,0 +1,15 @@
+# Configuración de gitleaks (https://github.com/gitleaks/gitleaks): reglas por defecto + exclusiones.
+# Uso (desde la raíz):
+#   gitleaks git --log-opts="--all" --redact   # historial completo, todas las ramas
+#   gitleaks dir . --redact                    # árbol de trabajo (incluye lo no versionado, p. ej. .env)
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Skills de IA generados por autoskills (fuera de git): documentación con claves de ejemplo"
+paths = [
+  '''app/web/\.agents/''',
+  '''\.opencode/''',
+  '''(^|/)node_modules/''',
+  '''app/web/dist/''',
+]

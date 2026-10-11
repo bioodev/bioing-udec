@@ -73,6 +73,8 @@ central.
 
 - [ ] **(persona)** Crear la **organización** con la cuenta central como dueña; invitar al proveedor (con su
       cuenta propia) como owner temporal.
+- [ ] Antes de subir nada: `gitleaks git --log-opts="--all" --redact` desde la raíz del repo, sin hallazgos.
+      (2026-10-11: 144 commits revisados, sin hallazgos.)
 - [ ] Crear el repositorio **privado** y subir el historial completo desde el Gitea:
       ```sh
       git clone --mirror https://gitea.bioodev.work/bioing/bioing-udec.git
