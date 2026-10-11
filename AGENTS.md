@@ -9,7 +9,7 @@ sin backend ni base de datos. **Plazo de entrega: marzo de 2027.**
 > **[`docs/README.md`](docs/README.md)** (índice) · [`docs/context.md`](docs/context.md) (dominio, alcance y
 > glosario) · [`docs/architecture.md`](docs/architecture.md) (cómo está hecho) ·
 > [`docs/design.md`](docs/design.md) (UI/UX) · [`docs/pendientes-infra.md`](docs/pendientes-infra.md)
-> (qué falta) · [`docs/adr/`](docs/adr/) (decisiones) · [`docs/planes/`](docs/planes/) (planes fechados).
+> (qué falta) · [`docs/adr/`](docs/adr/) (decisiones) · [`docs/plans/`](docs/plans/) (planes fechados).
 
 ## Comandos
 

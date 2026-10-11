@@ -2,7 +2,7 @@
 
 > Para opencode. Ejecutar con disciplina TDD donde haya lógica; infra/config se valida con build. Casillas `- [ ]`.
 
-**Meta:** dejar el sitio "listo para publicar" en lo que no depende de cuentas: 404, encabezados de seguridad, SEO (sitemap + Open Graph), buscador general (Pagefind) y config de servir en Cloudflare. Base: `docs/planes/2026-10-11-plan-hito-4-produccion.md` (Fase A, tareas A1–A3, A5) y `docs/propuesta-desarrollo.md` §3.
+**Meta:** dejar el sitio "listo para publicar" en lo que no depende de cuentas: 404, encabezados de seguridad, SEO (sitemap + Open Graph), buscador general (Pagefind) y config de servir en Cloudflare. Base: `docs/plans/2026-10-11-plan-hito-4-produccion.md` (Fase A, tareas A1–A3, A5) y `docs/propuesta-desarrollo.md` §3.
 
 ## Resultado (ejecutado 2026-10-11, opencode en worktree `faseA-infra-seo`)
 

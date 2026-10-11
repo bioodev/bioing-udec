@@ -1,7 +1,7 @@
 # Preparación para agentes: datos estructurados, control de rastreo y feeds
 
 > Para opencode (coordinado vía Herdr). Sale de la revisión del sitio contra el checklist de
-> "sitio legible, verificable y operable" (Contentful / Chrome WebMCP). Base: `docs/planes/2026-10-11-plan-hito-4-produccion.md`
+> "sitio legible, verificable y operable" (Contentful / Chrome WebMCP). Base: `docs/plans/2026-10-11-plan-hito-4-produccion.md`
 > (Fase B, código) y `docs/pendientes-infra.md`. Todo sobre la rama **`develop`**: los workstreams
 > trabajan en worktrees con ramas `faseB-jsonld`, `faseB-metadatos` y `faseB-feeds` nacidas de `develop`;
 > al cierre se integran a `develop` y se hace push al Gitea.

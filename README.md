@@ -8,7 +8,7 @@ Plataforma digital de la comunidad de Bioingeniería de la Universidad de Concep
 
 ## Estado
 
-Hitos 1–3 completos. **Fase A del Hito 4 (producción en código) cerrada**: 404 + seguridad, SEO (sitemap/OG/canonical), buscador Pagefind, config Cloudflare, optimización de imágenes al subir y auditoría de calidad (Lighthouse ≥ 90). **Fase B (código) en curso**: datos estructurados (JSON-LD Schema.org), `robots.txt` y `llms.txt` generados y feeds RSS. Ver `docs/planes/` y `docs/pendientes-infra.md`. Lo que resta (Fases C–D) depende de entregas de la carrera: cuentas, dominio, identidad visual, contenidos reales.
+Hitos 1–3 completos. **Fase A del Hito 4 (producción en código) cerrada**: 404 + seguridad, SEO (sitemap/OG/canonical), buscador Pagefind, config Cloudflare, optimización de imágenes al subir y auditoría de calidad (Lighthouse ≥ 90). **Fase B (código) en curso**: datos estructurados (JSON-LD Schema.org), `robots.txt` y `llms.txt` generados y feeds RSS. Ver `docs/plans/` y `docs/pendientes-infra.md`. Lo que resta (Fases C–D) depende de entregas de la carrera: cuentas, dominio, identidad visual, contenidos reales.
 
 ## Estructura
 
@@ -69,7 +69,7 @@ El logo tiene **una sola fuente**: `app/web/src/assets/logo.svg`, renderizada co
 
 ## Deploy / producción
 
-Ver `docs/pendientes-infra.md` (checklist completo) y `docs/planes/2026-10-11-plan-hito-4-produccion.md` (plan por fases A–D). Producción: repositorio en GitHub, build + hosting en Cloudflare (Workers Assets, `wrangler.jsonc`), dominio propio, documentos en Drive/R2, reconstrucción diaria.
+Ver `docs/pendientes-infra.md` (checklist completo) y `docs/plans/2026-10-11-plan-hito-4-produccion.md` (plan por fases A–D). Producción: repositorio en GitHub, build + hosting en Cloudflare (Workers Assets, `wrangler.jsonc`), dominio propio, documentos en Drive/R2, reconstrucción diaria.
 
 ## Documentación
 

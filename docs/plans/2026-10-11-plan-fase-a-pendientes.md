@@ -1,6 +1,6 @@
 # Fase A — Pendientes (A4 imágenes + A6 auditoría) y renombrado CLAUDE.md → AGENTS.md
 
-> Para opencode (coordinado vía Herdr). Base: `docs/planes/2026-10-11-plan-hito-4-produccion.md` (Fase A) y `docs/pendientes-infra.md`. Todo sobre la rama **`develop`** (la más avanzada): los workstreams trabajan en worktrees con ramas `faseA-a4` y `faseA-a6` nacidas de `develop`, y al cierre se integran a `develop` y se hace push al Gitea.
+> Para opencode (coordinado vía Herdr). Base: `docs/plans/2026-10-11-plan-hito-4-produccion.md` (Fase A) y `docs/pendientes-infra.md`. Todo sobre la rama **`develop`** (la más avanzada): los workstreams trabajan en worktrees con ramas `faseA-a4` y `faseA-a6` nacidas de `develop`, y al cierre se integran a `develop` y se hace push al Gitea.
 
 ## Resultado (ejecutado 2026-10-11, subagentes opencode vía Herdr)
 
@@ -24,7 +24,7 @@
 
 ## T0 — Renombrado CLAUDE.md → AGENTS.md (lo hace el coordinador en `develop`)
 - [x] `git mv CLAUDE.md AGENTS.md`; encabezado `# AGENTS.md` (+ nota de que reemplaza a CLAUDE.md).
-- [x]  Actualizar referencias activas: `docs/pendientes-infra.md` (línea "y CLAUDE.md" → "y AGENTS.md"), `docs/planes/2026-10-11-plan-hito-4-produccion.md` (paso de validación "las dos formas de CLAUDE.md" → "de AGENTS.md"; D1 "actualizar CLAUDE.md" → "AGENTS.md"; restricción "No commitear CLAUDE.md ni AGENTS.md" → "No tocar AGENTS.md (raíz)"). Los planes históricos (2026-09-30, 2026-10-10…) quedan como registro.
+- [x]  Actualizar referencias activas: `docs/pendientes-infra.md` (línea "y CLAUDE.md" → "y AGENTS.md"), `docs/plans/2026-10-11-plan-hito-4-produccion.md` (paso de validación "las dos formas de CLAUDE.md" → "de AGENTS.md"; D1 "actualizar CLAUDE.md" → "AGENTS.md"; restricción "No commitear CLAUDE.md ni AGENTS.md" → "No tocar AGENTS.md (raíz)"). Los planes históricos (2026-09-30, 2026-10-10…) quedan como registro.
 - [x] Commit: `Renombra CLAUDE.md a AGENTS.md`.
 - [x] Commit del plan: `Agrega plan de pendientes de Fase A (A4, A6)`.
 
@@ -70,7 +70,7 @@ media_libraries:
 ## Cierre de Fase A (coordinador)
 - [x] Integrar `faseA-a4` y `faseA-a6` en `develop` (merge). Resolver conflictos si los hubiera (no debería: archivos disjuntos salvo `package.json`, que solo toca a6 con `lighthouse` en devDependencies).
 - [x] Verificación combinada en `develop`: `npm test`, `npx astro check` 0/0, `npm run build && npm run postbuild`, resumen Lighthouse.
-- [x] Actualizar `docs/planes/2026-10-11-plan-hito-4-produccion.md` (marcar A4 y A6) y `docs/pendientes-infra.md` (marcar "Activar en config.yml la optimización al subir" y el checklist de auditoría si existe).
+- [x] Actualizar `docs/plans/2026-10-11-plan-hito-4-produccion.md` (marcar A4 y A6) y `docs/pendientes-infra.md` (marcar "Activar en config.yml la optimización al subir" y el checklist de auditoría si existe).
 - [x] Push de `develop` al Gitea.
 - [x] Borrar worktrees y ramas `faseA-a4`/`faseA-a6`.
 
