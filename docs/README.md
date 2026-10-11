@@ -18,6 +18,7 @@ el porqué, el cómo y el estado.
 | [`pendientes-infra.md`](pendientes-infra.md) | Checklist de lo que falta para producción (cuentas, dominio, CI/CD, contenidos) |
 | [`preguntas-reunion.md`](preguntas-reunion.md) | Preguntas abiertas con el equipo BIOING+, cada una con propuesta por defecto |
 | [`bitacora.md`](bitacora.md) | Requisitos acordados en reuniones + ajustes y decisiones de cada sesión |
+| [`despliegue-cloudflare.md`](despliegue-cloudflare.md) | Procedimiento paso a paso del despliegue (ambiente de desarrollo y camino a producción) |
 
 ## Guías de entrega (entregables de cierre)
 

@@ -80,5 +80,6 @@ El índice completo está en **[`docs/README.md`](docs/README.md)**. Los princip
 - [`docs/architecture.md`](docs/architecture.md) — stack, componentes, modelo de contenido, rutas, build y despliegue.
 - [`docs/design.md`](docs/design.md) — sistema de diseño (referencia e implementación).
 - [`docs/pendientes-infra.md`](docs/pendientes-infra.md) y [`docs/preguntas-reunion.md`](docs/preguntas-reunion.md) — lo que falta y lo que está sin resolver con el equipo.
+- [`docs/despliegue-cloudflare.md`](docs/despliegue-cloudflare.md) — cómo desplegar (ambiente de desarrollo y camino a producción).
 - [`docs/adr/`](docs/adr/) — decisiones de arquitectura.
 - [`app/web/auditoria/`](app/web/auditoria/) — evidencia de la auditoría Lighthouse (Fase A, A6).

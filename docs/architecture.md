@@ -167,7 +167,9 @@ shaders WebGL y la textura halftone por rendimiento y por decisión del equipo.
   `npm run verificar:jsonld`, `npm run dev:tunel`.
 - **Pagefind y verificar:jsonld** solo existen sobre `dist/`: con npm 11, `postbuild` no se dispara solo.
 - **Ambiente de desarrollo en Cloudflare** (sin depender de la carrera): `npm run deploy:dev`
-  (`build` + `postbuild` + `wrangler deploy`) publica en `https://<name>.<cuenta>.workers.dev`. Antes de
+  (`build` + `postbuild` + `wrangler deploy`) publica en `https://<name>.<cuenta>.workers.dev`. Procedimiento
+  paso a paso, verificación y problemas comunes: [`despliegue-cloudflare.md`](despliegue-cloudflare.md).
+  Antes de
   construir, fijar `SITE_URL` con esa URL para que canonical, sitemap, `robots.txt`/`llms.txt`, feeds y
   JSON-LD apunten ahí. `wrangler.jsonc` sirve el 404 propio (`assets.not_found_handling: "404-page"`) y
   `_headers` marca `*.workers.dev` como `noindex` (el patrón no alcanza al dominio definitivo). Requiere

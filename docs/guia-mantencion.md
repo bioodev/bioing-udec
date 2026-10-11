@@ -64,6 +64,8 @@ cómo revertir*. Los incidentes van como tabla en §9.
 
 ## 4. Despliegue y dominio
 
+- **Procedimiento completo:** [`despliegue-cloudflare.md`](despliegue-cloudflare.md) (requisitos, autenticación
+  de `wrangler`, `SITE_URL`, `npm run deploy:dev`, verificación, incidentes y camino a producción).
 - Cloudflare Workers (Static Assets) con `app/web/wrangler.jsonc`; Workers Builds conectado al repositorio.
 - Variables y secretos (dónde vive `SITE_URL` y cualquier token; nunca en el repositorio).
 - Reconstrucción **diaria** programada poco después de medianoche de Chile (y por qué no a las 00:00 UTC).
