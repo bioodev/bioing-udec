@@ -84,6 +84,8 @@ levantar): no detecta cientos de archivos nuevos de una vez.
   CSP solo se ve sobre el build servido (`wrangler dev` o el ambiente desplegado). Nada de `onclick=`/`onsubmit=`
   en el HTML. Los `<script>` procesados salen como archivo externo (`assetsInlineLimit` en `astro.config.mjs`) y
   los `is:inline` llevan su hash, que `postbuild-csp.mjs` calcula y agrega a `dist/_headers`.
+- **`_headers` no reemplaza, suma**: si dos reglas coinciden (p. ej. `/*` y `/admin/*`), Cloudflare manda ambas
+  cabeceras y el navegador aplica las dos CSP. Para sobrescribir una de `/*`, quitarla antes con `! Nombre`.
 - **Scripts y ClientRouter**: un `<script>` corre una sola vez; lo que toque el DOM se inicia en
   `astro:page-load` (con una marca para no duplicar listeners) o se escucha delegado en `document`.
 - **Sin comprobación de tipos en el CMS**: el esquema Zod del build es la red de seguridad; `astro check` en 0.
