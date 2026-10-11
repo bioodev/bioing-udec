@@ -6,6 +6,7 @@ import { Badge } from '@/components/starwind/badge';
 import { Button } from '@/components/starwind/button';
 import { anunciosVisibles, formatoFecha } from '@/lib/contenido';
 import { anuncioVigente, existentes } from '@/lib/reglas';
+import { migas, ofertaLaboral } from '@/lib/schema';
 import { TIPOS_ANUNCIO } from '@/lib/anuncios';
 import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
 
@@ -27,8 +28,28 @@ const entrada = await (o.tipo === 'persona' ? getEntry(o.persona) : getEntry(o.o
 const oferente = entrada && { coleccion: o.tipo === 'persona' ? ('personas' as const) : ('organizaciones' as const), entrada };
 
 const esCorreo = /^\S+@\S+$/.test(anuncio.data.contacto);
+
+const enlaceAnuncio = `/anuncios/${anuncio.id}`;
+// JobPosting solo para ofertas laborales vigentes; ofertaLaboral() devuelve null en el resto.
+const oferta = ofertaLaboral(anuncio, {
+  site: Astro.site,
+  url: enlaceAnuncio,
+  oferente: oferente ? { tipo: o.tipo, nombre: oferente.entrada.data.nombre } : undefined,
+  areas: areas.map((a) => a.data.nombre),
+});
+const jsonLdPagina = [
+  migas(
+    [
+      { name: 'Inicio', url: '/' },
+      { name: 'Anuncios', url: '/anuncios' },
+      { name: anuncio.data.titulo, url: enlaceAnuncio },
+    ],
+    Astro.site,
+  ),
+  ...(oferta ? [oferta] : []),
+];
 ---
-<Base titulo={anuncio.data.titulo} descripcion={`${TIPOS_ANUNCIO[anuncio.data.tipo]} · ${anuncio.data.titulo}`}>
+<Base titulo={anuncio.data.titulo} descripcion={`${TIPOS_ANUNCIO[anuncio.data.tipo]} · ${anuncio.data.titulo}`} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
     <p class="flex flex-wrap items-center gap-2">
       <Badge variant="outline">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Badge>

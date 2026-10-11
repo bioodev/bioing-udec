@@ -7,6 +7,7 @@ import { documentosDelRepositorio } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
 import { vistaPreviaDrive } from '@/lib/enlaces';
+import { migas, documento as jsonLdDocumento } from '@/lib/schema';
 import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
 
 export async function getStaticPaths() {
@@ -20,8 +21,21 @@ const { documento } = Astro.props;
 const temas = existentes(await getEntries(documento.data.temas ?? []));
 const areas = existentes(await getEntries(documento.data.areas ?? []));
 const vista = vistaPreviaDrive(documento.data.enlace);
+
+const enlace = `/repositorio/${documento.id}`;
+const jsonLdPagina = [
+  migas(
+    [
+      { name: 'Inicio', url: '/' },
+      { name: 'Repositorio', url: '/repositorio' },
+      { name: documento.data.titulo, url: enlace },
+    ],
+    Astro.site,
+  ),
+  jsonLdDocumento(documento, { site: Astro.site, url: enlace, temas: temas.map((t) => t.data.nombre) }),
+];
 ---
-<Base titulo={documento.data.titulo} descripcion={`${TIPOS_DOCUMENTO[documento.data.tipo]} · ${documento.data.titulo}`}>
+<Base titulo={documento.data.titulo} descripcion={`${TIPOS_DOCUMENTO[documento.data.tipo]} · ${documento.data.titulo}`} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
     <p class="flex flex-wrap items-center gap-2">
       <Badge variant="outline">{TIPOS_DOCUMENTO[documento.data.tipo]}</Badge>
