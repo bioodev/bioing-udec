@@ -1,0 +1,14 @@
+/* Animaciones de entrada (GSAP) — ver src/scripts/animaciones.ts.
+   Los elementos marcados con [data-animar] se ocultan SOLO cuando hay JS y el
+   usuario no pidió reducir el movimiento (clase .anima puesta por un script
+   inline en <head> de Base.astro). Sin JS, o con prefers-reduced-motion: reduce,
+   todo queda visible sin animación. Un guard con timeout quita .anima si el
+   módulo de GSAP no llega a ejecutarse. El desplazamiento usa transform, que no
+   provoca layout shift (CLS). */
+@media (prefers-reduced-motion: no-preference) {
+  .anima [data-animar],
+  .anima [data-animar='grilla'] > * {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}

@@ -37,9 +37,10 @@ const varios = banners.length > 1;
           priority={i === 0}
         />
         <div class="mx-auto flex min-h-[32rem] max-w-6xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[36rem]">
-          <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">{banner.data.titulo}</h1>
-          {banner.data.texto && <p class="mx-auto mt-4 max-w-2xl text-lg opacity-90">{banner.data.texto}</p>}
+          <h1 data-animar="hero" class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">{banner.data.titulo}</h1>
+          {banner.data.texto && <p data-animar="hero" class="mx-auto mt-4 max-w-2xl text-lg opacity-90">{banner.data.texto}</p>}
           <Button
+            data-animar="hero"
             href={banner.data.enlace}
             variant="primary"
             class="mt-8 rounded-full"

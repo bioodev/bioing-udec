@@ -33,7 +33,7 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
 ---
 <Base titulo="Noticias" descripcion="Noticias de la comunidad de Bioingeniería UdeC.">
   <section class="mx-auto max-w-6xl px-4 py-12">
-    <h1 class="text-4xl font-semibold tracking-tight">Noticias</h1>
+    <h1 data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Noticias</h1>
 
     <form id="filtros" class="mt-8 grid gap-4 md:grid-cols-3" role="search" onsubmit="return false">
       <div class="grid gap-2">
@@ -96,7 +96,7 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
 
     <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{noticias.length} noticias</p>
     <h2 class="sr-only">Resultados</h2>
-    <ul id="lista" class="mt-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <ul id="lista" data-animar="grilla" class="mt-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {noticias.map(({ noticia, temas, personas }) => (
         <li
           data-texto={normalizar(`${noticia.data.titulo} ${noticia.data.bajada ?? ''}`)}

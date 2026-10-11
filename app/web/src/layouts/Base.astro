@@ -1,5 +1,8 @@
 ---
 import '@/styles/starwind.css';
+import '@/styles/animaciones.css';
+import '@/styles/transitions.css';
+import { ClientRouter } from 'astro:transitions';
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/starwind/sheet';
 import IconMenu from 'phosphor-astro/List.astro';
 import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
@@ -24,6 +27,21 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={descripcion} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <ClientRouter />
+    <script is:inline>
+      // Animaciones de entrada (GSAP): activas solo con JS y sin prefers-reduced-motion.
+      // La clase .anima oculta [data-animar] vía CSS; un guard la quita si el módulo de
+      // animación no llega a ejecutarse, para que el contenido nunca quede oculto.
+      (() => {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        document.documentElement.classList.add('anima');
+        setTimeout(() => {
+          if (!document.documentElement.hasAttribute('data-animaciones')) {
+            document.documentElement.classList.remove('anima');
+          }
+        }, 3000);
+      })();
+    </script>
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="BIOING+" />
@@ -40,7 +58,7 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
   </head>
   <body class="min-h-screen flex flex-col">
     <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2 focus:shadow-lg print:hidden">Saltar al contenido</a>
-    <header class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur print:hidden">
+    <header transition:name="encabezado" class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur print:hidden">
       <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
         <a href="/" class="flex items-center gap-2" aria-label="BIOING+ — Inicio"><Logo variante="navbar" /></a>
         <nav aria-label="Principal" class="hidden lg:flex flex-1 items-center gap-5 text-sm">
@@ -76,7 +94,7 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
       </div>
     </header>
 
-    <main id="contenido" data-pagefind-body class="flex-1">
+    <main id="contenido" transition:name="contenido" data-pagefind-body class="flex-1">
       <slot />
     </main>
 
@@ -95,4 +113,11 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
       </div>
     </footer>
   </body>
+  <script>
+    import { iniciarAnimaciones, limpiarAnimaciones } from '@/scripts/animaciones';
+    // View Transitions (ClientRouter): limpiar antes de reemplazar el DOM y
+    // reinicializar en la carga inicial y tras cada navegación (astro:page-load).
+    document.addEventListener('astro:before-swap', limpiarAnimaciones);
+    document.addEventListener('astro:page-load', iniciarAnimaciones);
+  </script>
 </html>

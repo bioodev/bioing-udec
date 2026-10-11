@@ -1,0 +1,37 @@
+/* Transiciones entre páginas (View Transitions / ClientRouter de Astro 7).
+   Sutil y breve, acorde a docs/DESIGN.md; desactivadas con prefers-reduced-motion.
+   Grupos con nombre (transition:name): "encabezado" (header persistente) y
+   "contenido" (región <main>). */
+@keyframes bioing-out {
+  to { opacity: 0; }
+}
+@keyframes bioing-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-old(encabezado),
+  ::view-transition-old(contenido) {
+    animation: bioing-out 0.18s ease both;
+  }
+  ::view-transition-new(root),
+  ::view-transition-new(encabezado),
+  ::view-transition-new(contenido) {
+    animation: bioing-in 0.26s ease both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(encabezado),
+  ::view-transition-new(encabezado),
+  ::view-transition-old(contenido),
+  ::view-transition-new(contenido) {
+    animation: none;
+  }
+}

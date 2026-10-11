@@ -24,24 +24,24 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
 
   {noticias.length > 0 && (
     <section class="mx-auto max-w-6xl px-4 py-16">
-      <h2 class="text-3xl font-semibold tracking-tight">Noticias recientes</h2>
-      <div class="mt-8 grid gap-6 md:grid-cols-3">{noticias.map((n) => <TarjetaNoticia noticia={n} />)}</div>
+      <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Noticias recientes</h2>
+      <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{noticias.map((n) => <TarjetaNoticia noticia={n} />)}</div>
     </section>
   )}
 
   {actividades.length > 0 && (
     <section class="bg-muted">
       <div class="mx-auto max-w-6xl px-4 py-16">
-        <h2 class="text-3xl font-semibold tracking-tight">Próximas actividades</h2>
-        <div class="mt-8 grid gap-6 md:grid-cols-3">{actividades.slice(0, 3).map((a) => <TarjetaActividad actividad={a} />)}</div>
+        <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Próximas actividades</h2>
+        <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{actividades.slice(0, 3).map((a) => <TarjetaActividad actividad={a} />)}</div>
       </div>
     </section>
   )}
 
   {anuncios.length > 0 && (
     <section class="mx-auto max-w-6xl px-4 py-16">
-      <h2 class="text-3xl font-semibold tracking-tight">Anuncios</h2>
-      <div class="mt-8 grid gap-6 md:grid-cols-3">{anuncios.slice(0, 3).map((a) => <TarjetaAnuncio anuncio={a} />)}</div>
+      <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Anuncios</h2>
+      <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{anuncios.slice(0, 3).map((a) => <TarjetaAnuncio anuncio={a} />)}</div>
     </section>
   )}
 
@@ -49,18 +49,18 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
     <section class="bg-muted">
       <div class="mx-auto max-w-6xl px-4 py-16">
         <div class="flex flex-wrap items-end justify-between gap-4">
-          <h2 class="text-3xl font-semibold tracking-tight">En Instagram</h2>
+          <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">En Instagram</h2>
           <a href="/instagram" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver más <ArrowRight class="size-4" aria-hidden="true" /></a>
         </div>
-        <div class="mt-8 grid gap-6 md:grid-cols-3">{pubInstagram.map((p) => <PublicacionInstagram publicacion={p} />)}</div>
+        <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{pubInstagram.map((p) => <PublicacionInstagram publicacion={p} />)}</div>
       </div>
     </section>
   )}
 
   <section class="bg-foreground text-background">
     <div class="mx-auto max-w-6xl px-4 py-16 text-center">
-      <h2 class="text-3xl font-semibold tracking-tight">Directorio de bioingenieros/as</h2>
-      <p class="mx-auto mt-3 max-w-xl opacity-80">Encuentra egresados/as por generación, área y organización.</p>
+      <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Directorio de bioingenieros/as</h2>
+      <p data-animar="fade-up" class="mx-auto mt-3 max-w-xl opacity-80">Encuentra egresados/as por generación, área y organización.</p>
       <a href="/directorio" class="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90">Ir al Directorio <ArrowRight class="size-4" aria-hidden="true" /></a>
     </div>
   </section>

@@ -40,6 +40,7 @@ No hay linter todavía. Una referencia rota entre colecciones (un slug que no ex
 - Las reglas con fechas o filtros van en módulos puros (`src/lib/reglas.ts`, `src/lib/filtro-directorio.ts`) con tests; las páginas solo consultan `src/lib/contenido.ts`.
 - `/componentes` es un catálogo que solo existe en `npm run dev`.
 - **Logo**: la marca vive en una sola fuente, `src/assets/logo.svg`, y se renderiza con `src/components/Logo.astro` en navbar y footer. Para cambiarla, reemplaza ese archivo (manteniendo el nombre); no hay que tocar código. Es un placeholder hasta la identidad definitiva (Fase B/C2).
+- **Animaciones (GSAP + View Transitions)**: transiciones entre páginas con `ClientRouter` (Astro 7) y estilos en `src/styles/transitions.css`; animaciones intra-página con `src/scripts/animaciones.ts` (GSAP + ScrollTrigger, con limpieza por `gsap.context()` en `astro:before-swap` y reinicio en `astro:page-load`). Marcado declarativo: `data-animar="hero"` (entrada al cargar), `"fade-up"` (aparece al scrollear) y `"grilla"` (hijos escalonados). Todo respeta `prefers-reduced-motion` y es visible sin JavaScript (clase `.anima` + guard en `Base.astro`). Para añadir una animación basta marcar el elemento con el atributo.
 - El contenido que dice "Contenido de ejemplo" en `src/content/` es de prueba y se borra cuando haya contenido real.
 
 ## Sveltia CMS
