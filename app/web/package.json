@@ -34,6 +34,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@faker-js/faker": "^10.6.0",
+    "lighthouse": "13.5.0",
     "pagefind": "1.5.2",
     "typescript": "^6.0.3",
     "vitest": "^5.0.3",
