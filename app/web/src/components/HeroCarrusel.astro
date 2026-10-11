@@ -125,7 +125,6 @@ const varios = banners.length > 1;
         s.setAttribute('aria-hidden', String(j !== actual));
       });
       puntos.forEach((p, j) => p.setAttribute('aria-current', String(j === actual)));
-      void refrescarFondo(actual);
     }
 
     function detener() {
