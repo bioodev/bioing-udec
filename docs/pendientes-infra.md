@@ -38,7 +38,7 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 
 ## Contenido y medios
 
-- [ ] Activar en `config.yml` la optimización al subir (`media_libraries.all.transformations`: WebP, 2048 px, calidad 85).
+- [x] Activar en `config.yml` la optimización al subir (`media_libraries.all.transformations`: WebP, 2048 px, calidad 85). _Hecho 2026-10-11 (commit `33e652a`); la subida real se prueba en la Fase C._
 - [ ] Campo "documento" que acepte enlace de Google Drive o archivo en R2; reglas de Drive (propiedad de la cuenta central, carpeta pública dedicada).
 - [ ] R2 solo si se usa para documentos: bucket, servido en `/media` del dominio, clave limitada a ese bucket, `public_url` en `config.yml`.
 - [ ] **Prueba de imagen en el admin**: subir una imagen desde Sveltia y confirmar que la ruta queda como `../../assets/media/…`. Si no, ajustar `media_folder`/`public_folder` en `config.yml`.

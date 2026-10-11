@@ -30,7 +30,7 @@ El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase 
 
 ## FASE A — Producción en código (sin cuentas) — SE HACE YA
 
-> **Estado (2026-10-11):** A1, A2, A3 y A5 **hechas** (ver `2026-10-11-faseA-infra-seo.md`) e integradas en `develop`. En paralelo se ejecutó el **rediseño v2** de los wireframes (ver `2026-10-11-rediseno-v2.md`). **Pendientes de la Fase A:** A4 (optimización de imágenes al subir en `config.yml`) y A6 (auditoría A11y/Lighthouse). A7 (limpiar ejemplo) queda para el final.
+> **Estado (2026-10-11):** A1, A2, A3 y A5 **hechas** (ver `2026-10-11-faseA-infra-seo.md`) e integradas en `develop`. En paralelo se ejecutó el **rediseño v2** de los wireframes (ver `2026-10-11-rediseno-v2.md`). **A4 y A6 también están hechas** (2026-10-11, ver `2026-10-11-faseA-pendientes.md`), con lo que la Fase A queda cerrada. A7 (limpiar ejemplo) queda para el final, cuando la carrera entregue contenidos reales.
 
 ### Tarea A1: Página 404, encabezados de seguridad y redirecciones
 
@@ -66,8 +66,8 @@ El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase 
 **Spec:** §6.4.
 **Archivos:** `app/web/public/admin/config.yml`.
 
-- [ ] Activar `media_libraries.all.config.transformations`: formato **WebP**, máximo **2048 px**, **calidad 85**; aceptar HEIC. (Sveltia elimina metadatos EXIF/GPS al transformar; confirmar en la prueba de la Fase C.)
-- [ ] Validar `config.yml` de las dos formas de `AGENTS.md`: contra el JSON Schema de Sveltia y cargando `/admin/` (servir `public`); la pantalla de login aparece sin errores de consola.
+- [x] Activar `media_libraries.all.transformations`: formato **WebP**, máximo **2048 px**, **calidad 85**; aceptar HEIC. (El schema de Sveltia no admite `all.config`; Sveltia elimina metadatos EXIF/GPS al transformar; confirmar en la prueba de la Fase C.)
+- [x] Validar `config.yml` de las dos formas de `AGENTS.md`: contra el JSON Schema de Sveltia y cargando `/admin/` (servir `public`); la pantalla de login aparece sin errores de consola.
 - [ ] **Nota:** la prueba real de subida (ruta `../../assets/media/…`, EXIF borrado) queda en la Fase C (necesita login real al repositorio). Aquí solo se deja la configuración.
 
 ### Tarea A5: Configuración de publicación en Cloudflare (sin desplegar)
@@ -85,9 +85,9 @@ El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase 
 **Spec:** §3 metas de calidad (WCAG 2.1 AA; Lighthouse ≥ 90 en rendimiento, accesibilidad, buenas prácticas y SEO).
 **Herramienta:** Lighthouse CI o `lighthouse` CLI contra `dist` servido (headless). Revisión manual de teclado y lectores de pantalla en las páginas clave.
 
-- [ ] Auditar las páginas principales: Inicio, Noticias (listado y detalle), Agenda, Directorio, Ficha, Repositorio, Anuncios, ¿Qué es?, Instagram, Buscar, 404.
-- [ ] Corregir hallazgos: jerarquía de encabezados, textos alternativos, contraste (acento #0066cc sobre fondos), foco visible, `lang`, nombres accesibles de controles (los `Select` de Starwind ya usan `aria-labelledby`), dimensiones de imagen para no desplazar el layout.
-- [ ] **Verificación:** Lighthouse ≥ 90 en las cuatro categorías en las páginas principales; recorrido completo por teclado sin trampas de foco; `npx astro check` 0/0; `npm test` verde.
+- [x] Auditar las páginas principales: Inicio, Noticias (listado y detalle), Agenda, Directorio, Ficha, Repositorio, Anuncios, ¿Qué es?, Instagram, Buscar, 404.
+- [x] Corregir hallazgos: jerarquía de encabezados, textos alternativos, contraste (acento #0066cc sobre fondos), foco visible, `lang`, nombres accesibles de controles (los `Select` de Starwind ya usan `aria-labelledby`), dimensiones de imagen para no desplazar el layout.
+- [x] **Verificación:** Lighthouse ≥ 90 en las cuatro categorías en las páginas principales; recorrido completo por teclado sin trampas de foco; `npx astro check` 0/0; `npm test` verde. _Evidencia en `app/web/auditoria/` (README + `resumen-lighthouse.csv`)._
 
 ### Tarea A7 (al final de la Fase A): limpiar contenido de ejemplo
 
