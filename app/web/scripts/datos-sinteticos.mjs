@@ -243,7 +243,8 @@ function generar() {
     const conImagen = en.datatype.boolean({ probability: 0.5 });
     escribir('instagram', id, {
       titulo: IG_TITULOS[i % IG_TITULOS.length],
-      enlace: `https://www.instagram.com/p/${en.string.alphanumeric({ length: 11 })}/`,
+      // La primera es una publicación real (para ver el embed funcionando); el resto, códigos inventados.
+      enlace: i === 0 ? 'https://www.instagram.com/p/DeWtz6WDfGR/' : `https://www.instagram.com/p/${en.string.alphanumeric({ length: 11 })}/`,
       fecha: fechaSola(dias(-en.number.int({ min: 2, max: 200 }))),
       publicado: true,
       imagen: conImagen ? `@/assets/media/${demo}` : undefined,
