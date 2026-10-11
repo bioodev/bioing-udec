@@ -1,0 +1,133 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
+import { Input } from '@/components/starwind/input';
+import { Label } from '@/components/starwind/label';
+import { anunciosVencidos, anunciosVigentes } from '@/lib/contenido';
+import { normalizar } from '@/lib/reglas';
+import { TIPOS_ANUNCIO } from '@/lib/anuncios';
+import { TODOS } from '@/lib/filtro-anuncios';
+
+const vigentes = await anunciosVigentes();
+const vencidos = await anunciosVencidos();
+
+const secciones = [
+  { id: 'vigentes', titulo: 'Oportunidades vigentes', items: vigentes, vacio: 'No hay oportunidades vigentes por ahora.', vencido: false },
+  { id: 'archivo', titulo: 'Archivo', items: vencidos, vacio: 'Aún no hay anuncios en el archivo.', vencido: true },
+];
+
+// Tipos presentes en el listado, en el orden del esquema (para los botones de filtro).
+const presentes = new Set([...vigentes, ...vencidos].map((a) => a.data.tipo));
+const tipos = (Object.keys(TIPOS_ANUNCIO) as (keyof typeof TIPOS_ANUNCIO)[]).filter((t) => presentes.has(t));
+
+const total = vigentes.length + vencidos.length;
+
+// El buscador incluye el nombre del Oferente; si su entrada no existe, queda vacío.
+const nombreOferente = async (a: (typeof vigentes)[number]) => {
+  const o = a.data.oferente;
+  const entrada = await (o.tipo === 'persona' ? getEntry(o.persona) : getEntry(o.organizacion));
+  return entrada?.data.nombre ?? '';
+};
+const textos = new Map(await Promise.all([...vigentes, ...vencidos].map(async (a) => [a.id, normalizar(`${a.data.titulo} ${await nombreOferente(a)}`)] as const)));
+---
+<Base titulo="Anuncios" descripcion="Oportunidades para la comunidad de Bioingeniería UdeC: trabajo, prácticas, pasantías y convocatorias.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-semibold tracking-tight">Anuncios</h1>
+    <p class="mt-2 text-muted-foreground">Oportunidades para la comunidad de Bioingeniería UdeC.</p>
+    <p class="mt-2 text-muted-foreground">¿Tienes una oportunidad para la comunidad? Escríbele a la persona encargada de comunicaciones.</p>
+
+    <form id="filtros" class="mt-8 max-w-md" role="search" onsubmit="return false">
+      <div class="grid gap-2">
+        <Label for="texto">Buscar</Label>
+        <Input id="texto" name="texto" type="search" placeholder="Título u Oferente" autocomplete="off" />
+      </div>
+    </form>
+
+    <div class="mt-4 flex flex-wrap gap-2" role="group" aria-label="Filtrar por tipo de oportunidad">
+      <button type="button" data-tipo={TODOS} aria-pressed="true" class="chip-tipo">Todos</button>
+      {tipos.map((t) => <button type="button" data-tipo={t} aria-pressed="false" class="chip-tipo">{TIPOS_ANUNCIO[t]}</button>)}
+    </div>
+
+    <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{total === 1 ? '1 anuncio' : `${total} anuncios`}</p>
+
+    {secciones.map((s) => (
+      <section data-seccion id={s.id} class="mt-10" aria-labelledby={`${s.id}-titulo`}>
+        <h2 id={`${s.id}-titulo`} class="text-2xl font-semibold tracking-tight">{s.titulo}</h2>
+        <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {s.items.map((a) => (
+            <li data-texto={textos.get(a.id)} data-tipo={a.data.tipo}>
+              <TarjetaAnuncio anuncio={a} vencido={s.vencido} />
+            </li>
+          ))}
+        </ul>
+        <p data-vacio class="mt-6 hidden text-muted-foreground">{s.vacio}</p>
+      </section>
+    ))}
+
+    <p id="sin-resultados" class="mt-10 hidden text-center text-muted-foreground">No hay anuncios que coincidan con los filtros.</p>
+  </section>
+</Base>
+
+<style>
+  .chip-tipo {
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    padding: 0.25rem 0.875rem;
+    font-size: 0.875rem;
+  }
+  .chip-tipo:hover { background: var(--muted); }
+  .chip-tipo[aria-pressed='true'] { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+  .chip-tipo:focus-visible { outline: 2px solid var(--outline); outline-offset: 2px; }
+</style>
+
+<script>
+  import { coincideAnuncio, TODOS } from '@/lib/filtro-anuncios';
+
+  const form = document.querySelector<HTMLFormElement>('#filtros')!;
+  const texto = document.querySelector<HTMLInputElement>('#texto')!;
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.chip-tipo')];
+  const items = [...document.querySelectorAll<HTMLLIElement>('[data-seccion] li')];
+  const secciones = [...document.querySelectorAll<HTMLElement>('[data-seccion]')];
+  const contador = document.querySelector('#contador')!;
+  const sinResultados = document.querySelector('#sin-resultados')!;
+  let tipo = TODOS;
+
+  function aplicar() {
+    const f = { texto: texto.value, tipo };
+    let visibles = 0;
+    for (const li of items) {
+      const coincide = coincideAnuncio({ texto: li.dataset.texto ?? '', tipo: li.dataset.tipo ?? '' }, f);
+      li.hidden = !coincide;
+      if (coincide) visibles++;
+    }
+    for (const s of secciones) {
+      const lis = [...s.querySelectorAll<HTMLLIElement>('li')];
+      const vacio = s.querySelector<HTMLElement>('[data-vacio]')!;
+      if (lis.length > 0) s.hidden = lis.every((li) => li.hidden);
+      vacio.classList.toggle('hidden', lis.length > 0);
+    }
+
+    contador.textContent = visibles === 1 ? '1 anuncio' : `${visibles} anuncios`;
+    // "Sin filtros" solo cuando hay anuncios pero ninguno coincide; sin anuncios, lo dice cada sección.
+    sinResultados.classList.toggle('hidden', !(items.length > 0 && visibles === 0));
+    for (const c of chips) c.setAttribute('aria-pressed', String(c.dataset.tipo === tipo));
+
+    // Los filtros quedan en la URL para compartir el listado filtrado.
+    const url = new URL(location.href);
+    for (const [k, v] of Object.entries({ q: texto.value, tipo })) {
+      if (v && v !== TODOS) url.searchParams.set(k, v); else url.searchParams.delete(k);
+    }
+    history.replaceState(null, '', url);
+  }
+
+  // Estado inicial desde la URL (p. ej. /anuncios?tipo=practica).
+  const params = new URLSearchParams(location.search);
+  texto.value = params.get('q') ?? '';
+  if (params.get('tipo') && chips.some((c) => c.dataset.tipo === params.get('tipo'))) tipo = params.get('tipo')!;
+
+  for (const c of chips) c.addEventListener('click', () => { tipo = c.dataset.tipo ?? TODOS; aplicar(); });
+  form.addEventListener('input', () => aplicar());
+  form.addEventListener('change', () => aplicar());
+  aplicar();
+</script>

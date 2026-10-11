@@ -6,7 +6,7 @@ export const MENU = [
   { etiqueta: 'Agenda', href: '/agenda', disponible: true },
   { etiqueta: 'Instagram', href: '/instagram', disponible: false },
   { etiqueta: 'Directorio', href: '/directorio', disponible: true },
-  { etiqueta: 'Anuncios', href: '/anuncios', disponible: false },
+  { etiqueta: 'Anuncios', href: '/anuncios', disponible: true },
   { etiqueta: 'Repositorio', href: '/repositorio', disponible: false },
 ];
 
