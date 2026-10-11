@@ -112,6 +112,12 @@ export async function anunciosVigentes(ahora = new Date()) {
   return anuncios.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
 }
 
+/** Anuncios visibles que ya vencieron (archivo), más recientes primero. */
+export async function anunciosVencidos(ahora = new Date()) {
+  const anuncios = (await anunciosVisibles(ahora)).filter((a) => !anuncioVigente(a.data, ahora));
+  return anuncios.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+}
+
 /** Personas con Perfil de egresado autorizado y Ficha activa. */
 export async function egresadosDelDirectorio() {
   const personas = await getCollection(

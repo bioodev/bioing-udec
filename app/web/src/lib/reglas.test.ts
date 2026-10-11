@@ -44,8 +44,12 @@ describe('estaVigente', () => {
 });
 
 describe('anuncioVigente', () => {
-  const limite = { fecha_limite: new Date('2026-10-15') };
-  test('sin fecha límite siempre está vigente', () => expect(anuncioVigente({}, new Date('2030-01-01T00:00:00Z'))).toBe(true));
+  const limite = { fecha: new Date('2026-01-01'), fecha_limite: new Date('2026-10-15') };
+  const sinLimite = { fecha: new Date('2026-01-01') };
+  test('sin fecha límite vence a los 60 días de publicado', () => {
+    expect(anuncioVigente(sinLimite, new Date('2026-03-02T12:00:00Z'))).toBe(true); // día 60
+    expect(anuncioVigente(sinLimite, new Date('2026-03-03T12:00:00Z'))).toBe(false); // día 61
+  });
   test('antes de la fecha límite', () => expect(anuncioVigente(limite, new Date('2026-10-10T12:00:00Z'))).toBe(true));
   test('vence hoy: sigue vigente a las 23:00 de Chile', () => {
     // 2026-10-15 23:00 en Chile (UTC-3) = 2026-10-16 02:00 UTC

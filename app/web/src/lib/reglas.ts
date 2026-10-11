@@ -15,9 +15,13 @@ export function estaVigente(v: { inicio: Date; fin: Date }, ahora: Date): boolea
   return v.inicio <= ahora && ahora <= v.fin;
 }
 
-/** Vigente hasta el final del día de fecha_limite en Chile. Sin fecha límite, siempre vigente. */
-export function anuncioVigente(a: { fecha_limite?: Date }, ahora: Date): boolean {
-  return !a.fecha_limite || hoyEnChile(ahora) <= fechaSola(a.fecha_limite);
+/** Días que dura un Anuncio sin fecha límite (preguntas-reunion 4.1). */
+export const DIAS_SIN_LIMITE = 60;
+
+/** Vigente hasta el final del día límite en Chile. Sin fecha límite, vence DIAS_SIN_LIMITE días después de publicado. */
+export function anuncioVigente(a: { fecha: Date; fecha_limite?: Date }, ahora: Date): boolean {
+  const limite = a.fecha_limite ?? new Date(a.fecha.valueOf() + DIAS_SIN_LIMITE * 86_400_000);
+  return hoyEnChile(ahora) <= fechaSola(limite);
 }
 
 /** Próxima (o en curso) si todavía no termina; sin fin, se usa el inicio. */
