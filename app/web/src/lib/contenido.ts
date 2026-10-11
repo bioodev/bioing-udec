@@ -1,6 +1,6 @@
 // Acceso al contenido. Las páginas consultan por aquí, no con getCollection directo,
 // para que ningún Borrador (publicado: false) llegue al sitio por olvido.
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './reglas';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners';
@@ -131,4 +131,11 @@ export async function egresadosDelDirectorio() {
     ({ data }) => data.ficha_activa && data.perfil_egresado?.autorizado === true,
   );
   return personas.sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+}
+
+/** Página institucional de archivo único (colección `paginas`). */
+export async function pagina(id: 'bioingenieria') {
+  const entrada = await getEntry('paginas', id);
+  if (!entrada) throw new Error(`Falta src/content/paginas/${id}.md`);
+  return entrada;
 }
