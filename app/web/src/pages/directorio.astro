@@ -47,7 +47,7 @@ const jsonLdPagina = listaElementos(
         <Label for="texto">Nombre</Label>
         <Input id="texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
       </div>
-      <div class="grid gap-2">
+      <div class="grid gap-2 [&>*]:min-w-0">
         <Label id="etiqueta-generacion" for="generacion-input">Generación</Label>
         <Combobox id="generacion" name="generacion" defaultValue={TODAS}>
           <ComboboxInput id="generacion-input" placeholder="Todas" showClear />
@@ -58,7 +58,7 @@ const jsonLdPagina = listaElementos(
           </ComboboxContent>
         </Combobox>
       </div>
-      <div class="grid gap-2">
+      <div class="grid gap-2 [&>*]:min-w-0">
         <Label id="etiqueta-area" for="area-input">Área</Label>
         <Combobox id="area" name="area" defaultValue={TODAS}>
           <ComboboxInput id="area-input" placeholder="Todas" showClear />
@@ -69,7 +69,7 @@ const jsonLdPagina = listaElementos(
           </ComboboxContent>
         </Combobox>
       </div>
-      <div class="grid gap-2">
+      <div class="grid gap-2 [&>*]:min-w-0">
         <Label id="etiqueta-organizacion" for="organizacion-input">Organización</Label>
         <Combobox id="organizacion" name="organizacion" defaultValue={TODAS}>
           <ComboboxInput id="organizacion-input" placeholder="Todas" showClear />

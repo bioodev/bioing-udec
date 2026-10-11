@@ -68,11 +68,11 @@ const jsonLdPagina = [
 ---
 <Base titulo={actividad.data.titulo} descripcion={`${TIPOS_ACTIVIDAD[actividad.data.tipo]} · ${cuando}`} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
-    <p class="flex flex-wrap items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       <Badge variant="outline">{TIPOS_ACTIVIDAD[actividad.data.tipo]}</Badge>
       <Badge variant="default">{MODALIDADES[actividad.data.modalidad]}</Badge>
       {!esProxima && <Badge variant="secondary">Realizada</Badge>}
-    </p>
+    </div>
     <h1 class="mt-3 text-4xl font-semibold tracking-tight">{actividad.data.titulo}</h1>
 
     <dl class="mt-6 grid gap-2 text-sm">

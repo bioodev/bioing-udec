@@ -81,7 +81,9 @@ export function iniciarAnimaciones(): void {
             gsap.to(elemento, { opacity: 1, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
           }
         }
-      }, { rootMargin: '0px 0px -15% 0px', threshold: 0.05 });
+      // threshold 0: basta con que asome. Con un umbral proporcional, una grilla alta (p. ej. 30
+      // documentos del Repositorio) nunca llegaba al 5 % visible y quedaba oculta hasta hacer scroll.
+      }, { rootMargin: '0px 0px -15% 0px', threshold: 0 });
 
       document.querySelectorAll('[data-animar="grilla"], [data-animar="fade-up"]').forEach((el) => observador!.observe(el));
     }, document.body);

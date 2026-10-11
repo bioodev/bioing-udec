@@ -43,7 +43,7 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
         <Label for="texto">Buscar</Label>
         <Input id="texto" name="texto" type="search" placeholder="Título o bajada" autocomplete="off" />
       </div>
-      <div class="grid gap-2">
+      <div class="grid gap-2 [&>*]:min-w-0">
         <Label for="persona-input">Persona mencionada</Label>
         <Combobox id="persona" name="persona">
           <ComboboxInput id="persona-input" placeholder="Buscar persona" showClear />
@@ -53,7 +53,7 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
           </ComboboxContent>
         </Combobox>
       </div>
-      <div class="grid gap-2">
+      <div class="grid gap-2 [&>*]:min-w-0">
         <Label id="etiqueta-tema" for="tema-input">Categoría</Label>
         <Combobox id="tema" name="tema" defaultValue={TODAS}>
           <ComboboxInput id="tema-input" placeholder="Todas" showClear />
@@ -64,7 +64,7 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
           </ComboboxContent>
         </Combobox>
       </div>
-      <div class="grid gap-2">
+      <div class="grid gap-2 [&>*]:min-w-0">
         <Label for="etiqueta-input">Tag</Label>
         <Combobox id="etiqueta" name="etiqueta">
           <ComboboxInput id="etiqueta-input" placeholder="Filtrar por etiqueta" showClear />

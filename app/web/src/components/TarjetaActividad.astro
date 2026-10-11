@@ -52,10 +52,10 @@ const lugar = actividad.data.lugar ?? MODALIDADES[actividad.data.modalidad];
     ? <Image src={actividad.data.imagen} alt="" class="aspect-video w-full object-cover" widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
     : <div class="aspect-video w-full bg-muted" aria-hidden="true"></div>}
   <div class="flex flex-1 flex-col gap-2 p-5">
-    <p class="flex flex-wrap items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       <Badge variant="default">{TIPOS_ACTIVIDAD[actividad.data.tipo]}</Badge>
       <span class="text-xs text-muted-foreground">{MODALIDADES[actividad.data.modalidad]}</span>
-    </p>
+    </div>
     <h3 class="text-lg font-semibold leading-snug">
       {/* Enlace principal que extiende su área a toda la tarjeta (imagen incluida). */}
       <a href={`/agenda/${actividad.id}`} class="group-hover:text-primary after:absolute after:inset-0 after:content-['']">{actividad.data.titulo}</a>

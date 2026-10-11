@@ -182,3 +182,8 @@
     outline-offset: 2px;
   }
 }
+
+/* Diálogos modales (p. ej. VideoModal): la página de fondo no se desplaza mientras están abiertos. */
+html:has(dialog[open]:modal) {
+  overflow: hidden;
+}

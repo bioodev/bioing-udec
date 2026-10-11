@@ -49,7 +49,7 @@ const textoDe = (d: (typeof documentos)[number]) =>
               {tipos.map((t) => <NativeSelectOption value={t}>{TIPOS_DOCUMENTO[t]}</NativeSelectOption>)}
             </NativeSelect>
           </div>
-          <div class="grid gap-2">
+          <div class="grid gap-2 [&>*]:min-w-0">
             <Label id="etiqueta-tema" for="tema-input">Tema</Label>
             <Combobox id="tema" name="tema" defaultValue={TODOS}>
               <ComboboxInput id="tema-input" placeholder="Todos" showClear />

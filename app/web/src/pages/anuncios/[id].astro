@@ -51,10 +51,10 @@ const jsonLdPagina = [
 ---
 <Base titulo={anuncio.data.titulo} descripcion={`${TIPOS_ANUNCIO[anuncio.data.tipo]} · ${anuncio.data.titulo}`} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
-    <p class="flex flex-wrap items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       <Badge variant="outline">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Badge>
       {!vigente && <Badge variant="secondary">Vencido</Badge>}
-    </p>
+    </div>
     <h1 class="mt-3 text-4xl font-semibold tracking-tight">{anuncio.data.titulo}</h1>
 
     <dl class="mt-6 grid gap-2 text-sm">

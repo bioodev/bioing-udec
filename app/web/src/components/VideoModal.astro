@@ -12,7 +12,7 @@ const { id, titulo } = Astro.props;
       <span class="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-primary-foreground"><Play class="size-5" aria-hidden="true" />Ver video</span>
     </span>
   </button>
-  <dialog aria-labelledby={`video-${id}-titulo`} class="w-[min(64rem,calc(100vw-2rem))] rounded-lg bg-black p-0 backdrop:bg-black/80">
+  <dialog aria-labelledby={`video-${id}-titulo`} class="m-auto w-[min(64rem,calc(100vw-2rem))] rounded-lg bg-black p-0 backdrop:bg-black/80">
     <div class="flex items-center justify-between px-4 py-2 text-white">
       <h2 id={`video-${id}-titulo`} class="text-sm">{titulo}</h2>
       <button type="button" data-cerrar aria-label="Cerrar video" class="p-1"><X class="size-5" aria-hidden="true" /></button>
