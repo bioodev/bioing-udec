@@ -36,6 +36,9 @@ const varios = banners.length > 1;
           sizes="100vw"
           priority={i === 0}
         />
+        <!-- Capa halftone CMYK por slide: puntos finos sobre papel claro, enmascarada por
+             la propia foto (máscara de luminancia) → look "impresión CMYK" del demo. -->
+        <div data-halftone class="hero-halftone absolute inset-0 -z-10" aria-hidden="true"></div>
         <div class="mx-auto flex min-h-[32rem] max-w-6xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[36rem]">
           <h1 data-animar="hero" class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">{banner.data.titulo}</h1>
           {banner.data.texto && <p data-animar="hero" class="mx-auto mt-4 max-w-2xl text-lg opacity-90">{banner.data.texto}</p>}
@@ -53,13 +56,9 @@ const varios = banners.length > 1;
     ))}
   </div>
 
-  <!-- Velo oscuro plano: mantiene el contraste del texto sobre la foto (la imagen se ve,
-       pero el blanco del hero sigue legible). Va DEBAJO de la textura halftone. -->
-  <div class="absolute inset-0 -z-10 bg-foreground/35" aria-hidden="true"></div>
-  <!-- Textura halftone cálida (CSS, puntos estilo impresión): sustituye al shader WebGL
-       de Paper Shaders, que al compilar bloqueaba el hilo principal y rompía Lighthouse
-       (TBT). Mismo aire de impresión, coste cero. -->
-  <div class="hero-halftone absolute inset-0 -z-10" aria-hidden="true"></div>
+  <!-- Velo oscuro sutil: mantiene el contraste del texto blanco sobre el hero
+       (papel claro + puntos), sin tapar el look impreso. -->
+  <div class="absolute inset-0 -z-10 bg-foreground/30" aria-hidden="true"></div>
 
   {varios && (
     <>
@@ -119,6 +118,29 @@ const varios = banners.length > 1;
     let actual = 0;
     let temporizador: number | undefined;
 
+    // Halftone CMYK: cada slide enmascara su capa de puntos con la propia foto
+    // (máscara de luminancia) → la foto se ve "impresa en puntos" como el demo.
+    const halftones = [...root.querySelectorAll<HTMLElement>('[data-halftone]')];
+    function aplicarHalftone(i: number) {
+      const img = slides[i]?.querySelector<HTMLImageElement>('img');
+      const capa = halftones[i];
+      if (!img || !capa) return;
+      // currentSrc puede estar vacío en imágenes lazy: se usa el src base como fallback
+      // (misma foto, tamaño por defecto) y 'load' la mejora con la variante elegida.
+      const url = img.currentSrc || img.getAttribute('src') || '';
+      if (!url) return;
+      const mascara = `url("${url}")`;
+      capa.style.webkitMaskImage = mascara;
+      capa.style.maskImage = mascara;
+      capa.style.webkitMaskMode = 'luminance';
+      capa.style.maskMode = 'luminance';
+      capa.style.webkitMaskSize = 'cover';
+      capa.style.maskSize = 'cover';
+    }
+    slides.forEach((_, i) => aplicarHalftone(i));
+    // Las imágenes lazy pueden cargar después: re-aplicar máscaras cuando terminen.
+    window.addEventListener('load', () => slides.forEach((_, i) => aplicarHalftone(i)));
+
     function mostrar(i: number) {
       if (slides.length === 0) return;
       actual = (i + slides.length) % slides.length;
@@ -173,17 +195,19 @@ const varios = banners.length > 1;
   .hero-imagen {
     filter: sepia(0.22) saturate(1.06) brightness(0.95);
   }
-  /* Textura halftone de puntos (dos tramas desfasadas, tinta magenta/amarilla cálidas).
-     Va por encima del velo oscuro y debajo del texto; overlay deja ver los puntos
-     sobre la foto sin quemar el contraste del título. */
+  /* Halftone CMYK estilo impresión (referencia shaders.paper.design/halftone-cmyk):
+     papel claro #fbfaf4 + puntos finos cian/magenta/amarillo/negro (trama de 6px,
+     "size≈0.2, type ink"). Se enmascara por la foto con luminancia (JS la aplica),
+     así la foto aparece "impresa en puntos" sobre el papel. Coste cero (CSS puro). */
   .hero-halftone {
+    background-color: #fbfaf4;
     background-image:
-      radial-gradient(circle, rgb(235 120 170 / 0.6) 1.1px, transparent 1.7px),
-      radial-gradient(circle, rgb(255 200 80 / 0.5) 1.1px, transparent 1.7px);
-    background-size: 10px 10px, 10px 10px;
-    background-position: 0 0, 5px 5px;
-    mix-blend-mode: overlay;
-    opacity: 0.55;
+      radial-gradient(circle, #00b3ff 0.55px, transparent 1.05px),
+      radial-gradient(circle, #fc4f9d 0.55px, transparent 1.05px),
+      radial-gradient(circle, #ffd900 0.55px, transparent 1.05px),
+      radial-gradient(circle, #231f20 0.55px, transparent 1.05px);
+    background-size: 5px 5px, 5px 5px, 5px 5px, 5px 5px;
+    background-position: 0 0, 2.5px 0, 0 2.5px, 2.5px 2.5px;
     pointer-events: none;
   }
 </style>
