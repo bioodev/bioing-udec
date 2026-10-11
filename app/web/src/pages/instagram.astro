@@ -1,0 +1,26 @@
+---
+import Base from '@/layouts/Base.astro';
+import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
+import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
+import { publicacionesInstagram } from '@/lib/contenido';
+import { URL_INSTAGRAM } from '@/lib/navegacion';
+
+const publicaciones = await publicacionesInstagram();
+---
+<Base titulo="Instagram" descripcion="Publicaciones seleccionadas de la cuenta de Bioingeniería UdeC en Instagram.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-4xl font-semibold tracking-tight">Instagram</h1>
+    <p class="mt-2 text-muted-foreground">Publicaciones seleccionadas de la cuenta de Bioingeniería UdeC.</p>
+    <p class="mt-2">
+      <a href={URL_INSTAGRAM} target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-primary hover:underline">Seguir en Instagram <ArrowSquareOut class="size-4" aria-hidden="true" /></a>
+    </p>
+
+    {publicaciones.length > 0 ? (
+      <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {publicaciones.map((p) => <PublicacionInstagram publicacion={p} />)}
+      </div>
+    ) : (
+      <p class="mt-8 text-muted-foreground">Aún no hay publicaciones seleccionadas.</p>
+    )}
+  </section>
+</Base>

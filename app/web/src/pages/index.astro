@@ -4,11 +4,12 @@ import Banner from '@/components/Banner.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
+import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { anunciosVigentes, bannerVigente, noticiasRecientes, proximasActividades } from '@/lib/contenido';
+import { anunciosVigentes, bannerVigente, noticiasRecientes, proximasActividades, publicacionesInstagram } from '@/lib/contenido';
 
-const [banner, noticias, actividades, anuncios] = await Promise.all([
-  bannerVigente(), noticiasRecientes(3), proximasActividades(), anunciosVigentes(),
+const [banner, noticias, actividades, anuncios, pubInstagram] = await Promise.all([
+  bannerVigente(), noticiasRecientes(3), proximasActividades(), anunciosVigentes(), publicacionesInstagram(3),
 ]);
 ---
 <Base titulo="BIOING+">
@@ -39,6 +40,18 @@ const [banner, noticias, actividades, anuncios] = await Promise.all([
     <section class="mx-auto max-w-6xl px-4 py-16">
       <h2 class="text-3xl font-semibold tracking-tight">Anuncios</h2>
       <div class="mt-8 grid gap-6 md:grid-cols-3">{anuncios.slice(0, 3).map((a) => <TarjetaAnuncio anuncio={a} />)}</div>
+    </section>
+  )}
+
+  {pubInstagram.length > 0 && (
+    <section class="bg-muted">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <h2 class="text-3xl font-semibold tracking-tight">En Instagram</h2>
+          <a href="/instagram" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver más <ArrowRight class="size-4" aria-hidden="true" /></a>
+        </div>
+        <div class="mt-8 grid gap-6 md:grid-cols-3">{pubInstagram.map((p) => <PublicacionInstagram publicacion={p} />)}</div>
+      </div>
     </section>
   )}
 

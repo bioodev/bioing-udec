@@ -3,6 +3,7 @@ import { getEntries, getEntry, render, type CollectionEntry } from 'astro:conten
 import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
+import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import { formatoFecha, formatoFechaHora, noticiasVisibles } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
@@ -22,6 +23,7 @@ const organizaciones = existentes(await getEntries(noticia.data.organizaciones_m
 const temas = existentes(await getEntries(noticia.data.temas ?? []));
 const actividad = noticia.data.actividad ? await getEntry(noticia.data.actividad) : undefined;
 const cobertura = actividad?.data.publicado ? actividad : undefined;
+const ig = noticia.data.instagram && (await getEntry(noticia.data.instagram));
 ---
 <Base titulo={noticia.data.titulo} descripcion={noticia.data.bajada}>
   <article class="mx-auto max-w-3xl px-4 py-12">
@@ -35,6 +37,13 @@ const cobertura = actividad?.data.publicado ? actividad : undefined;
     {noticia.data.bajada && <p class="mt-4 text-xl text-muted-foreground">{noticia.data.bajada}</p>}
     {noticia.data.imagen && <Image src={noticia.data.imagen} alt="" class="mt-8 w-full rounded-lg" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
     <div class="prose mt-8 max-w-none"><Content /></div>
+
+    {ig?.data.publicado && (
+      <section class="mt-10">
+        <h2 class="text-xl font-semibold tracking-tight">En Instagram</h2>
+        <div class="mt-4 max-w-md"><PublicacionInstagram publicacion={ig} /></div>
+      </section>
+    )}
 
     {cobertura && (
       <aside class="mt-10 rounded-lg bg-muted p-5">
