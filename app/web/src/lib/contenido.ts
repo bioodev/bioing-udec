@@ -118,6 +118,12 @@ export async function anunciosVencidos(ahora = new Date()) {
   return anuncios.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
 }
 
+/** Documentos publicados del Repositorio: más recientes primero y, dentro del año, por título. */
+export async function documentosDelRepositorio() {
+  const docs = await publicados('documentos');
+  return docs.sort((a, b) => b.data.anio - a.data.anio || a.data.titulo.localeCompare(b.data.titulo, 'es'));
+}
+
 /** Personas con Perfil de egresado autorizado y Ficha activa. */
 export async function egresadosDelDirectorio() {
   const personas = await getCollection(
