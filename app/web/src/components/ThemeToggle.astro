@@ -1,0 +1,39 @@
+---
+// Interruptor de tema claro/oscuro. El estado inicial lo aplica un script inline del
+// <head> de Base.astro (sin FOUC): preferencia guardada en localStorage ("tema") >
+// preferencia del sistema. Este botón alterna la clase .dark en <html> y la persiste.
+// Íconos Phosphor: el sol se muestra en oscuro (para ir a claro) y la luna en claro.
+import Sol from 'phosphor-astro/Sun.astro';
+import Luna from 'phosphor-astro/Moon.astro';
+---
+<button
+  type="button"
+  data-tema-toggle
+  title="Cambiar tema claro/oscuro"
+  aria-label="Cambiar a tema oscuro"
+  class="rounded-md p-2 text-muted-foreground transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-outline"
+>
+  <Sol class="size-4 hidden dark:block" aria-hidden="true" />
+  <Luna class="size-4 block dark:hidden" aria-hidden="true" />
+</button>
+
+<script>
+  const boton = document.querySelector<HTMLButtonElement>('[data-tema-toggle]');
+  const oscuro = () => document.documentElement.classList.contains('dark');
+
+  function etiqueta() {
+    boton?.setAttribute('aria-label', oscuro() ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+  }
+
+  boton?.addEventListener('click', () => {
+    const activo = document.documentElement.classList.toggle('dark', !oscuro());
+    try {
+      localStorage.setItem('tema', activo ? 'oscuro' : 'claro');
+    } catch {
+      // almacenamiento no disponible (p. ej. modo privado): solo cambia en esta sesión
+    }
+    etiqueta();
+  });
+
+  etiqueta();
+</script>

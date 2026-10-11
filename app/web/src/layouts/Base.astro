@@ -9,6 +9,7 @@ import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
 import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
 import Logo from '@/components/Logo.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
 import { MENU, URL_FCB } from '@/lib/navegacion';
 import ogPorDefecto from '@/assets/og-default.png';
 
@@ -25,6 +26,16 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      // Tema claro/oscuro ANTES del primer pintado (sin FOUC). Precedencia:
+      // preferencia guardada (localStorage "tema") > preferencia del sistema.
+      (() => {
+        let guardado = null;
+        try { guardado = localStorage.getItem('tema'); } catch { /* privado */ }
+        const oscuro = guardado === 'oscuro' || (guardado !== 'claro' && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', oscuro);
+      })();
+    </script>
     <meta name="description" content={descripcion} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <ClientRouter />
@@ -69,6 +80,7 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
             </a>
           ))}
           <a href="/buscar" aria-label="Buscar en el sitio" title="Buscar" class="text-muted-foreground hover:text-primary"><MagnifyingGlass class="size-4" aria-hidden="true" /></a>
+          <ThemeToggle />
         </nav>
         <a href={URL_FCB} class="ml-auto hidden lg:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">FCB UdeC <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
         <div class="ml-auto lg:hidden">
@@ -86,6 +98,7 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
                 <SheetClose asChild>
                   <a href="/buscar" class="inline-flex items-center gap-2 rounded-md px-2 py-2 hover:bg-muted"><MagnifyingGlass class="size-4" aria-hidden="true" />Buscar</a>
                 </SheetClose>
+                <ThemeToggle />
                 <a href={URL_FCB} class="mt-4 inline-flex items-center gap-1 px-2 py-2 text-muted-foreground">Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
               </nav>
             </SheetContent>
