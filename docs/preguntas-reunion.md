@@ -57,7 +57,23 @@ Ayuda a dimensionar el buscador y la portada.
 
 **2.3 ¿Se replican noticias de la web de la FCB?**
 ¿Se copian completas o se enlazan?
-_Propuesta:_ Se enlazan a la noticia original.
+_Propuesta:_ Se enlazan a la noticia original. Si se confirma, se agrega a la Noticia un campo opcional
+"Fuente" (`fuente_url`) que se muestra como "Publicada originalmente en…".
+
+**2.4 ¿Se adjuntan documentos (Drive o PDF) a las noticias?**
+¿Basta con un enlace dentro del texto o hace falta un bloque propio con ícono y tamaño?
+_Propuesta:_ Por ahora, enlaces dentro del texto. El bloque propio se agrega cuando se defina el campo
+"documento" (Drive o R2) del Repositorio, para usar el mismo en los dos lugares.
+
+**2.5 ¿Las Organizaciones mencionadas tienen ficha propia?**
+Hoy solo las Personas tienen Ficha. En la noticia, las Organizaciones aparecen como texto.
+_Propuesta:_ Mantenerlas como texto hasta que haya contenido suficiente para una ficha (descripción, sitio
+web, egresados/as que trabajan ahí).
+
+**2.6 ¿Se quieren botones para compartir las noticias?**
+_Propuesta:_ Un solo botón "Compartir", que usa el menú del teléfono (WhatsApp, Instagram, correo) y, en el
+computador, copia el enlace. Sin botones de redes sociales de terceros, que rastrean a quien visita y
+cargan scripts externos.
 
 ---
 

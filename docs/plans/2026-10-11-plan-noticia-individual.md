@@ -113,4 +113,4 @@ el contenido existente sigue siendo válido.
 - **Fase 1:** un subagente (Claude Haiku en Herdr), en el worktree `noticia-fase1`, con commits por tarea. El
   orquestador revisa el diff, verifica en el navegador sobre la vista previa e integra en `develop`.
 - **Fase 2:** después de validar los campos con la carrera.
-- **Fase 3:** queda en `preguntas-reunion.md`.
+- **Fase 3:** preguntas 2.3 a 2.6 de `preguntas-reunion.md` (agregadas el 2026-10-11).
