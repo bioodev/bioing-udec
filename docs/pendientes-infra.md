@@ -36,6 +36,17 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
   - Es experimental: su API puede cambiar; revisar antes de la entrega.
 - [ ] Encabezados de seguridad (`_headers`), redirecciones (`_redirects`) y página 404.
 
+## SEO, datos estructurados y descubrimiento
+
+- [x] JSON-LD (Schema.org): `Organization`/`NGO` + `WebSite` en el layout y `NewsArticle`, `Event`, `JobPosting`, `Person`, `DigitalDocument`, `BreadcrumbList` y `ItemList` (Directorio) por página. Constructores puros en `src/lib/schema.ts`; se verifican con `npm run verificar:jsonld` sobre `dist/`. _Hecho 2026-10-11._
+- [x] `robots.txt` generado en el build (`src/pages/robots.txt.ts` ← `src/lib/robots.ts`): `Sitemap` absoluto y política por user-agent (se permite indexar y citar; se bloquea el rastreo de entrenamiento). _Hecho 2026-10-11; la lista de bots es una decisión del equipo y se cambia en un solo lugar (`src/lib/robots.ts`)._
+- [x] `llms.txt` como índice curado de secciones (`src/pages/llms.txt.ts` ← `src/lib/llms.ts`). _Hecho 2026-10-11. No sustituye al sitemap ni al SEO: es opcional por diseño._
+- [x] Feeds RSS de Noticias (`/noticias/rss.xml`) y Agenda (`/agenda/rss.xml`), con `<link rel="alternate">` en sus listados. _Hecho 2026-10-11._
+- [ ] **`security.txt`** en `/.well-known/security.txt`: depende del correo o URL de contacto real (preguntas-reunion 6.2). No publicar un contacto inventado; se activa cuando la carrera lo defina.
+- [ ] **Validación externa de los datos estructurados**: pasar una muestra de páginas (noticia, actividad, anuncio, ficha) por el Rich Results Test de Google y el validador de Schema.org con el `SITE_URL` definitivo puesto en el build.
+- [ ] **Rendimiento con contenido real**: con el contenido sintético de prueba (`sint-*`: más banners en el hero y ~54 fichas en el Directorio) el Inicio mide ~88 y el Directorio ~84; sin él quedan 90–91, sin regresión respecto de la Fase A. Al limpiar los datos sintéticos, revalidar; si el contenido real trae muchos banners, ajustar `widths`/`sizes` del hero y de las tarjetas.
+- [ ] **WebMCP / Page Agent**: descartados por ahora — WebMCP es experimental y el sitio no tiene acciones propias (inscripciones y formularios son externos por alcance), y Page Agent agrega dependencia de proveedor, costo LLM y superficie de ataque. Si algún día se expone WebMCP, los filtros ya son funciones puras en `src/lib/*.ts`.
+
 ## Contenido y medios
 
 - [x] Activar en `config.yml` la optimización al subir (`media_libraries.all.transformations`: WebP, 2048 px, calidad 85). _Hecho 2026-10-11 (commit `33e652a`); la subida real se prueba en la Fase C._

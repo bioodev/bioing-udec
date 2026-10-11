@@ -17,8 +17,10 @@ npx lighthouse http://localhost:4820/ --only-categories=performance,accessibilit
 
 ## Hallazgos corregidos (resumen)
 
-- SEO: `robots.txt` con `Sitemap:` relativa (Lighthouse la rechaza) → el postbuild la escribe
-  absoluta usando `SITE_URL` (misma fuente que `astro.config.mjs`).
+- SEO: `robots.txt` con `Sitemap:` relativa (Lighthouse la rechaza) → primero el postbuild la escribía
+  absoluta usando `SITE_URL`; desde 2026-10-11 `robots.txt` es una ruta generada
+  (`src/pages/robots.txt.ts`) que usa `Astro.site`, y el parche del postbuild se eliminó
+  (el archivo estático `public/robots.txt` ganaba al generado).
 - SEO/A11y: CTA «Más información» repetido e inespecífico → texto accesible único por actividad
   (`sr-only` con el título).
 - A11y: enlaces a Fichas dentro de párrafos muted indistinguibles → subrayado persistente.

@@ -8,7 +8,32 @@
 
 ## Resultado (ejecutado 2026-10-11, subagentes opencode vía Herdr)
 
-_(en ejecución — actualizar al cierre)_
+**COMPLETADO e integrado en `develop`.** Tres workstreams en paralelo (ramas `faseB-jsonld`,
+`faseB-metadatos` y `faseB-feeds`, nacidas de `develop`), integrados con los merge commits `289cf02`,
+`9b8771b` y `782c7ce`.
+
+- **T1 (JSON-LD)**: `src/lib/schema.ts` + `schema.test.ts` (27 pruebas nuevas), prop `jsonLd` en
+  `Base.astro` (siempre emite `WebSite` + `Organization`), JSON-LD en las cinco fichas y en el Directorio,
+  y `scripts/verificar-jsonld.mjs` (`npm run verificar:jsonld`). **Decisión**: sin `SearchAction` — Pagefind
+  UI no lee `?q=`, así que no se declara una acción que no existe (nota en `schema.ts`).
+- **T2 (metadatos)**: `src/lib/robots.ts` (+ tests) → `src/pages/robots.txt.ts` (Sitemap absoluto; 9 bots de
+  entrenamiento bloqueados y 5 de búsqueda/citación permitidos) y `src/lib/llms.ts` → `src/pages/llms.txt.ts`.
+  Se borró `public/robots.txt` (el estático gana al generado y por eso el bug nunca se veía) y se eliminó el
+  parche `reescribirRobotsSitemap()` del postbuild, que quedaba redundante.
+- **T3 (feeds)**: `@astrojs/rss` 4.0.19, `src/lib/feeds.ts` (+ tests), `/noticias/rss.xml` y `/agenda/rss.xml`,
+  con `<link rel="alternate">` en los listados de Noticias y Agenda.
+
+Verificación en `develop`: `npm test` **123 ✓** (13 archivos), `npx astro check` **0 errores**, build
+**198 páginas** (con el contenido sintético `sint-*`; 30 sin él) + postbuild, `npm run verificar:jsonld`
+**386 bloques válidos en 198 páginas**, XML de ambos feeds válido con enlaces absolutos, `dist/robots.txt`
+con `Sitemap` absoluto, `dist/llms.txt` con enlaces absolutos y `/admin` fuera del sitemap.
+Lighthouse (mismo worktree sin contenido sintético, antes → después del merge): `/` 91 → 91 y
+`/directorio` 90 → 89, con accesibilidad, buenas prácticas y SEO en 100. En el worktree principal (con el
+contenido sintético: más banners en el hero y ~54 fichas) mide 88/84; es el contenido de prueba, no estos
+cambios (queda anotado en `docs/pendientes-infra.md`).
+
+Fuera de alcance por decisión: `security.txt` (falta el contacto real; pendiente anotado) y WebMCP /
+Page Agent (descartados por ahora).
 
 ---
 
