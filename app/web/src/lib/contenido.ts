@@ -2,6 +2,7 @@
 // para que ningún Borrador (publicado: false) llegue al sitio por olvido.
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './reglas';
+import { noticiasRelacionadas } from './relacionadas';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram';
 
@@ -105,6 +106,19 @@ export async function actividadesRealizadas(ahora = new Date()) {
 /** Noticias publicadas que cubren una Actividad (campo `actividad` de la Noticia). */
 export async function noticiasDeActividad(id: string) {
   return (await noticiasVisibles()).filter((n) => n.data.actividad?.id === id);
+}
+
+/** Noticias visibles parecidas a `actual` (Temas, Etiquetas y Áreas compartidas), para "Te puede interesar". */
+export async function relacionadasDe(actual: CollectionEntry<'noticias'>, cantidad = 3) {
+  const datos = (n: CollectionEntry<'noticias'>) => ({
+    id: n.id,
+    fecha: n.data.fecha,
+    temas: ids(n.data.temas),
+    etiquetas: n.data.etiquetas ?? [],
+    areas: ids(n.data.areas),
+  });
+  const candidatas = (await noticiasVisibles()).map((n) => ({ ...datos(n), entrada: n }));
+  return noticiasRelacionadas(datos(actual), candidatas, cantidad).map((c) => c.entrada);
 }
 
 export async function anunciosVigentes(ahora = new Date()) {

@@ -4,10 +4,12 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
-import { formatoFecha, formatoFechaHora, noticiasVisibles } from '@/lib/contenido';
+import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
+import { formatoFecha, formatoFechaHora, noticiasVisibles, relacionadasDe } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
+import ArrowRight from 'phosphor-astro/ArrowRight.astro';
 import { Badge } from '@/components/starwind/badge';
 
 export async function getStaticPaths() {
@@ -26,6 +28,7 @@ const actividad = noticia.data.actividad ? await getEntry(noticia.data.actividad
 const cobertura = actividad?.data.publicado ? actividad : undefined;
 const ig = noticia.data.instagram && (await getEntry(noticia.data.instagram));
 const areas = existentes(await getEntries(noticia.data.areas ?? []));
+const relacionadas = await relacionadasDe(noticia);
 
 const enlace = `/noticias/${noticia.id}`;
 const jsonLdPagina = [
@@ -89,4 +92,14 @@ const jsonLdPagina = [
       </section>
     )}
   </article>
+
+  {relacionadas.length > 0 && (
+    <section class="mx-auto max-w-6xl px-4 pb-16" aria-labelledby="te-puede-interesar">
+      <div class="flex flex-wrap items-end justify-between gap-4 border-t border-border pt-10">
+        <h2 id="te-puede-interesar" class="text-3xl font-semibold tracking-tight">Te puede interesar</h2>
+        <a href="/noticias" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las noticias <ArrowRight class="size-4" aria-hidden="true" /></a>
+      </div>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">{relacionadas.map((n) => <TarjetaNoticia noticia={n} />)}</div>
+    </section>
+  )}
 </Base>
