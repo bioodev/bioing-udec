@@ -8,3 +8,7 @@ dist/
 
 # Contenido sintético (se regenera con: cd app/web \&\& npm run datos:generar)
 app/web/src/content/**/sint-*
+
+# Originales de las imágenes demo (fuente local; las copias optimizadas van en
+# app/web/src/assets/media/demo-*.jpg)
+docs/biotech-imgs-demo/

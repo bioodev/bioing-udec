@@ -10,7 +10,7 @@ import { join } from 'node:path';
 const CONTENIDO = new URL('../src/content/', import.meta.url).pathname;
 const PREFIJO = 'sint-';
 const AVISO = 'Contenido sintético generado por scripts/datos-sinteticos.mjs.';
-const IMAGENES = ['ejemplo-azul.png', 'ejemplo-verde.png', 'ejemplo-gris.png'];
+const IMAGENES = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg', 'ejemplo-azul.png', 'ejemplo-verde.png', 'ejemplo-gris.png'];
 const COLECCIONES = ['areas', 'temas', 'organizaciones', 'personas', 'actividades', 'noticias', 'anuncios', 'documentos', 'banners'];
 
 const CANTIDAD = { organizaciones: 15, personas: 70, actividades: 24, noticias: 40, anuncios: 18, documentos: 30, banners: 7 };
