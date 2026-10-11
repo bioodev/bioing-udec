@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
 
-# Modelo de dominio: ver CONTEXT.md. Decisión de stack: docs/adr/0001-sveltia-cms-astro.md
+# Modelo de dominio: ver docs/context.md. Decisión de stack: docs/adr/0001-sveltia-cms-astro.md
 
 backend:
   name: gitea

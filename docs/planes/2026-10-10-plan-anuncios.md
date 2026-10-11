@@ -8,13 +8,13 @@
 
 **Stack:** Astro 7, Tailwind v4, Starwind UI v3, Vitest, `phosphor-astro`.
 
-**Spec:** `docs/Propuesta de arquitectura y contenidos para sitio web BIOING.md` §10 · `docs/preguntas-reunion.md` 4.1 (propuesta por defecto) · `CONTEXT.md` (Anuncio, Oferente, Contacto).
+**Spec:** `docs/propuesta-arquitectura-y-contenidos.md` §10 · `docs/preguntas-reunion.md` 4.1 (propuesta por defecto) · `docs/context.md` (Anuncio, Oferente, Contacto).
 
 ## Restricciones globales
 
 - Trabajar en la rama `demo-frontend`, en `app/web`. No hacer push. No incluir `CLAUDE.md` ni `AGENTS.md` en los commits.
-- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `CONTEXT.md`.
-- Términos de `CONTEXT.md`: Anuncio, Oferente, Contacto (nunca "oferta", "aviso", "publicador").
+- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `docs/context.md`.
+- Términos de `docs/context.md`: Anuncio, Oferente, Contacto (nunca "oferta", "aviso", "publicador").
 - Páginas consultan contenido solo vía `src/lib/contenido.ts` (nunca `getCollection` directo).
 - Fechas solas (`AAAA-MM-DD`) se muestran con `formatoFecha` (UTC).
 - Íconos solo Phosphor; `aria-hidden="true"` si son decorativos; tamaño con `size-*`.

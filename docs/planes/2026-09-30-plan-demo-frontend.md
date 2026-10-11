@@ -4,20 +4,20 @@
 
 **Goal:** Demo navegable en local del sitio BIOING+ (Base, Inicio, detalle de Noticia, Ficha de Persona, Directorio con filtros y catálogo `/componentes`) para mostrar en la reunión con el equipo BIOING+.
 
-**Architecture:** Sitio Astro 7 estático en `app/web`. Starwind UI (componentes Astro copiados por su CLI) sobre Tailwind v4, tematizado con los tokens de `docs/DESIGN.md`. Toda regla de negocio que dependa de fechas o filtros vive en módulos TypeScript puros (`src/lib/reglas.ts`, `src/lib/filtro-directorio.ts`) probados con Vitest; `src/lib/contenido.ts` los combina con `astro:content`; las páginas solo consultan `contenido.ts`.
+**Architecture:** Sitio Astro 7 estático en `app/web`. Starwind UI (componentes Astro copiados por su CLI) sobre Tailwind v4, tematizado con los tokens de `docs/design.md`. Toda regla de negocio que dependa de fechas o filtros vive en módulos TypeScript puros (`src/lib/reglas.ts`, `src/lib/filtro-directorio.ts`) probados con Vitest; `src/lib/contenido.ts` los combina con `astro:content`; las páginas solo consultan `contenido.ts`.
 
 **Tech Stack:** Astro 7.3, Tailwind CSS v4 (`@tailwindcss/vite`), Starwind UI (CLI `starwind`), Vitest, TypeScript estricto.
 
-**Spec:** `docs/superpowers/specs/2026-09-30-demo-frontend-design.md`
+**Spec:** `docs/analisis/2026-09-30-diseno-demo-frontend.md`
 
 ## Global Constraints
 
 - Todos los comandos se ejecutan desde `app/web` salvo que se indique otra cosa. Node ≥ 22.12.
 - Sin React ni otro framework de islas. El único JavaScript en el navegador es el de los componentes Starwind usados y el filtro del Directorio.
 - Las páginas leen contenido solo mediante `src/lib/contenido.ts`; nunca `getCollection` directo sobre colecciones con campo `publicado`.
-- Tema (DESIGN.md): `--primary: #0066cc`, `--primary-foreground: #ffffff`, `--background: #ffffff`, `--foreground: #1d1d1f`, `--muted: #f5f5f7`, `--border`/`--input: #e0e0e0`, `--outline: #0071e3`, `--radius: 18px`; botones en píldora; tipografía `system-ui, -apple-system, sans-serif`. Sin modo oscuro.
+- Tema (docs/design.md): `--primary: #0066cc`, `--primary-foreground: #ffffff`, `--background: #ffffff`, `--foreground: #1d1d1f`, `--muted: #f5f5f7`, `--border`/`--input: #e0e0e0`, `--outline: #0071e3`, `--radius: 18px`; botones en píldora; tipografía `system-ui, -apple-system, sans-serif`. Sin modo oscuro.
 - Logos de relleno como texto: "BIOING+" y "FCB UdeC".
-- Textos de interfaz en español. Términos de dominio según `CONTEXT.md` (Persona, Ficha, Directorio, Organización, Área, Tema, Actividad, Anuncio, Banner).
+- Textos de interfaz en español. Términos de dominio según `docs/context.md` (Persona, Ficha, Directorio, Organización, Área, Tema, Actividad, Anuncio, Banner).
 - Fechas: con hora → `formatoFechaHora` (America/Santiago); fechas solas → `formatoFecha` (UTC). "Hoy" para vigencias es la fecha del build en America/Santiago.
 - Enlace a una Ficha solo si la Persona u Organización tiene `ficha_activa`; si no, texto plano.
 - `/componentes` existe solo en `npm run dev`; `npm run build` no lo genera.
@@ -41,7 +41,7 @@ app/web/
   astro.config.mjs                   Tailwind vía @tailwindcss/vite (lo agrega starwind init)
   starwind.config.json               creado por starwind init
   vitest.config.ts                   Vitest para src/**/*.test.ts
-  src/styles/starwind.css            Tailwind + variables Starwind con tokens de DESIGN.md
+  src/styles/starwind.css            Tailwind + variables Starwind con tokens de docs/design.md
   src/lib/reglas.ts                  PURO: fechas en Chile, vigencias, normalizar texto
   src/lib/reglas.test.ts
   src/lib/filtro-directorio.ts       PURO: ¿una tarjeta coincide con los filtros?
@@ -87,7 +87,7 @@ Expected: crea `starwind.config.json` y `src/styles/starwind.css`, instala `tail
 Run: `npx starwind@latest add button card badge select input label sheet --yes`
 Expected: aparecen carpetas `src/components/starwind/{button,card,badge,select,input,label,sheet}`.
 
-- [ ] **Step 3: Aplicar los tokens de DESIGN.md**
+- [ ] **Step 3: Aplicar los tokens de docs/design.md**
 
 En `src/styles/starwind.css`, dentro del bloque `:root { … }` que creó la CLI, reemplazar los valores de estas variables (dejar las demás como están):
 
@@ -165,7 +165,7 @@ Expected: 1 test pasa; `astro check` 0 errors; build completo.
 ```bash
 rm src/lib/humo.test.ts
 git add -A
-git commit -m "Agrega Tailwind v4, Starwind UI con tokens de DESIGN.md y Vitest"
+git commit -m "Agrega Tailwind v4, Starwind UI con tokens de docs/design.md y Vitest"
 ```
 
 ---

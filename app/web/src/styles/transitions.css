@@ -1,5 +1,5 @@
 /* Transiciones entre páginas (View Transitions / ClientRouter de Astro 7).
-   Fade puro (sin movimiento vertical), acorde a docs/DESIGN.md; desactivadas con
+   Fade puro (sin movimiento vertical), acorde a docs/design.md; desactivadas con
    prefers-reduced-motion. Grupos con nombre (transition:name): "encabezado"
    (header persistente) y "contenido" (región <main>). */
 @keyframes bioing-out {

@@ -8,12 +8,12 @@
 
 **Stack:** Astro 7, Sveltia CMS, Tailwind v4, Starwind UI v3, Vitest, `phosphor-astro`.
 
-**Spec:** `docs/Propuesta de arquitectura y contenidos para sitio web BIOING.md` §5 · `docs/notas.md` ("video en modal") · `docs/propuesta-desarrollo.md` §6.3 (YouTube sin cookies, carga al hacer clic).
+**Spec:** `docs/propuesta-arquitectura-y-contenidos.md` §5 · `docs/bitacora.md` ("video en modal") · `docs/propuesta-desarrollo.md` §6.3 (YouTube sin cookies, carga al hacer clic).
 
 ## Restricciones globales
 
 - Rama `demo-frontend`, carpeta `app/web`. Sin push. No commitear `CLAUDE.md` ni `AGENTS.md`.
-- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `CONTEXT.md`, `docs/DESIGN.md` (tiles a sangre alternando claro/oscuro, un acento azul).
+- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `docs/context.md`, `docs/design.md` (tiles a sangre alternando claro/oscuro, un acento azul).
 - Cambios de modelo en `config.yml` **y** `content.config.ts`; validar `config.yml` contra el JSON Schema y cargando `/admin/`.
 - Nada de YouTube se carga antes de abrir el modal. Solo `youtube-nocookie.com`.
 - Íconos Phosphor (`Play`, `X`). Textos en español.
@@ -210,7 +210,7 @@ export async function pagina(id: 'bioingenieria') {
 }
 ```
 
-(importar `getEntry` desde `astro:content`). Estructura, siguiendo `docs/DESIGN.md`:
+(importar `getEntry` desde `astro:content`). Estructura, siguiendo `docs/design.md`:
   1. Tile claro: `<h1>` con `titulo`, bajada en `text-xl text-muted-foreground`, y — si `idYouTube(video)` no es null — `<VideoModal id titulo="Video institucional de Bioingeniería UdeC">` a ancho `max-w-4xl`.
   2. Tile `bg-muted`: cuerpo Markdown (`render(entrada)` → `<Content />` en `prose`).
   3. Tile oscuro (`bg-foreground text-background`): "Características de la carrera", grilla `md:grid-cols-2` con `titulo`/`texto`; se omite si no hay.

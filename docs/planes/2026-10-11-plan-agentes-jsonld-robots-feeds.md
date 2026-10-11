@@ -1,7 +1,7 @@
 # Preparación para agentes: datos estructurados, control de rastreo y feeds
 
 > Para opencode (coordinado vía Herdr). Sale de la revisión del sitio contra el checklist de
-> "sitio legible, verificable y operable" (Contentful / Chrome WebMCP). Base: `docs/superpowers/plans/2026-10-11-hito-4-produccion.md`
+> "sitio legible, verificable y operable" (Contentful / Chrome WebMCP). Base: `docs/planes/2026-10-11-plan-hito-4-produccion.md`
 > (Fase B, código) y `docs/pendientes-infra.md`. Todo sobre la rama **`develop`**: los workstreams
 > trabajan en worktrees con ramas `faseB-jsonld`, `faseB-metadatos` y `faseB-feeds` nacidas de `develop`;
 > al cierre se integran a `develop` y se hace push al Gitea.
@@ -40,7 +40,7 @@ Page Agent (descartados por ahora).
 ## Alcance y decisiones
 
 Lo que ya está cubierto y **no** se toca: HTTPS y `_headers` (CSP, HSTS), HTML semántico server-rendered,
-canonical + Open Graph/Twitter, `sitemap-index.xml` (`@astrojs/sitemap`), 404, Pagefind, `AGENTS.md`/`CONTEXT.md`
+canonical + Open Graph/Twitter, `sitemap-index.xml` (`@astrojs/sitemap`), 404, Pagefind, `AGENTS.md`/`docs/context.md`
 (la parte "operable por agentes" del lado edición ya existe).
 
 Lo que entra en esta tanda:
@@ -75,7 +75,7 @@ Lo que entra en esta tanda:
 ## Restricciones globales
 - Rama objetivo: `develop`. Sin push de los workstreams; solo el coordinador integra y hace push al cierre.
 - Commits en español, imperativo, uno por tarea/hallazgo. No commitear contenido `sint-*`.
-- Leer antes: `AGENTS.md` (raíz) y `app/web/AGENTS.md`, `CONTEXT.md`, `docs/DESIGN.md`.
+- Leer antes: `AGENTS.md` (raíz) y `app/web/AGENTS.md`, `docs/context.md`, `docs/design.md`.
 - TDD donde haya lógica pura (convención del repo: módulo en `src/lib/` + `*.test.ts`). La UI y las rutas
   se validan con build + inspección del `dist/`.
 - Textos en español; íconos **Phosphor**; no linters nuevos; no cambiar diseño ni dependencias salvo la de T3.

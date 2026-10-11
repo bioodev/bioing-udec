@@ -32,7 +32,7 @@ Técnicamente, todo esto quedó anotado en `AGENTS.md` (convenciones del repo) y
 
 Revisión del sitio contra el checklist de "sitio legible, verificable y operable" (Contentful / Chrome WebMCP).
 Ya estaba cubierto HTTPS + `_headers`, HTML semántico, canonical/Open Graph, sitemap, Pagefind, 404 y el lado
-"edición operable por agentes" (`AGENTS.md`/`CONTEXT.md`). Lo que se agregó:
+"edición operable por agentes" (`AGENTS.md`/`docs/context.md`). Lo que se agregó:
 
 - **JSON-LD (Schema.org)** en todo el sitio: `Organization`/`NGO` + `WebSite` en el layout (prop `jsonLd` de
   `Base.astro`) y `NewsArticle`, `Event`, `JobPosting` (solo trabajo/práctica/pasantía vigente), `Person` (solo
@@ -52,7 +52,7 @@ costo LLM, superficie de ataque). Si algún día se expone WebMCP, los filtros y
 
 Ejecución: tres workstreams en paralelo con subagentes opencode en worktrees coordinados por Herdr
 (`faseB-jsonld`, `faseB-metadatos`, `faseB-feeds`), integrados en `develop` (`289cf02`, `9b8771b`, `782c7ce`,
-docs en `5bf8dea`). Plan y resultado: `docs/superpowers/plans/2026-10-11-agentes-jsonld-robots-feeds.md`.
+docs en `5bf8dea`). Plan y resultado: `docs/planes/2026-10-11-plan-agentes-jsonld-robots-feeds.md`.
 Verificación: `npm test` 123 ✓, `astro check` 0, 386 bloques JSON-LD válidos, feeds XML válidos y Lighthouse sin
 regresión (91/89 medido sin el contenido sintético; con `sint-*` baja a 88/84 por cantidad de imágenes).
 

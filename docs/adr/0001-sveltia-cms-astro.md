@@ -1,13 +1,27 @@
-# Sveltia CMS + Astro como stack del sitio
+# 0001 · Sveltia CMS + Astro como stack del sitio
 
-BIOING+ se construye como sitio estático en Astro (`app/web`) con el contenido en archivos dentro del repositorio, editado mediante Sveltia CMS; no hay backend ni base de datos propios. Se eligió porque hay un único Encargado de comunicaciones, bajo volumen y un plazo fijo (marzo 2027), y porque el contenido queda en archivos portables: si Sveltia (pre‑1.0) se abandona, se reemplaza el editor sin migrar datos.
+- **Estado:** Accepted · 2026-09-30
+- **Decisores:** proveedor, con la contraparte de la carrera
+- **Contexto relacionado:** `../architecture.md` · `../analisis/2026-09-30-docs/analisis/2026-09-30-comparativa-emdash-sveltiacms.md`
+- **Nota:** el paso del repositorio de producción a GitHub (con el Worker de autenticación de Sveltia) está
+  previsto en `../pendientes-infra.md`; cuando ocurra, esta decisión se actualiza o se supersede.
 
-## Considered Options
+## Contexto
 
-- **EmDash**: resuelve mejor relaciones y privacidad (base de datos, roles), pero está en beta pública desde abril 2026, guarda el contenido en su propia base y ata el sitio a Cloudflare; aporta plugins y RBAC que el proyecto no necesita.
-- **Aplicación propia (`app/web` + `app/api`)**: máxima flexibilidad, pero obliga a construir y mantener admin, autenticación y API para un solo editor.
+Hay una sola persona encargada de comunicaciones, un volumen de contenido bajo y un plazo fijo (marzo de
+2027). El contenido tiene que quedar en un formato portable, el sitio no debe exigir mantener ni parchar un
+servidor, y se busca la menor superficie de ataque posible con un costo de operación cercano a cero. La
+propuesta de desarrollo lo compara en detalle con WordPress y sus alternativas (`../propuesta-desarrollo.md`
+§4–§5).
 
-## Consequences
+## Decisión
+
+BIOING+ se construye como sitio estático en Astro (`app/web`) con el contenido en archivos dentro del
+repositorio, editado mediante Sveltia CMS; no hay backend ni base de datos propios. Se eligió porque hay un
+único Encargado de comunicaciones, bajo volumen y un plazo fijo (marzo 2027), y porque el contenido queda en
+archivos portables: si Sveltia (pre‑1.0) se abandona, se reemplaza el editor sin migrar datos.
+
+## Consecuencias
 
 - Las Fichas, los cruces por Área, los buscadores y el anuario PDF se calculan en el build de Astro, no en el CMS.
 - Lo que depende de la fecha (Agenda próximas/realizadas, Anuncios vencidos, Banners vigentes) exige una reconstrucción diaria programada.
@@ -17,3 +31,8 @@ BIOING+ se construye como sitio estático en Astro (`app/web`) con el contenido 
 - Las referencias "Persona u Organización" (Oferente, Organizador) se modelan como objetos de tipo variable con un campo de relación por tipo.
 - Borrador/Publicado es un campo del contenido; no se usa el Editorial Workflow, porque impide crear entradas relacionadas desde el editor.
 - `app/api` queda sin uso por ahora.
+
+## Alternativas consideradas
+
+- **EmDash**: resuelve mejor relaciones y privacidad (base de datos, roles), pero está en beta pública desde abril 2026, guarda el contenido en su propia base y ata el sitio a Cloudflare; aporta plugins y RBAC que el proyecto no necesita.
+- **Aplicación propia (`app/web` + `app/api`)**: máxima flexibilidad, pero obliga a construir y mantener admin, autenticación y API para un solo editor.

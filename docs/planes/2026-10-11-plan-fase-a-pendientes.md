@@ -1,6 +1,6 @@
 # Fase A — Pendientes (A4 imágenes + A6 auditoría) y renombrado CLAUDE.md → AGENTS.md
 
-> Para opencode (coordinado vía Herdr). Base: `docs/superpowers/plans/2026-10-11-hito-4-produccion.md` (Fase A) y `docs/pendientes-infra.md`. Todo sobre la rama **`develop`** (la más avanzada): los workstreams trabajan en worktrees con ramas `faseA-a4` y `faseA-a6` nacidas de `develop`, y al cierre se integran a `develop` y se hace push al Gitea.
+> Para opencode (coordinado vía Herdr). Base: `docs/planes/2026-10-11-plan-hito-4-produccion.md` (Fase A) y `docs/pendientes-infra.md`. Todo sobre la rama **`develop`** (la más avanzada): los workstreams trabajan en worktrees con ramas `faseA-a4` y `faseA-a6` nacidas de `develop`, y al cierre se integran a `develop` y se hace push al Gitea.
 
 ## Resultado (ejecutado 2026-10-11, subagentes opencode vía Herdr)
 
@@ -15,7 +15,7 @@
 
 ## Restricciones globales
 - Rama objetivo: `develop`. Sin push hasta el cierre. Commits en español, imperativo, uno por tarea/hallazgo.
-- No tocar `AGENTS.md` (raíz) ni `app/web/AGENTS.md` salvo el T0 (renombrado). Leer antes: `AGENTS.md` raíz y `app/web/AGENTS.md`, `CONTEXT.md`, `docs/DESIGN.md`, `docs/pendientes-infra.md`.
+- No tocar `AGENTS.md` (raíz) ni `app/web/AGENTS.md` salvo el T0 (renombrado). Leer antes: `AGENTS.md` raíz y `app/web/AGENTS.md`, `docs/context.md`, `docs/design.md`, `docs/pendientes-infra.md`.
 - TDD donde haya lógica pura (convención del repo: helper + `*.test.ts`); la UI y la config se validan con build + prueba manual.
 - Textos en español; íconos **Phosphor** (`phosphor-astro`); no linters nuevos salvo que ya existan.
 - En worktrees nuevos: primer paso `cd app/web && npm ci` (no hay `node_modules`).
@@ -24,7 +24,7 @@
 
 ## T0 — Renombrado CLAUDE.md → AGENTS.md (lo hace el coordinador en `develop`)
 - [x] `git mv CLAUDE.md AGENTS.md`; encabezado `# AGENTS.md` (+ nota de que reemplaza a CLAUDE.md).
-- [x]  Actualizar referencias activas: `docs/pendientes-infra.md` (línea "y CLAUDE.md" → "y AGENTS.md"), `docs/superpowers/plans/2026-10-11-hito-4-produccion.md` (paso de validación "las dos formas de CLAUDE.md" → "de AGENTS.md"; D1 "actualizar CLAUDE.md" → "AGENTS.md"; restricción "No commitear CLAUDE.md ni AGENTS.md" → "No tocar AGENTS.md (raíz)"). Los planes históricos (2026-09-30, 2026-10-10…) quedan como registro.
+- [x]  Actualizar referencias activas: `docs/pendientes-infra.md` (línea "y CLAUDE.md" → "y AGENTS.md"), `docs/planes/2026-10-11-plan-hito-4-produccion.md` (paso de validación "las dos formas de CLAUDE.md" → "de AGENTS.md"; D1 "actualizar CLAUDE.md" → "AGENTS.md"; restricción "No commitear CLAUDE.md ni AGENTS.md" → "No tocar AGENTS.md (raíz)"). Los planes históricos (2026-09-30, 2026-10-10…) quedan como registro.
 - [x] Commit: `Renombra CLAUDE.md a AGENTS.md`.
 - [x] Commit del plan: `Agrega plan de pendientes de Fase A (A4, A6)`.
 
@@ -60,7 +60,7 @@ media_libraries:
 - [x] `npm run build && npm run postbuild`; servir `dist/` (`python3 -m http.server 4820 -d dist`).
 - [x] Auditar con Lighthouse (headless) las páginas clave: Inicio, Noticias (listado y detalle), Agenda, Directorio, Ficha de persona, Repositorio, Anuncios, ¿Qué es la Bioingeniería?, Instagram, Buscar, 404. Registrar el reporte por página (CSV/JSON o resumen con puntajes).
 - [x] Corregir hallazgos de: jerarquía de encabezados, textos alternativos (`alt`), contraste (acento `#0066cc` sobre fondos — AA), foco visible, `lang`, nombres accesibles de controles (los `Select`/`Combobox` de Starwind ya usan `aria-labelledby`: verificar), dimensiones de imagen para evitar CLS (layout shift), orden del DOM, `aria-live` del buscador Pagefind, estado "aún no hay…" en páginas vacías.
-- [x] No cambiar diseño ni DESIGN.md; solo accesibilidad/rendimiento. Si algo del acento no cumple AA, ajustar la variable del tema con el menor cambio posible.
+- [x] No cambiar diseño ni docs/design.md; solo accesibilidad/rendimiento. Si algo del acento no cumple AA, ajustar la variable del tema con el menor cambio posible.
 - [x] Recorrido por teclado en las páginas clave (sin trampas de foco; la lupa de `/buscar` y los menús desplegables operables con teclado).
 - [x] Commits por grupo de hallazgos (español, imperativo).
 - [x] Cierre: `npm test` verde (69 + nuevos si se extrae lógica pura), `npx astro check` 0/0, `npm run build && npm run postbuild` OK, Lighthouse ≥ 90 en las cuatro categorías en las páginas principales, sin regresiones visuales a 375 px.
@@ -70,7 +70,7 @@ media_libraries:
 ## Cierre de Fase A (coordinador)
 - [x] Integrar `faseA-a4` y `faseA-a6` en `develop` (merge). Resolver conflictos si los hubiera (no debería: archivos disjuntos salvo `package.json`, que solo toca a6 con `lighthouse` en devDependencies).
 - [x] Verificación combinada en `develop`: `npm test`, `npx astro check` 0/0, `npm run build && npm run postbuild`, resumen Lighthouse.
-- [x] Actualizar `docs/superpowers/plans/2026-10-11-hito-4-produccion.md` (marcar A4 y A6) y `docs/pendientes-infra.md` (marcar "Activar en config.yml la optimización al subir" y el checklist de auditoría si existe).
+- [x] Actualizar `docs/planes/2026-10-11-plan-hito-4-produccion.md` (marcar A4 y A6) y `docs/pendientes-infra.md` (marcar "Activar en config.yml la optimización al subir" y el checklist de auditoría si existe).
 - [x] Push de `develop` al Gitea.
 - [x] Borrar worktrees y ramas `faseA-a4`/`faseA-a6`.
 

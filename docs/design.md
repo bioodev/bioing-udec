@@ -1,3 +1,11 @@
+# Diseño — BIOING+
+
+> **Sistema de diseño del sitio.** Se mantiene en sitio: no lleva fecha.
+> Todo lo que sigue hasta la sección **«Implementación en BIOING+»** es el **análisis de referencia** (estilo
+> Apple) que originó el sistema: por eso habla de las páginas de Apple y no del sitio. La última sección
+> describe cómo se implementa el sistema en BIOING+ con Starwind UI v3 + Tailwind v4, y qué se descartó.
+> Para el estado del código ver `architecture.md` (§7 imágenes, §9 rendimiento).
+
 ## Overview
 
 Apple's web presence is a masterclass in **reverent product photography framed by near-invisible UI**. Every page is a stack of edge-to-edge product "tiles" — alternating light and dark canvases, each centered on a hero headline, a one-line tagline, two tiny blue pill CTAs, and an impossibly crisp product render. Nothing competes with the product. Typography is confident but quiet; color is either pure white, an off-white parchment, or a near-black tile; interactive elements are a single, quiet blue.
@@ -285,4 +293,86 @@ The structural breakpoints that matter for agents: 1440px (content lock), 1068px
 - Dark-mode counterparts for store and accessories utility cards were not surfaced on the analyzed pages; the system documented is the daytime/light-dominant variant Apple ships by default.
 - Atmospheric photography (environment page mountain vista) is a content asset, not a design token; the documented `{component.environment-quote-card}` describes the structural surface only.
 - The exact backdrop-filter blur radius on `{component.sub-nav-frosted}` and `{component.floating-sticky-bar}` is platform-dependent; production CSS uses `saturate(180%) blur(20px)` as a typical baseline but the value isn't formalized as a token.
+
+---
+
+## Implementación en BIOING+
+
+El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**. El tema vive en
+`app/web/src/styles/starwind.css` y los componentes, copiados al repositorio, en
+`app/web/src/components/starwind/` (se agregan con `npx starwind@latest add <nombre>`).
+
+### Estilo (cómo se traduce la referencia)
+
+- Tiles a sangre alternando claro/oscuro (`<section>` con `bg-muted` / `bg-background`) como separador.
+- **Un único acento azul** (`--primary: #0066cc`) y ninguna otra marca; botones en píldora.
+- Sin gradientes, sin chrome decorativo y **una sola sombra**; hairlines (`--border: #e0e0e0`) en vez de
+  sombras.
+- Tipografía del sistema (`system-ui, -apple-system`) y radios amplios (`--radius: 18px`).
+- Densidad baja: cada sección con aire y titulares `text-3xl`/`text-4xl` semibold con tracking negativo.
+
+### Tokens (valores reales en `starwind.css`)
+
+| Token | Claro | Oscuro |
+|---|---|---|
+| `--background` / `--foreground` | `#ffffff` / `#1d1d1f` | neutral-950 / neutral-50 |
+| `--primary` / `--primary-foreground` | `#0066cc` / `#ffffff` | blue-700 / neutral-50 |
+| `--secondary` / `--muted` | `#f5f5f7` (parchment) | neutral-800 |
+| `--muted-foreground` | `#6e6e73` | neutral-400 |
+| `--border` / `--input` | `#e0e0e0` | neutral-50 al 10–15 % |
+| `--outline` (foco) | `#0071e3` | neutral-500 |
+| `--radius` | `18px` | ídem |
+
+### Componentes y marca
+
+- **Componentes** en `src/components/starwind/`; los propios del sitio (tarjetas de Noticia, Actividad,
+  Anuncio, Documento, Egresado; `EnlaceFicha`, `HeroCarrusel`, `Banner`, `Logo`, `ThemeToggle`,
+  `VideoModal`, `PublicacionInstagram`) en `src/components/`.
+- **Starwind v3 ≠ v2**: la documentación en línea de v2 no aplica. Los cambios de valor se escuchan con el
+  evento `starwind:value-change` (burbujea y se emite antes de fijar el valor); los `SelectTrigger` necesitan
+  `aria-labelledby` apuntando a su `Label`; para fijar un valor desde código se despacha
+  `starwind:set-value` (con `detail.value`) sobre la raíz del Select/Combobox. Los componentes nuevos pueden
+  traer textos en inglés (`aria-label`, `sr-only`): traducirlos.
+- **Íconos**: solo **Phosphor** (`phosphor-astro`), también dentro de los componentes de Starwind (se
+  reemplazó Tabler). Son SVG sin tamaño propio: dimensionar con `size-*` y marcar `aria-hidden="true"`
+  cuando son decorativos. Ojo: `starwind add` trae íconos Tabler que hay que cambiar.
+- **Logo**: una sola fuente, `src/assets/logo.svg`, renderizada por `Logo.astro` en navbar y footer; hoy es
+  un placeholder hasta la identidad definitiva.
+- **Tarjetas 100 % clicables**: imagen y tarjeta llevan al detalle (Noticia/Actividad con overlay;
+  Anuncio/Documento/Egresado con un solo enlace), conservando los enlaces secundarios.
+- **Footer**: columnas (marca, navegación derivada de `MENU`, comunidad, contacto) y barra de copyright.
+
+### Tema claro/oscuro
+
+Toggle en navbar y menú móvil. La preferencia se guarda en `localStorage` (`tema`) con fallback al sistema,
+se aplica antes del primer pintado con un script inline en `<head>` (sin FOUC) y se vuelve a aplicar en
+`astro:page-load` porque View Transitions resetea las clases del `<html>`.
+
+### Hero (Inicio)
+
+Foto del Banner con tinte cálido sutil (`.hero-imagen` con `sepia`/`saturate`) a opacity ~70 % + velo oscuro
+plano (`bg-foreground/30`) para el contraste del título. **Descartados**: los shaders WebGL de Paper Shaders
+(rompían el rendimiento ≥ 90 por TBT) y la textura halftone CMYK en CSS/máscaras (no gustó al equipo). No
+reintroducir efectos de puntos/impresión en el hero.
+
+### Animaciones
+
+GSAP + ScrollTrigger con **fade solo** (sin deslizamientos), marcadas de forma declarativa en el HTML:
+`data-animar="hero"` (entrada al cargar), `"fade-up"` (aparece al hacer scroll) y `"grilla"` (hijos
+escalonados). Se limpian con `gsap.context()` en `astro:before-swap` y se reinician en `astro:page-load`.
+Transiciones entre páginas en fade con `ClientRouter` y estilos en `src/styles/transitions.css`. Todo respeta
+`prefers-reduced-motion` y es visible sin JavaScript (clase `.anima` + guard en `Base.astro`).
+
+### Imágenes
+
+Todo pasa por `<Image>` de Astro (o `getImage`) con `widths`/`sizes`; las tarjetas reservan aspecto
+(`aspect-video`/`aspect-square`) y las que no tienen imagen usan un placeholder `bg-muted`, así no hay CLS.
+El hero (slide 0) va con `priority`; en `index.astro` se emite además un `<link rel="preload">` del LCP. El
+resto carga `lazy` por defecto. Mantener estos atributos al agregar imágenes.
+
+### Accesibilidad
+
+Metas WCAG 2.1 AA y Lighthouse ≥ 90 en accesibilidad: skip-link al contenido, `aria-current` en el menú
+activo, foco visible global (`:focus-visible`), nombres accesibles en los controles de Starwind, jerarquía de
+encabezados sin saltos y estados vacíos («Aún no hay…») en las páginas sin contenido.
 

@@ -1,6 +1,6 @@
 # Wireframes (ASCII) — Sitio BIOING+
 
-Bocetos de baja fidelidad de cada pantalla, para acordar estructura y contenido antes de maquetar. No son el diseño final: el estilo visual lo define `docs/DESIGN.md` (acento azul `#0066cc`, tipografía Inter, hairlines en vez de sombras, bandas de fondo alternado claro/oscuro).
+Bocetos de baja fidelidad de cada pantalla, para acordar estructura y contenido antes de maquetar. No son el diseño final: el estilo visual lo define `docs/design.md` (acento azul `#0066cc`, tipografía Inter, hairlines en vez de sombras, bandas de fondo alternado claro/oscuro).
 
 **Guía de referencia:** [farmacia.udec.cl](https://farmacia.udec.cl/) (misma universidad), de donde se toman patrones probados: hero en carrusel, tarjetas de noticia con categoría e imagen, detalle con caja "Información del artículo" + galería + "Te puede interesar", y agenda con pestañas Todos / Próximos / Pasados.
 
@@ -378,4 +378,4 @@ Estos wireframes incorporan el feedback de la reunión e implican ajustes sobre 
 | 5 | Agenda | **Pestañas Todos / Próximos / Pasados** (con conteo) + filtro por tipo + buscador | Reorganiza el listado actual (hoy separa próximas/realizadas sin pestañas) |
 | 6 | Noticia detalle | Caja **"Información de la noticia"** (fecha, categoría, tags, tiempo de lectura) + **galería** + **"Te puede interesar"** | Patrón tomado de farmacia.udec.cl; tiempo de lectura y relacionadas son nuevos |
 
-**Decisión de modelo (acordada):** en CONTEXT.md, **Tema** = clasificación editorial → se muestra como **"Categoría"** de la Noticia (ya existe en el modelo). Los **tags** se resuelven con un **campo nuevo de etiquetas de texto libre** en Noticias (p. ej. `etiquetas: string[]`), editable por el Encargado de comunicaciones sin crear entradas de colección. Implica: añadir el campo en `app/web/src/content.config.ts` (y su espejo en `public/admin/config.yml`), mostrarlo en la tarjeta y el detalle, y permitir filtrar por él. El término canónico sigue siendo **Tema** para la clasificación editorial; "Categoría" es solo su etiqueta visible en Noticias.
+**Decisión de modelo (acordada):** en docs/context.md, **Tema** = clasificación editorial → se muestra como **"Categoría"** de la Noticia (ya existe en el modelo). Los **tags** se resuelven con un **campo nuevo de etiquetas de texto libre** en Noticias (p. ej. `etiquetas: string[]`), editable por el Encargado de comunicaciones sin crear entradas de colección. Implica: añadir el campo en `app/web/src/content.config.ts` (y su espejo en `public/admin/config.yml`), mostrarlo en la tarjeta y el detalle, y permitir filtrar por él. El término canónico sigue siendo **Tema** para la clasificación editorial; "Categoría" es solo su etiqueta visible en Noticias.

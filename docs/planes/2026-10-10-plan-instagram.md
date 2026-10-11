@@ -8,13 +8,13 @@
 
 **Stack:** Astro 7, Sveltia CMS, Tailwind v4, Starwind UI v3, Vitest, `phosphor-astro`.
 
-**Spec:** `docs/propuesta-desarrollo.md` §6.2 y riesgo 4 · `docs/Propuesta de arquitectura y contenidos para sitio web BIOING.md` §8.
+**Spec:** `docs/propuesta-desarrollo.md` §6.2 y riesgo 4 · `docs/propuesta-arquitectura-y-contenidos.md` §8.
 
 ## Restricciones globales
 
 - Rama `demo-frontend`, carpeta `app/web`. Sin push. No commitear `CLAUDE.md` ni `AGENTS.md`.
-- Leer antes: `AGENTS.md` (raíz) §Sveltia CMS y §Astro, `app/web/AGENTS.md`, `CONTEXT.md`.
-- Un cambio del modelo de dominio va en **tres** lugares: `public/admin/config.yml`, `src/content.config.ts` y `CONTEXT.md`.
+- Leer antes: `AGENTS.md` (raíz) §Sveltia CMS y §Astro, `app/web/AGENTS.md`, `docs/context.md`.
+- Un cambio del modelo de dominio va en **tres** lugares: `public/admin/config.yml`, `src/content.config.ts` y `docs/context.md`.
 - Validar `config.yml` contra `https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json` y cargando `/admin/` (`python3 -m http.server` en `app/web/public`) hasta ver la pantalla de inicio de sesión sin errores.
 - Nada de Meta se carga antes de un clic (privacidad y rendimiento). Ningún `<iframe>`/HTML pegado por el editor.
 - Páginas consultan contenido solo vía `src/lib/contenido.ts`. Íconos Phosphor (`InstagramLogo`).
@@ -84,7 +84,7 @@ export function enlaceInstagram(url: string): string | null {
 **Archivos:**
 - Modificar: `app/web/public/admin/config.yml` (nueva colección antes de `# ── Clasificación`; campo `instagram` en `noticias`)
 - Modificar: `app/web/src/content.config.ts`
-- Modificar: `CONTEXT.md` (término nuevo)
+- Modificar: `docs/context.md` (término nuevo)
 - Crear: `app/web/src/content/instagram/ejemplo-publicacion.yml`
 - Modificar: `app/web/src/lib/contenido.ts` (`'instagram'` en `ColeccionPublicable`; `publicacionesInstagram`)
 
@@ -139,7 +139,7 @@ const instagram = defineCollection({
 
 (importar `PATRON_INSTAGRAM, enlaceInstagram` desde `./lib/instagram`; agregar `instagram: reference('instagram').optional(),` al esquema de `noticias`; agregar `instagram` al objeto `collections`).
 
-- [ ] **Paso 3: `CONTEXT.md`** — agregar, junto a Banner:
+- [ ] **Paso 3: `docs/context.md`** — agregar, junto a Banner:
 
 ```md
 **Publicación de Instagram**:

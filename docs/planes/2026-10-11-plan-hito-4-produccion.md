@@ -11,7 +11,7 @@
 ## Restricciones globales
 
 - Rama `demo-frontend`, carpeta `app/web`. Sin push salvo que se pida. No tocar `AGENTS.md` (raíz) ni `app/web/AGENTS.md`.
-- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `CONTEXT.md`.
+- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `docs/context.md`.
 - **TDD donde hay lógica pura** (convención del repo: cada helper con su `*.test.ts`). Infra y config se verifican con build + prueba manual.
 - Sin dependencias nuevas salvo las que este plan nombra (todas oficiales/estables).
 - Textos en español; íconos Phosphor; commits en español, imperativo.
@@ -30,7 +30,7 @@ El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase 
 
 ## FASE A — Producción en código (sin cuentas) — SE HACE YA
 
-> **Estado (2026-10-11):** A1, A2, A3 y A5 **hechas** (ver `2026-10-11-faseA-infra-seo.md`) e integradas en `develop`. En paralelo se ejecutó el **rediseño v2** de los wireframes (ver `2026-10-11-rediseno-v2.md`). **A4 y A6 también están hechas** (2026-10-11, ver `2026-10-11-faseA-pendientes.md`), con lo que la Fase A queda cerrada. A7 (limpiar ejemplo) queda para el final, cuando la carrera entregue contenidos reales.
+> **Estado (2026-10-11):** A1, A2, A3 y A5 **hechas** (ver `2026-10-11-plan-fase-a-infra-seo.md`) e integradas en `develop`. En paralelo se ejecutó el **rediseño v2** de los wireframes (ver `2026-10-11-plan-rediseno-v2.md`). **A4 y A6 también están hechas** (2026-10-11, ver `2026-10-11-plan-fase-a-pendientes.md`), con lo que la Fase A queda cerrada. A7 (limpiar ejemplo) queda para el final, cuando la carrera entregue contenidos reales.
 
 ### Tarea A1: Página 404, encabezados de seguridad y redirecciones
 
@@ -58,7 +58,7 @@ El orden de trabajo del proveedor es: **toda la Fase A ahora** → esperar Fase 
 **Archivos:** `package.json` (script `postbuild`), crear `app/web/src/pages/buscar.astro`, enlace en `Base.astro` (ícono de lupa en el menú).
 
 - [ ] **Indexado:** `"postbuild": "pagefind --site dist"` para generar `dist/pagefind/` tras `astro build`. Excluir `/admin` y `/componentes` con `data-pagefind-ignore` o filtro de ruta. Marcar el cuerpo indexable con `data-pagefind-body` en `Base.astro` (región principal), para no indexar menú/pie repetidos.
-- [ ] **Página `/buscar`:** UI de Pagefind (`pagefind/pagefind-ui.js`) con estilos acordes a DESIGN.md; accesible (label, `aria-live` para el conteo de resultados). Resultados llevan a la página real.
+- [ ] **Página `/buscar`:** UI de Pagefind (`pagefind/pagefind-ui.js`) con estilos acordes a docs/design.md; accesible (label, `aria-live` para el conteo de resultados). Resultados llevan a la página real.
 - [ ] **Verificación:** `npm run build && npm run postbuild`; servir `dist`; buscar un término de una Noticia y de un egresado/a → aparecen; `/admin` no aparece en resultados. Añadir, si aplica, un test puro si se extrae alguna función de normalización.
 
 ### Tarea A4: Optimización de imágenes al subir (config.yml de Sveltia)
@@ -128,12 +128,12 @@ Para cada requisito: **qué entrega la carrera · cómo lo verifica el proveedor
 - [ ] **Desbloquea:** C3 (`/auth`, `/admin`), C4 (`SITE_URL`, publicación), C5 (`/media`).
 
 ### B5: Identidad visual definitiva
-- [ ] **Entrega:** logo BIOING+ y manual de marca UdeC/FCB, **o** aprobación del diseño propuesto (`docs/DESIGN.md`).
+- [ ] **Entrega:** logo BIOING+ y manual de marca UdeC/FCB, **o** aprobación del diseño propuesto (`docs/design.md`).
 - [ ] **Verifica:** assets en formato utilizable (SVG/PNG de alta resolución); color de acento definido.
 - [ ] **Desbloquea:** C2 (identidad en el sitio). Incluye **dos rondas** de ajuste (§10).
 
 ### B6: Listado de egresados/as y consentimiento
-- [ ] **Entrega:** planilla de egresados/as con los campos del Perfil (CONTEXT.md) y, por cada persona, **autorización registrada** (el Google Form es el registro oficial, con fecha y alcance — §9 riesgo 2).
+- [ ] **Entrega:** planilla de egresados/as con los campos del Perfil (docs/context.md) y, por cada persona, **autorización registrada** (el Google Form es el registro oficial, con fecha y alcance — §9 riesgo 2).
 - [ ] **Verifica:** la planilla distingue qué datos están autorizados; define el procedimiento de **supresión** (riesgo 1: borrar también del historial de Git, Ley 21.719 vigente 1-dic-2026) con la asesoría jurídica UdeC.
 - [ ] **Desbloquea:** importación al Directorio y anuario (parte de C6/A7).
 
@@ -162,7 +162,7 @@ Para cada requisito: **qué entrega la carrera · cómo lo verifica el proveedor
 
 ### C2: Identidad visual definitiva  _(requiere B5)_
 - [ ] **Paso 1:** reemplazar los logos de relleno ("BIOING+", "FCB UdeC") por los assets finales en `src/assets`.
-- [ ] **Paso 2:** ajustar el acento en la variable de DESIGN.md (una sola variable) y la imagen OG por defecto (A2).
+- [ ] **Paso 2:** ajustar el acento en la variable de docs/design.md (una sola variable) y la imagen OG por defecto (A2).
 - [ ] **Paso 3:** ronda 1 de ajustes con la contraparte → correcciones → ronda 2 (dos rondas, §10).
 - [ ] **Verificación:** `npm run build`; revisión visual en claro/oscuro y a 375 px; contraste del acento cumple AA (revalidar A6).
 

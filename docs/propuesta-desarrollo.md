@@ -24,7 +24,7 @@ Esta solución **reemplaza WordPress** por un esquema con una superficie de ataq
 
 ## 3. Alcance
 
-**Sitio web** (según `Propuesta de arquitectura y contenidos para sitio web BIOING.md`):
+**Sitio web** (según `docs/propuesta-arquitectura-y-contenidos.md`):
 
 - Inicio con contenidos destacados y dinámicos (Banner, noticias recientes, próximas actividades, anuncios vigentes).
 - ¿Qué es la Bioingeniería? (contenido institucional y video).

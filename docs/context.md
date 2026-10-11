@@ -1,8 +1,73 @@
-# BIOING+
+# Contexto del proyecto — BIOING+
 
-Plataforma digital de la comunidad de Bioingeniería de la Universidad de Concepción: reúne noticias, actividades, oportunidades, documentos y el directorio de egresados/as.
+> **Documento canónico del dominio y del alcance.** Si algo de otro documento lo contradice, prevalece
+> este (incluido `AGENTS.md`). Se mantiene en sitio: no lleva fecha.
 
-## Language
+Plataforma digital de la comunidad de Bioingeniería de la Universidad de Concepción (Facultad de Ciencias
+Biológicas): reúne noticias, actividades, oportunidades, documentos y el directorio de egresados/as.
+
+## Propósito
+
+Dar a la carrera un sitio propio, vinculado a la FCB pero con identidad y estructura propias, donde el
+Encargado de comunicaciones publique de forma autónoma sin depender de un servidor ni de la universidad
+(ver `propuesta-desarrollo.md` §2 y el ADR `0001`).
+
+## Audiencia de este documento
+
+- **Desarrolladores y agentes de IA** que tocan el código, el modelo de contenidos o el CMS.
+- **Encargado de comunicaciones**: los términos de acá son los que ve al editar.
+- **Contraparte de la carrera**: define qué se modela y qué queda fuera de alcance.
+
+## Alcance funcional
+
+### Menú principal
+
+INICIO | ¿QUÉ ES LA BIOINGENIERÍA? | NOTICIAS | AGENDA | INSTAGRAM | DIRECTORIO | ANUNCIOS | REPOSITORIO,
+más un acceso permanente a la web de la FCB. En el sitio el menú es sticky.
+
+### Secciones
+
+- **Inicio**: contenido destacado y dinámico (Banners, noticias recientes, próximas actividades, anuncios
+  vigentes, publicaciones de Instagram).
+- **¿Qué es la Bioingeniería?**: contenido institucional y un video que se abre en un modal.
+- **Noticias**: con buscador y filtros por Tema, Persona mencionada y fecha; más archivo.
+- **Agenda**: Actividades con ficha propia; próximas (orden cronológico) y realizadas (archivo).
+- **Anuncios**: oportunidades (trabajo, práctica, pasantía, proyecto, convocatoria, colaboración).
+- **Directorio**: buscador de egresados/as por nombre, generación, Área y Organización, con Ficha
+  individual, y exportación como anuario imprimible en PDF.
+- **Repositorio**: Documentos filtrables por tipo, Tema, año y palabra clave; según `bitacora.md`, la
+  biblioteca vive en Google Drive y el sitio enlaza cada Documento.
+- **Instagram**: publicaciones seleccionadas por el Encargado de comunicaciones (embed oficial, cargado
+  bajo demanda).
+- **Contacto**: fuera del sitio. Las altas, bajas y cambios del Directorio llegan por un enlace a un
+  Google Form; los datos personales solo se publican con autorización previa.
+
+### Buscadores
+
+Noticias, Agenda, Anuncios, Directorio y Repositorio (más el buscador general del sitio). El funcionamiento
+técnico está en `architecture.md`.
+
+### Relaciones entre contenidos
+
+Una Ficha enlaza con las Noticias en que participa su Persona, las Actividades que organiza o en que
+expone, y los Anuncios que ofrece. Por eso las Personas y Organizaciones son entidades referenciables y no
+texto libre.
+
+### Flujo de contenidos
+
+Una única persona (la Encargada o Encargado de comunicaciones) recibe, valida y publica todo el contenido;
+la comunidad no publica directamente. Cada cambio deja historial en Git y se publica en uno o dos minutos;
+lo que depende de la fecha se resuelve con una reconstrucción diaria.
+
+### Fuera de alcance
+
+Inscripciones o formularios propios (se enlazan servicios externos), cuentas de usuario para la comunidad,
+contenido multi-idioma y migración masiva desde el sitio actual.
+
+## Glosario (lenguaje del dominio)
+
+> Un cambio de modelo de dominio se hace en **tres lugares**: `app/web/public/admin/config.yml`,
+> `app/web/src/content.config.ts` y este documento.
 
 ### Comunidad
 

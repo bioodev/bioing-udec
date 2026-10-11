@@ -7,7 +7,7 @@ Construir en local una demo navegable del sitio para mostrar en la reunión con 
 ## Decisiones tomadas
 
 - **Componentes**: Starwind UI completo (CLI, componentes copiados a `src/components/starwind/`) sobre Tailwind v4. Sin React ni otros frameworks de islas.
-- **Identidad**: `docs/DESIGN.md` tal cual, con logos de relleno ("BIOING+", "FCB UdeC"). La marca definitiva se decide en la reunión (pregunta 6.3); cambiar el acento es cambiar una variable.
+- **Identidad**: `docs/design.md` tal cual, con logos de relleno ("BIOING+", "FCB UdeC"). La marca definitiva se decide en la reunión (pregunta 6.3); cambiar el acento es cambiar una variable.
 - **Catálogo**: página `/componentes` solo en desarrollo, en lugar de Storybook.
 - **Publicación**: la demo se ve en local (`npm run dev`); no depende de la infraestructura pendiente (`docs/pendientes-infra.md`).
 
@@ -29,7 +29,7 @@ Fuera de alcance: Agenda, Anuncios y Repositorio como secciones propias, buscado
 
 ```
 app/web/src/
-  styles/starwind.css        tokens de DESIGN.md mapeados a variables de Starwind
+  styles/starwind.css        tokens de docs/design.md mapeados a variables de Starwind
   layouts/Base.astro
   components/starwind/       instalados por la CLI de Starwind
   components/                propios: TarjetaNoticia, TarjetaActividad, TarjetaAnuncio, Banner, CabeceraFicha, TarjetaEgresado
@@ -44,7 +44,7 @@ app/web/src/
 
 ## Tema
 
-| Variable Starwind | Valor (DESIGN.md) |
+| Variable Starwind | Valor (docs/design.md) |
 |---|---|
 | `--primary` | `#0066cc` |
 | `--primary-foreground` | `#ffffff` |

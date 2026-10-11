@@ -2,7 +2,7 @@
 
 > Para opencode. TDD en la lógica pura (filtros/orden) con su `*.test.ts`; UI se valida con build. Casillas `- [ ]`.
 
-**Meta:** aplicar el feedback de la reunión capturado en `docs/wireframes.md`: hero en carrusel, tarjetas de actividad completas, orden y etiquetas en Noticias, pestañas en Agenda y comboboxes en filtros largos. Guía visual: `docs/DESIGN.md`. Referencia: farmacia.udec.cl.
+**Meta:** aplicar el feedback de la reunión capturado en `docs/analisis/2026-10-11-docs/analisis/2026-10-11-wireframes.md`: hero en carrusel, tarjetas de actividad completas, orden y etiquetas en Noticias, pestañas en Agenda y comboboxes en filtros largos. Guía visual: `docs/design.md`. Referencia: farmacia.udec.cl.
 
 ## Resultado (ejecutado 2026-10-11, opencode en worktree `rediseno-v2`)
 
@@ -19,7 +19,7 @@
   `app/web/src/lib/filtro-noticias.ts` (+ `.test.ts`), `app/web/src/lib/filtro-agenda.ts` (+ `.test.ts`).
   **No edites** `Base.astro`, `astro.config.mjs`, `package.json`, `404.astro`, `buscar.astro`, `public/_headers/_redirects/robots.txt`, `wrangler.jsonc`.
 - Usa componentes Starwind ya instalados (`combobox`, `select`, `card`, `badge`, `sheet`). Sin dependencias nuevas. Íconos Phosphor. Textos en español.
-- No commitees `CLAUDE.md` ni `AGENTS.md`. Leer antes: `app/web/AGENTS.md`, `CONTEXT.md`, `docs/wireframes.md` (fuente de verdad del diseño), `CONTEXT.md`.
+- No commitees `CLAUDE.md` ni `AGENTS.md`. Leer antes: `app/web/AGENTS.md`, `docs/context.md`, `docs/analisis/2026-10-11-docs/analisis/2026-10-11-wireframes.md` (fuente de verdad del diseño), `docs/context.md`.
 - Mantén la convención: en colecciones con `publicado` usar helpers de `contenido.ts`, no `getCollection` directo. Commits en español, imperativo, uno por tarea.
 
 ## Tareas

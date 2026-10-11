@@ -8,12 +8,12 @@
 
 **Stack:** Astro 7, Tailwind v4 (variante `print:`), Vitest, `phosphor-astro`.
 
-**Spec:** `docs/notas.md` ("anuario de todos los bioingenieros. egresados en pdf") · `docs/preguntas-reunion.md` 1.8 (propuesta por defecto: ordenado por generación, mismos datos que el Directorio público) · `CONTEXT.md` (Perfil de egresado, Generación).
+**Spec:** `docs/bitacora.md` ("anuario de todos los bioingenieros. egresados en pdf") · `docs/preguntas-reunion.md` 1.8 (propuesta por defecto: ordenado por generación, mismos datos que el Directorio público) · `docs/context.md` (Perfil de egresado, Generación).
 
 ## Restricciones globales
 
 - Rama `demo-frontend`, carpeta `app/web`. Sin push. No commitear `CLAUDE.md` ni `AGENTS.md`.
-- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `CONTEXT.md`.
+- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `docs/context.md`.
 - **Datos personales:** solo los que ya muestra el Directorio público; nunca correo ni teléfono. Solo personas con `perfil_egresado.autorizado === true` y `ficha_activa` (usar `egresadosDelDirectorio()`, no `getCollection`).
 - Sin dependencias nuevas (ni Playwright ni librerías de PDF).
 - Íconos Phosphor (`FilePdf`, `Printer`). Textos en español.

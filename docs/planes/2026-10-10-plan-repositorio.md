@@ -8,12 +8,12 @@
 
 **Stack:** Astro 7, Tailwind v4, Starwind UI v3 (`native-select`, `input`, `label`), Vitest, `phosphor-astro`.
 
-**Spec:** `docs/Propuesta de arquitectura y contenidos para sitio web BIOING.md` §11 · `docs/propuesta-desarrollo.md` §6.3 · `CONTEXT.md` (Documento, Repositorio, Tema, Área).
+**Spec:** `docs/propuesta-arquitectura-y-contenidos.md` §11 · `docs/propuesta-desarrollo.md` §6.3 · `docs/context.md` (Documento, Repositorio, Tema, Área).
 
 ## Restricciones globales
 
 - Rama `demo-frontend`, carpeta `app/web`. Sin push. No commitear `CLAUDE.md` ni `AGENTS.md`.
-- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `CONTEXT.md`.
+- Leer antes: `AGENTS.md` (raíz), `app/web/AGENTS.md`, `docs/context.md`.
 - Términos: Documento y Repositorio (evitar "archivo", "biblioteca", "recurso").
 - Páginas consultan contenido solo vía `src/lib/contenido.ts`.
 - Íconos solo Phosphor, `aria-hidden="true"` si son decorativos.
