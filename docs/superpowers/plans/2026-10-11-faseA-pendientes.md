@@ -27,21 +27,21 @@
 ## T1 — A4: Optimización de imágenes al subir (`app/web/public/admin/config.yml`)
 **Worktree:** `…/bioing-udec-wt-a4` · **Rama:** `faseA-a4` (nace de `develop`).
 
-- [ ] Añadir en la raíz de `config.yml` (junto a `media_folder`/`public_folder`), según el schema de Sveltia (`media_libraries.all.config.transformations` con entradas por formato original; `format` solo admite `webp`):
+- [ ] Añadir en la raíz de `config.yml` (junto a `media_folder`/`public_folder`), según el schema de Sveltia (`media_libraries.all.transformations` → `SharedMediaLibraryOptions` **no** admite `config`; el mapa es por formato original y `format` solo admite `webp`):
 ```yaml
 media_libraries:
   all:
-    config:
-      transformations:
-        raster_image:   # cualquier formato raster (png, jpeg, …)
-          format: webp
-          width: 2048
-          quality: 85
-        heic:           # aceptar HEIC y convertirlo a WebP
-          format: webp
-          width: 2048
-          quality: 85
+    transformations:
+      raster_image:   # cualquier formato raster (png, jpeg, …)
+        format: webp
+        width: 2048
+        quality: 85
+      heic:           # aceptar HEIC y convertirlo a WebP
+        format: webp
+        width: 2048
+        quality: 85
 ```
+  > Nota de ejecución (2026-10-11): el borrador inicial decía `all.config.transformations`, pero fallaba la validación contra el schema (SharedMediaLibraryOptions no admite `config`). Correcto: `all.transformations`.
 - [ ] No tocar nada más de `config.yml` (las colecciones y sus campos quedan intactos).
 - [ ] **Validar de las dos formas de AGENTS.md:**
   1. Contra el JSON Schema: `https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json` — convertir `config.yml` a JSON (`python3 -c "import yaml,json;print(json.dumps(yaml.safe_load(open('public/admin/config.yml'))))" > /tmp/cfg-a4.json`) y validar con `npx --yes ajv-cli validate -s /tmp/sveltia-schema.json -d /tmp/cfg-a4.json` (si el schema es viejo y falla por claves no estándar, validar al menos el subárbol `media_libraries`; documentar).
