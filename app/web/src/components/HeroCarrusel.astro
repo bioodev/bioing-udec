@@ -91,8 +91,16 @@ const varios = banners.length > 1;
 </section>
 
 <script>
-  const root = document.querySelector<HTMLElement>('[data-carrusel]');
-  if (root) {
+  // Compartido entre re-evaluaciones del módulo (ClientRouter navega sin recargar):
+  // se registran los intervalos de autoplay para limpiarlos al salir de la página.
+  type VentanaCarrusel = Window & { __carruseles?: Set<number> };
+  const activos = ((window as VentanaCarrusel).__carruseles ??= new Set<number>());
+
+  function iniciarCarrusel() {
+    const root = document.querySelector<HTMLElement>('[data-carrusel]');
+    if (!root || root.dataset.carruselIniciado) return;
+    root.dataset.carruselIniciado = '1';
+
     const track = root.querySelector<HTMLElement>('[data-carrusel-track]')!;
     const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
     const anterior = root.querySelector<HTMLButtonElement>('[data-carrusel-anterior]');
@@ -115,12 +123,17 @@ const varios = banners.length > 1;
     }
 
     function detener() {
-      window.clearInterval(temporizador);
+      if (temporizador !== undefined) {
+        window.clearInterval(temporizador);
+        activos.delete(temporizador);
+        temporizador = undefined;
+      }
     }
     function reanudar() {
       detener();
       if (reducirMovimiento || slides.length <= 1) return;
       temporizador = window.setInterval(() => mostrar(actual + 1), INTERVALO);
+      activos.add(temporizador);
     }
 
     anterior?.addEventListener('click', () => { mostrar(actual - 1); reanudar(); });
@@ -131,7 +144,18 @@ const varios = banners.length > 1;
     root.addEventListener('focusin', detener);
     root.addEventListener('focusout', reanudar);
 
+    // Al navegar fuera con View Transitions se limpian los intervalos activos
+    // (los de instancias previas también, por si algún módulo quedó re-ejecutado).
+    window.addEventListener('astro:before-swap', () => {
+      activos.forEach((id) => window.clearInterval(id));
+      activos.clear();
+    });
+
     mostrar(0);
     reanudar();
   }
+
+  // Carga inicial y cada navegación (astro:page-load también corre en la inicial).
+  document.addEventListener('astro:page-load', iniciarCarrusel);
+  iniciarCarrusel();
 </script>
