@@ -111,18 +111,59 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
       <slot />
     </main>
 
-    <footer class="bg-muted text-sm print:hidden">
-      <div class="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:grid-cols-3">
-        <div>
-          <div class="flex items-center gap-2"><Logo variante="footer" /></div>
-          <p class="text-muted-foreground">FCB UdeC · Universidad de Concepción</p>
+    <footer class="bg-muted print:hidden">
+      <div class="mx-auto max-w-6xl px-4 py-12">
+        <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <!-- Marca -->
+          <div class="lg:col-span-1">
+            <div class="flex items-center gap-2"><Logo variante="footer" /></div>
+            <p class="mt-3 max-w-xs text-sm text-muted-foreground">
+              Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción: noticias,
+              actividades, oportunidades, documentos y el directorio de egresados/as.
+            </p>
+            <a href={URL_FCB} class="mt-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+              Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" />
+            </a>
+          </div>
+
+          <!-- Navegación principal (misma fuente que el menú) -->
+          <nav aria-label="Navegación del pie" class="text-sm">
+            <h2 class="text-sm font-semibold tracking-tight">Navegación</h2>
+            <ul class="mt-3 grid gap-2">
+              {MENU.filter((item) => item.href !== '/').map((item) => (
+                <li><a href={item.href} class="text-muted-foreground hover:text-primary">{item.etiqueta}</a></li>
+              ))}
+            </ul>
+          </nav>
+
+          <!-- Comunidad -->
+          <nav aria-label="Comunidad" class="text-sm">
+            <h2 class="text-sm font-semibold tracking-tight">Comunidad</h2>
+            <ul class="mt-3 grid gap-2">
+              <li>
+                <a href="/instagram" class="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary">
+                  <InstagramLogo class="size-4" aria-hidden="true" />Instagram
+                </a>
+              </li>
+              <li><a href="/directorio" class="text-muted-foreground hover:text-primary">Directorio de egresados/as</a></li>
+              <li><a href="/buscar" class="text-muted-foreground hover:text-primary">Buscar en el sitio</a></li>
+            </ul>
+          </nav>
+
+          <!-- Contacto -->
+          <div class="text-sm">
+            <h2 class="text-sm font-semibold tracking-tight">Contacto</h2>
+            <p class="mt-3 text-muted-foreground">
+              El canal de contacto para la comunidad se está definiendo con el equipo BIOING+.
+            </p>
+            <p class="mt-3 text-muted-foreground">FCB UdeC · Universidad de Concepción</p>
+          </div>
         </div>
-        <nav aria-label="Pie de página" class="grid gap-1">
-          <a href={URL_FCB} class="inline-flex items-center gap-1 hover:text-primary">Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
-          <a href="/instagram" class="inline-flex items-center gap-1.5 hover:text-primary"><InstagramLogo class="size-4" aria-hidden="true" />Instagram</a>
-          <a href="/directorio" class="hover:text-primary">Directorio de egresados/as</a>
-        </nav>
-        <p class="text-muted-foreground">Contacto: pendiente de definir con el equipo BIOING+.</p>
+
+        <div class="mt-10 flex flex-col items-center justify-between gap-2 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row">
+          <p>© {new Date().getFullYear()} BIOING+ · Facultad de Ciencias Biológicas, Universidad de Concepción</p>
+          <p>Plataforma de la comunidad de Bioingeniería UdeC</p>
+        </div>
       </div>
     </footer>
   </body>
