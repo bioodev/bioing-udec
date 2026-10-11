@@ -11,16 +11,21 @@ import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
 import Logo from '@/components/Logo.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 import { MENU, URL_FCB } from '@/lib/navegacion';
+import { jsonLd as serializarJsonLd, sitioWeb, type JsonLd } from '@/lib/schema';
 import ogPorDefecto from '@/assets/og-default.png';
 
-interface Props { titulo: string; descripcion?: string; imagen?: string }
-const { titulo, descripcion = 'Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción.', imagen } = Astro.props;
+interface Props { titulo: string; descripcion?: string; imagen?: string; jsonLd?: JsonLd | JsonLd[] }
+const { titulo, descripcion = 'Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción.', imagen, jsonLd: jsonLdPagina } = Astro.props;
 const tituloPagina = titulo === 'BIOING+' ? titulo : `${titulo} · BIOING+`;
 const actual = Astro.url.pathname;
 const esActual = (href: string) => (href === '/' ? actual === '/' : actual.startsWith(href));
 // URL absoluta para canonical y Open Graph (Astro.site está definido en astro.config.mjs).
 const canonical = new URL(actual, Astro.site).href;
 const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefecto.src, Astro.site).href;
+// Datos estructurados: WebSite + Organization del sitio en todas las páginas, más los
+// bloques propios de la página (migas, entidad de la ficha, listados…).
+const bloquesSitio = sitioWeb(Astro.site);
+const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina : [jsonLdPagina]) : [];
 ---
 <html lang="es">
   <head>
@@ -65,6 +70,10 @@ const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefect
     <meta name="twitter:description" content={descripcion} />
     <meta name="twitter:image" content={imagenOG} />
     <title>{tituloPagina}</title>
+    <script type="application/ld+json" set:html={serializarJsonLd(bloquesSitio)} />
+    {bloquesPagina.length > 0 && (
+      <script type="application/ld+json" set:html={serializarJsonLd(bloquesPagina.length === 1 ? bloquesPagina[0]! : bloquesPagina)} />
+    )}
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">

@@ -7,6 +7,7 @@ import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
 import { vinculosDe } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
+import { migas, persona as jsonLdPersona } from '@/lib/schema';
 import LinkedinLogo from 'phosphor-astro/LinkedinLogo.astro';
 import LinkSimple from 'phosphor-astro/Link.astro';
 
@@ -21,8 +22,27 @@ const perfil = persona.data.perfil_egresado?.autorizado ? persona.data.perfil_eg
 const organizacion = perfil?.organizacion ? await getEntry(perfil.organizacion) : undefined;
 const areas = perfil?.areas ? existentes(await getEntries(perfil.areas)) : [];
 const { noticias, organiza, expone, ofrece } = await vinculosDe('personas', persona.id);
+
+const enlace = `/personas/${persona.id}`;
+const jsonLdPagina = [
+  migas(
+    [
+      { name: 'Inicio', url: '/' },
+      { name: 'Directorio', url: '/directorio' },
+      { name: persona.data.nombre, url: enlace },
+    ],
+    Astro.site,
+  ),
+  jsonLdPersona(persona, {
+    site: Astro.site,
+    url: enlace,
+    organizacion: organizacion
+      ? { nombre: organizacion.data.nombre, ...(organizacion.data.sitio_web ? { sitioWeb: organizacion.data.sitio_web } : {}) }
+      : undefined,
+  }),
+];
 ---
-<Base titulo={persona.data.nombre}>
+<Base titulo={persona.data.nombre} jsonLd={jsonLdPagina}>
   <section class="bg-muted">
     <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:flex-row sm:items-center">
       {persona.data.foto

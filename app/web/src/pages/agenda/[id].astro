@@ -9,6 +9,7 @@ import { Button } from '@/components/starwind/button';
 import { formatoFechaHora, noticiasDeActividad, publicados } from '@/lib/contenido';
 import { actividadEsProxima, existentes } from '@/lib/reglas';
 import { MODALIDADES, TIPOS_ACTIVIDAD } from '@/lib/agenda';
+import { migas, actividad as jsonLdActividad } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import MapPin from 'phosphor-astro/MapPin.astro';
 import Users from 'phosphor-astro/Users.astro';
@@ -42,8 +43,30 @@ const fin = actividad.data.fin;
 const cuando = fin && fin.valueOf() !== actividad.data.inicio.valueOf()
   ? `${formatoFechaHora(actividad.data.inicio)} — ${formatoFechaHora(fin)}`
   : formatoFechaHora(actividad.data.inicio);
+
+const enlace = `/agenda/${actividad.id}`;
+const jsonLdPagina = [
+  migas(
+    [
+      { name: 'Inicio', url: '/' },
+      { name: 'Agenda', url: '/agenda' },
+      { name: actividad.data.titulo, url: enlace },
+    ],
+    Astro.site,
+  ),
+  jsonLdActividad(actividad, {
+    site: Astro.site,
+    url: enlace,
+    organizadores: organizadores.map((o) => ({
+      tipo: o.coleccion === 'personas' ? ('persona' as const) : ('organizacion' as const),
+      nombre: o.entrada.data.nombre,
+      ...(o.coleccion === 'personas' && o.entrada.data.ficha_activa ? { url: `/personas/${o.entrada.id}` } : {}),
+    })),
+    expositores: expositores.map((p) => (p.data.ficha_activa ? { nombre: p.data.nombre, url: `/personas/${p.id}` } : { nombre: p.data.nombre })),
+  }),
+];
 ---
-<Base titulo={actividad.data.titulo} descripcion={`${TIPOS_ACTIVIDAD[actividad.data.tipo]} · ${cuando}`}>
+<Base titulo={actividad.data.titulo} descripcion={`${TIPOS_ACTIVIDAD[actividad.data.tipo]} · ${cuando}`} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
     <p class="flex flex-wrap items-center gap-2">
       <Badge variant="outline">{TIPOS_ACTIVIDAD[actividad.data.tipo]}</Badge>

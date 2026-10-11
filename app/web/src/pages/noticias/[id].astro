@@ -6,6 +6,7 @@ import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import { formatoFecha, formatoFechaHora, noticiasVisibles } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
+import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import { Badge } from '@/components/starwind/badge';
 
@@ -24,8 +25,29 @@ const temas = existentes(await getEntries(noticia.data.temas ?? []));
 const actividad = noticia.data.actividad ? await getEntry(noticia.data.actividad) : undefined;
 const cobertura = actividad?.data.publicado ? actividad : undefined;
 const ig = noticia.data.instagram && (await getEntry(noticia.data.instagram));
+const areas = existentes(await getEntries(noticia.data.areas ?? []));
+
+const enlace = `/noticias/${noticia.id}`;
+const jsonLdPagina = [
+  migas(
+    [
+      { name: 'Inicio', url: '/' },
+      { name: 'Noticias', url: '/noticias' },
+      { name: noticia.data.titulo, url: enlace },
+    ],
+    Astro.site,
+  ),
+  jsonLdNoticia(noticia, {
+    site: Astro.site,
+    url: enlace,
+    temas: temas.map((t) => t.data.nombre),
+    areas: areas.map((a) => a.data.nombre),
+    personas: personas.map((p) => (p.data.ficha_activa ? { nombre: p.data.nombre, url: `/personas/${p.id}` } : { nombre: p.data.nombre })),
+    organizaciones: organizaciones.map((o) => ({ nombre: o.data.nombre })),
+  }),
+];
 ---
-<Base titulo={noticia.data.titulo} descripcion={noticia.data.bajada}>
+<Base titulo={noticia.data.titulo} descripcion={noticia.data.bajada} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
     <p class="text-sm text-muted-foreground"><time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time></p>
     <h1 class="mt-2 text-4xl font-semibold tracking-tight">{noticia.data.titulo}</h1>

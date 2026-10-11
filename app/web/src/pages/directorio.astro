@@ -7,6 +7,7 @@ import { Label } from '@/components/starwind/label';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
 import { egresadosDelDirectorio } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
+import { listaElementos } from '@/lib/schema';
 import { TODAS } from '@/lib/filtro-directorio';
 import FilePdf from 'phosphor-astro/FilePdf.astro';
 
@@ -23,8 +24,15 @@ const unicos = <T,>(xs: T[], clave: (x: T) => string) => [...new Map(xs.map((x) 
 const generaciones = [...new Set(egresados.map((e) => e.persona.data.perfil_egresado!.generacion).filter((g): g is number => g !== undefined))].sort();
 const areas = unicos(egresados.flatMap((e) => e.areas), (a) => a.id).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
 const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.organizacion] : [])), (o) => o.id).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+
+// Solo los egresados/as que ya se muestran en el listado (Perfil autorizado y Ficha activa).
+const jsonLdPagina = listaElementos(
+  'Directorio de bioingenieros/as',
+  egresados.map(({ persona }) => ({ name: persona.data.nombre, url: `/personas/${persona.id}` })),
+  Astro.site,
+);
 ---
-<Base titulo="Directorio" descripcion="Directorio de bioingenieros/as egresados/as de la Universidad de Concepción.">
+<Base titulo="Directorio" descripcion="Directorio de bioingenieros/as egresados/as de la Universidad de Concepción." jsonLd={jsonLdPagina}>
   <section class="mx-auto max-w-6xl px-4 py-12">
     <h1 data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Directorio de bioingenieros/as</h1>
     <p class="mt-2 text-muted-foreground">Egresados/as que autorizaron publicar su perfil.</p>
