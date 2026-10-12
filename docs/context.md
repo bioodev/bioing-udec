@@ -39,8 +39,9 @@ Decisión en `adr/0008-secciones-desactivables.md`.
 - **Noticias**: con buscador y filtros por Tema, Persona mencionada y fecha; más archivo.
 - **Agenda**: Actividades con ficha propia; próximas (orden cronológico) y realizadas (archivo).
 - **Anuncios**: oportunidades (trabajo, práctica, pasantía, proyecto, convocatoria, colaboración).
-- **Directorio**: buscador de egresados/as por nombre, generación, Área y Organización, con Ficha
-  individual, y exportación como anuario imprimible en PDF.
+- **Directorio**: buscador de egresados/as por nombre, generación, Área y Organización, con chips de áreas, vista
+  «Por generación», Ficha individual, y exportación como anuario imprimible en PDF. Un bloque invita a sumarse y
+  explica cómo pedir aparecer o actualizar los datos (con el formulario configurado en el panel, si lo hay).
 - **Repositorio**: Documentos filtrables por tipo, Tema, año y palabra clave; según `bitacora.md`, la
   biblioteca vive en Google Drive y el sitio enlaza cada Documento.
 - **Instagram**: publicaciones seleccionadas por el Encargado de comunicaciones (embed oficial, cargado
