@@ -81,7 +81,7 @@ contenido multi-idioma y migración masiva desde el sitio actual.
 ### Comunidad
 
 **Persona**:
-Cualquier integrante de la comunidad (estudiante, egresado/a, académico/a o invitado/a externo/a) que puede ser referenciado desde otros contenidos del sitio.
+Cualquier integrante de la comunidad (estudiante, egresado/a, académico/a o invitado/a externo/a) que puede ser referenciado desde otros contenidos del sitio. Su Ficha puede llevar un bloque **SEO (opcional)**.
 _Avoid_: Usuario, participante, miembro, contacto
 
 **Perfil de egresado**:
@@ -208,7 +208,7 @@ Configuración general de cómo aparece la carrera en buscadores y al compartir 
 _Avoid_: Metadatos, meta tags, configuración técnica
 
 **SEO (opcional)**:
-Bloque de una Noticia, Actividad, Anuncio, Documento o Página libre con título, descripción e imagen propios para buscadores y redes, y la opción «No mostrar en buscadores». Si está vacío, se usan el título, la bajada y la imagen de la propia ficha.
+Bloque de una Noticia, Actividad, Anuncio, Documento, Página libre o Persona con título, descripción e imagen propios para buscadores y redes, y la opción «No mostrar en buscadores». Si está vacío, se usan el título, la bajada y la imagen de la propia ficha (en una Persona: su nombre, su descripción breve y su foto).
 _Avoid_: Metadatos, posicionamiento, SEO avanzado
 
 **Encabezado de listado**:

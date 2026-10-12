@@ -143,7 +143,44 @@ describe('vistaPrevia', () => {
   });
 
   test('una colección sin vista previa SEO falla en vez de inventar valores', () => {
-    expect(() => vistaPrevia('personas', {}, {})).toThrow();
+    expect(() => vistaPrevia('organizaciones', {}, {})).toThrow();
+  });
+});
+
+describe('vistaPrevia de personas', () => {
+  const persona = { nombre: 'Ana Pérez', descripcion: 'Bioingeniera, investigadora', foto: '/assets/media/ana.webp' };
+
+  test('persona sin bloque SEO: nombre con sufijo, descripción breve, foto y URL de personas', () => {
+    const v = vistaPrevia('personas', persona, { slug: 'ana-perez' });
+    expect(v.titulo).toBe('Ana Pérez · BIOING+');
+    expect(v.descripcion).toBe('Bioingeniera, investigadora');
+    expect(v.imagen).toBe('/assets/media/ana.webp');
+    expect(v.url).toBe('bioing…/personas/ana-perez');
+    expect(v.avisos).toEqual([]);
+  });
+
+  test('sin descripción breve avisa y sin foto no trae imagen (se usa la del sitio)', () => {
+    const v = vistaPrevia('personas', { nombre: 'Juan Soto' }, { slug: 'juan-soto' });
+    expect(v.descripcion).toBeUndefined();
+    expect(v.imagen).toBeUndefined();
+    expect(v.avisos).toContain('Sin descripción propia: se usará la descripción general del sitio.');
+  });
+
+  test('el bloque SEO gana sobre nombre, descripción y foto', () => {
+    const v = vistaPrevia('personas', { ...persona, seo: { titulo: 'Ana Pérez, bioingeniera', descripcion: 'Otra', imagen: '/a.png' } }, { slug: 'a' });
+    expect(v.titulo).toBe('Ana Pérez, bioingeniera · BIOING+');
+    expect(v.descripcion).toBe('Otra');
+    expect(v.imagen).toBe('/a.png');
+  });
+
+  test('noindex en una persona se marca y avisa', () => {
+    const v = vistaPrevia('personas', { ...persona, seo: { noindex: true } }, { slug: 'a' });
+    expect(v.noindex).toBe(true);
+    expect(v.avisos).toContain('Marcada como «No mostrar en buscadores»: Google no la incluirá en su índice.');
+  });
+
+  test('sin nombre todavía muestra «Sin nombre», no «Sin título»', () => {
+    expect(vistaPrevia('personas', { nombre: ' ' }, { slug: 'b' }).titulo).toBe('Sin nombre · BIOING+');
   });
 });
 

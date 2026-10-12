@@ -5,10 +5,11 @@ import Base from '@/layouts/Base.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
-import { configuracionMenu, vinculosDe } from '@/lib/contenido';
+import { configuracionMenu, seoDeEntrada, vinculosDe } from '@/lib/contenido';
 import { seccionActiva } from '@/lib/navegacion';
 import { existentes } from '@/lib/reglas';
 import { migas, persona as jsonLdPersona } from '@/lib/schema';
+import { resolverSeo } from '@/lib/seo';
 import LinkedinLogo from 'phosphor-astro/LinkedinLogo.astro';
 import LinkSimple from 'phosphor-astro/Link.astro';
 
@@ -25,6 +26,11 @@ const areas = perfil?.areas ? existentes(await getEntries(perfil.areas)) : [];
 const { noticias, organiza, expone, ofrece } = await vinculosDe('personas', persona.id);
 
 const enlace = `/personas/${persona.id}`;
+// Título, descripción breve y foto son el respaldo; el bloque SEO del panel (ADR 0010) los puede reemplazar.
+const seo = resolverSeo(
+  { titulo: persona.data.nombre, descripcion: persona.data.descripcion, imagen: persona.data.foto?.src },
+  seoDeEntrada(persona.data.seo),
+);
 // La ficha sigue existiendo aunque el Directorio esté apagado: la migaja solo lleva al Directorio si está activo.
 const configMenu = await configuracionMenu();
 const jsonLdPagina = [
@@ -45,7 +51,7 @@ const jsonLdPagina = [
   }),
 ];
 ---
-<Base titulo={persona.data.nombre} jsonLd={jsonLdPagina}>
+<Base titulo={seo.titulo} descripcion={seo.descripcion} imagen={seo.imagen} noindex={seo.noindex} jsonLd={jsonLdPagina}>
   <section id="persona-ficha" class="bg-muted" aria-labelledby="persona-titulo">
     <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:flex-row sm:items-center">
       {persona.data.foto

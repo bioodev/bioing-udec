@@ -58,6 +58,7 @@ export const RUTAS = {
   anuncios: '/anuncios/',
   documentos: '/repositorio/',
   paginas_libres: '/p/',
+  personas: '/personas/',
 };
 
 const texto = (valor) => (typeof valor === 'string' && valor.trim() ? valor.trim() : undefined);
@@ -99,6 +100,10 @@ const unir = (...partes) => partes.filter(Boolean).join(' · ');
 /** Valores que arma cada página antes del bloque SEO (src/pages/<colección>/[id].astro). */
 export function valoresArmados(coleccion, datos) {
   // Mientras el título está vacío (borrador recién creado) la vista previa no muestra un hueco.
+  // Una persona se titula con su nombre, no con un campo «titulo».
+  if (coleccion === 'personas') {
+    return { titulo: texto(datos.nombre) ?? 'Sin nombre', descripcion: datos.descripcion, imagen: datos.foto };
+  }
   const titulo = texto(datos.titulo) ?? 'Sin título';
   switch (coleccion) {
     case 'noticias':
