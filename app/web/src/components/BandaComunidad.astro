@@ -24,10 +24,10 @@ const dosTarjetas = banda.tarjetas.length === 2;
           <Image
             src={banda.directorio.imagen}
             alt={banda.directorio.imagen_alt ?? ''}
-            widths={[320, 640]}
-            sizes="(min-width: 640px) 320px, 100vw"
+            widths={[480, 960, 1280]}
+            sizes="(min-width: 768px) 560px, 100vw"
             loading="lazy"
-            class="mb-5 aspect-video w-full rounded-md object-cover sm:max-w-xs"
+            class="mb-5 aspect-[21/9] w-full rounded-md object-cover"
           />
         )}
         <h3 id="inicio-directorio-titulo" class="text-xl font-semibold tracking-tight">{banda.directorio.titulo}</h3>
@@ -68,10 +68,10 @@ const dosTarjetas = banda.tarjetas.length === 2;
           <Image
             src={banda.repositorio.imagen}
             alt={banda.repositorio.imagen_alt ?? ''}
-            widths={[320, 640]}
-            sizes="(min-width: 640px) 320px, 100vw"
+            widths={[480, 960, 1280]}
+            sizes="(min-width: 768px) 560px, 100vw"
             loading="lazy"
-            class="mb-5 aspect-video w-full rounded-md object-cover sm:max-w-xs"
+            class="mb-5 aspect-[21/9] w-full rounded-md object-cover"
           />
         )}
         <h3 id="inicio-repositorio-titulo" class="text-xl font-semibold tracking-tight">{banda.repositorio.titulo}</h3>
