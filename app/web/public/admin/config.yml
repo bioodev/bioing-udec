@@ -434,6 +434,12 @@ collections:
           - { name: agenda, label: "Mostrar «Agenda» en el menú", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
           - { name: instagram, label: "Sección «Instagram» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
           - { name: directorio, label: "Sección «Directorio» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
+          - name: formulario_directorio
+            label: "Formulario del Directorio (Google Form)"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Enlace al formulario para sumarse al Directorio, p. ej.: https://docs.google.com/forms/d/e/TU_ID/viewform. Déjalo vacío si aún no hay formulario: el Inicio y /directorio no muestran el botón."
           - { name: anuncios, label: "Sección «Anuncios» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
           - { name: repositorio, label: "Sección «Repositorio» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
       - name: redes

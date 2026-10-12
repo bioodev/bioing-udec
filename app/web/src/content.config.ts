@@ -255,6 +255,11 @@ const menu = defineCollection({
     directorio: z.boolean().default(true),
     anuncios: z.boolean().default(true),
     repositorio: z.boolean().default(true),
+    // Google Form para sumarse al Directorio. Vacío o ausente = sin botón.
+    formulario_directorio: z
+      .string()
+      .refine((url) => url === '' || /^https:\/\/\S+$/.test(url), 'Debe ser una dirección completa que empiece con https://')
+      .optional(),
   }),
 });
 

@@ -6,3 +6,5 @@ instagram: true
 directorio: true
 anuncios: true
 repositorio: true
+# Enlace al formulario para sumarse al Directorio (Google Form). Vacío = sin formulario: no sale el botón.
+formulario_directorio: ""
