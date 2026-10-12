@@ -7,6 +7,7 @@ import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
+import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
 import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
 
 type Banda = NonNullable<Awaited<ReturnType<typeof bandaComunidad>>>;
@@ -44,6 +45,21 @@ const dosTarjetas = banda.tarjetas.length === 2;
           </dl>
         )}
 
+        {banda.areas.length > 0 && (
+          <nav aria-labelledby="inicio-areas-titulo" class="mt-6">
+            <p id="inicio-areas-titulo" class="text-sm font-medium">Explora por área</p>
+            <ul role="list" class="mt-2 flex flex-wrap gap-2">
+              {banda.areas.map((a) => (
+                <li>
+                  <a href={`/directorio?area=${a.id}`} class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm hover:bg-muted">
+                    {a.nombre}<span class="text-muted-foreground">{a.cantidad}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+
         <form action="/directorio" method="get" role="search" class="mt-6 flex flex-wrap gap-3">
           <div class="grid min-w-0 flex-1 basis-56 gap-2">
             <Label for="inicio-directorio-texto" class="sr-only">Buscar egresado o egresada por nombre</Label>
@@ -59,6 +75,15 @@ const dosTarjetas = banda.tarjetas.length === 2;
             {banda.directorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
           </a>
         </div>
+
+        {banda.formulario && (
+          <p class="mt-4 text-sm text-muted-foreground">
+            ¿Eres egresado/a?{' '}
+            <a href={banda.formulario} target="_blank" rel="noopener" class="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+              Suma tu perfil<ArrowSquareOut class="size-4" aria-hidden="true" /><span class="sr-only"> (se abre en una ventana nueva)</span>
+            </a>
+          </p>
+        )}
       </article>
     )}
 

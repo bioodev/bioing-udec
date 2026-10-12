@@ -1,11 +1,12 @@
 // Acceso al contenido. Las páginas consultan por aquí, no con getCollection directo,
 // para que ningún Borrador (publicado: false) llegue al sitio por olvido.
-import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
-import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './reglas';
+import { getCollection, getEntries, getEntry, type CollectionEntry } from 'astro:content';
+import { actividadEsProxima, anuncioVigente, estaVigente, existentes, yaPublicado } from './reglas';
 import { noticiasRelacionadas } from './relacionadas';
 import { seccionesPublicadas } from './secciones-inicio';
 import { paginaDestacada } from './pagina-destacada';
 import { cifrasDelDirectorio, tarjetasComunidad, ultimosDocumentos } from './comunidad';
+import { areasMasFrecuentes, contarAreas } from './filtro-directorio';
 import { seccionActiva, type ConfigMenu, type PaginaLibreMenu } from './navegacion';
 import type { ConfigRedes } from './redes';
 
@@ -180,22 +181,40 @@ export async function egresadosDelDirectorio() {
 export async function bandaComunidad(config: ConfigMenu) {
   const tarjetas = tarjetasComunidad(seccionActiva('/directorio', config), seccionActiva('/repositorio', config));
   if (tarjetas.length === 0) return null;
-  const [entrada, egresados, documentos] = await Promise.all([
+  const [entrada, egresados, documentos, menu] = await Promise.all([
     getEntry('inicio', 'inicio'),
     egresadosDelDirectorio(),
     documentosDelRepositorio(),
+    getEntry('menu', 'menu'),
   ]);
   const comunidad = entrada?.data.comunidad;
   if (!comunidad) return null;
   const cifras = cifrasDelDirectorio(
     egresados.map((p) => ({ generacion: p.data.perfil_egresado?.generacion, organizacion: p.data.perfil_egresado?.organizacion?.id })),
   );
+  const porEgresado = await Promise.all(
+    egresados.map(async (p) => (p.data.perfil_egresado?.areas ? existentes(await getEntries(p.data.perfil_egresado.areas)) : [])),
+  );
+  const areas = areasMasFrecuentes(
+    contarAreas(porEgresado.map((as) => as.map((a) => ({ id: a.id, nombre: a.data.nombre })))),
+    AREAS_EN_INICIO,
+  );
   return {
     ...comunidad,
     tarjetas,
     cifras,
+    areas,
+    formulario: formularioDirectorio(menu?.data),
     documentos: ultimosDocumentos(documentos),
   };
+}
+
+/** Cuántas áreas (chips) se muestran en la tarjeta del Directorio del Inicio. */
+const AREAS_EN_INICIO = 5;
+
+/** Google Form para sumarse al Directorio (src/content/menu/menu.yml). Vacío o ausente = sin formulario. */
+export function formularioDirectorio(menu: { formulario_directorio?: string } | undefined): string | undefined {
+  return menu?.formulario_directorio || undefined;
 }
 
 /** Secciones destacadas del Inicio publicadas, en el orden de la lista del CMS (colección `inicio`). */
