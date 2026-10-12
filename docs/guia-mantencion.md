@@ -39,6 +39,11 @@ cómo revertir*. Los incidentes van como tabla en §9.
 
 ### 2.3 Semestral
 - Actualizar dependencias mayores (Astro, Sveltia, Tailwind/Starwind, Pagefind) siguiendo §3.3.
+- **Sveltia CMS** (versión fija en `app/web/public/admin/index.html`): revisar si hay versión nueva y leer sus
+  notas de versión desde la actual. Si no trae cambios que rompan la compatibilidad (opciones de `config.yml`
+  renombradas o retiradas, cambios en `registerPreviewTemplate`/`registerPreviewStyle`, recursos de dominios
+  nuevos que choquen con la CSP de `/admin/*`), actualizar siguiendo `despliegue-cloudflare.md` §12. Si los trae o
+  hay dudas, quedarse en la versión actual y anotar el motivo en `docs/pendientes-infra.md`.
 - Revalidar Lighthouse (≥ 90 en las cuatro categorías) y el recorrido por teclado.
 - Revisar `docs/pendientes-infra.md` y este documento; actualizar lo que cambió.
 - Revisar el tamaño del repositorio y el costo de los servicios (§11).
