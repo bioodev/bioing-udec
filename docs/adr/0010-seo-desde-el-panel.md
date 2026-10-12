@@ -96,3 +96,7 @@ muestra cómo aparece la entrada en Google y al compartirla, con avisos breves (
   `CMS.registerPreviewStyle` (URL del mismo origen: un CSS crudo se convierte en `blob:` y la CSP de `/admin/*` lo
   bloquea). La regla «qué tema corresponde» es `public/admin/vista-previa-tema-reglas.js`, con prueba en
   `src/lib/vista-previa-tema.test.ts`. Los colores de ambas plantillas salen de variables `--vp-*`.
+
+## Nota (2026-10-12)
+
+Los archivos de la colección `paginas` (Inicio, Secciones del sitio, Redes sociales, SEO del sitio y Encabezados de los listados) están desde esta fecha en `singletons` del panel, en la sección «Archivos» (ADR 0013). Las rutas de archivo no cambiaron.

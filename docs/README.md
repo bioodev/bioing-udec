@@ -46,6 +46,7 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 - [`0010-seo-desde-el-panel.md`](adr/0010-seo-desde-el-panel.md) — SEO configurable desde el panel: descripción y verificación del sitio, bloque SEO por contenido y «No mostrar en buscadores».
 - [`0011-encabezados-de-listado-e-iconos.md`](adr/0011-encabezados-de-listado-e-iconos.md) — imagen e ícono opcionales en los encabezados de los listados y en el bloque «¿Eres egresado/a?»; lista curada de íconos Phosphor en el panel.
 - [`0012-analitica-sin-cookies.md`](adr/0012-analitica-sin-cookies.md) — analítica con Cloudflare Web Analytics (sin cookies ni banner), token opcional desde el panel; Google Analytics descartado.
+- [`0013-orden-del-panel-y-archivos-aparte.md`](adr/0013-orden-del-panel-y-archivos-aparte.md) — colecciones agrupadas con divisores, archivos únicos (singletons) en la sección «Archivos», «Páginas libres» → «Páginas» y campos en orden de uso.
 - [`0005-paginas-libres-desde-el-panel.md`](adr/0005-paginas-libres-desde-el-panel.md) — páginas creables desde el panel, en `/p/<slug>`, con `mostrar_en` para el menú o el pie.
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)

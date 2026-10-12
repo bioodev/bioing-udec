@@ -159,8 +159,12 @@ La colección buscable de Documentos.
 _Avoid_: Biblioteca, archivo, drive
 
 **Página libre**:
-Página de texto creada desde el panel (título, bajada, imagen opcional, contenido, video de YouTube opcional, hasta 6 Enlaces y bloques destacados opcionales) que vive en `/p/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
+Página de texto creada desde el panel (en el panel se llama «Página»; colección `paginas_libres`): título, bajada, imagen opcional, contenido, video de YouTube opcional, hasta 6 Enlaces y bloques destacados opcionales) que vive en `/p/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
 _Avoid_: Página institucional, página, artículo
+
+**Archivos del panel**:
+Sección del panel con los archivos únicos, aparte de las colecciones: Inicio, Secciones del sitio, Redes sociales, SEO del sitio y Encabezados de los listados. No se crean ni se borran; se editan siempre en el mismo lugar, al final de la lista (ADR 0013).
+_Avoid_: Configuración del sitio, Páginas, Ajustes
 
 **Página destacada**:
 Página libre marcada con «Destacar en el Inicio», que se muestra como bloque entre el carrusel de Banners y las Noticias recientes. Solo una a la vez: si hay varias marcadas, el sitio muestra una (la primera por título) y avisa en el build.
