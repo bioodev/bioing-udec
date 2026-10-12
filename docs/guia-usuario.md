@@ -682,15 +682,18 @@ cambio de descripción.
 > Un título o una descripción demasiado largos se cortan en Google. Por eso los campos tienen límite de caracteres.
 
 **Vista previa en el panel.** Al editar Noticias, Actividades, Anuncios, Documentos, Páginas libres o Personas, a la
-derecha del formulario aparece la vista previa del contenido:
+derecha del formulario aparece la vista previa. Va en este orden:
+- **Así se ve el contenido**: primero, una vista simple del título, la bajada, la imagen y el cuerpo de la entrada. En
+  una Persona muestra su nombre, su descripción breve y su foto (no tiene cuerpo).
 - **Resultado de Google**: el título (con «· BIOING+», cortado a unos 60 caracteres), la dirección de la página y la
   descripción (cortada a unos 160). Es una aproximación de cómo se ve en Google, no la de Google exacta.
 - **Al compartir en redes**: la imagen, el título y la descripción de la tarjeta. Si la entrada no tiene imagen, se
   muestra la imagen por defecto del sitio.
 - **Antes de publicar**: avisos breves. «Sin descripción propia» indica que se usa la descripción general del sitio.
   «Título largo» indica que Google lo cortará. «Marcada como “No mostrar en buscadores”» confirma la casilla.
-- **Así se ve el contenido**: una vista simple del título, la bajada, la imagen y el cuerpo de la entrada. En una
-  Persona muestra su nombre, su descripción breve y su foto (no tiene cuerpo).
+
+La vista previa sigue el tema que tengas en el panel (claro u oscuro, o el del sistema si el panel sigue al sistema).
+Si cambias el tema en Ajustes, la vista previa cambia sin recargar.
 
 **Límites de la vista previa.** No muestra el texto exacto de cada buscador ni cómo se ve en el móvil. La descripción
 general del sitio no se lee desde el panel, así que el aviso «Sin descripción propia» no sabe cuál es. En Actividades,

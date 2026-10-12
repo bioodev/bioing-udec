@@ -1,6 +1,7 @@
 // Vista previa SEO del panel (ADR 0010, guía de usuario 4.15). Para Noticias, Actividades, Anuncios, Documentos,
-// Páginas libres y Personas muestra el resultado de Google, la tarjeta al compartir en redes y avisos breves.
-// Debajo, una vista previa simple del contenido (una plantilla propia reemplaza la de Sveltia). Las reglas están en
+// Páginas libres y Personas muestra primero una vista simple del contenido (una plantilla propia reemplaza la de Sveltia)
+// y debajo el resultado de Google, la tarjeta al compartir en redes y los avisos breves. Los colores están en
+// vista-previa.css (vista-previa-tema.js lo registra y copia el tema del panel). Las reglas están en
 // vista-previa-seo-reglas.js. Sveltia expone CMS, h y createClass como globales (sin JSX ni build).
 // Límites: la descripción general del sitio y la imagen por defecto vienen de src/content/seo/seo.yml y de
 // una copia de src/assets/og-default.png (public/admin/og-default.png, con prueba de igualdad). La descripción
@@ -13,27 +14,30 @@ const { h, createClass } = window;
 const CON_CUERPO = ['noticias', 'actividades', 'anuncios', 'paginas_libres'];
 
 const estilo = {
-  contenedor: { fontFamily: 'system-ui, sans-serif', color: '#1f2937', background: '#ffffff', padding: '16px', lineHeight: 1.4 },
-  etiqueta: { fontSize: '12px', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#6b7280', margin: '0 0 8px' },
+  contenedor: { fontFamily: 'system-ui, sans-serif', color: 'var(--vp-texto)', background: 'var(--vp-fondo)', padding: '16px', lineHeight: 1.4 },
+  etiqueta: { fontSize: '12px', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--vp-texto-suave)', margin: '0 0 8px' },
   seccion: { marginBottom: '20px' },
-  google: { maxWidth: '600px', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '12px 16px' },
-  url: { fontSize: '14px', color: '#202124', overflowWrap: 'anywhere' },
-  tituloGoogle: { fontSize: '20px', color: '#1a0dab', margin: '2px 0', fontWeight: 400 },
-  descripcionGoogle: { fontSize: '14px', color: '#4d5156' },
-  tarjeta: { maxWidth: '520px', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', background: '#ffffff' },
-  imagen: { width: '100%', aspectRatio: '1200 / 630', objectFit: 'cover', display: 'block', background: '#f3f4f6' },
+  google: { maxWidth: '600px', border: '1px solid var(--vp-borde)', borderRadius: '8px', padding: '12px 16px', background: 'var(--vp-google-fondo)' },
+  url: { fontSize: '14px', color: 'var(--vp-google-url)', overflowWrap: 'anywhere' },
+  tituloGoogle: { fontSize: '20px', color: 'var(--vp-google-titulo)', margin: '2px 0', fontWeight: 400 },
+  descripcionGoogle: { fontSize: '14px', color: 'var(--vp-google-texto)' },
+  tarjeta: { maxWidth: '520px', border: '1px solid var(--vp-borde)', borderRadius: '8px', overflow: 'hidden', background: 'var(--vp-fondo)' },
+  imagen: { width: '100%', aspectRatio: '1200 / 630', objectFit: 'cover', display: 'block', background: 'var(--vp-superficie)' },
   sinImagen: {
     width: '100%', aspectRatio: '1200 / 630', display: 'flex', alignItems: 'center', justifyContent: 'center',
-    background: '#f3f4f6', color: '#6b7280', fontSize: '14px', textAlign: 'center', padding: '12px', boxSizing: 'border-box',
+    background: 'var(--vp-superficie)', color: 'var(--vp-texto-suave)', fontSize: '14px', textAlign: 'center', padding: '12px', boxSizing: 'border-box',
   },
   cuerpoTarjeta: { padding: '12px 14px' },
-  dominio: { fontSize: '12px', color: '#6b7280', textTransform: 'uppercase' },
+  dominio: { fontSize: '12px', color: 'var(--vp-texto-suave)', textTransform: 'uppercase' },
   tituloTarjeta: { fontSize: '16px', fontWeight: 600, margin: '2px 0 4px' },
-  descripcionTarjeta: { fontSize: '14px', color: '#4b5563', margin: 0 },
-  aviso: { background: '#f1f5f9', borderLeft: '3px solid #94a3b8', color: '#334155', padding: '8px 12px', margin: '0 0 6px', fontSize: '14px', borderRadius: '4px' },
-  separador: { border: 0, borderTop: '1px solid #e5e7eb', margin: '20px 0' },
+  descripcionTarjeta: { fontSize: '14px', color: 'var(--vp-texto-suave)', margin: 0 },
+  aviso: {
+    background: 'var(--vp-aviso-fondo)', borderLeft: '3px solid var(--vp-aviso-borde)', color: 'var(--vp-aviso-texto)',
+    padding: '8px 12px', margin: '0 0 6px', fontSize: '14px', borderRadius: '4px',
+  },
+  separador: { border: 0, borderTop: '1px solid var(--vp-borde)', margin: '20px 0' },
   titulo: { fontSize: '28px', lineHeight: 1.2, margin: '0 0 8px' },
-  bajada: { fontSize: '17px', color: '#4b5563', margin: '0 0 12px' },
+  bajada: { fontSize: '17px', color: 'var(--vp-texto-suave)', margin: '0 0 12px' },
   imagenContenido: { width: '100%', maxWidth: '640px', height: 'auto', borderRadius: '6px', margin: '0 0 12px' },
 };
 
@@ -78,6 +82,19 @@ function crearVistaPrevia(coleccion) {
       return h(
         'div',
         { style: estilo.contenedor },
+        // El contenido primero: es lo que la persona está escribiendo.
+        seccion(
+          'Así se ve el contenido',
+          h(
+            'article',
+            {},
+            h('h1', { style: estilo.titulo }, nombre ?? ''),
+            bajada && h('p', { style: estilo.bajada }, bajada),
+            urlContenido && h('img', { src: urlContenido, alt: '', style: estilo.imagenContenido }),
+            cuerpo,
+          ),
+        ),
+        h('hr', { style: estilo.separador }),
         seccion(
           'Resultado de Google',
           h(
@@ -104,18 +121,6 @@ function crearVistaPrevia(coleccion) {
           ),
         ),
         v.avisos.length > 0 && seccion('Antes de publicar', v.avisos.map((aviso, i) => h('p', { key: i, style: estilo.aviso }, aviso))),
-        h('hr', { style: estilo.separador }),
-        seccion(
-          'Así se ve el contenido',
-          h(
-            'article',
-            {},
-            h('h1', { style: estilo.titulo }, nombre ?? ''),
-            bajada && h('p', { style: estilo.bajada }, bajada),
-            urlContenido && h('img', { src: urlContenido, alt: '', style: estilo.imagenContenido }),
-            cuerpo,
-          ),
-        ),
       );
     },
   });
