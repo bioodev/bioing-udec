@@ -15,12 +15,14 @@
 # El panel de Sveltia CMS se sirve en /admin/*: necesita su propio CSP
 # (scripts de unpkg, conexiones a GitHub/netlify) y COOP para el login emergente. Sin los "!" el
 # navegador recibe las dos CSP, aplica ambas y la pública bloquea el script de unpkg.
+# El permiso de iframes blob: (abajo) es para la vista previa de Sveltia, que la muestra en un iframe blob:
+# (sandbox con allow-same-origin); sin él, el navegador bloquea el iframe y la vista previa queda vacía.
 /admin/*
   ! X-Frame-Options
   ! Content-Security-Policy
   X-Frame-Options: SAMEORIGIN
   Cross-Origin-Opener-Policy: same-origin-allow-popups
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self' data: blob: https:; manifest-src 'self' blob:; frame-src 'self' https:
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self' data: blob: https:; manifest-src 'self' blob:; frame-src 'self' blob: https:
 
 # Caché larga para los assets con hash en el nombre que genera el build de Astro
 # (app/_astro/foo.a1b2c3d4.css, imágenes optimizadas, etc.): son inmutables.
