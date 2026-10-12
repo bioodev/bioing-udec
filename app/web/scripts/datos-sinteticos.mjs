@@ -31,6 +31,9 @@ const DEMO_ALT = {
 const VIDEOS = ['https://www.youtube.com/watch?v=yLxPo7uBv-Q', 'https://www.youtube.com/watch?v=SyYaQjP3MoU', 'https://youtu.be/mO-W-WL7Alk'];
 const EMOJIS = ['🧬', '🔬', '🌊', '🧪'];
 // Contenido incrustado: un enlace por servicio (Spotify episodio, SoundCloud, Maps, Facebook y TikTok, que sale como tarjeta).
+// Enlaces internos de prueba: URL absoluta del propio sitio (el esquema exige https).
+const SITIO = process.env.SITE_URL ?? 'https://bioing.example';
+
 const INCRUSTADOS = {
   spotify: { url: 'https://open.spotify.com/episode/4rOoJ6Egrf8K2IrywzwOMk?si=ejemplo', titulo: 'Episodio: biomateriales en la práctica' },
   soundcloud: { url: 'https://soundcloud.com/bioingenieria-udec/grabacion-charla', titulo: 'Grabación de la charla' },
@@ -283,7 +286,7 @@ function generar() {
       imagen: `@/assets/media/${alguno(DEMOS)}`,
       incrustados: i === 0 ? [INCRUSTADOS.soundcloud, INCRUSTADOS.maps] : undefined,
       enlaces: i === 0 ? [{ etiqueta: 'Ver transmisión', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }]
-        : i === 1 ? [{ etiqueta: 'Más información', url: '/agenda' }, { etiqueta: 'Programa completo', url: 'https://www.udec.cl/' }]
+        : i === 1 ? [{ etiqueta: 'Más información', url: `${SITIO}/agenda` }, { etiqueta: 'Programa completo', url: 'https://www.udec.cl/' }]
         : undefined,
     }, cuerpo({ secciones: 2 }));
   }
@@ -322,7 +325,7 @@ function generar() {
     titulo: 'Prueba: galería y video', fecha: fechaSola(dias(-3)), publicado: true,
     imagen: '@/assets/media/demo-05.jpg', imagen_alt: DEMO_ALT['demo-05.jpg'],
     video: VIDEOS[0],
-    enlaces: [{ etiqueta: 'Inscripción', url: 'https://forms.gle/ejemplo' }, { etiqueta: 'Más información', url: '/noticias' }],
+    enlaces: [{ etiqueta: 'Inscripción', url: 'https://forms.gle/ejemplo' }, { etiqueta: 'Más información', url: `${SITIO}/noticias` }],
     galeria: DEMOS.slice(0, 4).map((d) => ({ imagen: `@/assets/media/${d}`, alt: DEMO_ALT[d] })),
     bajada: 'Noticia de prueba para revisar la galería, el video y el cuerpo con imagen, emoji y enlace.',
     etiquetas: ['prueba', 'galería', 'video'],
