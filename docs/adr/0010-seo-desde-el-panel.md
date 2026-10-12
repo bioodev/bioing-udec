@@ -21,8 +21,8 @@ cambio de código.
    repositorio, directorio, instagram) y códigos de verificación de Google (`google-site-verification`) y Bing
    (`msvalidate.01`). Solo se emiten los códigos con valor. La imagen de un listado sigue la precedencia de
    `imagenDeListado`: imagen del listado → imagen del sitio → `og-default.png` (ver también ADR 0011).
-2. **SEO por contenido** (bloque opcional «SEO (opcional)», colapsado, en Noticias, Actividades, Anuncios, Documentos y
-   Páginas libres): `titulo` (máx. 60), `descripcion` (máx. 160), `imagen` para redes y `noindex` («No mostrar en
+2. **SEO por contenido** (bloque opcional «SEO (opcional)», colapsado, en Noticias, Actividades, Anuncios, Documentos,
+   Páginas libres y Personas): `titulo` (máx. 60), `descripcion` (máx. 160), `imagen` para redes y `noindex` («No mostrar en
    buscadores»). Si el bloque está vacío, el sitio usa lo de siempre (título, bajada e imagen destacada).
 3. **Precedencia** (función pura `resolverSeo` en `src/lib/seo.ts`, con prueba): campo SEO de la entrada → valor que
    arma la página → valor del sitio (`seo.yml`) → valor por defecto del código (`VALORES_POR_DEFECTO`, la única tabla
@@ -39,14 +39,18 @@ cambio de código.
 
 ## Consecuencias
 
-- Con el `seo.yml` inicial (los valores que ya tenía el sitio), el `<head>` de las 32 páginas queda idéntico al de
-  antes del cambio. Verificado comparando los builds.
+- Con el `seo.yml` inicial (los valores que ya tenía el sitio), el `<head>` de las páginas queda idéntico al de antes
+  del cambio, salvo las 11 Fichas de Personas: su descripción meta pasa de la general del sitio a su descripción
+  breve, y su imagen de redes a su foto cuando la tiene. Verificado comparando los builds.
 - Las descripciones de listados y del sitio viven en el panel, pero el texto por defecto sigue en el código: si el
   panel se vacía, vuelve a ese texto, no a una cadena vacía.
 - El Inicio sin descripción propia en el panel hereda la descripción general del sitio, no el texto de su tabla.
 - Un `noindex` no protege de enlaces externos: un buscador puede mostrar la URL sin contenido si ya la conoce.
   Para ocultar contenido de verdad hay que quitar la página (desactivarla o borrarla).
 - Agregar otro campo SEO exige cambiar `config.yml`, `content.config.ts`, `seo.ts` y esta decisión.
+- En Personas, la ayuda del bloque SEO («se usa el título, la bajada y la imagen destacada») no cuadra del todo: el
+  respaldo real es nombre, descripción breve y foto. El texto se dejó como está (es el mismo ancla de todas las
+  colecciones); si se quiere precisar, hay que separar el ancla por colección.
 - Pasar `listados.<clave>` de texto a objeto (`descripcion` e `imagen`) fue una migración: `seo.yml`, el esquema y
   `config.yml` cambian juntos, y el `<head>` de las páginas quedó igual (comprobado comparando los builds).
 
@@ -61,7 +65,7 @@ cambio de código.
 
 ## Apéndice (2026-10-12): vista previa en el panel
 
-Decisión de la persona responsable: al editar Noticias, Actividades, Anuncios, Documentos y Páginas libres, el panel
+Decisión de la persona responsable: al editar Noticias, Actividades, Anuncios, Documentos, Páginas libres y Personas, el panel
 muestra cómo aparece la entrada en Google y al compartirla, con avisos breves (sin descripción propia, título largo,
 «No mostrar en buscadores»). Se implementa con `CMS.registerPreviewTemplate` de Sveltia, sin build ni JSX.
 

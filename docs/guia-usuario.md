@@ -395,7 +395,7 @@ corresponde. Antes del inicio y después del fin, no aparece.
 
 **Campos de la Persona.**
 - Obligatorios: Nombre y apellido, Ficha pública activa (por defecto: sí).
-- Opcionales: Descripción breve, Foto.
+- Opcionales: Descripción breve, Foto, SEO (opcional) (ver 4.15).
 - Perfil de egresado (bloque opcional): Autoriza publicar su perfil (por defecto: no), Año de egreso
   (obligatorio dentro del perfil), Generación, Áreas, Organización, Cargo / profesión y Enlaces profesionales
   (cada uno con Etiqueta y URL).
@@ -639,8 +639,8 @@ la bajada y la imagen de cada página.
 
 **Dos lugares:**
 - **SEO del sitio** (en **Páginas**): valores generales de todo el sitio.
-- **SEO (opcional)**: un bloque plegado dentro de Noticias, Actividades, Anuncios, Documentos y Páginas libres. Solo
-  afecta a esa ficha.
+- **SEO (opcional)**: un bloque plegado dentro de Noticias, Actividades, Anuncios, Documentos, Páginas libres y
+  Personas. Solo afecta a esa ficha.
 
 **SEO del sitio: qué es cada campo.**
 - **Descripción del sitio**: una o dos frases sobre la carrera. Aparece en Google y al compartir el sitio. Máximo 160
@@ -674,7 +674,7 @@ cambio de descripción.
 
 > Un título o una descripción demasiado largos se cortan en Google. Por eso los campos tienen límite de caracteres.
 
-**Vista previa en el panel.** Al editar Noticias, Actividades, Anuncios, Documentos o Páginas libres, a la
+**Vista previa en el panel.** Al editar Noticias, Actividades, Anuncios, Documentos, Páginas libres o Personas, a la
 derecha del formulario aparece la vista previa del contenido:
 - **Resultado de Google**: el título (con «· BIOING+», cortado a unos 60 caracteres), la dirección de la página y la
   descripción (cortada a unos 160). Es una aproximación de cómo se ve en Google, no la de Google exacta.
@@ -682,7 +682,8 @@ derecha del formulario aparece la vista previa del contenido:
   muestra la imagen por defecto del sitio.
 - **Antes de publicar**: avisos breves. «Sin descripción propia» indica que se usa la descripción general del sitio.
   «Título largo» indica que Google lo cortará. «Marcada como “No mostrar en buscadores”» confirma la casilla.
-- **Así se ve el contenido**: una vista simple del título, la bajada, la imagen y el cuerpo de la entrada.
+- **Así se ve el contenido**: una vista simple del título, la bajada, la imagen y el cuerpo de la entrada. En una
+  Persona muestra su nombre, su descripción breve y su foto (no tiene cuerpo).
 
 **Límites de la vista previa.** No muestra el texto exacto de cada buscador ni cómo se ve en el móvil. La descripción
 general del sitio no se lee desde el panel, así que el aviso «Sin descripción propia» no sabe cuál es. En Actividades,
@@ -840,6 +841,7 @@ Los términos completos están en [`context.md`](context.md).
 | ↳ Organización | No | Organización donde trabaja |
 | ↳ Cargo / profesión | No | Cargo o profesión |
 | ↳ Enlaces profesionales | No | Lista de enlaces; cada uno con Etiqueta y URL |
+| SEO (opcional) | No | Título, descripción e imagen para buscadores y redes, y «No mostrar en buscadores» (ver 4.15). Si está vacío, se usan el nombre, la descripción breve y la foto |
 
 ### Organizaciones
 
@@ -986,7 +988,7 @@ sobre fondo gris y, si hay bloques, la franja oscura. Sin ninguno, es una column
 
 - **SEO del sitio** (Páginas): descripción del sitio, imagen por defecto, descripción de cada listado y códigos de
   verificación de buscadores. Todo opcional.
-- **SEO (opcional)** (Noticias, Actividades, Anuncios, Documentos y Páginas libres): título y descripción para
+- **SEO (opcional)** (Noticias, Actividades, Anuncios, Documentos, Páginas libres y Personas): título y descripción para
   buscadores y redes (máx. 60 y 160 caracteres), imagen para compartir y «No mostrar en buscadores».
 
 Detalle en la sección 4.15.
