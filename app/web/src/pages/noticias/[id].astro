@@ -12,6 +12,7 @@ import { minutosLectura } from '@/lib/lectura';
 import { idYouTube } from '@/lib/enlaces';
 import VideoModal from '@/components/VideoModal.astro';
 import GaleriaImagenes from '@/components/GaleriaImagenes.astro';
+import Incrustados from '@/components/Incrustados.astro';
 import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
@@ -112,6 +113,8 @@ const jsonLdPagina = [
         <VideoModal id={video} titulo={noticia.data.titulo} />
       </div>
     )}
+
+    <Incrustados items={noticia.data.incrustados ?? []} />
 
     {galeria.length > 0 && (
       <section class="mt-10" aria-labelledby="galeria-titulo">
