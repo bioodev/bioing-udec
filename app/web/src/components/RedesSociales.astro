@@ -1,0 +1,43 @@
+---
+// Íconos de las redes con URL (pie de página). Cada enlace lleva su nombre accesible y se abre en una ventana nueva.
+import type { IconoRed, RedVisible } from '@/lib/redes';
+import ButterflyIcono from 'phosphor-astro/Butterfly.astro';
+import FacebookLogo from 'phosphor-astro/FacebookLogo.astro';
+import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
+import LinkedinLogo from 'phosphor-astro/LinkedinLogo.astro';
+import MastodonLogo from 'phosphor-astro/MastodonLogo.astro';
+import ThreadsLogo from 'phosphor-astro/ThreadsLogo.astro';
+import TiktokLogo from 'phosphor-astro/TiktokLogo.astro';
+import XLogo from 'phosphor-astro/XLogo.astro';
+import YoutubeLogo from 'phosphor-astro/YoutubeLogo.astro';
+
+const iconos: Record<IconoRed, typeof InstagramLogo> = {
+  InstagramLogo,
+  FacebookLogo,
+  XLogo,
+  LinkedinLogo,
+  YoutubeLogo,
+  TiktokLogo,
+  ThreadsLogo,
+  Butterfly: ButterflyIcono,
+  MastodonLogo,
+};
+
+interface Props { redes: RedVisible[] }
+const { redes } = Astro.props;
+---
+{redes.length > 0 && (
+  <ul aria-label="Redes sociales" class="-ml-2.5 mt-4 flex flex-wrap gap-1">
+    {redes.map((red) => {
+      const Icono = iconos[red.icono];
+      return (
+        <li>
+          <a href={red.url} target="_blank" rel="noopener me" title={`BIOING+ en ${red.etiqueta}`} class="inline-flex size-11 items-center justify-center rounded-md text-muted-foreground hover:text-primary focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none">
+            <Icono class="size-5" aria-hidden="true" />
+            <span class="sr-only">BIOING+ en {red.etiqueta} (se abre en una ventana nueva)</span>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+)}

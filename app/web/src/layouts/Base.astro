@@ -8,8 +8,10 @@ import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
 import Logo from '@/components/Logo.astro';
 import Navbar from '@/components/Navbar.astro';
+import RedesSociales from '@/components/RedesSociales.astro';
 import { MENU, URL_FCB, enlacesFooter, seccionVisible } from '@/lib/navegacion';
-import { configuracionMenu, paginasParaMenu } from '@/lib/contenido';
+import { configuracionMenu, configuracionRedes, paginasParaMenu } from '@/lib/contenido';
+import { redesVisibles, urlsRedes } from '@/lib/redes';
 import { jsonLd as serializarJsonLd, sitioWeb, type JsonLd } from '@/lib/schema';
 import ogPorDefecto from '@/assets/og-default.png';
 
@@ -28,7 +30,9 @@ const canonical = new URL(actual, Astro.site).href;
 const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefecto.src, Astro.site).href;
 // Datos estructurados: WebSite + Organization del sitio en todas las páginas, más los
 // bloques propios de la página (migas, entidad de la ficha, listados…).
-const bloquesSitio = sitioWeb(Astro.site);
+const configRedes = await configuracionRedes();
+const redes = redesVisibles(configRedes);
+const bloquesSitio = sitioWeb(Astro.site, { sameAs: urlsRedes(configRedes) });
 const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina : [jsonLdPagina]) : [];
 ---
 <html lang="es">
@@ -101,6 +105,7 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
             <a href={URL_FCB} class="mt-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
               Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" />
             </a>
+            <RedesSociales redes={redes} />
           </div>
 
           <!-- Navegación principal (misma fuente que el menú) -->
