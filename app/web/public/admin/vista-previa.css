@@ -1,0 +1,60 @@
+/* Estilos de las vistas previas del panel (SEO y Banners). Sveltia los inyecta en el iframe de la vista previa
+   con CMS.registerPreviewStyle (vista-previa-tema.js). Los colores claros son los del sitio (src/styles/starwind.css,
+   modo claro) y los oscuros, los de su modo .dark. La tarjeta de Google usa sus propios colores en cada tema. */
+
+:root {
+  color-scheme: light;
+  --vp-fondo: #ffffff;
+  --vp-texto: #1d1d1f;
+  --vp-texto-suave: #6e6e73;
+  --vp-borde: #e5e7eb;
+  --vp-superficie: #f3f4f6;
+  --vp-aviso-fondo: #f1f5f9;
+  --vp-aviso-texto: #334155;
+  --vp-aviso-borde: #94a3b8;
+  --vp-google-fondo: #ffffff;
+  --vp-google-url: #202124;
+  --vp-google-titulo: #1a0dab;
+  --vp-google-texto: #4d5156;
+}
+
+/* Tema oscuro según el sistema, solo si el panel no fijó el tema (data-theme) en el iframe. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --vp-fondo: #0a0a0a;
+    --vp-texto: #fafafa;
+    --vp-texto-suave: #a3a3a3;
+    --vp-borde: rgb(250 250 250 / 0.12);
+    --vp-superficie: #262626;
+    --vp-aviso-fondo: #171717;
+    --vp-aviso-texto: #e5e5e5;
+    --vp-aviso-borde: #525252;
+    --vp-google-fondo: #202124;
+    --vp-google-url: #bdc1c6;
+    --vp-google-titulo: #8ab4f8;
+    --vp-google-texto: #bdc1c6;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --vp-fondo: #0a0a0a;
+  --vp-texto: #fafafa;
+  --vp-texto-suave: #a3a3a3;
+  --vp-borde: rgb(250 250 250 / 0.12);
+  --vp-superficie: #262626;
+  --vp-aviso-fondo: #171717;
+  --vp-aviso-texto: #e5e5e5;
+  --vp-aviso-borde: #525252;
+  --vp-google-fondo: #202124;
+  --vp-google-url: #bdc1c6;
+  --vp-google-titulo: #8ab4f8;
+  --vp-google-texto: #bdc1c6;
+}
+
+body {
+  margin: 0;
+  background: var(--vp-fondo);
+  color: var(--vp-texto);
+}

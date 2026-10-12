@@ -10,12 +10,15 @@ const { h, createClass } = window;
 const COLOR = { fondo: '#1d1d1f', texto: '#ffffff', primario: '#0066cc' };
 
 const estilo = {
-  contenedor: { fontFamily: 'system-ui, sans-serif', color: '#1f2937', background: '#ffffff', padding: '16px', lineHeight: 1.4 },
-  etiqueta: { fontSize: '12px', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#6b7280', margin: '0 0 8px' },
+  contenedor: { fontFamily: 'system-ui, sans-serif', color: 'var(--vp-texto)', background: 'var(--vp-fondo)', padding: '16px', lineHeight: 1.4 },
+  etiqueta: { fontSize: '12px', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--vp-texto-suave)', margin: '0 0 8px' },
   seccion: { marginBottom: '20px' },
-  aviso: { background: '#f1f5f9', borderLeft: '3px solid #94a3b8', color: '#334155', padding: '8px 12px', margin: '0 0 6px', fontSize: '14px', borderRadius: '4px' },
-  estado: { fontSize: '14px', margin: 0, color: '#334155' },
-  enlace: { fontSize: '13px', color: '#6b7280', margin: '6px 0 0', overflowWrap: 'anywhere' },
+  aviso: {
+    background: 'var(--vp-aviso-fondo)', borderLeft: '3px solid var(--vp-aviso-borde)', color: 'var(--vp-aviso-texto)',
+    padding: '8px 12px', margin: '0 0 6px', fontSize: '14px', borderRadius: '4px',
+  },
+  estado: { fontSize: '14px', margin: 0, color: 'var(--vp-aviso-texto)' },
+  enlace: { fontSize: '13px', color: 'var(--vp-texto-suave)', margin: '6px 0 0', overflowWrap: 'anywhere' },
   // Slide: mismo fondo, velo, altura mínima y alineación que HeroCarrusel (escritorio y celular).
   slide: { position: 'relative', overflow: 'hidden', background: COLOR.fondo, color: COLOR.texto, isolation: 'isolate', maxWidth: '100%' },
   slideEscritorio: { minHeight: '360px' },
@@ -24,7 +27,8 @@ const estilo = {
     position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7,
     filter: 'sepia(0.22) saturate(1.06) brightness(0.95)',
   },
-  sinImagen: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af', fontSize: '14px', padding: '12px', textAlign: 'center' },
+  // Sin imagen: la nota va arriba a la izquierda para no tapar el título centrado.
+  sinImagen: { position: 'absolute', top: '8px', left: '12px', color: '#9ca3af', fontSize: '13px' },
   velo: { position: 'absolute', inset: 0, background: 'rgba(29, 29, 31, 0.3)' },
   contenido: { position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: 'inherit', boxSizing: 'border-box' },
   contenidoEscritorio: { padding: '48px 24px' },
@@ -39,7 +43,7 @@ const estilo = {
     display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '28px', borderRadius: '9999px', padding: '10px 20px',
     background: COLOR.primario, color: COLOR.texto, fontSize: '15px', fontWeight: 500, whiteSpace: 'nowrap',
   },
-  pie: { fontSize: '12px', color: '#6b7280', margin: '6px 0 0' },
+  pie: { fontSize: '12px', color: 'var(--vp-texto-suave)', margin: '6px 0 0' },
 };
 
 // Lee una entrada de Sveltia (Immutable) como objeto plano.

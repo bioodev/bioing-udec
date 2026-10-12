@@ -85,3 +85,14 @@ muestra cómo aparece la entrada en Google y al compartirla, con avisos breves (
   y la configuración real de `config.yml` convertida, sin tocar el archivo. Se recorrió Noticias de punta a punta; las
   demás colecciones se revisaron sin errores de consola, y solo Actividades se revisó en captura. `/admin/` en
   `wrangler dev --env qa` carga sin errores de consola y con la CSP de `/admin/*`.
+
+### Tema claro/oscuro y orden de la vista previa (2026-10-12)
+
+- **Orden**: «Así se ve el contenido» va primero y debajo «Resultado de Google», «Al compartir en redes» y «Antes de
+  publicar». El contenido es lo que la persona escribe; la vista de buscadores es secundaria.
+- **Tema**: Sveltia guarda el tema del panel en `data-theme` del `<html>` principal, pero dibuja la vista previa en un
+  iframe `blob:` que no lo hereda. `public/admin/vista-previa-tema.js` copia `data-theme` a cada iframe (al abrir una
+  entrada, al cambiar de entrada y al cambiar el tema en Ajustes) y registra `public/admin/vista-previa.css` con
+  `CMS.registerPreviewStyle` (URL del mismo origen: un CSS crudo se convierte en `blob:` y la CSP de `/admin/*` lo
+  bloquea). La regla «qué tema corresponde» es `public/admin/vista-previa-tema-reglas.js`, con prueba en
+  `src/lib/vista-previa-tema.test.ts`. Los colores de ambas plantillas salen de variables `--vp-*`.
