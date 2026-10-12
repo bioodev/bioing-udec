@@ -282,6 +282,9 @@ function generar() {
       enlace_inscripcion: quizas(0.5, 'https://forms.gle/ejemplo'),
       imagen: `@/assets/media/${alguno(DEMOS)}`,
       incrustados: i === 0 ? [INCRUSTADOS.soundcloud, INCRUSTADOS.maps] : undefined,
+      enlaces: i === 0 ? [{ etiqueta: 'Ver transmisión', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }]
+        : i === 1 ? [{ etiqueta: 'Más información', url: '/agenda' }, { etiqueta: 'Programa completo', url: 'https://www.udec.cl/' }]
+        : undefined,
     }, cuerpo({ secciones: 2 }));
   }
 
@@ -319,6 +322,7 @@ function generar() {
     titulo: 'Prueba: galería y video', fecha: fechaSola(dias(-3)), publicado: true,
     imagen: '@/assets/media/demo-05.jpg', imagen_alt: DEMO_ALT['demo-05.jpg'],
     video: VIDEOS[0],
+    enlaces: [{ etiqueta: 'Inscripción', url: 'https://forms.gle/ejemplo' }, { etiqueta: 'Más información', url: '/noticias' }],
     galeria: DEMOS.slice(0, 4).map((d) => ({ imagen: `@/assets/media/${d}`, alt: DEMO_ALT[d] })),
     bajada: 'Noticia de prueba para revisar la galería, el video y el cuerpo con imagen, emoji y enlace.',
     etiquetas: ['prueba', 'galería', 'video'],
@@ -383,6 +387,7 @@ function generar() {
     },
     {
       titulo: 'Preguntas frecuentes', mostrar_en: 'footer', bajada: 'Respuestas a las consultas más comunes de estudiantes y egresados/as.',
+      enlaces: [{ etiqueta: 'Escribir a la secretaría', url: 'https://forms.gle/ejemplo' }],
       incrustados: [INCRUSTADOS.spotify, INCRUSTADOS.maps],
     },
   ];
