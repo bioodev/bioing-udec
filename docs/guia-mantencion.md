@@ -157,6 +157,10 @@ Tabla *síntoma → causa probable → acción inmediata → a quién avisar →
 - `_headers` (CSP y encabezados): qué revisar antes de agregar un embed nuevo a la lista cerrada.
 - Claves de R2 (permisos mínimos, rotación) — solo si se usa R2.
 - Reporte de vulnerabilidades (_pendiente de contacto; ver `pendientes-infra.md` → `security.txt`_).
+- **Revisión de seguridad** (última: `analisis/2026-10-12-revision-seguridad.md`). En la mantención semestral:
+  `npm audit`, `gitleaks git --log-opts="--all" --redact` y las pruebas de cabeceras (`src/lib/csp.test.ts`).
+  El cuerpo Markdown del panel no admite HTML crudo (`src/lib/sanear-html.ts`) y los enlaces solo aceptan http(s)
+  o rutas internas (`src/lib/urls.ts`): no relajar esas reglas sin revisar la CSP.
 
 ## 11. Costos y cuotas
 
