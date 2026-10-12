@@ -169,6 +169,7 @@ Sirve para una revisión rápida desde el celular, pero muestra el **dev**, no e
 | `/admin/` en blanco: la CSP bloquea `unpkg.com` | Cloudflare **suma** las cabeceras de las reglas de `_headers` que coinciden (llegan dos CSP) | La regla `/admin/*` debe quitar la heredada con `! Content-Security-Policy` (ya está) |
 | El build falla con `ImageNotFound /media/…` tras publicar desde el panel | Ruta de imagen escrita con el `public_folder` antiguo | `public_folder: '@/assets/media'` en `config.yml` (ya está); corregir la ruta del archivo a `'@/assets/media/…'` |
 | Workers Builds falla con `Could not read package.json` en `/opt/buildhome/repo` | El *Root directory* quedó vacío: el build corre en la raíz del monorepo | Settings → Builds → Root directory = `app/web` y *Retry build* |
+| Tras un build automático, canonical/sitemap dicen `bioing.example` | `SITE_URL` cargada como variable de ejecución (*Variables & Secrets*) y no de build | Settings → Builds → **Build variables and secrets** → `SITE_URL`, y *Retry build* |
 | Publiqué desde el panel y el sitio no cambió | La vista previa no está conectada a Workers Builds | Desplegar a mano (§4) o conectar el build (§4.1) |
 | Aparece una advertencia de cobro | Plan gratuito superado | Revisar el panel; el volumen esperado entra de sobra |
 
