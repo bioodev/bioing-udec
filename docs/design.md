@@ -508,6 +508,34 @@ reintroducir efectos de puntos/impresión en el hero.
   `background-attachment: fixed` (falla en iOS).
 - Imagen decorativa: si `imagen_alt` está vacío, `alt=""`. Un enlace externo abre en una ventana nueva y lo anuncia.
 
+### Banda «Comunidad y documentos» (Inicio)
+
+Bloque con datos reales entre las Páginas destacadas y las Secciones destacadas (`BandaComunidad.astro`; datos en
+`bandaComunidad`, src/lib/contenido.ts, y reglas puras en `src/lib/comunidad.ts`). Reemplaza a las antiguas secciones
+a pantalla completa del Directorio y el Repositorio, que daban ~1,5 pantallas para dos enlaces.
+
+- **Sin fondo de sección**: la banda va sobre el blanco; las tarjetas son `bg-card` con borde `border-border` y radio
+  `rounded-lg`. Así no choca con el `bg-muted` de Agenda o Instagram que tenga al lado.
+- **Dos tarjetas lado a lado** en escritorio (`md:grid-cols-2`) y apiladas en móvil. Si solo sale una (el panel apagó
+  la otra), ocupa un ancho máximo de 42 rem centrado (`max-w-2xl`), no todo el ancho.
+- **Tarjeta del Directorio**: foto opcional pequeña (16:9, hasta 20 rem en escritorio; sin foto, la tarjeta se ve
+  igual); título `h3`, texto, **cifras** en una `<dl>` de tres columnas (Egresados/as, Generaciones, Organizaciones) y
+  un buscador por nombre. El buscador es un `<form action="/directorio" method="get" role="search">` con `<label>` (sr-only) y
+  `<input type="search" name="texto">`; al enviar lleva a `/directorio?texto=…`, que el Directorio aplica al cargar.
+  Botón «Ir al Directorio» al pie de la tarjeta.
+- **Tarjeta del Repositorio**: foto opcional igual, título, texto, los **4 documentos más recientes** en una
+  `<ul role="list">` (cada ítem: título enlazado a `/repositorio/<id>` y, debajo, tipo y año), y «Ir al Repositorio».
+- **Sin datos**: cada cifra en cero no se muestra (nunca «0»; sin egresados/as no sale la `<dl>`); sin documentos no
+  sale la lista. El texto y el botón de la tarjeta siempre salen.
+- **Alineación**: el botón va en `mt-auto pt-6`, así queda al pie de la tarjeta y con aire aunque la tarjeta vecina
+  sea más alta.
+- **Íconos**: Phosphor `MagnifyingGlass` (buscador) y `ArrowRight` (botones), decorativos (`aria-hidden`).
+- **Móvil (390 px)**: el campo de búsqueda tiene un ancho base de 14 rem (`basis-56`); si no cabe junto al botón,
+  «Buscar» baja a su propia línea y el placeholder no se corta.
+- **Semántica**: `<section id="inicio-comunidad" aria-labelledby="inicio-comunidad-titulo">`, cada tarjeta un
+  `<article aria-labelledby>`. Las cifras y la lista siguen las convenciones de «HTML semántico».
+- **Modo claro y oscuro**: solo tokens del tema (`bg-card`, `border-border`, `text-muted-foreground`, `bg-primary`).
+
 ### Animaciones
 
 GSAP + ScrollTrigger con **fade solo** (sin deslizamientos), marcadas de forma declarativa en el HTML:
@@ -537,11 +565,13 @@ Sirven para anclas (`#inicio-anuncios`), analítica y pruebas. Convención:
 - Piezas fijas ya asignadas: `navbar` (header), `navbar-menu` y `navbar-menu-movil` (los dos menús), `navbar-buscar`
   y `navbar-buscar-movil` (los botones de búsqueda), `contenido` (`<main>`), `pie` (footer), `buscador` (modal),
   `buscar` (sección de `/buscar`) y `seccion-<ruta>` (páginas «próximamente»).
+  La banda del Inicio usa `inicio-comunidad` (sección), `inicio-directorio` y `inicio-repositorio` (sus tarjetas),
+  con `-titulo` para los encabezados.
 
 - Formato: español, kebab-case, sin tildes, con el prefijo de la página o de la pieza: `inicio-noticias`,
   `agenda-listado`, `noticia-galeria`, `actividad-cobertura`, `anuario-generacion-2015`, `pagina-bloques`.
 - Cada `<section>` lleva `id`. Las piezas únicas de una página (`inicio-carrusel`, `inicio-pagina-destacada`,
-  `incrustados`, `banner-<id>`) lo llevan en su elemento raíz.
+  `incrustados`, `banner-<id>`, `inicio-comunidad`) lo llevan en su elemento raíz.
 - Las tarjetas toman el id de su entrada: `noticia-<id>`, `actividad-<id>`, `anuncio-<id>`, `documento-<id>`,
   `persona-<id>`, `instagram-<id>`. Si la misma tarjeta puede salir dos veces en una página, no lleva `id`: usa
   `data-id` (p. ej. `TarjetaActividad` con `sinId` en `/personas/[id]`, donde una actividad puede estar en
