@@ -36,8 +36,10 @@ if (errors.length) {
   process.exit(1);
 }
 
+// Páginas con «No mostrar en buscadores» (noindex, ADR 0010): no entran al índice del buscador.
 const archivos = htmlIndexables(SITIO);
-for (const archivo of archivos) {
+const indexables = archivos.filter((archivo) => !/<meta name="robots" content="noindex"/.test(readFileSync(archivo, 'utf8')));
+for (const archivo of indexables) {
   const respuesta = await index.addHTMLFile({
     sourcePath: archivo,
     url: urlDesde(archivo),
@@ -55,4 +57,4 @@ if (erroresEscritura.length) {
   console.error('[postbuild] errores al escribir el índice:', erroresEscritura);
   process.exit(1);
 }
-console.log(`[postbuild] Pagefind: ${archivos.length} página(s) indexada(s) en ${outputPath}`);
+console.log(`[postbuild] Pagefind: ${indexables.length} página(s) indexada(s) en ${outputPath} (${archivos.length - indexables.length} con noindex fuera del índice)`);

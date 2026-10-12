@@ -5,7 +5,7 @@
 // - output.omit_empty_optional_fields: true → los campos con required: false no existen en el archivo → .optional()
 // - Las relaciones guardan el slug del archivo, que es el entry.id de Astro → reference()
 // - Fechas con hora se guardan con offset de America/Santiago; fechas solas (type: date) como AAAA-MM-DD.
-import { defineCollection, reference } from 'astro:content';
+import { defineCollection, reference, type ImageFunction } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { PATRON_INSTAGRAM, enlaceInstagram } from './lib/instagram';
@@ -19,6 +19,16 @@ const referencias = <C extends 'personas' | 'organizaciones' | 'areas' | 'temas'
   z.array(reference(coleccion)).optional();
 
 const publicado = z.boolean().default(false);
+
+// Bloque «SEO (opcional)» de Noticias, Actividades, Anuncios, Documentos y Páginas libres (ADR 0010). Todo opcional;
+// los máximos son la red de seguridad de los del panel (maxlength). La imagen usa image() como los demás campos.
+const seoEntrada = (image: ImageFunction) =>
+  z.object({
+    titulo: z.string().max(60).optional(),
+    descripcion: z.string().max(160).optional(),
+    imagen: image().optional(),
+    noindex: z.boolean().optional(),
+  }).optional();
 
 // "Persona u Organización": objeto de tipo variable con typeKey: tipo
 const personaUOrganizacion = z.discriminatedUnion('tipo', [
@@ -94,6 +104,7 @@ const noticias = defineCollection({
       organizaciones_mencionadas: referencias('organizaciones'),
       actividad: reference('actividades').optional(), // Cobertura
       instagram: reference('instagram').optional(),
+      seo: seoEntrada(image),
     }),
 });
 
@@ -118,40 +129,45 @@ const actividades = defineCollection({
       enlaces,
       imagen: image().optional(),
       incrustados,
+      seo: seoEntrada(image),
     }),
 });
 
 const anuncios = defineCollection({
   loader: md('anuncios'),
-  schema: z.object({
-    titulo: z.string(),
-    publicado,
-    tipo: z.enum(['trabajo', 'practica', 'pasantia', 'proyecto', 'convocatoria', 'colaboracion', 'otra']),
-    oferente: personaUOrganizacion,
-    areas: referencias('areas'),
-    fecha: z.coerce.date(),
-    fecha_limite: z.coerce.date().optional(),
-    contacto: z.string(),
-    enlace: z.url().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      titulo: z.string(),
+      publicado,
+      tipo: z.enum(['trabajo', 'practica', 'pasantia', 'proyecto', 'convocatoria', 'colaboracion', 'otra']),
+      oferente: personaUOrganizacion,
+      areas: referencias('areas'),
+      fecha: z.coerce.date(),
+      fecha_limite: z.coerce.date().optional(),
+      contacto: z.string(),
+      enlace: z.url().optional(),
+      seo: seoEntrada(image),
+    }),
 });
 
 const documentos = defineCollection({
   loader: yml('documentos'),
-  schema: z.object({
-    titulo: z.string(),
-    publicado,
-    tipo: z.enum([
-      'decreto', 'reglamento', 'ley', 'informe', 'publicacion',
-      'institucional', 'historico', 'academico', 'otro',
-    ]),
-    anio: z.number().int(),
-    enlace: z.url(),
-    descripcion: z.string().optional(),
-    temas: referencias('temas'),
-    areas: referencias('areas'),
-    palabras_clave: z.array(z.string()).optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      titulo: z.string(),
+      publicado,
+      tipo: z.enum([
+        'decreto', 'reglamento', 'ley', 'informe', 'publicacion',
+        'institucional', 'historico', 'academico', 'otro',
+      ]),
+      anio: z.number().int(),
+      enlace: z.url(),
+      descripcion: z.string().optional(),
+      temas: referencias('temas'),
+      areas: referencias('areas'),
+      palabras_clave: z.array(z.string()).optional(),
+      seo: seoEntrada(image),
+    }),
 });
 
 const banners = defineCollection({
@@ -187,6 +203,7 @@ const paginasLibres = defineCollection({
       bloques_titulo: z.string().optional(),
       bloques: z.array(z.object({ titulo: z.string(), texto: z.string() })).optional(),
       incrustados,
+      seo: seoEntrada(image),
     }),
 });
 
@@ -275,6 +292,30 @@ const redes = defineCollection({
   }),
 });
 
+// SEO del sitio: descripción general, imagen por defecto para redes, descripción de cada listado y códigos de
+// verificación de buscadores. Todo opcional: sin archivo o sin clave, el sitio usa su valor por defecto (src/lib/seo.ts).
+const seoSitio = defineCollection({
+  loader: yml('seo'),
+  schema: ({ image }) =>
+    z.object({
+      descripcion: z.string().max(160).optional(),
+      imagen: image().optional(),
+      listados: z.object({
+        inicio: z.string().max(160).optional(),
+        noticias: z.string().max(160).optional(),
+        agenda: z.string().max(160).optional(),
+        anuncios: z.string().max(160).optional(),
+        repositorio: z.string().max(160).optional(),
+        directorio: z.string().max(160).optional(),
+        instagram: z.string().max(160).optional(),
+      }).optional(),
+      verificacion: z.object({
+        google: z.string().regex(/^[A-Za-z0-9_-]+$/, 'Solo el código, sin etiqueta <meta> ni comillas.').optional(),
+        bing: z.string().regex(/^[A-Za-z0-9_-]+$/, 'Solo el código, sin etiqueta <meta> ni comillas.').optional(),
+      }).optional(),
+    }),
+});
+
 const instagram = defineCollection({
   loader: yml('instagram'),
   schema: ({ image }) =>
@@ -293,5 +334,5 @@ const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, redes, instagram, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, redes, seo: seoSitio, instagram, areas, temas,
 };

@@ -197,6 +197,18 @@ collections:
         fields:
           - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
+      - &seo_contenido
+        name: seo
+        label: SEO (opcional)
+        widget: object
+        collapsed: true
+        required: false
+        hint: "Solo si quieres que en Google o al compartir se vea distinto. Si lo dejas vacío, se usa el título, la bajada y la imagen destacada."
+        fields:
+          - { name: titulo, label: Título para buscadores y redes, widget: string, required: false, maxlength: 60, hint: "Máximo 60 caracteres. No hace falta escribir «· BIOING+»: se agrega solo." }
+          - { name: descripcion, label: Descripción para buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases, de hasta 160 caracteres. Es el texto que aparece bajo el título en Google." }
+          - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen de la página o, si no tiene, la del sitio." }
+          - { name: noindex, label: No mostrar en buscadores, widget: boolean, default: false, hint: "La página sigue publicada y enlazada, pero Google no la indexa: sale del buscador del sitio y del mapa del sitio." }
       - { name: body, label: Cuerpo, widget: richtext }
 
   - name: actividades
@@ -277,6 +289,7 @@ collections:
         fields:
           - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
+      - *seo_contenido
       - { name: body, label: Descripción, widget: richtext }
 
   - name: anuncios
@@ -320,6 +333,7 @@ collections:
         widget: string
         hint: Correo, teléfono o enlace. Texto libre; no es una Persona.
       - { name: enlace, label: Enlace externo, widget: string, type: url, required: false }
+      - *seo_contenido
       - { name: body, label: Descripción, widget: richtext }
 
   - name: documentos
@@ -351,6 +365,7 @@ collections:
       - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false }
       - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
       - { name: palabras_clave, label: Palabras clave, widget: list, required: false }
+      - *seo_contenido
 
   - name: banners
     label: Banners
@@ -496,6 +511,46 @@ collections:
             pattern: ['^https://', 'Debe empezar con https://']
             hint: "La dirección de tu perfil en cualquier instancia, p. ej. https://mastodon.social/@bioing. Déjalo vacío si no hay perfil en esta red."
 
+      - name: seo
+        label: SEO del sitio
+        file: /app/web/src/content/seo/seo.yml
+        format: yml
+        fields:
+          - name: descripcion
+            label: Descripción del sitio
+            widget: text
+            required: false
+            maxlength: 160
+            hint: "Una o dos frases que describan la carrera. Aparece en Google y al compartir el sitio. Si la dejas vacía, se usa el texto por defecto."
+          - name: imagen
+            label: Imagen para compartir por defecto
+            widget: image
+            required: false
+            hint: "Horizontal, de 1200 × 630 px. Se usa cuando una página no trae su propia imagen. Si la dejas vacía, se usa la imagen por defecto del sitio."
+          - name: listados
+            label: Descripción de cada listado
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Texto que aparece en Google para cada página de listado. Si lo dejas vacío, se usa el texto por defecto."
+            fields:
+              - { name: inicio, label: Inicio, widget: text, required: false, maxlength: 160 }
+              - { name: noticias, label: Noticias, widget: text, required: false, maxlength: 160 }
+              - { name: agenda, label: Agenda, widget: text, required: false, maxlength: 160 }
+              - { name: anuncios, label: Anuncios, widget: text, required: false, maxlength: 160 }
+              - { name: repositorio, label: Repositorio, widget: text, required: false, maxlength: 160 }
+              - { name: directorio, label: Directorio, widget: text, required: false, maxlength: 160 }
+              - { name: instagram, label: Instagram, widget: text, required: false, maxlength: 160 }
+          - name: verificacion
+            label: Verificación de buscadores
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Códigos que entregan Google y Bing para confirmar que el sitio es de la carrera. Solo el código, no la etiqueta HTML completa."
+            fields:
+              - { name: google, label: Código de Google Search Console, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta google-site-verification. Ej.: abc123_XYZ-9." }
+              - { name: bing, label: Código de Bing Webmaster, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta msvalidate.01." }
+
   # ── Páginas libres (se crean desde el panel; cada una vive en /p/<slug>) ──
 
   - name: paginas_libres
@@ -556,6 +611,7 @@ collections:
         fields:
           - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
+      - *seo_contenido
       - { name: body, label: Contenido, widget: richtext }
 
   - name: instagram

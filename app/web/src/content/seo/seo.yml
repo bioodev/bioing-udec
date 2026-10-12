@@ -1,0 +1,11 @@
+# SEO del sitio (editado desde el panel, «SEO del sitio»). Los valores de aquí son los que el sitio usaba antes de
+# que existiera este archivo: vacío = el texto por defecto del código (src/lib/seo.ts). Decisión: docs/adr/0010.
+descripcion: "Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción."
+listados:
+  inicio: "Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción."
+  noticias: "Noticias de la comunidad de Bioingeniería UdeC."
+  agenda: "Actividades de la comunidad de Bioingeniería UdeC: seminarios, charlas, congresos y más."
+  anuncios: "Oportunidades para la comunidad de Bioingeniería UdeC: trabajo, prácticas, pasantías y convocatorias."
+  repositorio: "Documentos de interés para la comunidad de Bioingeniería UdeC: decretos, reglamentos, informes y más."
+  directorio: "Directorio de bioingenieros/as egresados/as de la Universidad de Concepción."
+  instagram: "Publicaciones seleccionadas de la cuenta de Bioingeniería UdeC en Instagram."
