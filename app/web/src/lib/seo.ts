@@ -45,6 +45,7 @@ export interface SeoSitio {
   imagen?: string;
   listados?: Partial<Record<Listado, SeoListado>>;
   verificacion?: { google?: string; bing?: string };
+  analitica?: { cloudflare_token?: string };
 }
 
 // Un texto del panel cuenta solo si tiene algo más que espacios.
@@ -95,6 +96,21 @@ export function verificacionMetas(verificacion: SeoSitio['verificacion']): { nam
   if (google) metas.push({ name: 'google-site-verification', content: google });
   if (bing) metas.push({ name: 'msvalidate.01', content: bing });
   return metas;
+}
+
+// Token de Cloudflare Web Analytics: alfanumérico (sin comillas ni etiquetas), porque va dentro de un atributo HTML.
+// Formato no confirmado en la documentación de Cloudflare: el panel y el esquema usan el mismo patrón.
+export const PATRON_TOKEN_CLOUDFLARE = /^[A-Za-z0-9]{20,64}$/;
+
+/**
+ * Atributo data-cf-beacon del snippet de Cloudflare Web Analytics, o undefined si no hay un token válido.
+ * `spa: true` mide las navegaciones del ClientRouter (View Transitions) como visitas; es el valor por defecto de
+ * Cloudflare, pero se deja explícito para que no dependa de ese default.
+ */
+export function analiticaCloudflare(sitio: SeoSitio | undefined): string | undefined {
+  const token = texto(sitio?.analitica?.cloudflare_token);
+  if (!token || !PATRON_TOKEN_CLOUDFLARE.test(token)) return undefined;
+  return JSON.stringify({ token, spa: true });
 }
 
 /** ¿El HTML generado pide no aparecer en buscadores? Lo usan el sitemap y el índice de Pagefind del build. */

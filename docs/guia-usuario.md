@@ -700,6 +700,12 @@ general del sitio no se lee desde el panel, así que el aviso «Sin descripción
 la descripción se arma con el tipo y la fecha, igual que en el sitio; si falta el tipo o la fecha, el aviso aparece
 hasta completarlos.
 
+**Analítica de visitas (opcional).** En **SEO del sitio**, el grupo **Analítica (opcional)** recibe el token de
+Cloudflare Web Analytics: pega solo el token que aparece en el código «manual snippet» que entrega Cloudflare. Cloudflare
+mide las visitas sin cookies ni banner. Para verlas, entra al panel de Cloudflare de la carrera, en *Analytics & Logs →
+Web Analytics*. Si la carrera activa la analítica desde el panel de Cloudflare (sitio proxied), deja este campo vacío para
+no contar dos veces. Sin token, el sitio no mide nada.
+
 ### 4.16 Imagen e ícono de los listados y del bloque del Directorio
 
 Sirve para dar identidad visual a Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram, y al bloque «¿Eres

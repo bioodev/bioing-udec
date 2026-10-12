@@ -666,6 +666,14 @@ collections:
             fields:
               - { name: google, label: Código de Google Search Console, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta google-site-verification. Ej.: abc123_XYZ-9." }
               - { name: bing, label: Código de Bing Webmaster, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta msvalidate.01." }
+          - name: analitica
+            label: Analítica (opcional)
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Medición de visitas sin cookies (Cloudflare Web Analytics). Si lo dejas vacío, el sitio no mide nada."
+            fields:
+              - { name: cloudflare_token, label: Token de Cloudflare Web Analytics, widget: string, required: false, pattern: ['^[A-Za-z0-9]{20,64}$', 'Solo el token: letras y números, sin comillas ni código.'], hint: "Cloudflare → Web Analytics → Add site → «manual snippet»: copia solo el token del código. No es secreto: va atado al dominio. Si el sitio está en un dominio proxied por Cloudflare, la analítica puede activarse desde el panel de Cloudflare sin token; en ese caso déjalo vacío para no contar dos veces." }
 
       - name: encabezados
         label: Encabezados de los listados

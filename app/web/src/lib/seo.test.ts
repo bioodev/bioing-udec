@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import {
   DESCRIPCION_SITIO,
+  analiticaCloudflare,
   descripcionListado,
   descripcionSitio,
   esNoindex,
@@ -128,5 +129,34 @@ describe('esNoindex', () => {
 
   test('una página normal no es noindex', () => {
     expect(esNoindex('<head><meta name="description" content="x"></head>')).toBe(false);
+  });
+});
+
+describe('analiticaCloudflare (Cloudflare Web Analytics, sin cookies)', () => {
+  const TOKEN = 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6';
+
+  test('sin token no hay analítica', () => {
+    expect(analiticaCloudflare(undefined)).toBeUndefined();
+    expect(analiticaCloudflare({})).toBeUndefined();
+    expect(analiticaCloudflare({ analitica: {} })).toBeUndefined();
+    expect(analiticaCloudflare({ analitica: { cloudflare_token: '' } })).toBeUndefined();
+    expect(analiticaCloudflare({ analitica: { cloudflare_token: '   ' } })).toBeUndefined();
+  });
+
+  test('un token válido arma el JSON del atributo data-cf-beacon con SPA activado', () => {
+    expect(analiticaCloudflare({ analitica: { cloudflare_token: TOKEN } })).toBe(
+      `{"token":"${TOKEN}","spa":true}`,
+    );
+  });
+
+  test('quita los espacios alrededor del token', () => {
+    expect(analiticaCloudflare({ analitica: { cloudflare_token: `  ${TOKEN}\n` } })).toBe(
+      `{"token":"${TOKEN}","spa":true}`,
+    );
+  });
+
+  test('un valor con comillas, etiquetas o espacios dentro no se inyecta', () => {
+    expect(analiticaCloudflare({ analitica: { cloudflare_token: `${TOKEN}"}<script>` } })).toBeUndefined();
+    expect(analiticaCloudflare({ analitica: { cloudflare_token: 'abc def' } })).toBeUndefined();
   });
 });

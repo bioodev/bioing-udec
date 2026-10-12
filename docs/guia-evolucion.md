@@ -376,7 +376,7 @@ compromiso; las dependencias indican qué debe existir antes.
 | 3 | **Componentes de editor** para video, PDF y mapa (§4) | M | Decisión entre opciones A y B (§4.2) |
 | 4 | **Guía de usuario con pantallazos** (`guia-usuario.md`) | S | Cuenta oficial del panel |
 | 5 | **Fase 3 de la Noticia**: preguntas a la carrera (`preguntas-reunion.md`) | M | Respuestas de la reunión |
-| 6 | **Analítica sin cookies** (Cloudflare Web Analytics), ver `guia-mantencion.md` §8 | S | Dominio definitivo y ampliar la CSP |
+| 6 | **Analítica sin cookies** (Cloudflare Web Analytics): implementada (ADR 0012); falta el token de la cuenta de la carrera, ver `guia-mantencion.md` §8 | S | Cuenta de Cloudflare de la carrera y dominio definitivo |
 | 7 | **R2 para documentos propios** (PDF que no estén en Drive) | M | Cuenta de Cloudflare de la carrera y decidir si se usa |
 | 8 | **Mejoras de búsqueda**: hoy los buscadores corren en el navegador, adecuados para cientos o miles de registros | M | Crecimiento real del contenido |
 

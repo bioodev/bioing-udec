@@ -9,6 +9,7 @@ import { defineCollection, reference, type ImageFunction } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { PATRON_INSTAGRAM, enlaceInstagram } from './lib/instagram';
+import { PATRON_TOKEN_CLOUDFLARE } from './lib/seo';
 
 const yml = (coleccion: string) => glob({ base: `./src/content/${coleccion}`, pattern: '**/*.yml' });
 const md = (coleccion: string) => glob({ base: `./src/content/${coleccion}`, pattern: '**/*.md' });
@@ -325,7 +326,7 @@ const redes = defineCollection({
 });
 
 // SEO del sitio: descripción general, imagen por defecto para redes, descripción de cada listado y códigos de
-// verificación de buscadores. Todo opcional: sin archivo o sin clave, el sitio usa su valor por defecto (src/lib/seo.ts).
+// verificación de buscadores y analítica. Todo opcional: sin archivo o sin clave, el sitio usa su valor por defecto (src/lib/seo.ts).
 const seoSitio = defineCollection({
   loader: yml('seo'),
   schema: ({ image }) => {
@@ -346,6 +347,10 @@ const seoSitio = defineCollection({
       verificacion: z.object({
         google: z.string().regex(/^[A-Za-z0-9_-]+$/, 'Solo el código, sin etiqueta <meta> ni comillas.').optional(),
         bing: z.string().regex(/^[A-Za-z0-9_-]+$/, 'Solo el código, sin etiqueta <meta> ni comillas.').optional(),
+      }).optional(),
+      // Analítica sin cookies (ADR 0012). Vacío = sin analítica; el panel puede dejar la clave en "".
+      analitica: z.object({
+        cloudflare_token: z.union([z.literal(''), z.string().regex(PATRON_TOKEN_CLOUDFLARE, 'Solo el token, sin comillas ni código.')]).optional(),
       }).optional(),
     });
   },
