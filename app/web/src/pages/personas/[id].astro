@@ -5,7 +5,8 @@ import Base from '@/layouts/Base.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
-import { vinculosDe } from '@/lib/contenido';
+import { configuracionMenu, vinculosDe } from '@/lib/contenido';
+import { seccionActiva } from '@/lib/navegacion';
 import { existentes } from '@/lib/reglas';
 import { migas, persona as jsonLdPersona } from '@/lib/schema';
 import LinkedinLogo from 'phosphor-astro/LinkedinLogo.astro';
@@ -24,11 +25,13 @@ const areas = perfil?.areas ? existentes(await getEntries(perfil.areas)) : [];
 const { noticias, organiza, expone, ofrece } = await vinculosDe('personas', persona.id);
 
 const enlace = `/personas/${persona.id}`;
+// La ficha sigue existiendo aunque el Directorio esté apagado: la migaja solo lleva al Directorio si está activo.
+const configMenu = await configuracionMenu();
 const jsonLdPagina = [
   migas(
     [
       { name: 'Inicio', url: '/' },
-      { name: 'Directorio', url: '/directorio' },
+      ...(seccionActiva('/directorio', configMenu) ? [{ name: 'Directorio', url: '/directorio' }] : []),
       { name: persona.data.nombre, url: enlace },
     ],
     Astro.site,

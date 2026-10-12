@@ -210,7 +210,8 @@ const inicio = defineCollection({
     }),
 });
 
-// Menú: un interruptor por sección fija (navbar, pie y llms.txt). Una clave ausente cuenta como visible.
+// Secciones fijas: un interruptor por sección. Noticias y Agenda solo salen del menú; las demás, si se desactivan,
+// dejan de publicarse (ADR 0008). Una clave ausente cuenta como visible.
 const menu = defineCollection({
   loader: yml('menu'),
   schema: z.object({

@@ -8,13 +8,18 @@ import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import SeccionDestacada from '@/components/SeccionDestacada.astro';
 import PaginaDestacada from '@/components/PaginaDestacada.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { anunciosVigentes, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
+import { anunciosVigentes, configuracionMenu, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
+import { enlaceDisponible, seccionActiva } from '@/lib/navegacion';
 import { estaVigente } from '@/lib/reglas';
 import { getImage } from 'astro:assets';
 
-// Banners vigentes: cada uno es un slide del hero en carrusel (wireframes: Inicio).
+// Secciones que el panel apagó (src/content/menu/menu.yml): no se muestran en el Inicio ni sus bloques.
+const configMenu = await configuracionMenu();
+
+// Banners vigentes: cada uno es un slide del hero en carrusel (wireframes: Inicio). Un Banner que lleva a una
+// sección apagada no se muestra.
 const banners = (await publicados('banners'))
-  .filter((b) => estaVigente(b.data, new Date()))
+  .filter((b) => estaVigente(b.data, new Date()) && enlaceDisponible(b.data.enlace, configMenu))
   .sort((a, b) => b.data.inicio.valueOf() - a.data.inicio.valueOf());
 
 // Preload del LCP: la imagen del primer slide se pide en cuanto arranca el documento
@@ -24,7 +29,7 @@ const lcp = banners[0]
   ? await getImage({ src: banners[0].data.imagen, widths: [640, 1280, 1920], format: 'webp' }).catch(() => undefined)
   : undefined;
 
-const secciones = await seccionesInicio();
+const secciones = (await seccionesInicio()).filter((s) => enlaceDisponible(s.enlace, configMenu));
 const paginaDestacada = await paginaDestacadaInicio();
 
 const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
@@ -70,7 +75,7 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
     </section>
   )}
 
-  {anuncios.length > 0 && (
+  {anuncios.length > 0 && seccionActiva('/anuncios', configMenu) && (
     <section id="inicio-anuncios" class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="inicio-anuncios-titulo">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <h2 id="inicio-anuncios-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Anuncios</h2>
@@ -80,7 +85,7 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
     </section>
   )}
 
-  {pubInstagram.length > 0 && (
+  {pubInstagram.length > 0 && seccionActiva('/instagram', configMenu) && (
     <section id="inicio-instagram" class="bg-muted" aria-labelledby="inicio-instagram-titulo">
       <div class="mx-auto max-w-6xl px-4 py-16">
         <div class="flex flex-wrap items-end justify-between gap-4">
