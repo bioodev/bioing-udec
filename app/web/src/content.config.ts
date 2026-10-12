@@ -265,7 +265,7 @@ const inicio = defineCollection({
 // dejan de publicarse (ADR 0008). Una clave ausente cuenta como visible.
 const menu = defineCollection({
   loader: yml('menu'),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     noticias: z.boolean().default(true),
     agenda: z.boolean().default(true),
     instagram: z.boolean().default(true),
@@ -277,8 +277,11 @@ const menu = defineCollection({
       .string()
       .refine((url) => url === '' || /^https:\/\/\S+$/.test(url), 'Debe ser una dirección completa que empiece con https://')
       .optional(),
-    // Ícono del bloque «¿Eres egresado/a?» (lista en src/lib/iconos.ts). Un valor desconocido no muestra ícono.
+    // Bloque «¿Eres egresado/a?» de /directorio: ícono (lista en src/lib/iconos.ts; uno desconocido no se muestra) e
+    // imagen de cabecera con su texto alternativo. Todo opcional.
     sumarse_icono: z.string().optional(),
+    sumarse_imagen: image().optional(),
+    sumarse_imagen_alt: z.string().optional(),
   }),
 });
 
