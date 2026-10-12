@@ -3,6 +3,9 @@ titulo: ¿Qué es la Bioingeniería?
 publicado: true
 bajada: Contenido de ejemplo. La Bioingeniería combina biología, medicina e ingeniería para resolver problemas de salud, ambiente e industria.
 mostrar_en: la-carrera
+# Contenido de ejemplo: reemplazar por el resumen real
+destacar_inicio: true
+resumen_inicio: Contenido de ejemplo. La Bioingeniería integra biología, medicina e ingeniería para diseñar soluciones en salud, ambiente e industria.
 # Contenido de ejemplo: reemplazar por el video institucional
 video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 bloques_titulo: Características de la carrera

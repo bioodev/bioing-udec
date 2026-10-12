@@ -1,0 +1,55 @@
+---
+// Página destacada del Inicio: bloque entre el carrusel de Banners y las Noticias (src/lib/contenido.ts,
+// paginaDestacadaInicio). Texto y, si la página lo tiene, video (VideoModal) e imagen. En escritorio, la imagen
+// va a un lado del texto; en móvil, arriba. Sin JavaScript propio: el video usa el VideoModal existente.
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import VideoModal from '@/components/VideoModal.astro';
+import ArrowRight from 'phosphor-astro/ArrowRight.astro';
+import { idYouTube } from '@/lib/enlaces';
+
+interface Props { pagina: CollectionEntry<'paginasLibres'> }
+const { pagina } = Astro.props;
+const { titulo, bajada, resumen_inicio, imagen, imagen_alt, video, bloques } = pagina.data;
+
+const idVideo = video ? idYouTube(video) : null;
+// Los títulos de los bloques destacados se muestran como «datos clave» (hasta 3, en chips).
+const clavesDe = (bloques ?? []).slice(0, 3);
+---
+<section class="bg-muted">
+  <div class={`mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 ${imagen ? 'md:grid-cols-2' : ''}`}>
+    {imagen && (
+      <Image
+        src={imagen}
+        alt={imagen_alt ?? ''}
+        widths={[640, 960, 1280]}
+        sizes="(min-width: 768px) 50vw, 100vw"
+        data-animar="fade-up"
+        class="aspect-video w-full rounded-lg object-cover"
+      />
+    )}
+    <div class={imagen ? '' : 'max-w-2xl'}>
+      <p data-animar="fade-up" class="text-sm font-medium uppercase tracking-wide text-primary">Destacado</p>
+      <h2 data-animar="fade-up" class="mt-2 text-3xl font-semibold tracking-tight">{titulo}</h2>
+      <p data-animar="fade-up" class="mt-4 text-muted-foreground">{resumen_inicio ?? bajada}</p>
+
+      {clavesDe.length > 0 && (
+        <ul data-animar="fade-up" class="mt-6 flex flex-wrap gap-2">
+          {clavesDe.map((b) => (
+            <li class="rounded-full border border-border bg-background px-3 py-1 text-sm">{b.titulo}</li>
+          ))}
+        </ul>
+      )}
+
+      {idVideo && (
+        <div data-animar="fade-up" class="mt-8 max-w-md">
+          <VideoModal id={idVideo} titulo={`Video: ${titulo}`} />
+        </div>
+      )}
+
+      <a data-animar="fade-up" href={`/p/${pagina.id}`} class="mt-8 inline-flex items-center gap-1 text-sm text-primary hover:underline">
+        Ver más<span class="sr-only"> sobre {titulo}</span> <ArrowRight class="size-4" aria-hidden="true" />
+      </a>
+    </div>
+  </div>
+</section>

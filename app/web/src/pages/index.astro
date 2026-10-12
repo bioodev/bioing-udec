@@ -6,8 +6,9 @@ import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import SeccionDestacada from '@/components/SeccionDestacada.astro';
+import PaginaDestacada from '@/components/PaginaDestacada.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { anunciosVigentes, noticiasRecientes, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
+import { anunciosVigentes, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
 import { estaVigente } from '@/lib/reglas';
 import { getImage } from 'astro:assets';
 
@@ -24,6 +25,7 @@ const lcp = banners[0]
   : undefined;
 
 const secciones = await seccionesInicio();
+const paginaDestacada = await paginaDestacadaInicio();
 
 const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
   noticiasRecientes(3), proximasActividades(), anunciosVigentes(), publicacionesInstagram(3),
@@ -43,6 +45,8 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
   )}
   {banners.length > 0 && <HeroCarrusel banners={banners} />}
   {banners.length === 0 && <h1 class="sr-only">BIOING+</h1>}
+
+  {paginaDestacada && <PaginaDestacada pagina={paginaDestacada} />}
 
   {noticias.length > 0 && (
     <section class="mx-auto max-w-6xl px-4 py-16">

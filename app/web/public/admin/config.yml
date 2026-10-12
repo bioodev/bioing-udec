@@ -402,6 +402,8 @@ collections:
           - { label: "Menú «La carrera»", value: la-carrera }
           - { label: "Menú «Comunidad»", value: comunidad }
         hint: "«Menú» la agrega al desplegable del navbar y también al pie. «Pie de página» solo al pie."
+      - { name: destacar_inicio, label: Destacar en el Inicio, widget: boolean, default: false, hint: "Se muestra un bloque bajo el carrusel del Inicio. Solo se muestra una página destacada a la vez." }
+      - { name: resumen_inicio, label: Resumen para el Inicio, widget: text, required: false, hint: "3 o 4 líneas. Si lo dejas vacío, se usa la bajada." }
       - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo de la bajada, en una ventana al hacer clic." }
       - { name: bloques_titulo, label: Título de los bloques destacados, widget: string, required: false, hint: "Aparece sobre los bloques destacados. Déjalo vacío para mostrar solo los bloques." }
       - name: bloques
