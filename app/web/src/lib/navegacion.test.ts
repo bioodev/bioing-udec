@@ -65,9 +65,16 @@ describe('entradaActiva', () => {
 
   test('un grupo está activo si lo está alguno de sus enlaces, también en subrutas', () => {
     expect(entradaActiva(entrada('La carrera'), '/repositorio/x')).toBe(true);
-    expect(entradaActiva(entrada('La carrera'), '/bioingenieria')).toBe(true);
     expect(entradaActiva(entrada('Comunidad'), '/directorio/egresado')).toBe(true);
     expect(entradaActiva(entrada('Comunidad'), '/noticias')).toBe(false);
+  });
+
+  test('una Página libre del grupo también lo activa', () => {
+    const menu = menuConPaginas(MENU_PRINCIPAL, [
+      { titulo: '¿Qué es la Bioingeniería?', href: '/paginas/bioingenieria', bajada: 'x', mostrar_en: 'la-carrera' },
+    ]);
+    const carrera = menu.find((e) => e.tipo === 'grupo' && e.grupo.etiqueta === 'La carrera')!;
+    expect(entradaActiva(carrera, '/paginas/bioingenieria')).toBe(true);
   });
 
   test('un enlace suelto solo se activa en su sección', () => {
@@ -93,7 +100,7 @@ describe('menuConPaginas', () => {
       pagina('Beca', 'la-carrera'),
     ]);
     const etiquetas = grupo('La carrera', menu).grupo.enlaces.map((e) => e.etiqueta);
-    expect(etiquetas).toEqual(['¿Qué es la Bioingeniería?', 'Repositorio', 'Árbol', 'Beca', 'Zeta']);
+    expect(etiquetas).toEqual(['Repositorio', 'Árbol', 'Beca', 'Zeta']);
   });
 
   test('usa la bajada como descripción del enlace', () => {
