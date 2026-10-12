@@ -1,8 +1,10 @@
 ---
-// Agrupa los filtros de un listado en un pliegue: en móvil es un acordeón; en escritorio el botón queda junto
-// al buscador de texto y la región se acomoda en una grilla de `columnas` columnas. Parte plegado si no hay
-// filtros activos y desplegado si llegan por la URL (la decisión la toma el script). El texto de búsqueda
-// queda fuera del pliegue, en la página. Sin JavaScript el botón está oculto y los filtros quedan visibles.
+// Agrupa los filtros de un listado en un pliegue: en móvil es un acordeón a ancho completo; en escritorio los
+// botones quedan a la derecha del buscador (ancho natural, alineados abajo) y la región ocupa su propia fila con
+// una grilla de `columnas` columnas. Requiere que el `<form>` de la página sea flex (`md:flex-row md:flex-wrap`).
+// Parte plegado si no hay filtros activos y desplegado si llegan por la URL (la decisión la toma el script). El
+// texto de búsqueda queda fuera del pliegue, en la página. Sin JavaScript el botón está oculto y los filtros
+// quedan visibles.
 // Lógica en src/scripts/filtros-plegables.ts.
 import CaretDown from 'phosphor-astro/CaretDown.astro';
 import FunnelSimple from 'phosphor-astro/FunnelSimple.astro';
@@ -25,7 +27,7 @@ const grilla = { 1: '', 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-co
   aria-controls={id}
   aria-expanded="false"
   hidden
-  class="flex h-11 w-full items-center justify-between self-end rounded-lg border border-input px-4 text-sm font-medium"
+  class="flex h-11 w-full items-center justify-between self-end rounded-lg border border-input px-4 text-sm font-medium md:w-auto md:shrink-0 md:justify-start md:gap-2"
 >
   <span class="flex items-center gap-2">
     <FunnelSimple class="size-4" aria-hidden="true" />
@@ -37,10 +39,10 @@ const grilla = { 1: '', 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-co
   type="button"
   data-plegable-limpiar={id}
   hidden
-  class="h-11 w-full self-end rounded-lg px-4 text-sm font-medium text-primary underline-offset-4 hover:underline"
+  class="h-11 w-full self-end rounded-lg px-4 text-sm font-medium text-primary underline-offset-4 hover:underline md:w-auto md:shrink-0"
 >
   Limpiar filtros
 </button>
-<div id={id} data-plegable data-neutros={neutros.join(',')} class={`grid gap-4 col-span-full data-[plegado]:hidden ${grilla}`}>
+<div id={id} data-plegable data-neutros={neutros.join(',')} class={`grid w-full gap-4 md:basis-full data-[plegado]:hidden ${grilla}`}>
   <slot />
 </div>
