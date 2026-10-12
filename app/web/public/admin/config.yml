@@ -323,7 +323,7 @@ collections:
       - name: enlace
         label: Enlace
         widget: string
-        hint: Ruta interna (p. ej. /noticias/mi-noticia) o URL externa.
+        hint: Ruta interna (p. ej. /noticias/mi-noticia o /paginas/mi-pagina) o URL externa.
       - { name: inicio, label: Inicio de vigencia, widget: datetime, input_timezone: America/Santiago }
       - { name: fin, label: Fin de vigencia, widget: datetime, input_timezone: America/Santiago }
 
