@@ -414,8 +414,12 @@ reintroducir efectos de puntos/impresión en el hero.
   - **Estado inicial:** plegado si no hay filtros activos; desplegado si llegan filtros por la URL (en móvil y
     en escritorio).
   - **Móvil (< md):** acordeón a ancho completo.
-  - **Escritorio (≥ md):** el botón queda junto al buscador y, al desplegar, los campos se ordenan en una grilla
-    de 1 a 4 columnas (prop `columnas`, por página).
+  - **Escritorio (≥ md):** el `<form>` es flex en fila (`md:flex-row md:flex-wrap md:items-end`): el buscador
+    ocupa el ancho disponible (`md:flex-1`) y a su derecha, alineados abajo, van «Filtros» y «Limpiar filtros» con
+    su ancho natural (`md:w-auto`). Al desplegar, la región ocupa una fila propia (`md:basis-full`) y sus campos se
+    ordenan en una grilla de 1 a 4 columnas (prop `columnas`, por página).
+  - **Requisito para las páginas:** el `<form id="filtros">` no debe ser grilla; si lo fuera, cada botón ocupa una
+    columna entera junto al buscador.
   - **«Limpiar filtros»:** visible solo con ≥ 1 activo. Vacía los campos del pliegue (no el buscador de texto)
     y dispara el mismo `change` que usa cada página, así que el filtrado y la URL no se reimplementan.
   - **Accesibilidad:** `aria-expanded` y `aria-controls` en el botón. Botón y «Limpiar» vienen con `hidden`:

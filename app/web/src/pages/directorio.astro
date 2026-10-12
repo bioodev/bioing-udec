@@ -43,8 +43,8 @@ const jsonLdPagina = listaElementos(
       </a>
     </p>
 
-    <form id="filtros" data-filtros-directorio class="mt-8 grid gap-4 md:grid-cols-4" role="search">
-      <div class="grid gap-2">
+    <form id="filtros" data-filtros-directorio class="mt-8 flex flex-col gap-4 md:flex-row md:flex-wrap md:items-end" role="search">
+      <div class="grid gap-2 md:min-w-64 md:flex-1">
         <Label for="texto">Nombre</Label>
         <Input id="texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
       </div>

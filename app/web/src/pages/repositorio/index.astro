@@ -38,8 +38,8 @@ const textoDe = (d: (typeof documentos)[number]) =>
       <p class="mt-8 text-muted-foreground">Aún no hay documentos en el Repositorio.</p>
     ) : (
       <>
-        <form id="filtros" class="mt-8 grid gap-4 md:grid-cols-4" role="search">
-          <div class="grid gap-2">
+        <form id="filtros" class="mt-8 flex flex-col gap-4 md:flex-row md:flex-wrap md:items-end" role="search">
+          <div class="grid gap-2 md:min-w-64 md:flex-1">
             <Label for="texto">Buscar</Label>
             <Input id="texto" name="texto" type="search" placeholder="Título, descripción o palabra clave" autocomplete="off" />
           </div>
