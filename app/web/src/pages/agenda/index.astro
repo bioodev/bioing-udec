@@ -5,7 +5,7 @@ import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/starwind/select';
-import { actividadesRealizadas, proximasActividades } from '@/lib/contenido';
+import { actividadesRealizadas, descripcionDeListado, proximasActividades } from '@/lib/contenido';
 import { actividadEsProxima, normalizar } from '@/lib/reglas';
 import { TIPOS_ACTIVIDAD } from '@/lib/agenda';
 import { contarAgenda, TODAS, type EstadoActividad } from '@/lib/filtro-agenda';
@@ -29,8 +29,9 @@ const conteoInicial = contarAgenda(
   todas.map((a) => ({ texto: textoDe(a), tipo: a.actividad.data.tipo, estado: a.estado })),
   { texto: '', tipo: TODAS },
 );
+const descripcion = await descripcionDeListado('agenda');
 ---
-<Base titulo="Agenda" descripcion="Actividades de la comunidad de Bioingeniería UdeC: seminarios, charlas, congresos y más.">
+<Base titulo="Agenda" descripcion={descripcion}>
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title="Agenda de BIOING+" href="/agenda/rss.xml" />
   </Fragment>
