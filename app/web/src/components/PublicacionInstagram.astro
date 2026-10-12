@@ -10,7 +10,7 @@ interface Props { publicacion: CollectionEntry<'instagram'> }
 const { titulo, enlace, fecha, imagen } = Astro.props.publicacion.data;
 const embed = embedInstagram(enlace);
 ---
-<article id={`instagram-${Astro.props.publicacion.id}`} class="publicacion-ig tarjeta-elevada rounded-lg border border-border bg-card p-5" data-enlace={enlace} data-embed-src={embed} data-titulo={titulo}>
+<article id={`instagram-${Astro.props.publicacion.id}`} class="publicacion-ig tarjeta-elevada tarjeta-elevada-enlace rounded-lg border border-border bg-card p-5" data-enlace={enlace} data-embed-src={embed} data-titulo={titulo}>
   {imagen && <Image src={imagen} alt="" widths={[320, 640]} sizes="(min-width: 768px) 33vw, 100vw" class="mb-4 aspect-square w-full rounded-md object-cover" />}
   <p class="flex items-center gap-1.5 text-sm text-muted-foreground"><InstagramLogo class="size-4" aria-hidden="true" /><time datetime={fecha.toISOString().slice(0, 10)}>{formatoFecha(fecha)}</time></p>
   <h3 class="mt-2 font-semibold leading-snug">{titulo}</h3>

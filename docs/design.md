@@ -308,7 +308,7 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 - **Un único acento azul** (`--primary: #0066cc`) y ninguna otra marca; botones en píldora.
 - Sin gradientes ni chrome decorativo. **Sombra tenue solo en las tarjetas** (clase `tarjeta-elevada`, en
   `starwind.css`): en reposo, una sombra muy leve además del borde. Las tarjetas que son enlace
-  (`tarjeta-elevada-enlace`: Noticia, Actividad, Anuncio, Documento, Egresado) suben 2 px y ganan sombra al pasar el
+  (`tarjeta-elevada-enlace`: Noticia, Actividad, Anuncio, Documento, Egresado y publicación de Instagram, que no es un enlace completo pero tiene sus dos acciones) suben 2 px y ganan sombra al pasar el
   puntero (solo en dispositivos con puntero, `@media (hover: hover)`, para que no quede pegado al tocar; además el
   borde toma el color del foco, `--outline` al 60 %) o con foco de teclado dentro, en ~200 ms; con
   `prefers-reduced-motion` no suben. Esto se aparta
