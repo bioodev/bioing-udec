@@ -38,7 +38,7 @@ Las rutas son relativas a `app/web/` salvo que digan otra cosa.
    categorías (metas en `architecture.md` §9). Toda imagen lleva texto alternativo; ningún emoji es el único
    portador de un significado; los contenedores reservan su aspecto para no mover el diseño (CLS).
 8. **Documentar en el mismo cambio.** Una decisión de arquitectura lleva un ADR nuevo en `docs/adr/`
-   (próximo número: `0005`). Si cambia comportamiento, interfaces o supuestos, actualizar `architecture.md` o
+   (próximo número: `0007`). Si cambia comportamiento, interfaces o supuestos, actualizar `architecture.md` o
    `context.md`. La bitácora (`bitacora.md`) registra lo acordado en reuniones.
 
 ---

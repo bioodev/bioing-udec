@@ -518,6 +518,11 @@ dirección en el sitio, y decidir si aparece en un menú, en el pie o solo se ll
   contenido, con un bloque por cada punto (Título y Texto). Si no escribes el título de los bloques, la franja no
   lleva título.
 - **Contenido incrustado** (opcional): enlaces de Spotify, SoundCloud, mapas y otros servicios, que se muestran después del contenido (ver §4.1).
+- **Destacar en el Inicio** (opcional): muestra la página como un bloque entre el carrusel de Banners y las Noticias.
+  Solo una página puede estar destacada a la vez: si marcas dos, el sitio muestra la primera por título y el build
+  deja un aviso. Es distinto de los **Banners** (el carrusel de arriba, con fecha de inicio y fin) y de las
+  **Secciones destacadas** (los bloques con imagen al final del Inicio).
+- **Resumen para el Inicio** (opcional): 3 o 4 líneas para el bloque del Inicio. Si lo dejas vacío, se usa la bajada.
 
 Con video o bloques, la página se ve como **¿Qué es la Bioingeniería?**; sin ninguno, como una columna de texto.
 
