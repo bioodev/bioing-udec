@@ -383,6 +383,7 @@ collections:
       - name: enlace
         label: Enlace
         widget: string
+        pattern: ['^(/(?!/)\S*|https?://\S+)$', 'Ruta interna que empiece con / (p. ej. /noticias/mi-noticia) o dirección completa que empiece con https://']
         hint: Ruta interna (p. ej. /noticias/mi-noticia o /p/mi-pagina) o URL externa.
       - { name: inicio, label: Inicio de vigencia, widget: datetime, input_timezone: America/Santiago }
       - { name: fin, label: Fin de vigencia, widget: datetime, input_timezone: America/Santiago }

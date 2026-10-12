@@ -9,6 +9,7 @@ import { defineCollection, reference, type ImageFunction } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { PATRON_INSTAGRAM, enlaceInstagram } from './lib/instagram';
+import { enlaceDelSitio, urlWeb } from './lib/urls';
 import { PATRON_TOKEN_CLOUDFLARE } from './lib/seo';
 
 const yml = (coleccion: string) => glob({ base: `./src/content/${coleccion}`, pattern: '**/*.yml' });
@@ -55,7 +56,7 @@ const personas = defineCollection({
           areas: referencias('areas'),
           organizacion: reference('organizaciones').optional(),
           cargo: z.string().optional(),
-          enlaces: z.array(z.object({ etiqueta: z.string(), url: z.url() })).optional(),
+          enlaces: z.array(z.object({ etiqueta: z.string(), url: urlWeb })).optional(),
         })
         .optional(),
       seo: seoEntrada(image),
@@ -68,7 +69,7 @@ const organizaciones = defineCollection({
     z.object({
       nombre: z.string(),
       tipo: z.enum(['empresa', 'institucion', 'laboratorio', 'agrupacion']),
-      sitio_web: z.url().optional(),
+      sitio_web: urlWeb.optional(),
       logo: image().optional(),
       ficha_activa: z.boolean().default(true),
     }),
@@ -94,7 +95,7 @@ const noticias = defineCollection({
       publicado,
       imagen: image().optional(),
       imagen_alt: z.string().optional(), // describe la imagen destacada; sin él, la imagen se trata como decorativa
-      video: z.url().optional(), // enlace de YouTube; si no es de un video reconocido, la página no lo muestra
+      video: urlWeb.optional(), // enlace de YouTube; si no es de un video reconocido, la página no lo muestra
       enlaces,
       galeria: z.array(z.object({ imagen: image(), alt: z.string() })).max(12).optional(),
       incrustados,
@@ -127,7 +128,7 @@ const actividades = defineCollection({
       organizadores: z.array(personaUOrganizacion).nonempty(),
       expositores: referencias('personas'),
       areas: referencias('areas'),
-      enlace_inscripcion: z.url().optional(), // botón principal
+      enlace_inscripcion: urlWeb.optional(), // botón principal
       enlaces,
       imagen: image().optional(),
       incrustados,
@@ -147,7 +148,7 @@ const anuncios = defineCollection({
       fecha: z.coerce.date(),
       fecha_limite: z.coerce.date().optional(),
       contacto: z.string(),
-      enlace: z.url().optional(),
+      enlace: urlWeb.optional(),
       seo: seoEntrada(image),
     }),
 });
@@ -163,7 +164,7 @@ const documentos = defineCollection({
         'institucional', 'historico', 'academico', 'otro',
       ]),
       anio: z.number().int(),
-      enlace: z.url(),
+      enlace: urlWeb,
       descripcion: z.string().optional(),
       temas: referencias('temas'),
       areas: referencias('areas'),
@@ -180,7 +181,7 @@ const banners = defineCollection({
       publicado,
       texto: z.string().optional(),
       imagen: image(),
-      enlace: z.string(),
+      enlace: enlaceDelSitio, // ruta interna o https: nunca javascript: (src/lib/urls.ts)
       inicio: z.coerce.date(),
       fin: z.coerce.date(),
     }),
@@ -200,7 +201,7 @@ const paginasLibres = defineCollection({
       mostrar_en: z.enum(['ninguno', 'footer', 'la-carrera', 'comunidad']).default('ninguno'),
       destacar_inicio: z.boolean().default(false), // solo una a la vez (src/lib/pagina-destacada.ts)
       resumen_inicio: z.string().optional(), // resumen del bloque del Inicio; sin él, se usa la bajada
-      video: z.url().optional(), // se abre en una ventana (VideoModal); si no es de YouTube, no se muestra
+      video: urlWeb.optional(), // se abre en una ventana (VideoModal); si no es de YouTube, no se muestra
       enlaces,
       bloques_titulo: z.string().optional(),
       bloques: z.array(z.object({ titulo: z.string(), texto: z.string() })).optional(),
