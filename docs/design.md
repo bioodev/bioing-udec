@@ -524,21 +524,23 @@ a pantalla completa del Directorio y el Repositorio, que daban ~1,5 pantallas pa
 
 - **Sin fondo de sección**: la banda va sobre el blanco; las tarjetas son `bg-card` con borde `border-border` y radio
   `rounded-lg`. Así no choca con el `bg-muted` de Agenda o Instagram que tenga al lado.
-- **Una tarjeta bajo la otra, a todo el ancho**, y **dos columnas dentro de cada tarjeta** en escritorio
-  (`md:grid-cols-2`): a la izquierda la presentación (imagen, título, texto y botón), a la derecha los datos (cifras,
-  áreas y buscador en el Directorio; últimos documentos en el Repositorio). Antes iban lado a lado y en escritorio
-  quedaban angostas y desparejas. En móvil, una columna en el orden del DOM: presentación → datos → botón; en
-  escritorio el botón se ubica abajo a la izquierda con la grilla (`md:row-start-2 md:self-end`). Si el panel apaga
-  una sección, la otra tarjeta sale igual, a todo el ancho.
-- **Tarjeta del Directorio**: foto opcional (21:9, en la columna izquierda; sin foto, la tarjeta se ve igual); título `h3`, texto, **cifras** en una `<dl>` de tres columnas (Egresados/as, Generaciones, Organizaciones) y
+- **Una tarjeta bajo la otra, a todo el ancho.** En escritorio cada tarjeta se divide en 2/5 de **imagen a sangre** y
+  3/5 de contenido (`md:grid-cols-5`), en zigzag: la imagen del Directorio a la izquierda y la del Repositorio a la
+  derecha. La imagen va `absolute inset-0` dentro de su celda: toma el alto del contenido en vez de imponer el suyo
+  (una foto vertical estiraba la tarjeta y dejaba huecos). El contenido se lee en una columna: título y texto → datos →
+  acciones, con las acciones al pie (`grid-rows-[auto_1fr]` + `mt-auto`). **Sin imagen**, el contenido usa todo el
+  ancho en dos columnas (presentación a la izquierda, datos y acciones a la derecha). En móvil, la imagen arriba (21:9)
+  y el contenido debajo. Si el panel apaga una sección, la otra tarjeta sale igual.
+- **Tarjeta del Directorio**: foto opcional; título `h3`, texto, **cifras** en una `<dl>` de tres columnas entre dos
+  líneas finas (el número grande arriba y la etiqueta debajo, con `flex-col-reverse` para no alterar el orden `dt`/`dd`) y
   un buscador por nombre. El buscador es un `<form action="/directorio" method="get" role="search">` con `<label>` (sr-only) y
   `<input type="search" name="texto">`; al enviar lleva a `/directorio?texto=…`, que el Directorio aplica al cargar.
   Debajo del buscador, **chips de áreas** («Explora por área»: las 5 áreas con más egresados/as, con su conteo), que son
-  enlaces a `/directorio?area=<id>`. Botón «Ir al Directorio» al pie de la tarjeta y, debajo, «¿Eres egresado/a? Suma tu
+  enlaces a `/directorio?area=<id>`. Botón «Ir al Directorio» al pie y, a su lado, «¿Eres egresado/a? Suma tu
   perfil» (enlace externo al formulario, con `target="_blank"` y `rel="noopener"`; ver guía de usuario §4.8). La línea solo
   sale si hay formulario configurado.
-- **Tarjeta del Repositorio**: foto opcional igual, título, texto, los **4 documentos más recientes** en una
-  `<ul role="list">` (cada ítem: título enlazado a `/repositorio/<id>` y, debajo, tipo y año), y «Ir al Repositorio».
+- **Tarjeta del Repositorio**: foto opcional igual, título, texto, «Documentos recientes» con los **4 más recientes** en
+  una `<ul role="list">` (cada ítem: título enlazado a `/repositorio/<id>` y, debajo, tipo y año), y «Ir al Repositorio».
 - **Sin datos**: cada cifra en cero no se muestra (nunca «0»; sin egresados/as no sale la `<dl>`); sin documentos no
   sale la lista. El texto y el botón de la tarjeta siempre salen.
 - **Alineación**: el botón queda al pie de la columna izquierda aunque la columna de datos sea más alta.

@@ -1,9 +1,11 @@
 ---
 // Banda «Comunidad y documentos» del Inicio: una tarjeta por sección activa (Directorio y Repositorio), con cifras y
 // buscador en el Directorio, y los documentos más recientes en el Repositorio. Los datos llegan de `bandaComunidad`.
-// Las tarjetas van una bajo otra, a todo el ancho; dentro, en escritorio, dos columnas: a la izquierda la presentación
-// (imagen, título, texto y botón) y a la derecha los datos (cifras, áreas y buscador; o los últimos documentos). En
-// móvil el orden es presentación → datos → botón (el orden del DOM; en escritorio el botón se ubica con la grilla).
+// Las tarjetas van una bajo otra, a todo el ancho. En escritorio, la imagen ocupa 2/5 a sangre y alto completo
+// (Directorio a la izquierda, Repositorio a la derecha: zigzag) y el contenido 3/5, en una sola columna que se lee de
+// arriba abajo: título y texto → datos → acciones. La imagen va en posición absoluta dentro de su celda: toma el alto
+// del contenido en vez de imponer el suyo (una foto vertical estiraba la tarjeta). Sin imagen, el contenido usa todo el ancho y los datos van a su
+// derecha. En móvil, imagen arriba (21:9) y el contenido debajo.
 import { Image } from 'astro:assets';
 import type { bandaComunidad } from '@/lib/contenido';
 import { Input } from '@/components/starwind/input';
@@ -22,114 +24,122 @@ const { banda } = Astro.props;
 
   <div data-animar="grilla" class="mt-8 grid gap-6">
     {banda.tarjetas.includes('directorio') && (
-      <article id="inicio-directorio" aria-labelledby="inicio-directorio-titulo" class="tarjeta-elevada tarjeta-elevada-enlace grid rounded-lg border border-border bg-card p-6 sm:p-8 md:grid-cols-2 md:gap-x-10">
-        <div class="md:col-start-1 md:row-start-1">
+      <article id="inicio-directorio" aria-labelledby="inicio-directorio-titulo" class="tarjeta-elevada tarjeta-elevada-enlace overflow-hidden rounded-lg border border-border bg-card md:grid md:grid-cols-5">
         {banda.directorio.imagen && (
+          <div class="relative md:col-span-2">
           <Image
             src={banda.directorio.imagen}
             alt={banda.directorio.imagen_alt ?? ''}
             widths={[480, 960, 1280]}
-            sizes="(min-width: 768px) 560px, 100vw"
+            sizes="(min-width: 768px) 460px, 100vw"
             loading="lazy"
-            class="mb-5 aspect-[21/9] w-full rounded-md object-cover"
+            class="aspect-[21/9] w-full object-cover md:absolute md:inset-0 md:aspect-auto md:h-full"
           />
-        )}
-        <h3 id="inicio-directorio-titulo" class="text-xl font-semibold tracking-tight">{banda.directorio.titulo}</h3>
-        <p class="mt-2 text-muted-foreground">{banda.directorio.texto}</p>
-        </div>
-
-        <div class="mt-6 flex flex-col gap-6 md:col-start-2 md:row-span-2 md:row-start-1 md:mt-0">
-
-        {banda.cifras.length > 0 && (
-          <dl class="grid grid-cols-3 gap-4 text-center">
-            {banda.cifras.map((c) => (
-              <div>
-                <dt class="text-xs text-muted-foreground sm:text-sm">{c.etiqueta}</dt>
-                <dd class="text-2xl font-semibold tracking-tight sm:text-3xl">{c.valor}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-
-        {banda.areas.length > 0 && (
-          <nav aria-labelledby="inicio-areas-titulo">
-            <p id="inicio-areas-titulo" class="text-sm font-medium">Explora por área</p>
-            <ul role="list" class="mt-2 flex flex-wrap gap-2">
-              {banda.areas.map((a) => (
-                <li>
-                  <a href={`/directorio?area=${a.id}`} class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm hover:bg-muted">
-                    {a.nombre}<span class="text-muted-foreground">{a.cantidad}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )}
-
-        <form action="/directorio" method="get" role="search" class="flex flex-wrap gap-3">
-          <div class="grid min-w-0 flex-1 basis-56 gap-2">
-            <Label for="inicio-directorio-texto" class="sr-only">Buscar egresado o egresada por nombre</Label>
-            <Input id="inicio-directorio-texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
           </div>
-          <button type="submit" class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 font-medium hover:bg-muted">
-            <MagnifyingGlass class="size-4" aria-hidden="true" />Buscar
-          </button>
-        </form>
-
-        </div>
-
-        <div class="pt-6 md:col-start-1 md:row-start-2 md:self-end">
-          <a href="/directorio" class="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90">
-            {banda.directorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
-          </a>
-        {banda.formulario && (
-          <p class="mt-4 text-sm text-muted-foreground">
-            ¿Eres egresado/a?{' '}
-            <a href={banda.formulario} target="_blank" rel="noopener" class="inline-flex items-center gap-1 font-medium text-primary hover:underline">
-              Suma tu perfil<ArrowSquareOut class="size-4" aria-hidden="true" /><span class="sr-only"> (se abre en una ventana nueva)</span>
-            </a>
-          </p>
         )}
+        <div class:list={['grid gap-6 p-6 sm:p-8', banda.directorio.imagen ? 'md:col-span-3 md:grid-rows-[auto_1fr]' : 'md:col-span-5 md:grid-cols-2 md:gap-x-10']}>
+          <div class="flex flex-col gap-6">
+            <div>
+              <h3 id="inicio-directorio-titulo" class="text-xl font-semibold tracking-tight">{banda.directorio.titulo}</h3>
+              <p class="mt-2 text-muted-foreground">{banda.directorio.texto}</p>
+            </div>
+            {banda.cifras.length > 0 && (
+              <dl class="grid grid-cols-3 gap-4 border-y border-border py-4">
+                {banda.cifras.map((c) => (
+                  <div class="flex flex-col-reverse">
+                    <dt class="text-xs text-muted-foreground sm:text-sm">{c.etiqueta}</dt>
+                    <dd class="text-2xl font-semibold tracking-tight sm:text-3xl">{c.valor}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
+
+          <div class="flex flex-col gap-6">
+            <form action="/directorio" method="get" role="search" class="flex flex-wrap gap-3">
+              <div class="grid min-w-0 flex-1 basis-56 gap-2">
+                <Label for="inicio-directorio-texto" class="sr-only">Buscar egresado o egresada por nombre</Label>
+                <Input id="inicio-directorio-texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
+              </div>
+              <button type="submit" class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 font-medium hover:bg-muted">
+                <MagnifyingGlass class="size-4" aria-hidden="true" />Buscar
+              </button>
+            </form>
+
+            {banda.areas.length > 0 && (
+              <nav aria-labelledby="inicio-areas-titulo">
+                <p id="inicio-areas-titulo" class="text-sm font-medium">Explora por área</p>
+                <ul role="list" class="mt-2 flex flex-wrap gap-2">
+                  {banda.areas.map((a) => (
+                    <li>
+                      <a href={`/directorio?area=${a.id}`} class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm hover:bg-muted">
+                        {a.nombre}<span class="text-muted-foreground">{a.cantidad}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+
+            <div class="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a href="/directorio" class="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90">
+                {banda.directorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
+              </a>
+              {banda.formulario && (
+                <p class="text-sm text-muted-foreground">
+                  ¿Eres egresado/a?{' '}
+                  <a href={banda.formulario} target="_blank" rel="noopener" class="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+                    Suma tu perfil<ArrowSquareOut class="size-4" aria-hidden="true" /><span class="sr-only"> (se abre en una ventana nueva)</span>
+                  </a>
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </article>
     )}
 
     {banda.tarjetas.includes('repositorio') && (
-      <article id="inicio-repositorio" aria-labelledby="inicio-repositorio-titulo" class="tarjeta-elevada tarjeta-elevada-enlace grid rounded-lg border border-border bg-card p-6 sm:p-8 md:grid-cols-2 md:gap-x-10">
-        <div class="md:col-start-1 md:row-start-1">
+      <article id="inicio-repositorio" aria-labelledby="inicio-repositorio-titulo" class="tarjeta-elevada tarjeta-elevada-enlace overflow-hidden rounded-lg border border-border bg-card md:grid md:grid-cols-5">
         {banda.repositorio.imagen && (
+          <div class="relative md:order-last md:col-span-2">
           <Image
             src={banda.repositorio.imagen}
             alt={banda.repositorio.imagen_alt ?? ''}
             widths={[480, 960, 1280]}
-            sizes="(min-width: 768px) 560px, 100vw"
+            sizes="(min-width: 768px) 460px, 100vw"
             loading="lazy"
-            class="mb-5 aspect-[21/9] w-full rounded-md object-cover"
+            class="aspect-[21/9] w-full object-cover md:absolute md:inset-0 md:aspect-auto md:h-full"
           />
+          </div>
         )}
-        <h3 id="inicio-repositorio-titulo" class="text-xl font-semibold tracking-tight">{banda.repositorio.titulo}</h3>
-        <p class="mt-2 text-muted-foreground">{banda.repositorio.texto}</p>
-        </div>
+        <div class:list={['grid gap-6 p-6 sm:p-8', banda.repositorio.imagen ? 'md:col-span-3 md:grid-rows-[auto_1fr]' : 'md:col-span-5 md:grid-cols-2 md:gap-x-10']}>
+          <div>
+            <h3 id="inicio-repositorio-titulo" class="text-xl font-semibold tracking-tight">{banda.repositorio.titulo}</h3>
+            <p class="mt-2 text-muted-foreground">{banda.repositorio.texto}</p>
+          </div>
 
-        <div class="mt-6 flex flex-col gap-6 md:col-start-2 md:row-span-2 md:row-start-1 md:mt-0">
+          <div class="flex flex-col gap-6">
+            {banda.documentos.length > 0 && (
+              <section aria-labelledby="inicio-repositorio-recientes">
+                <p id="inicio-repositorio-recientes" class="text-sm font-medium">Documentos recientes</p>
+                <ul role="list" class="mt-2 divide-y divide-border border-y border-border">
+                  {banda.documentos.map((d) => (
+                    <li id={`documento-${d.id}`} class="py-3">
+                      <a href={`/repositorio/${d.id}`} class="font-medium hover:text-primary hover:underline">{d.data.titulo}</a>
+                      <span class="block text-sm text-muted-foreground">{TIPOS_DOCUMENTO[d.data.tipo]} · {d.data.anio}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
-        {banda.documentos.length > 0 && (
-          <ul role="list" class="divide-y divide-border">
-            {banda.documentos.map((d) => (
-              <li id={`documento-${d.id}`} class="py-3">
-                <a href={`/repositorio/${d.id}`} class="font-medium hover:text-primary hover:underline">{d.data.titulo}</a>
-                <span class="block text-sm text-muted-foreground">{TIPOS_DOCUMENTO[d.data.tipo]} · {d.data.anio}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        </div>
-
-        <div class="pt-6 md:col-start-1 md:row-start-2 md:self-end">
-          <a href="/repositorio" class="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90">
-            {banda.repositorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
-          </a>
+            <div class="mt-auto">
+              <a href="/repositorio" class="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90">
+                {banda.repositorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
         </div>
       </article>
     )}
