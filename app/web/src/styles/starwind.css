@@ -217,21 +217,34 @@ html:has(dialog[open]:modal) {
 }
 
 /* Tarjetas (ver docs/design.md, «Estilo»): sombra tenue en reposo. Las que son enlace (`tarjeta-elevada-enlace`)
-   suben 2 px y ganan sombra al pasar el puntero o con foco de teclado dentro. El desplazamiento solo con
-   movimiento permitido; la sombra y el borde no se mueven. */
+   suben 2 px y ganan sombra con foco de teclado dentro y, en dispositivos con puntero, al pasar el mouse (en
+   pantallas táctiles el :hover quedaría pegado tras tocar). El desplazamiento solo con movimiento permitido. */
 @layer components {
   .tarjeta-elevada {
     box-shadow: var(--sombra-tarjeta);
     transition: box-shadow 200ms ease-out, transform 200ms ease-out, border-color 200ms ease-out;
   }
-  .tarjeta-elevada-enlace:is(:hover, :has(:focus-visible)) {
+  .tarjeta-elevada-enlace:has(:focus-visible) {
     box-shadow: var(--sombra-tarjeta-hover);
   }
-  .dark .tarjeta-elevada-enlace:is(:hover, :has(:focus-visible)) {
+  .dark .tarjeta-elevada-enlace:has(:focus-visible) {
     border-color: color-mix(in srgb, var(--foreground) 25%, transparent);
   }
   @media (prefers-reduced-motion: no-preference) {
-    .tarjeta-elevada-enlace:is(:hover, :has(:focus-visible)) {
+    .tarjeta-elevada-enlace:has(:focus-visible) {
+      transform: translateY(-2px);
+    }
+  }
+  @media (hover: hover) {
+    .tarjeta-elevada-enlace:hover {
+      box-shadow: var(--sombra-tarjeta-hover);
+    }
+    .dark .tarjeta-elevada-enlace:hover {
+      border-color: color-mix(in srgb, var(--foreground) 25%, transparent);
+    }
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .tarjeta-elevada-enlace:hover {
       transform: translateY(-2px);
     }
   }
