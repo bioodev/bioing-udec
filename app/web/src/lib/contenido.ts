@@ -5,7 +5,7 @@ import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './
 import { noticiasRelacionadas } from './relacionadas';
 import { seccionesPublicadas } from './secciones-inicio';
 import { paginaDestacada } from './pagina-destacada';
-import type { PaginaLibreMenu } from './navegacion';
+import type { ConfigMenu, PaginaLibreMenu } from './navegacion';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram' | 'paginasLibres';
 
@@ -175,6 +175,11 @@ export async function egresadosDelDirectorio() {
 export async function seccionesInicio() {
   const entrada = await getEntry('inicio', 'inicio');
   return seccionesPublicadas(entrada?.data.secciones ?? []);
+}
+
+/** Secciones del menú que el panel oculta (src/content/menu/menu.yml). Sin archivo, todo se muestra. */
+export async function configuracionMenu(): Promise<ConfigMenu> {
+  return (await getEntry('menu', 'menu'))?.data ?? {};
 }
 
 /** Página libre destacada en el Inicio (solo una). Si hay varias marcadas, avisa en el build y muestra la primera. */

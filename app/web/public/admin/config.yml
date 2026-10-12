@@ -399,6 +399,17 @@ collections:
               - { name: imagen, label: Imagen de fondo, widget: image, hint: "Foto horizontal. Se oscurece para que el texto se lea." }
               - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Descripción de la imagen para lectores de pantalla. Déjalo vacío si la imagen es solo decorativa." }
               - { name: publicado, label: Publicado, widget: boolean, default: true }
+      - name: menu
+        label: Menú
+        file: /app/web/src/content/menu/menu.yml
+        format: yml
+        fields:
+          - { name: noticias, label: "Mostrar «Noticias»", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
+          - { name: agenda, label: "Mostrar «Agenda»", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
+          - { name: instagram, label: "Mostrar «Instagram»", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
+          - { name: directorio, label: "Mostrar «Directorio»", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
+          - { name: anuncios, label: "Mostrar «Anuncios»", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
+          - { name: repositorio, label: "Mostrar «Repositorio»", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
 
   # ── Páginas libres (se crean desde el panel; cada una vive en /p/<slug>) ──
 

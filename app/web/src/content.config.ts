@@ -210,6 +210,19 @@ const inicio = defineCollection({
     }),
 });
 
+// Menú: un interruptor por sección fija (navbar, pie y llms.txt). Una clave ausente cuenta como visible.
+const menu = defineCollection({
+  loader: yml('menu'),
+  schema: z.object({
+    noticias: z.boolean().default(true),
+    agenda: z.boolean().default(true),
+    instagram: z.boolean().default(true),
+    directorio: z.boolean().default(true),
+    anuncios: z.boolean().default(true),
+    repositorio: z.boolean().default(true),
+  }),
+});
+
 const instagram = defineCollection({
   loader: yml('instagram'),
   schema: ({ image }) =>
@@ -228,5 +241,5 @@ const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, instagram, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, instagram, areas, temas,
 };

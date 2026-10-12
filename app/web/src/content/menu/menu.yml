@@ -1,0 +1,8 @@
+# Menú del sitio: un interruptor por sección fija. «false» la quita del menú, del pie y de llms.txt.
+# Su página sigue existiendo. Si el archivo o una clave falta, la sección se muestra.
+noticias: true
+agenda: true
+instagram: true
+directorio: true
+anuncios: true
+repositorio: true
