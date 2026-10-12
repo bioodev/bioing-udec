@@ -95,7 +95,7 @@ Al terminar imprime la URL publicada.
 Para actualizar el ambiente después de cualquier cambio: volver a correr `npm run deploy:dev` (sin volver a
 hacer login).
 
-### 4.1 Vista previa personal con despliegue automático (Etapa P, opcional)
+### 4.1 Vista previa personal con despliegue automático (Etapa P, conectada el 2026-10-11)
 
 La vista previa `https://bioing.bioodev.work` (Worker `bioing-web-qa`, cuenta personal del proveedor) se
 publica **a mano**. Por eso una publicación desde el panel —que solo hace un commit en `main` del espejo

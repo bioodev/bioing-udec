@@ -1,6 +1,6 @@
 # Plan: panel funcionando de punta a punta, datos sintéticos completos y guías
 
-> Fecha: 2026-10-11 · Estado: ejecutado (salvo §1, que hace la persona en el dashboard) · Relacionados: [ADR 0004](../adr/0004-flujo-de-trabajo-una-persona.md),
+> Fecha: 2026-10-11 · Estado: ejecutado (§1 conectado; falta la prueba desde el panel) · Relacionados: [ADR 0004](../adr/0004-flujo-de-trabajo-una-persona.md),
 > [plan de ambientes](2026-10-11-plan-ambientes-qa-produccion.md), [`pendientes-infra.md`](../pendientes-infra.md).
 
 **Objetivo.** Que actualizar el sitio desde Sveltia CMS funcione de principio a fin (entrar → editar → commit
@@ -35,21 +35,21 @@ cuenta oficial (allí QA sigue siendo manual y solo `bioing-web` se conecta a `m
 
 Pasos (los hace la persona en el dashboard; el agente no puede autorizar la app de GitHub):
 
-- [ ] Cloudflare (cuenta personal) → Workers → `bioing-web-qa` → Settings → **Build** → *Connect* →
+- [x] Cloudflare (cuenta personal) → Workers → `bioing-web-qa` → Settings → **Build** → *Connect* →
       GitHub → autorizar la app solo en `bioodev/bioing-udec`.
-- [ ] Rama de producción: `main`. **Sin** builds de otras ramas (ADR 0004: solo `main`).
-- [ ] Directorio raíz: `app/web`.
-- [ ] Comando de build: `npm run datos:generar && npm run build && npm run postbuild`.
+- [x] Rama de producción: `main`. **Sin** builds de otras ramas (ADR 0004: solo `main`).
+- [x] Directorio raíz: `app/web`.
+- [x] Comando de build: `npm run datos:generar && npm run build && npm run postbuild`.
       El contenido `sint-*` está fuera de git: la vista previa lo **genera en cada build** (semilla fija,
       fechas relativas a hoy). En el Worker de producción este paso **no** va.
-- [ ] Comando de deploy: `npx wrangler deploy --env qa --domain bioing.bioodev.work` (con `--domain`, igual
+- [x] Comando de deploy: `npx wrangler deploy --env qa --domain bioing.bioodev.work` (con `--domain`, igual
       que el deploy manual, para no perder el dominio).
-- [ ] Variables de build: `SITE_URL=https://bioing.bioodev.work`, `NODE_VERSION=22`.
+- [x] Variables de build: `SITE_URL=https://bioing.bioodev.work`, `NODE_VERSION=22`.
 - [ ] Probar (lo hace la persona: es un commit real en GitHub): editar algo en el panel → en 1–3 min aparece un build en *Deployments* → el cambio se ve.
 - [ ] Documentar en [`despliegue-cloudflare.md`](../despliegue-cloudflare.md) (sección vista previa) y
       desmontarlo con la Etapa P del plan de ambientes.
 
-Hasta entonces: tras cada publicación, `git pull github main`, y desde `app/web`
+Conectado por la persona el 2026-10-11 (opción A: Workers Builds, no GitHub Actions). Antes de eso: tras cada publicación, `git pull github main`, y desde `app/web`
 `npm run build && npm run postbuild && npx wrangler deploy --env qa --domain bioing.bioodev.work`.
 
 ## 2. Datos sintéticos completos (subagente A)
