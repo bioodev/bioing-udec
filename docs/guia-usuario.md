@@ -338,8 +338,8 @@ ve el carrusel con varios banners en el celular)_.
 2. Escribe el **Título** y activa **Publicado** cuando esté listo.
 3. Sube la **Imagen**.
 4. Escribe el **Texto** (opcional).
-5. En **Enlace**, escribe una ruta interna (p. ej. `/noticias/mi-noticia`) o una dirección completa externa
-   (p. ej. `https://…`).
+5. En **Enlace**, escribe una ruta interna (p. ej. `/noticias/mi-noticia` o `/paginas/mi-pagina`) o una dirección
+   completa externa (p. ej. `https://…`).
 6. Escribe el **Inicio de vigencia** y el **Fin de vigencia** (fecha y hora, hora de Chile).
 7. Guarda.
 
@@ -475,6 +475,43 @@ lista. El botón lleva a donde corresponde.
 **Errores típicos:**
 - Un enlace que no empieza con `/` ni con `https://`: el panel no deja guardarlo.
 - Una sección sin imagen de fondo: el sitio no se construye. Sube siempre una imagen.
+
+### 4.12 Crear una página
+
+**Objetivo:** publicar un texto propio (becas, normas, preguntas frecuentes, historia de la carrera) con su
+dirección en el sitio, y decidir si aparece en un menú, en el pie o solo se llega desde un Banner.
+
+**Campos** (colección **Páginas libres**):
+- **Título** y **Bajada** (obligatoria): la bajada va bajo el título, en buscadores y en el menú.
+- **Publicado**: mientras esté desmarcado, la página no tiene dirección (da 404).
+- **Imagen destacada** y **Texto alternativo** (opcional): describe lo que se ve, sin repetir el título.
+- **Mostrar en**: cuál de estas opciones usar:
+  - *Ninguno*: la página existe, pero solo se llega por un enlace (p. ej. desde un Banner).
+  - *Pie de página*: aparece en la lista de enlaces del pie.
+  - *Menú «La carrera»*: aparece en ese desplegable del menú (y en el menú del celular), y también en el pie.
+  - *Menú «Comunidad»*: igual, en ese desplegable.
+- **Contenido**: el texto de la página.
+
+**Pasos.**
+1. Abre **Páginas libres** en el panel y crea una entrada nueva.
+2. Escribe el **Título**. El panel genera la dirección a partir de él: `/paginas/` seguido del título en minúsculas
+   y con guiones. Revísala antes de enlazar la página.
+3. Escribe la **Bajada** (una o dos líneas).
+4. Sube una **Imagen destacada** si la necesitas, y completa su texto alternativo.
+5. Elige **Mostrar en**.
+6. Escribe el **Contenido**.
+7. Marca **Publicado** cuando esté lista y guarda.
+8. Si la página es de *Ninguno*, enlázala desde un Banner: en **Enlace**, escribe `/paginas/<la-dirección>`.
+
+**Cómo comprobar que quedó bien.** Abre `/paginas/<la-dirección>` y revisa el título, la bajada, la imagen y el
+texto. Si elegiste un menú, la página aparece en el desplegable, con su bajada como descripción. Si elegiste el pie,
+aparece en la lista del pie. Si elegiste *Ninguno*, no aparece en ningún menú, pero el Banner lleva a ella.
+
+**Errores típicos:**
+- Dejar **Publicado** desmarcado: la página da 404 aunque esté guardada.
+- Cambiar la dirección de una página que ya está enlazada (desde un Banner o desde otra página): el enlace queda roto
+  y el sitio no avisa. Revisa los Banners antes de cambiar una dirección o despublicar una página.
+- Esperar que el cambio aparezca al instante: los cambios se publican en uno o dos minutos después de guardar.
 
 ## 5. Imágenes y archivos
 
@@ -690,9 +727,21 @@ Los términos completos están en [`context.md`](context.md).
 | Publicado | Sí (por defecto: no) | Hace visible el banner |
 | Texto | No | Texto que acompaña la imagen |
 | Imagen | Sí | Imagen de la diapositiva |
-| Enlace | Sí | Ruta interna (`/noticias/…`) o URL externa |
+| Enlace | Sí | Ruta interna (`/noticias/…` o `/paginas/…`) o URL externa |
 | Inicio de vigencia | Sí | Desde cuándo se muestra |
 | Fin de vigencia | Sí | Hasta cuándo se muestra |
+
+### Páginas libres
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Título | Sí | Título de la página; la dirección `/paginas/…` sale de él |
+| Publicado | Sí (por defecto: no) | Sin publicar, la página da 404 |
+| Bajada | Sí | Resumen bajo el título, en buscadores y en el menú |
+| Imagen destacada | No | Imagen sobre el texto |
+| Texto alternativo de la imagen | No | Descripción para lectores de pantalla |
+| Mostrar en | Sí (por defecto: Ninguno) | Ninguno, Pie de página, Menú «La carrera» o Menú «Comunidad» |
+| Contenido | No | El texto de la página |
 
 ### ¿Qué es la Bioingeniería? (página institucional)
 

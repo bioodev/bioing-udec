@@ -158,7 +158,12 @@ colección; una colección es más barata que una página nueva.
 ### 3.5 Agregar una página nueva
 
 - **Cuándo:** una sección con URL propia (por ejemplo, un listado institucional).
-- **Cómo:**
+- **Antes de programar, revisa si basta una Página libre** (ADR 0005). Una Página libre es un texto con título,
+  bajada, imagen y cuerpo, creable desde el panel en `/paginas/<slug>`, que aparece en «La carrera», en
+  «Comunidad», en el pie o en ninguno. **Basta** para textos informativos sin lógica propia (normas, becas,
+  preguntas frecuentes, historia). **Hace falta código** para un listado o buscador, una tabla con datos
+  propios, un diseño especial, un nuevo desplegable o un nuevo valor de `mostrar_en`.
+- **Cómo** (página con código):
   1. **Entrada en el menú:** en `src/lib/navegacion.ts`, agregar un ítem a `MENU` con `etiqueta`, `href` y
      `disponible`. Mientras la página no esté lista, `disponible: false` hace que `src/pages/[seccion].astro`
      genere una página «Próximamente». Cuando la página exista, cambiar a `disponible: true` (la estática

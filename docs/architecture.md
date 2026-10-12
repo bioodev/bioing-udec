@@ -86,9 +86,15 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Documentos** | título, tipo, año, enlace (Drive), descripción, Temas, Áreas, palabras clave |
 | **Banners** | título, texto, imagen, enlace, inicio, fin |
 | **Páginas** | archivo único institucional (¿Qué es la Bioingeniería?): título, bajada, video, características |
+| **Páginas libres** | título, publicado, bajada (obligatoria), imagen y texto alternativo, `mostrar_en` (ninguno, footer, la-carrera, comunidad) y cuerpo; una por archivo en `src/content/paginas-libres/` (ADR 0005) |
 | **Inicio** | archivo único `src/content/inicio/inicio.md`: lista de secciones destacadas (título, texto, botón, enlace, imagen, texto alternativo, publicado) |
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
+
+**Menú y pie con Páginas libres**: `MENU` y `MENU_PRINCIPAL` (`src/lib/navegacion.ts`) son la lista fija de
+enlaces. Las páginas publicadas (`paginasParaMenu()` en `src/lib/contenido.ts`) se agregan con `menuConPaginas`
+(desplegables «La carrera» y «Comunidad», y su menú móvil) y `enlacesFooter` (pie de `Base.astro`), según
+`mostrar_en`. Las funciones son puras y están probadas en `navegacion.test.ts`.
 
 **Referencias entre colecciones**: guardan el slug (`entry.id`) de la entrada referenciada. Una referencia
 rota (p. ej. una Persona borrada que sigue mencionada) se registra como `[ERROR] [content] Invalid content
@@ -107,6 +113,7 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 | `/directorio` · `/personas/[id]` | Buscador de egresados/as + Ficha |
 | `/repositorio` · `/repositorio/[id]` | Buscador de Documentos + ficha con vista previa |
 | `/instagram` | Publicaciones seleccionadas |
+| `/paginas/[id]` | Página libre (solo las publicadas; aparece en el menú o el pie según `mostrar_en`) |
 | `/buscar` | Buscador general (Pagefind; solo funciona en build/preview) |
   Pagefind necesita `'wasm-unsafe-eval'` en `script-src` de la CSP pública (`public/_headers`) para compilar su WASM;
   sin eso el campo aparece pero no devuelve resultados. No habilita `eval` de JavaScript.
