@@ -11,12 +11,15 @@ interface Props { anuncio: CollectionEntry<'anuncios'>; vencido?: boolean }
 // Por defecto se calcula al construir; así cualquier listado (p. ej. la Ficha) marca los vencidos.
 const { anuncio, vencido = !anuncioVigente(anuncio.data, new Date()) } = Astro.props;
 ---
-<a id={`anuncio-${anuncio.id}`} href={`/anuncios/${anuncio.id}`} class="group block rounded-lg border border-border bg-card p-5 transition hover:border-outline/60">
+<article id={`anuncio-${anuncio.id}`} class="group relative rounded-lg border border-border bg-card p-5 transition hover:border-outline/60 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-outline">
   <div class="flex flex-wrap items-center gap-2">
     <Badge variant="default">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Badge>
     {vencido && <Badge variant="secondary">Vencido</Badge>}
   </div>
-  <h3 class="mt-2 text-lg font-semibold leading-snug group-hover:text-primary">{anuncio.data.titulo}</h3>
-  {anuncio.data.fecha_limite && <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />{vencido ? 'Cerró el' : 'Postula hasta el'} {formatoFecha(anuncio.data.fecha_limite)}</p>}
-  <p class="mt-2 flex items-center gap-1.5 text-sm"><EnvelopeSimple class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" /><span class="sr-only">Contacto: </span>{anuncio.data.contacto}</p>
-</a>
+  <h3 class="mt-2 text-lg font-semibold leading-snug">
+    {/* Enlace principal que extiende su área a toda la tarjeta. */}
+    <a href={`/anuncios/${anuncio.id}`} class="group-hover:text-primary after:absolute after:inset-0 after:content-['']">{anuncio.data.titulo}</a>
+  </h3>
+  {anuncio.data.fecha_limite && <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />{vencido ? 'Cerró el' : 'Postula hasta el'} <time datetime={anuncio.data.fecha_limite.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha_limite)}</time></p>}
+  <address class="mt-2 flex items-center gap-1.5 text-sm not-italic"><EnvelopeSimple class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" /><span class="sr-only">Contacto: </span>{anuncio.data.contacto}</address>
+</article>
