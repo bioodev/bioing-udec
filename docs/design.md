@@ -364,7 +364,10 @@ mismo dato se ve igual en el listado y en el detalle. No usar `<Badge>` directo 
   reemplazó Tabler). Son SVG sin tamaño propio: dimensionar con `size-*` y marcar `aria-hidden="true"`
   cuando son decorativos. Ojo: `starwind add` trae íconos Tabler que hay que cambiar.
 - **Logo**: una sola fuente, `src/assets/logo.svg`, renderizada por `Logo.astro` en navbar y footer; hoy es
-  un placeholder hasta la identidad definitiva.
+  un placeholder hasta la identidad definitiva. **Favicon**: sale del mismo logo. `npm run favicon` (desde `app/web`)
+  genera `public/favicon.svg` (copia exacta), `favicon.ico` (PNG 32 × 32) y `apple-touch-icon.png` (180 × 180, con
+  fondo lleno del color del primer `<rect>` del logo, porque iOS redondea las esquinas). Al cambiar el logo, correrlo:
+  `src/lib/favicon.test.ts` falla mientras no coincidan.
 - **Tarjetas 100 % clicables**: imagen y tarjeta llevan al detalle (Noticia/Actividad con overlay;
   Anuncio/Documento/Egresado con un solo enlace), conservando los enlaces secundarios.
 - **Footer**: columnas (marca, navegación derivada de `MENU`, comunidad, contacto) y barra de copyright. Bajo el

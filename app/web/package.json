@@ -17,6 +17,7 @@
     "test": "vitest run",
     "datos:generar": "node scripts/datos-sinteticos.mjs",
     "datos:limpiar": "node scripts/datos-sinteticos.mjs --limpiar",
+    "favicon": "node scripts/favicon.mjs",
     "dev:tunel": "bash scripts/dev-tunel.sh"
   },
   "dependencies": {

@@ -57,7 +57,10 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
     <meta name="description" content={descripcion} />
     {noindex && <meta name="robots" content="noindex" />}
     {verificacionMetas(seoSitio.verificacion).map((meta) => <meta name={meta.name} content={meta.content} />)}
+    <!-- Favicons generados desde src/assets/logo.svg con `npm run favicon` (src/lib/favicon.test.ts los vigila). -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <ClientRouter />
     <script is:inline>
       // Animaciones de entrada (GSAP): activas solo con JS y sin prefers-reduced-motion.

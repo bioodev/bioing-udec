@@ -30,6 +30,7 @@ npm run deploy:dev        # build + postbuild + deploy a Cloudflare (*.workers.d
 npm run datos:generar     # contenido sintético de prueba (sint-*, ignorado por git)
 npm run datos:limpiar     # borra solo el contenido sint-
 npm run dev:tunel         # expone el dev por cloudflared (revisión desde el celular)
+npm run favicon           # regenera los favicons desde src/assets/logo.svg (tras cambiar el logo)
 ```
 
 Con el servidor de dev corriendo, después de `datos:generar` hay que reiniciarlo (`astro dev stop` y volver a
