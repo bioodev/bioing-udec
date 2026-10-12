@@ -216,18 +216,59 @@ colección; una colección es más barata que una página nueva.
 
 | Proveedor | Se muestra como | Origen en `frame-src` |
 |---|---|---|
-| YouTube | `VideoModal` (sin cookies) | `www.youtube-nocookie.com` |
+| YouTube | videos: `VideoModal` (sin cookies); listas (`/playlist?list=`): reproductor 16:9 | `www.youtube-nocookie.com` |
 | Spotify | reproductor, 152 px (episodio, pista) o 352 px | `open.spotify.com` |
 | SoundCloud | reproductor, 166 px (pista) o 450 px (set) | `w.soundcloud.com` |
 | Apple Podcasts | reproductor, 175 px (episodio) o 450 px | `embed.podcasts.apple.com` |
-| Vimeo | reproductor 16:9 | `player.vimeo.com` |
+| Deezer | reproductor, 152 px (pista, episodio) o 352 px (álbum, lista, show) | `widget.deezer.com` |
+| Audiomack | reproductor, 252 px (canción) o 400 px (álbum, lista) | `audiomack.com` |
+| Acast | reproductor, 190 px (episodio) o 450 px (podcast) | `embed.acast.com` |
+| Audioboom | reproductor, 200 px | `embeds.audioboom.com` |
+| Vimeo | reproductor 16:9; también los privados por enlace (`/<id>/<hash>`) | `player.vimeo.com` |
+| Twitch | canal, video archivado o clip, 16:9; exige `parent` (ver nota) | `player.twitch.tv`, `clips.twitch.tv` |
+| Dailymotion | reproductor 16:9 (`/video/<id>` y `dai.ly`) | `www.dailymotion.com` |
+| Loom | reproductor 16:9 | `www.loom.com` |
+| TED | charla, 16:9 | `embed.ted.com` |
+| TikTok | video: reproductor vertical de 740 px, en columna angosta (`max-w-sm`) | `www.tiktok.com` |
+| LinkedIn | publicación (URN `activity`, `share` o `ugcPost`), 600 px | `www.linkedin.com` |
+| Pinterest | pin, 600 px (`.com` y dominios regionales como `.cl`) | `assets.pinterest.com` |
+| Reddit | publicación, 500 px | `embed.reddit.com` |
+| GIPHY | GIF, 400 px | `giphy.com` |
 | Instagram | reproductor, 600 px (publicación o reel) | `www.instagram.com` |
 | Facebook | plugin de publicación (600 px) o de video 16:9 | `www.facebook.com` |
 | Google Maps | mapa de búsqueda, 400 px, o el `embed` tal cual | `www.google.com` |
 | Google Drive / Docs | vista previa, 480 px | `drive.google.com`, `docs.google.com` |
-| X, TikTok, LinkedIn, Threads, Bluesky, `maps.app.goo.gl` | tarjeta-enlace con el nombre del servicio | ninguno |
+| Behance | proyecto de una galería, 500 px | `www.behance.net` |
+| Figma | archivo, diseño, prototipo o board, 450 px | `www.figma.com` |
+| Canva | diseño (`/view`), 16:9 | `www.canva.com` |
+| CodePen | pen, 400 px | `codepen.io` |
+| CodeSandbox | sandbox, 500 px | `codesandbox.io` |
+| Issuu | documento, 500 px | `e.issuu.com` |
+| Sketchfab | modelo 3D, 16:9 | `sketchfab.com` |
+| X, Threads, Bluesky | tarjeta-enlace con el nombre del servicio | ninguno |
+| WhatsApp (`wa.me`, `chat.whatsapp.com`, canales) | tarjeta-enlace «WhatsApp»: se comparte, no se incrusta | ninguno |
+| Flickr, DeviantArt, Medium, GitHub Gist, SlideShare, Imgur | tarjeta-enlace con el nombre del servicio | ninguno |
+| Enlaces cortos (`maps.app.goo.gl`, `pin.it`, `redd.it`, `vm.`/`vt.tiktok.com`, `deezer.page.link`) | tarjeta-enlace con el nombre del servicio | ninguno |
+| Perfiles, canales y páginas que no son el contenido | tarjeta-enlace con el nombre del servicio | ninguno |
 | Cualquier otra `https:` | tarjeta-enlace sin nombre | ninguno |
 
+**Decisiones de la lista:**
+
+- **TikTok** se incrusta con el player oficial (`/player/v1/<id>`), que mide 325×740: alto fijo de 740 px y
+  ancho máximo de `max-w-sm` para que no se estire en escritorio.
+- **X** se evaluó con `platform.twitter.com/embed/Tweet.html`. Su página corre scripts y pide los datos del tweet
+  a terceros dentro del iframe: la CSP de la página no lo bloquea, pero el formato no es estable ni documentado.
+  Queda como tarjeta hasta tener un caso real que lo justifique.
+- **Twitch** exige el dominio donde se muestra (`parent`). El componente pasa el host de `Astro.site` y `localhost`.
+  El parser, sin dominios, devuelve tarjeta (nunca un reproductor roto). Si la página se abre en un dominio
+  distinto de `Astro.site` (por ejemplo, una vista previa con otro `SITE_URL`), el reproductor de Twitch no carga.
+- **Formatos no confirmados con contenido real** (se verificó que el host responde, no que el embed cargue con un
+  ID real): Reddit (`embed.reddit.com`), Canva (`?embed`), Figma (`embed_host=bioing`), Issuu (`d`/`u`), Audioboom
+  (`/embed/v4`), GIPHY, Behance, CodePen, Sketchfab y TikTok/LinkedIn/Pinterest con IDs reales. Si alguno no
+  carga en el sitio servido, pasarlo a tarjeta quitando su caso del parser y su origen de `frame-src`.
+
+**Regla:** nunca se agrega un dominio a `script-src`. Un proveedor nuevo con iframe agrega su origen exacto a
+`frame-src` de la regla `/*`; `src/lib/csp.test.ts` falla si un iframe del parser no tiene su origen.
 
 ---
 
