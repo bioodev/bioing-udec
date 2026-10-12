@@ -1,6 +1,9 @@
 ---
 // Banda «Comunidad y documentos» del Inicio: una tarjeta por sección activa (Directorio y Repositorio), con cifras y
 // buscador en el Directorio, y los documentos más recientes en el Repositorio. Los datos llegan de `bandaComunidad`.
+// Las tarjetas van una bajo otra, a todo el ancho; dentro, en escritorio, dos columnas: a la izquierda la presentación
+// (imagen, título, texto y botón) y a la derecha los datos (cifras, áreas y buscador; o los últimos documentos). En
+// móvil el orden es presentación → datos → botón (el orden del DOM; en escritorio el botón se ubica con la grilla).
 import { Image } from 'astro:assets';
 import type { bandaComunidad } from '@/lib/contenido';
 import { Input } from '@/components/starwind/input';
@@ -13,14 +16,14 @@ import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
 type Banda = NonNullable<Awaited<ReturnType<typeof bandaComunidad>>>;
 interface Props { banda: Banda }
 const { banda } = Astro.props;
-const dosTarjetas = banda.tarjetas.length === 2;
 ---
 <section id="inicio-comunidad" class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="inicio-comunidad-titulo">
   <h2 id="inicio-comunidad-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">{banda.titulo}</h2>
 
-  <div data-animar="grilla" class={dosTarjetas ? 'mt-8 grid gap-6 md:grid-cols-2' : 'mx-auto mt-8 w-full max-w-2xl'}>
+  <div data-animar="grilla" class="mt-8 grid gap-6">
     {banda.tarjetas.includes('directorio') && (
-      <article id="inicio-directorio" aria-labelledby="inicio-directorio-titulo" class="tarjeta-elevada tarjeta-elevada-enlace flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8">
+      <article id="inicio-directorio" aria-labelledby="inicio-directorio-titulo" class="tarjeta-elevada tarjeta-elevada-enlace grid rounded-lg border border-border bg-card p-6 sm:p-8 md:grid-cols-2 md:gap-x-10">
+        <div class="md:col-start-1 md:row-start-1">
         {banda.directorio.imagen && (
           <Image
             src={banda.directorio.imagen}
@@ -33,9 +36,12 @@ const dosTarjetas = banda.tarjetas.length === 2;
         )}
         <h3 id="inicio-directorio-titulo" class="text-xl font-semibold tracking-tight">{banda.directorio.titulo}</h3>
         <p class="mt-2 text-muted-foreground">{banda.directorio.texto}</p>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-6 md:col-start-2 md:row-span-2 md:row-start-1 md:mt-0">
 
         {banda.cifras.length > 0 && (
-          <dl class="mt-6 grid grid-cols-3 gap-4 text-center">
+          <dl class="grid grid-cols-3 gap-4 text-center">
             {banda.cifras.map((c) => (
               <div>
                 <dt class="text-xs text-muted-foreground sm:text-sm">{c.etiqueta}</dt>
@@ -46,7 +52,7 @@ const dosTarjetas = banda.tarjetas.length === 2;
         )}
 
         {banda.areas.length > 0 && (
-          <nav aria-labelledby="inicio-areas-titulo" class="mt-6">
+          <nav aria-labelledby="inicio-areas-titulo">
             <p id="inicio-areas-titulo" class="text-sm font-medium">Explora por área</p>
             <ul role="list" class="mt-2 flex flex-wrap gap-2">
               {banda.areas.map((a) => (
@@ -60,7 +66,7 @@ const dosTarjetas = banda.tarjetas.length === 2;
           </nav>
         )}
 
-        <form action="/directorio" method="get" role="search" class="mt-6 flex flex-wrap gap-3">
+        <form action="/directorio" method="get" role="search" class="flex flex-wrap gap-3">
           <div class="grid min-w-0 flex-1 basis-56 gap-2">
             <Label for="inicio-directorio-texto" class="sr-only">Buscar egresado o egresada por nombre</Label>
             <Input id="inicio-directorio-texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
@@ -70,12 +76,12 @@ const dosTarjetas = banda.tarjetas.length === 2;
           </button>
         </form>
 
-        <div class="mt-auto pt-6">
+        </div>
+
+        <div class="pt-6 md:col-start-1 md:row-start-2 md:self-end">
           <a href="/directorio" class="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90">
             {banda.directorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
           </a>
-        </div>
-
         {banda.formulario && (
           <p class="mt-4 text-sm text-muted-foreground">
             ¿Eres egresado/a?{' '}
@@ -84,11 +90,13 @@ const dosTarjetas = banda.tarjetas.length === 2;
             </a>
           </p>
         )}
+        </div>
       </article>
     )}
 
     {banda.tarjetas.includes('repositorio') && (
-      <article id="inicio-repositorio" aria-labelledby="inicio-repositorio-titulo" class="tarjeta-elevada tarjeta-elevada-enlace flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8">
+      <article id="inicio-repositorio" aria-labelledby="inicio-repositorio-titulo" class="tarjeta-elevada tarjeta-elevada-enlace grid rounded-lg border border-border bg-card p-6 sm:p-8 md:grid-cols-2 md:gap-x-10">
+        <div class="md:col-start-1 md:row-start-1">
         {banda.repositorio.imagen && (
           <Image
             src={banda.repositorio.imagen}
@@ -101,9 +109,12 @@ const dosTarjetas = banda.tarjetas.length === 2;
         )}
         <h3 id="inicio-repositorio-titulo" class="text-xl font-semibold tracking-tight">{banda.repositorio.titulo}</h3>
         <p class="mt-2 text-muted-foreground">{banda.repositorio.texto}</p>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-6 md:col-start-2 md:row-span-2 md:row-start-1 md:mt-0">
 
         {banda.documentos.length > 0 && (
-          <ul role="list" class="mt-6 divide-y divide-border">
+          <ul role="list" class="divide-y divide-border">
             {banda.documentos.map((d) => (
               <li id={`documento-${d.id}`} class="py-3">
                 <a href={`/repositorio/${d.id}`} class="font-medium hover:text-primary hover:underline">{d.data.titulo}</a>
@@ -113,7 +124,9 @@ const dosTarjetas = banda.tarjetas.length === 2;
           </ul>
         )}
 
-        <div class="mt-auto pt-6">
+        </div>
+
+        <div class="pt-6 md:col-start-1 md:row-start-2 md:self-end">
           <a href="/repositorio" class="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90">
             {banda.repositorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
           </a>

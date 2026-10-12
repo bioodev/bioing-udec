@@ -524,10 +524,13 @@ a pantalla completa del Directorio y el Repositorio, que daban ~1,5 pantallas pa
 
 - **Sin fondo de sección**: la banda va sobre el blanco; las tarjetas son `bg-card` con borde `border-border` y radio
   `rounded-lg`. Así no choca con el `bg-muted` de Agenda o Instagram que tenga al lado.
-- **Dos tarjetas lado a lado** en escritorio (`md:grid-cols-2`) y apiladas en móvil. Si solo sale una (el panel apagó
-  la otra), ocupa un ancho máximo de 42 rem centrado (`max-w-2xl`), no todo el ancho.
-- **Tarjeta del Directorio**: foto opcional pequeña (16:9, hasta 20 rem en escritorio; sin foto, la tarjeta se ve
-  igual); título `h3`, texto, **cifras** en una `<dl>` de tres columnas (Egresados/as, Generaciones, Organizaciones) y
+- **Una tarjeta bajo la otra, a todo el ancho**, y **dos columnas dentro de cada tarjeta** en escritorio
+  (`md:grid-cols-2`): a la izquierda la presentación (imagen, título, texto y botón), a la derecha los datos (cifras,
+  áreas y buscador en el Directorio; últimos documentos en el Repositorio). Antes iban lado a lado y en escritorio
+  quedaban angostas y desparejas. En móvil, una columna en el orden del DOM: presentación → datos → botón; en
+  escritorio el botón se ubica abajo a la izquierda con la grilla (`md:row-start-2 md:self-end`). Si el panel apaga
+  una sección, la otra tarjeta sale igual, a todo el ancho.
+- **Tarjeta del Directorio**: foto opcional (21:9, en la columna izquierda; sin foto, la tarjeta se ve igual); título `h3`, texto, **cifras** en una `<dl>` de tres columnas (Egresados/as, Generaciones, Organizaciones) y
   un buscador por nombre. El buscador es un `<form action="/directorio" method="get" role="search">` con `<label>` (sr-only) y
   `<input type="search" name="texto">`; al enviar lleva a `/directorio?texto=…`, que el Directorio aplica al cargar.
   Debajo del buscador, **chips de áreas** («Explora por área»: las 5 áreas con más egresados/as, con su conteo), que son
@@ -538,8 +541,7 @@ a pantalla completa del Directorio y el Repositorio, que daban ~1,5 pantallas pa
   `<ul role="list">` (cada ítem: título enlazado a `/repositorio/<id>` y, debajo, tipo y año), y «Ir al Repositorio».
 - **Sin datos**: cada cifra en cero no se muestra (nunca «0»; sin egresados/as no sale la `<dl>`); sin documentos no
   sale la lista. El texto y el botón de la tarjeta siempre salen.
-- **Alineación**: el botón va en `mt-auto pt-6`, así queda al pie de la tarjeta y con aire aunque la tarjeta vecina
-  sea más alta.
+- **Alineación**: el botón queda al pie de la columna izquierda aunque la columna de datos sea más alta.
 - **Íconos**: Phosphor `MagnifyingGlass` (buscador) y `ArrowRight` (botones), decorativos (`aria-hidden`).
 - **Móvil (390 px)**: el campo de búsqueda tiene un ancho base de 14 rem (`basis-56`); si no cabe junto al botón,
   «Buscar» baja a su propia línea y el placeholder no se corta.
