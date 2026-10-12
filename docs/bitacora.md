@@ -58,3 +58,39 @@ regresión (91/89 medido sin el contenido sintético; con `sint-*` baja a 88/84 
 
 
 
+
+---
+
+## Páginas libres, contenido incrustado y enlaces (sesión 2026-10-11/12)
+
+Publicado en `main` = `develop` = `9d0a802`, que Workers Builds despliega en https://bioing.bioodev.work.
+
+- **`SITE_URL` en Workers Builds:** la persona la cargó en *Build variables and secrets*, y ahora el canonical, el
+  sitemap y `robots.txt` usan `bioing.bioodev.work`. Justo después de corregirla, `robots.txt` y el sitemap pueden
+  seguir mostrando el valor anterior por la caché de Cloudflare; está anotado en `despliegue-cloudflare.md` §8.
+- **Filtros:** en escritorio, el botón «Filtros» va a la derecha del buscador, sin ocupar una columna.
+- **Tipografía:** `prose` no hacía nada porque faltaba `@tailwindcss/typography`. Se instaló, y sus colores toman
+  los tokens del tema.
+- **Páginas libres** (ADR 0005): se crean desde el panel y se publican en `/p/<nombre>`. «Mostrar en» decide si van
+  en ninguno, el pie, «La carrera» o «Comunidad». Tienen video, bloques destacados, Enlaces y Contenido incrustado
+  opcionales. «¿Qué es la Bioingeniería?» pasó a ser una Página libre (`/p/bioingenieria`, primera en «La
+  carrera»); `/bioingenieria` se eliminó sin redirección. Se descartó acortar las URL de Noticias y Agenda (`/n/`,
+  `/a/`) por legibilidad.
+- **Página destacada en el Inicio** (ADR 0006): un switch en la Página libre muestra un bloque entre el carrusel y
+  las Noticias. Se destaca una sola a la vez; si hay varias marcadas, el build avisa. Los detalles se validan con
+  la contraparte (`preguntas-reunion.md` 7.1).
+- **Contenido incrustado:** hasta 10 enlaces por Noticia, Actividad o Página libre, que se muestran bajo
+  «Multimedia». Hay un parser puro con una lista cerrada de unos 30 proveedores con iframe (`src/lib/incrustados.ts`).
+  Los que necesitan scripts propios (X, Bluesky, Threads, Medium, Gist, WhatsApp…) se muestran como tarjeta. Un
+  test guardián en `csp.test.ts` exige que cada origen de iframe esté en `frame-src`. Dailymotion usa
+  `geo.dailymotion.com`, porque su embed clásico redirige ahí.
+- **Enlaces:** hasta 6 botones (etiqueta y URL `https://` o ruta `/…`) en Noticias, Actividades y Páginas libres.
+  En las Actividades, la inscripción sigue siendo el botón principal.
+
+**Próximos pasos:** las pruebas en el panel (ver `pendientes-infra.md`, «Contenido y medios»), la reunión con la
+contraparte (`preguntas-reunion.md`, sobre todo la 7.1), el ajuste del bloque destacado sin imagen y borrar el
+contenido de prueba antes de la entrega.
+
+Ejecución: subagentes Haiku en worktrees coordinados con Herdr (`filtros-compacto`, `paginas-libres`,
+`bioing-libre`, `incrustados`, `prototipo-destacado`, `proveedores`, `enlaces`), integrados en `develop` por el
+orquestador después de revisar el diff, probar en el navegador y verificar sobre el build servido con la CSP.

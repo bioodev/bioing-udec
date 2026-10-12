@@ -62,4 +62,7 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 - [ ] R2 solo si se usa para documentos: bucket, servido en `/media` del dominio, clave limitada a ese bucket, `public_url` en `config.yml`.
 - [x] **Prueba de imagen en el admin** (2026-10-11, contra el espejo de GitHub): Sveltia escribió `/media/…` y el build falló (`ImageNotFound`). Se cambió el `public_folder` global a `@/assets/media` y se quitó el de cada colección; el contenido existente pasó a `'@/assets/media/…'`. Falta confirmar en el panel que una imagen nueva queda con esa ruta y sin EXIF/GPS.
 - [ ] **Prueba de "Agregar Persona"** desde una Noticia: debe quedar en el mismo commit que la Noticia.
+- [ ] **Prueba de Página libre** en el panel: crear una página, publicarla en `/p/<nombre>`, elegir «Mostrar en» y enlazarla desde un Banner con su ruta.
+- [ ] **Prueba de Contenido incrustado y Enlaces** con enlaces reales: confirmar el alto del reproductor de episodios de Spotify (152 px, compacto) y probar al menos un proveedor de cada tipo (audio, video, red social, mapa) y un Enlace interno (`/agenda`) y uno externo.
+- [ ] **Página destacada del Inicio** (ADR 0006): validar con la contraparte (`preguntas-reunion.md` 7.1); en escritorio, sin imagen, la mitad derecha del bloque queda vacía (se propuso poner el video ahí).
 - [ ] Borrar el contenido de ejemplo y la "Noticia demo borrar luego" (el sintético `sint-*` no está en git: `npm run datos:limpiar`).
