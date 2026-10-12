@@ -3,6 +3,7 @@
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './reglas';
 import { noticiasRelacionadas } from './relacionadas';
+import { seccionesPublicadas } from './secciones-inicio';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram';
 
@@ -158,4 +159,10 @@ export async function pagina(id: 'bioingenieria') {
   const entrada = await getEntry('paginas', id);
   if (!entrada) throw new Error(`Falta src/content/paginas/${id}.md`);
   return entrada;
+}
+
+/** Secciones destacadas del Inicio publicadas, en el orden de la lista del CMS (colección `inicio`). */
+export async function seccionesInicio() {
+  const entrada = await getEntry('inicio', 'inicio');
+  return seccionesPublicadas(entrada?.data.secciones ?? []);
 }

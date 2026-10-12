@@ -450,6 +450,32 @@ conserva una y reasigna el contenido.
 - Borrar una entrada que está en uso: los contenidos que la usaban quedan con una referencia rota, y el build
   muestra un aviso (ver §8).
 
+### 4.11 Editar las secciones destacadas del Inicio
+
+**Objetivo:** cambiar los bloques con foto que aparecen al final de la portada (por ejemplo, el del Directorio o el
+del Repositorio), agregar otros o ocultarlos.
+
+**Campos** (en la página **Inicio** del panel, lista **Secciones destacadas**):
+- **Título**, **Texto** y **Texto del botón**.
+- **Enlace del botón**: una ruta interna que empieza con `/` (p. ej. `/directorio`) o una dirección completa que
+  empieza con `https://`.
+- **Imagen de fondo**: foto horizontal. Se oscurece para que el texto se lea.
+- **Texto alternativo de la imagen** (opcional): déjalo vacío si la imagen es solo decorativa.
+- **Publicado**: desmárcalo para ocultar la sección sin borrarla.
+
+**Pasos.**
+1. Abre **Inicio** en el panel.
+2. Para cambiar una sección, despliégala y edita sus campos. Para agregar otra, usa el botón de agregar de la lista.
+3. El orden de la lista es el orden en la portada: reordénalas en la lista según corresponda.
+4. Guarda.
+
+**Cómo comprobar que quedó bien.** En la portada, al final, aparecen las secciones publicadas en el orden de la
+lista. El botón lleva a donde corresponde.
+
+**Errores típicos:**
+- Un enlace que no empieza con `/` ni con `https://`: el panel no deja guardarlo.
+- Una sección sin imagen de fondo: el sitio no se construye. Sube siempre una imagen.
+
 ## 5. Imágenes y archivos
 
 - **Qué se puede subir.** Imágenes de mapa de bits (JPG, PNG y similares). Las fotos de iPhone en HEIC se

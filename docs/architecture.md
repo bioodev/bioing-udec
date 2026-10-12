@@ -86,6 +86,7 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Documentos** | título, tipo, año, enlace (Drive), descripción, Temas, Áreas, palabras clave |
 | **Banners** | título, texto, imagen, enlace, inicio, fin |
 | **Páginas** | archivo único institucional (¿Qué es la Bioingeniería?): título, bajada, video, características |
+| **Inicio** | archivo único `src/content/inicio/inicio.md`: lista de secciones destacadas (título, texto, botón, enlace, imagen, texto alternativo, publicado) |
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
 
@@ -98,7 +99,7 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 
 | Ruta | Página |
 |---|---|
-| `/` | Inicio (hero en carrusel de Banners, noticias, actividades, anuncios, Instagram) |
+| `/` | Inicio (hero en carrusel de Banners, noticias, actividades, anuncios, Instagram, secciones destacadas con parallax) |
 | `/bioingenieria` | ¿Qué es la Bioingeniería? (video en modal) |
 | `/noticias` · `/noticias/[id]` | Listado con filtros y paginación de a 12 + ficha |
 | `/agenda` · `/agenda/[id]` | Próximas y realizadas (pestañas) + ficha |

@@ -347,6 +347,29 @@ collections:
               - { name: titulo, label: Título, widget: string }
               - { name: texto, label: Texto, widget: text }
           - { name: body, label: Presentación, widget: richtext }
+      - name: inicio
+        label: Inicio
+        file: /app/web/src/content/inicio/inicio.md
+        fields:
+          - name: secciones
+            label: Secciones destacadas
+            widget: list
+            required: false
+            hint: "Se muestran al final del Inicio, en el orden de esta lista. Se pueden agregar más secciones o quitarlas. Para ocultar una sin borrarla, desmarca «Publicado»."
+            label_singular: Sección destacada
+            summary: "{{titulo}}{{publicado | ternary('', ' (oculta)')}}"
+            fields:
+              - { name: titulo, label: Título, widget: string }
+              - { name: texto, label: Texto, widget: text }
+              - { name: boton, label: Texto del botón, widget: string, hint: "Ej.: Ir al Directorio." }
+              - name: enlace
+                label: Enlace del botón
+                widget: string
+                hint: "Ruta interna que empieza con / (ej.: /directorio) o una dirección completa que empieza con https://."
+                pattern: ['^(/(?!/)|https://)', 'Debe empezar con / (ruta interna) o con https://']
+              - { name: imagen, label: Imagen de fondo, widget: image, hint: "Foto horizontal. Se oscurece para que el texto se lea." }
+              - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Descripción de la imagen para lectores de pantalla. Déjalo vacío si la imagen es solo decorativa." }
+              - { name: publicado, label: Publicado, widget: boolean, default: true }
 
   - name: instagram
     label: Instagram

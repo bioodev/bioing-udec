@@ -167,6 +167,26 @@ const paginas = defineCollection({
   }),
 });
 
+// Secciones destacadas del Inicio (archivo único; el orden de la lista es el orden en la página).
+const inicio = defineCollection({
+  loader: md('inicio'),
+  schema: ({ image }) =>
+    z.object({
+      secciones: z.array(
+        z.object({
+          titulo: z.string(),
+          texto: z.string(),
+          boton: z.string(),
+          // Ruta interna (/directorio) o URL externa https://
+          enlace: z.string().regex(/^(\/(?!\/)|https:\/\/)/),
+          imagen: image(),
+          imagen_alt: z.string().optional(),
+          publicado: z.boolean().default(true),
+        }),
+      ).optional(),
+    }),
+});
+
 const instagram = defineCollection({
   loader: yml('instagram'),
   schema: ({ image }) =>
@@ -185,5 +205,5 @@ const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginas, instagram, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginas, inicio, instagram, areas, temas,
 };

@@ -117,6 +117,10 @@ _Avoid_: Responsable, anfitrión
 Persona que presenta, dicta o modera en una Actividad. Los asistentes no se registran.
 _Avoid_: Participante, ponente, invitado
 
+**Sección destacada (del Inicio)**:
+Bloque con imagen de fondo, título, texto y botón que se muestra al final del Inicio, en el orden de su lista en el panel. Se publica o se oculta sin borrarla. Su enlace es una ruta interna o una URL externa.
+_Avoid_: Banner (los Banners son el carrusel superior), tarjeta, bloque fijo
+
 **Cobertura**:
 Noticia que relata una Actividad ya realizada; una Noticia cubre como máximo una Actividad.
 _Avoid_: Crónica, reseña

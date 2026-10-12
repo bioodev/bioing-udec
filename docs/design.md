@@ -380,15 +380,35 @@ reintroducir efectos de puntos/impresión en el hero.
 
 ### Filtros de los listados y modales
 
-- **Filtros plegables en móvil** (`FiltrosPlegables.astro` + `src/scripts/filtros-plegables.ts`): en Noticias,
-  Repositorio y Directorio, el buscador de texto queda siempre visible y el resto de los filtros se agrupa en
-  un acordeón con el botón "Filtros · N activos". En móvil parte cerrado; en escritorio (≥ md) el contenedor
-  es `display: contents` y los campos se ubican en la grilla del formulario como antes. Sin JavaScript, los
-  filtros quedan visibles. Agenda y Anuncios no lo usan porque tienen uno o dos campos.
+- **Filtros plegables** (`FiltrosPlegables.astro` + `src/scripts/filtros-plegables.ts`, lógica en
+  `src/lib/filtros-plegables.ts`): en Noticias, Repositorio, Directorio y Agenda, el buscador de texto queda
+  siempre visible y el resto de los filtros se agrupa en un pliegue con el botón «Filtros · N activos».
+  - **Estado inicial:** plegado si no hay filtros activos; desplegado si llegan filtros por la URL (en móvil y
+    en escritorio).
+  - **Móvil (< md):** acordeón a ancho completo.
+  - **Escritorio (≥ md):** el botón queda junto al buscador y, al desplegar, los campos se ordenan en una grilla
+    de 1 a 4 columnas (prop `columnas`, por página).
+  - **«Limpiar filtros»:** visible solo con ≥ 1 activo. Vacía los campos del pliegue (no el buscador de texto)
+    y dispara el mismo `change` que usa cada página, así que el filtrado y la URL no se reimplementan.
+  - **Accesibilidad:** `aria-expanded` y `aria-controls` en el botón. Botón y «Limpiar» vienen con `hidden`:
+    sin JavaScript no hay botones muertos y los filtros quedan visibles.
 - **Modales** (VideoModal, galería): tamaño con unidades dinámicas `dvw`/`dvh` y `max-w-none max-h-none` para
   anular el tope que el navegador pone a los `<dialog>`. El video toma el 16:9 más grande que cabe; la galería
   ocupa casi toda la pantalla con la imagen en `object-contain`. Mientras hay un modal abierto, el fondo no se
   desplaza (`html:has(dialog[open]:modal)` en `starwind.css`).
+
+### Secciones destacadas del Inicio
+
+- Al final del Inicio hay una lista de **secciones destacadas** editable en el panel (colección `inicio`, archivo
+  `src/content/inicio/inicio.md`). El orden de la lista es el orden en la página; las no publicadas no se muestran.
+- Cada sección (`SeccionDestacada.astro`) es de ancho completo, con altura mínima de 50 vh en móvil y 60 vh en
+  escritorio. La imagen de fondo va con `<Image>` (`widths` 640–2560, `sizes="100vw"`, `loading="lazy"`) y una capa
+  `bg-black/60` para que el texto blanco cumpla contraste AA sobre cualquier foto.
+- **Parallax** (`src/scripts/parallax.ts`, GSAP + ScrollTrigger con `scrub`): la imagen mide 120 % de la sección y
+  se desplaza de −10 % a +10 % mientras la sección cruza el viewport. Con `prefers-reduced-motion: reduce` no hay
+  parallax (imagen fija y centrada). Sin JavaScript la imagen queda centrada. No se usa
+  `background-attachment: fixed` (falla en iOS).
+- Imagen decorativa: si `imagen_alt` está vacío, `alt=""`. Un enlace externo abre en una ventana nueva y lo anuncia.
 
 ### Animaciones
 
