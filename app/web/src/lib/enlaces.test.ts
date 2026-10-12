@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { idYouTube, vistaPreviaDrive } from './enlaces';
+import { esInterno, idYouTube, vistaPreviaDrive } from './enlaces';
 
 describe('vistaPreviaDrive', () => {
   test('archivo de Drive', () =>
@@ -30,5 +30,30 @@ describe('idYouTube', () => {
     expect(idYouTube('https://vimeo.com/123')).toBeNull();
     expect(idYouTube('https://www.youtube.com/@canal')).toBeNull();
     expect(idYouTube('nada')).toBeNull();
+  });
+});
+
+describe('esInterno', () => {
+  const sitio = 'https://bioing.udec.cl/';
+  test('rutas relativas son internas', () => {
+    expect(esInterno('/agenda', sitio)).toBe(true);
+    expect(esInterno('/p/bioingenieria')).toBe(true);
+  });
+  test('mismo host que el sitio (con o sin www) es interno', () => {
+    expect(esInterno('https://bioing.udec.cl/noticias/x', sitio)).toBe(true);
+    expect(esInterno('https://www.bioing.udec.cl/noticias/x', sitio)).toBe(true);
+  });
+  test('otros hosts son externos', () => {
+    expect(esInterno('https://forms.gle/abc', sitio)).toBe(false);
+    expect(esInterno('https://udec.cl/', sitio)).toBe(false);
+    expect(esInterno('https://bioing.udec.cl.evil.com/', sitio)).toBe(false);
+  });
+  test('sin sitio conocido, solo las rutas relativas son internas', () => {
+    expect(esInterno('https://bioing.udec.cl/x')).toBe(false);
+    expect(esInterno('/x')).toBe(true);
+  });
+  test('protocolo relativo y texto que no es URL no son internos', () => {
+    expect(esInterno('//evil.com/x', sitio)).toBe(false);
+    expect(esInterno('no es url', sitio)).toBe(false);
   });
 });
