@@ -207,6 +207,63 @@ describe('Audioboom', () => {
   });
 });
 
+describe('GIPHY', () => {
+  test('GIF con slug o solo con id → embed, 400 px; enlace de media → mismo embed', () => {
+    expect(incrustado('https://giphy.com/gifs/gato-bailando-abc123XY')).toEqual({
+      tipo: 'iframe', proveedor: 'GIPHY', src: 'https://giphy.com/embed/abc123XY', alto: 400,
+    });
+    expect(incrustado('https://giphy.com/gifs/abc123XY')).toMatchObject({ src: 'https://giphy.com/embed/abc123XY' });
+    expect(incrustado('https://media.giphy.com/media/abc123XY/giphy.gif')).toMatchObject({ src: 'https://giphy.com/embed/abc123XY' });
+  });
+});
+
+describe('Behance, Figma, Canva, CodePen, CodeSandbox, Issuu y Sketchfab', () => {
+  test('Behance: galería → embed del proyecto, 500 px', () => {
+    expect(incrustado('https://www.behance.net/gallery/123456/Nombre-del-proyecto')).toEqual({
+      tipo: 'iframe', proveedor: 'Behance', src: 'https://www.behance.net/embed/project/123456?ilo0=1', alto: 500,
+    });
+  });
+  test('Figma: archivo, diseño o prototipo → embed con la URL del archivo, sin query, 450 px', () => {
+    const url = encodeURIComponent('https://www.figma.com/design/AbC123/Mockup');
+    expect(incrustado('https://www.figma.com/design/AbC123/Mockup?node-id=1-2&t=xyz')).toEqual({
+      tipo: 'iframe', proveedor: 'Figma', src: `https://www.figma.com/embed?embed_host=bioing&url=${url}`, alto: 450,
+    });
+  });
+  test('Canva: vista de diseño → la misma URL con ?embed, 16/9', () => {
+    expect(incrustado('https://www.canva.com/design/DAFxyz/tok_En/view?utm_content=x')).toEqual({
+      tipo: 'iframe', proveedor: 'Canva', src: 'https://www.canva.com/design/DAFxyz/tok_En/view?embed', proporcion: '16/9',
+    });
+  });
+  test('CodePen: pen → embed con la pestaña de resultado, 400 px', () => {
+    expect(incrustado('https://codepen.io/usuario/pen/AbCdEf')).toEqual({
+      tipo: 'iframe', proveedor: 'CodePen', src: 'https://codepen.io/usuario/embed/AbCdEf?default-tab=result', alto: 400,
+    });
+  });
+  test('CodeSandbox: /s/<id> y /p/sandbox/<id> → embed, 500 px', () => {
+    expect(incrustado('https://codesandbox.io/s/mi-demo-abc12')).toEqual({
+      tipo: 'iframe', proveedor: 'CodeSandbox', src: 'https://codesandbox.io/embed/mi-demo-abc12', alto: 500,
+    });
+    expect(incrustado('https://codesandbox.io/p/sandbox/mi-demo-abc12')).toMatchObject({ src: 'https://codesandbox.io/embed/mi-demo-abc12' });
+  });
+  test('Issuu: documento → visor embebido, 500 px', () => {
+    expect(incrustado('https://issuu.com/usuario/docs/guia-2026')).toEqual({
+      tipo: 'iframe', proveedor: 'Issuu', src: 'https://e.issuu.com/embed.html?d=guia-2026&u=usuario', alto: 500,
+    });
+  });
+  test('Sketchfab: modelo con slug o solo id → embed 16/9', () => {
+    const id = '0123456789abcdef0123456789abcdef';
+    expect(incrustado(`https://sketchfab.com/3d-models/celula-${id}`)).toEqual({
+      tipo: 'iframe', proveedor: 'Sketchfab', src: `https://sketchfab.com/models/${id}/embed`, proporcion: '16/9',
+    });
+    expect(incrustado(`https://sketchfab.com/models/${id}`)).toMatchObject({ src: `https://sketchfab.com/models/${id}/embed` });
+  });
+  test('perfiles y páginas que no son el contenido → tarjeta', () => {
+    expect(incrustado('https://www.behance.net/usuario')).toEqual(tarjeta('https://www.behance.net/usuario', 'Behance'));
+    expect(incrustado('https://www.canva.com/design/DAFxyz/tok_En/edit')).toEqual(tarjeta('https://www.canva.com/design/DAFxyz/tok_En/edit', 'Canva'));
+    expect(incrustado('https://issuu.com/usuario')).toEqual(tarjeta('https://issuu.com/usuario', 'Issuu'));
+  });
+});
+
 describe('YouTube listas', () => {
   test('playlist → embed sin cookies de videoseries, 16/9', () => {
     expect(incrustado('https://www.youtube.com/playlist?list=PLabc-123_x')).toEqual({

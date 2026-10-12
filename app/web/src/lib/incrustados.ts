@@ -190,6 +190,52 @@ export function incrustado(url: string, { dominios = [] }: OpcionesIncrustado = 
     return slug ? { tipo: 'iframe', proveedor: 'TED', src: `https://embed.ted.com/talks/${slug}`, proporcion: '16/9' } : tarjeta('TED');
   }
 
+  // GIPHY: el id es lo último del slug (gato-abc123) o el segmento de media.giphy.com.
+  if (host === 'giphy.com' || host === 'media.giphy.com') {
+    const id = (host === 'media.giphy.com' ? ruta.match(/^\/media\/([\da-z]+)\//i) : ruta.match(/^\/gifs\/(?:[^/]*-)?([\da-z]+)\/?$/i))?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'GIPHY', src: `https://giphy.com/embed/${id}`, alto: 400 } : tarjeta('GIPHY');
+  }
+
+  // Diseño y código: Behance, Figma, Canva, CodePen, CodeSandbox, Issuu y Sketchfab.
+  if (host === 'behance.net') {
+    const id = ruta.match(/^\/gallery\/(\d+)(?:\/[^/]*)?\/?$/)?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'Behance', src: `https://www.behance.net/embed/project/${id}?ilo0=1`, alto: 500 } : tarjeta('Behance');
+  }
+
+  if (host === 'figma.com') {
+    // Sin query: los parámetros de seguimiento no van al embed.
+    const archivo = ruta.match(/^\/(?:file|design|proto|board)\/[\w-]+(?:\/|$)/);
+    return archivo
+      ? { tipo: 'iframe', proveedor: 'Figma', src: `https://www.figma.com/embed?embed_host=bioing&url=${encodeURIComponent(`https://www.figma.com${ruta}`)}`, alto: 450 }
+      : tarjeta('Figma');
+  }
+
+  if (host === 'canva.com') {
+    const diseno = ruta.match(/^\/design\/[\w-]+\/[\w-]+\/view\/?$/);
+    return diseno ? { tipo: 'iframe', proveedor: 'Canva', src: `https://www.canva.com${ruta.replace(/\/$/, '')}?embed`, proporcion: '16/9' } : tarjeta('Canva');
+  }
+
+  if (host === 'codepen.io') {
+    const pen = ruta.match(/^\/([\w-]+)\/pen\/([\w-]+)\/?$/);
+    return pen ? { tipo: 'iframe', proveedor: 'CodePen', src: `https://codepen.io/${pen[1]}/embed/${pen[2]}?default-tab=result`, alto: 400 } : tarjeta('CodePen');
+  }
+
+  if (host === 'codesandbox.io') {
+    const id = ruta.match(/^\/(?:s|p\/sandbox)\/([\w-]+)\/?$/)?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'CodeSandbox', src: `https://codesandbox.io/embed/${id}`, alto: 500 } : tarjeta('CodeSandbox');
+  }
+
+  if (host === 'issuu.com') {
+    const doc = ruta.match(/^\/([\w.-]+)\/docs\/([\w.-]+)\/?$/);
+    return doc ? { tipo: 'iframe', proveedor: 'Issuu', src: `https://e.issuu.com/embed.html?d=${doc[2]}&u=${doc[1]}`, alto: 500 } : tarjeta('Issuu');
+  }
+
+  if (host === 'sketchfab.com') {
+    // Los modelos llevan un id de 32 hex, al final del slug o solo.
+    const id = (ruta.match(/^\/3d-models\/(?:[^/]*-)?([a-f\d]{32})\/?$/) ?? ruta.match(/^\/models\/([a-f\d]{32})\/?$/))?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'Sketchfab', src: `https://sketchfab.com/models/${id}/embed`, proporcion: '16/9' } : tarjeta('Sketchfab');
+  }
+
   // Audio: Deezer (con prefijo de país), Audiomack, Acast y Audioboom.
   if (host === 'deezer.com') {
     const m = ruta.match(/^\/(?:[a-z]{2}\/)?(track|album|playlist|episode|show)\/(\d+)\/?$/);
