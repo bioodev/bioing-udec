@@ -155,11 +155,16 @@ organizaciones.
 **Contenido incrustado** (Noticias, Actividades y Páginas libres). Pega la dirección pública del contenido, la que aparece en la
 barra del navegador. El sitio arma el reproductor solo; no hace falta copiar código.
 - **Se ven como reproductor:** Spotify (episodios, programas, listas, álbumes y artistas), SoundCloud, Apple
-  Podcasts, YouTube, Vimeo, Instagram (publicaciones y reels), Facebook (publicaciones y videos), Google Maps
-  (enlaces largos de `google.com/maps`, como los de escritorio) y Google Drive o Docs.
-- **Se ven como tarjeta con el enlace:** X, TikTok, LinkedIn, Threads, Bluesky, los enlaces cortos de Google
-  Maps (`maps.app.goo.gl`, que genera la app del celular) y cualquier otra dirección `https://`. Los servicios que no se incrustan
-  siguen siendo visibles y llevan al lector al sitio original.
+  Podcasts, Deezer, Audiomack, Acast y Audioboom; YouTube (videos, Shorts y listas), Vimeo (también los privados con
+  enlace), Dailymotion, Loom, TED, Twitch (canales, videos y clips), TikTok (videos), Instagram (publicaciones y
+  reels), Facebook (publicaciones y videos), LinkedIn (publicaciones), Pinterest (pines), Reddit (publicaciones) y
+  GIPHY; Google Maps (enlaces largos de `google.com/maps`, como los de escritorio), Google Drive o Docs, Canva, Figma,
+  Behance, Issuu, Sketchfab, CodePen y CodeSandbox.
+- **Se ven como tarjeta con el enlace:** X, Threads, Bluesky, Flickr, DeviantArt, Medium, GitHub Gist, SlideShare,
+  Imgur, los enlaces cortos (como `maps.app.goo.gl`, `pin.it` o `redd.it`), los perfiles y canales, y cualquier otra
+  dirección `https://`. Los servicios que no se incrustan siguen siendo visibles y llevan al lector al sitio original.
+- **WhatsApp:** se comparte, no se incrusta. Un enlace de `wa.me`, de un grupo o de un canal de WhatsApp se muestra
+  como tarjeta «WhatsApp» que lleva al enlace en WhatsApp.
 - **Título:** opcional, pero recomendado. Lo leen los lectores de pantalla y aparece en la tarjeta.
 
 **Cómo comprobar que quedó bien.** Espera unos minutos y revisa la noticia en el sitio: aparece en `/noticias`,

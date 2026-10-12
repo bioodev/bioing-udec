@@ -30,13 +30,19 @@ const DEMO_ALT = {
 // Pools curados en español (bioingeniería: acuicultura, biomateriales, alimentos, salud, medio ambiente, bioprocesos).
 const VIDEOS = ['https://www.youtube.com/watch?v=yLxPo7uBv-Q', 'https://www.youtube.com/watch?v=SyYaQjP3MoU', 'https://youtu.be/mO-W-WL7Alk'];
 const EMOJIS = ['🧬', '🔬', '🌊', '🧪'];
-// Contenido incrustado: un enlace por servicio (Spotify episodio, SoundCloud, Maps, Facebook y TikTok, que sale como tarjeta).
+// Contenido incrustado: un enlace por servicio. WhatsApp sale como tarjeta (se comparte, no se incrusta).
 const INCRUSTADOS = {
   spotify: { url: 'https://open.spotify.com/episode/4rOoJ6Egrf8K2IrywzwOMk?si=ejemplo', titulo: 'Episodio: biomateriales en la práctica' },
   soundcloud: { url: 'https://soundcloud.com/bioingenieria-udec/grabacion-charla', titulo: 'Grabación de la charla' },
   maps: { url: 'https://www.google.com/maps?q=Universidad+de+Concepci%C3%B3n', titulo: 'Universidad de Concepción' },
   facebook: { url: 'https://www.facebook.com/bioingenieria.udec/posts/pfbid0ejemplo' },
   tiktok: { url: 'https://www.tiktok.com/@bioingenieria.udec/video/7300000000000000000', titulo: 'Video en TikTok' },
+  linkedin: { url: 'https://www.linkedin.com/posts/bioingenieria-udec_ejemplo-activity-7300000000000000000-AbCd', titulo: 'Publicación en LinkedIn' },
+  pinterest: { url: 'https://cl.pinterest.com/pin/7300000000000000000/', titulo: 'Pin de Pinterest' },
+  reddit: { url: 'https://www.reddit.com/r/Biologia/comments/abc123/ejemplo_de_prueba/', titulo: 'Publicación en Reddit' },
+  twitch: { url: 'https://www.twitch.tv/bioingenieria_udec', titulo: 'Canal en Twitch' },
+  loom: { url: 'https://www.loom.com/share/0123456789abcdef0123456789abcdef', titulo: 'Video en Loom' },
+  whatsapp: { url: 'https://wa.me/56412345678', titulo: 'Canal de WhatsApp de la carrera' },
 };
 const ETIQUETAS = ['biomateriales', 'acuicultura', 'bioprocesos', 'salud pública', 'medio ambiente', 'industria alimentaria', 'innovación', 'egresados', 'investigación', 'vinculación'];
 // En singular: los verbos de VERBOS_NOTICIA van en tercera persona singular.
@@ -325,14 +331,18 @@ function generar() {
     temas: ['logros'], areas: ['biomateriales'],
   }, cuerpo({ secciones: 2, imagen: 'demo-06.jpg', emoji: true, tabla: false }));
 
-  // Noticia de prueba fija con contenido incrustado: un reproductor por servicio y la tarjeta de TikTok.
+  // Noticia de prueba fija con contenido incrustado (10, el máximo): un reproductor por servicio. WhatsApp va en la
+  // página libre «Preguntas frecuentes» para no pasar el límite.
   escribir('noticias', `${PREFIJO}prueba-contenido-incrustado`, {
     titulo: 'Prueba: contenido incrustado', fecha: fechaSola(dias(-2)), publicado: true,
     imagen: '@/assets/media/demo-07.jpg', imagen_alt: DEMO_ALT['demo-07.jpg'],
-    bajada: 'Noticia de prueba para revisar Spotify, SoundCloud, Google Maps, Facebook y TikTok.',
+    bajada: 'Noticia de prueba para revisar los reproductores: Spotify, SoundCloud, Maps, Facebook, TikTok, LinkedIn, Pinterest, Reddit, Twitch y Loom.',
     etiquetas: ['prueba', 'incrustados'],
     temas: ['logros'], areas: ['biomateriales'],
-    incrustados: [INCRUSTADOS.spotify, INCRUSTADOS.soundcloud, INCRUSTADOS.maps, INCRUSTADOS.facebook, INCRUSTADOS.tiktok],
+    incrustados: [
+      INCRUSTADOS.spotify, INCRUSTADOS.soundcloud, INCRUSTADOS.maps, INCRUSTADOS.facebook, INCRUSTADOS.tiktok,
+      INCRUSTADOS.linkedin, INCRUSTADOS.pinterest, INCRUSTADOS.reddit, INCRUSTADOS.twitch, INCRUSTADOS.loom,
+    ],
   }, cuerpo({ secciones: 2, imagen: 'demo-06.jpg', tabla: false }));
 
   // Anuncios: vigentes, vencidos y sin fecha límite; enlace y contacto del mismo dominio.
@@ -383,7 +393,7 @@ function generar() {
     },
     {
       titulo: 'Preguntas frecuentes', mostrar_en: 'footer', bajada: 'Respuestas a las consultas más comunes de estudiantes y egresados/as.',
-      incrustados: [INCRUSTADOS.spotify, INCRUSTADOS.maps],
+      incrustados: [INCRUSTADOS.spotify, INCRUSTADOS.maps, INCRUSTADOS.whatsapp],
     },
   ];
   const idsPaginas = {};

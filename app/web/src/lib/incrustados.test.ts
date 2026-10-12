@@ -154,14 +154,257 @@ describe('Drive y Docs', () => {
   });
 });
 
+describe('Deezer', () => {
+  test('track y episodio van en 152 px; con prefijo de país (/cl/)', () => {
+    expect(incrustado('https://www.deezer.com/cl/track/3135556')).toEqual({
+      tipo: 'iframe', proveedor: 'Deezer', src: 'https://widget.deezer.com/widget/auto/track/3135556', alto: 152,
+    });
+    expect(incrustado('https://deezer.com/episode/987654')).toMatchObject({ src: 'https://widget.deezer.com/widget/auto/episode/987654', alto: 152 });
+  });
+  test('álbum, playlist y show van en 352 px', () => {
+    expect(incrustado('https://www.deezer.com/album/302127')).toMatchObject({ src: 'https://widget.deezer.com/widget/auto/album/302127', alto: 352 });
+    expect(incrustado('https://www.deezer.com/playlist/1963962142')).toMatchObject({ alto: 352 });
+    expect(incrustado('https://www.deezer.com/show/4321')).toMatchObject({ alto: 352 });
+  });
+  test('enlace corto deezer.page.link y perfiles → tarjeta', () => {
+    expect(incrustado('https://deezer.page.link/AbC')).toEqual(tarjeta('https://deezer.page.link/AbC', 'Deezer'));
+    expect(incrustado('https://www.deezer.com/us/artist/27')).toEqual(tarjeta('https://www.deezer.com/us/artist/27', 'Deezer'));
+  });
+});
+
+describe('Audiomack', () => {
+  test('canción va en 252 px; álbum y playlist en 400 px', () => {
+    expect(incrustado('https://audiomack.com/artista/song/mi-tema?x=1')).toEqual({
+      tipo: 'iframe', proveedor: 'Audiomack', src: 'https://audiomack.com/embed/song/artista/mi-tema', alto: 252,
+    });
+    expect(incrustado('https://www.audiomack.com/artista/album/disco')).toMatchObject({
+      src: 'https://audiomack.com/embed/album/artista/disco', alto: 400,
+    });
+    expect(incrustado('https://audiomack.com/artista/playlist/lista')).toMatchObject({ alto: 400 });
+  });
+  test('perfil de artista → tarjeta', () => {
+    expect(incrustado('https://audiomack.com/artista')).toEqual(tarjeta('https://audiomack.com/artista', 'Audiomack'));
+  });
+});
+
+describe('Acast', () => {
+  test('episodio va en 190 px; podcast completo en 450 px', () => {
+    expect(incrustado('https://shows.acast.com/mi-show/episodes/episodio-1')).toEqual({
+      tipo: 'iframe', proveedor: 'Acast', src: 'https://embed.acast.com/mi-show/episodio-1', alto: 190,
+    });
+    expect(incrustado('https://shows.acast.com/mi-show')).toEqual({
+      tipo: 'iframe', proveedor: 'Acast', src: 'https://embed.acast.com/mi-show', alto: 450,
+    });
+  });
+});
+
+describe('Audioboom', () => {
+  test('publicación → embed v4, 200 px, con o sin slug', () => {
+    expect(incrustado('https://audioboom.com/posts/8123456-bioingenieria-en-vivo')).toEqual({
+      tipo: 'iframe', proveedor: 'Audioboom', src: 'https://embeds.audioboom.com/posts/8123456/embed/v4', alto: 200,
+    });
+    expect(incrustado('https://audioboom.com/posts/8123456')).toMatchObject({ src: 'https://embeds.audioboom.com/posts/8123456/embed/v4' });
+  });
+});
+
+describe('GIPHY', () => {
+  test('GIF con slug o solo con id → embed, 400 px; enlace de media → mismo embed', () => {
+    expect(incrustado('https://giphy.com/gifs/gato-bailando-abc123XY')).toEqual({
+      tipo: 'iframe', proveedor: 'GIPHY', src: 'https://giphy.com/embed/abc123XY', alto: 400,
+    });
+    expect(incrustado('https://giphy.com/gifs/abc123XY')).toMatchObject({ src: 'https://giphy.com/embed/abc123XY' });
+    expect(incrustado('https://media.giphy.com/media/abc123XY/giphy.gif')).toMatchObject({ src: 'https://giphy.com/embed/abc123XY' });
+  });
+});
+
+describe('Behance, Figma, Canva, CodePen, CodeSandbox, Issuu y Sketchfab', () => {
+  test('Behance: galería → embed del proyecto, 500 px', () => {
+    expect(incrustado('https://www.behance.net/gallery/123456/Nombre-del-proyecto')).toEqual({
+      tipo: 'iframe', proveedor: 'Behance', src: 'https://www.behance.net/embed/project/123456?ilo0=1', alto: 500,
+    });
+  });
+  test('Figma: archivo, diseño o prototipo → embed con la URL del archivo, sin query, 450 px', () => {
+    const url = encodeURIComponent('https://www.figma.com/design/AbC123/Mockup');
+    expect(incrustado('https://www.figma.com/design/AbC123/Mockup?node-id=1-2&t=xyz')).toEqual({
+      tipo: 'iframe', proveedor: 'Figma', src: `https://www.figma.com/embed?embed_host=bioing&url=${url}`, alto: 450,
+    });
+  });
+  test('Canva: vista de diseño → la misma URL con ?embed, 16/9', () => {
+    expect(incrustado('https://www.canva.com/design/DAFxyz/tok_En/view?utm_content=x')).toEqual({
+      tipo: 'iframe', proveedor: 'Canva', src: 'https://www.canva.com/design/DAFxyz/tok_En/view?embed', proporcion: '16/9',
+    });
+  });
+  test('CodePen: pen → embed con la pestaña de resultado, 400 px', () => {
+    expect(incrustado('https://codepen.io/usuario/pen/AbCdEf')).toEqual({
+      tipo: 'iframe', proveedor: 'CodePen', src: 'https://codepen.io/usuario/embed/AbCdEf?default-tab=result', alto: 400,
+    });
+  });
+  test('CodeSandbox: /s/<id> y /p/sandbox/<id> → embed, 500 px', () => {
+    expect(incrustado('https://codesandbox.io/s/mi-demo-abc12')).toEqual({
+      tipo: 'iframe', proveedor: 'CodeSandbox', src: 'https://codesandbox.io/embed/mi-demo-abc12', alto: 500,
+    });
+    expect(incrustado('https://codesandbox.io/p/sandbox/mi-demo-abc12')).toMatchObject({ src: 'https://codesandbox.io/embed/mi-demo-abc12' });
+  });
+  test('Issuu: documento → visor embebido, 500 px', () => {
+    expect(incrustado('https://issuu.com/usuario/docs/guia-2026')).toEqual({
+      tipo: 'iframe', proveedor: 'Issuu', src: 'https://e.issuu.com/embed.html?d=guia-2026&u=usuario', alto: 500,
+    });
+  });
+  test('Sketchfab: modelo con slug o solo id → embed 16/9', () => {
+    const id = '0123456789abcdef0123456789abcdef';
+    expect(incrustado(`https://sketchfab.com/3d-models/celula-${id}`)).toEqual({
+      tipo: 'iframe', proveedor: 'Sketchfab', src: `https://sketchfab.com/models/${id}/embed`, proporcion: '16/9',
+    });
+    expect(incrustado(`https://sketchfab.com/models/${id}`)).toMatchObject({ src: `https://sketchfab.com/models/${id}/embed` });
+  });
+  test('perfiles y páginas que no son el contenido → tarjeta', () => {
+    expect(incrustado('https://www.behance.net/usuario')).toEqual(tarjeta('https://www.behance.net/usuario', 'Behance'));
+    expect(incrustado('https://www.canva.com/design/DAFxyz/tok_En/edit')).toEqual(tarjeta('https://www.canva.com/design/DAFxyz/tok_En/edit', 'Canva'));
+    expect(incrustado('https://issuu.com/usuario')).toEqual(tarjeta('https://issuu.com/usuario', 'Issuu'));
+  });
+});
+
+describe('YouTube listas', () => {
+  test('playlist → embed sin cookies de videoseries, 16/9', () => {
+    expect(incrustado('https://www.youtube.com/playlist?list=PLabc-123_x')).toEqual({
+      tipo: 'iframe', proveedor: 'YouTube', src: 'https://www.youtube-nocookie.com/embed/videoseries?list=PLabc-123_x', proporcion: '16/9',
+    });
+  });
+});
+
+describe('Vimeo privados', () => {
+  test('enlace con hash (video oculto por enlace) → player con ?h=', () => {
+    expect(incrustado('https://vimeo.com/76979871/a1b2c3d4e5')).toEqual({
+      tipo: 'iframe', proveedor: 'Vimeo', src: 'https://player.vimeo.com/video/76979871?h=a1b2c3d4e5', proporcion: '16/9',
+    });
+  });
+});
+
+describe('Twitch', () => {
+  const opciones = { dominios: ['bioing.cl', 'localhost'] };
+  const parents = '&parent=bioing.cl&parent=localhost';
+
+  test('canal → player en vivo, con parent por cada dominio, 16/9', () => {
+    expect(incrustado('https://www.twitch.tv/bioingenieria_udec', opciones)).toEqual({
+      tipo: 'iframe', proveedor: 'Twitch', src: `https://player.twitch.tv/?channel=bioingenieria_udec${parents}`, proporcion: '16/9',
+    });
+  });
+  test('video archivado → ?video=v<id>', () => {
+    expect(incrustado('https://www.twitch.tv/videos/123456789', opciones)).toMatchObject({
+      src: `https://player.twitch.tv/?video=v123456789${parents}`,
+    });
+  });
+  test('clip, en clips.twitch.tv o dentro de un canal → embed de clips', () => {
+    expect(incrustado('https://clips.twitch.tv/AwkwardSalamander-abc123', opciones)).toMatchObject({
+      src: `https://clips.twitch.tv/embed?clip=AwkwardSalamander-abc123${parents}`,
+    });
+    expect(incrustado('https://www.twitch.tv/canal/clip/AwkwardSalamander-abc123', opciones)).toMatchObject({
+      src: `https://clips.twitch.tv/embed?clip=AwkwardSalamander-abc123${parents}`,
+    });
+  });
+  test('sin dominios no hay reproductor (Twitch lo rechaza): tarjeta', () => {
+    expect(incrustado('https://www.twitch.tv/bioingenieria_udec')).toEqual(tarjeta('https://www.twitch.tv/bioingenieria_udec', 'Twitch'));
+  });
+  test('directorio u otra página → tarjeta', () => {
+    expect(incrustado('https://www.twitch.tv/directory/game/Just%20Chatting', opciones)).toEqual(
+      tarjeta('https://www.twitch.tv/directory/game/Just%20Chatting', 'Twitch'),
+    );
+  });
+});
+
+describe('TikTok', () => {
+  test('video → player oficial, vertical (740 px) para no estirarlo', () => {
+    expect(incrustado('https://www.tiktok.com/@usuario/video/7000000000000000000?lang=es')).toEqual({
+      tipo: 'iframe', proveedor: 'TikTok', src: 'https://www.tiktok.com/player/v1/7000000000000000000', alto: 740, vertical: true,
+    });
+  });
+  test('perfil y enlaces cortos vm./vt. → tarjeta', () => {
+    expect(incrustado('https://www.tiktok.com/@usuario')).toEqual(tarjeta('https://www.tiktok.com/@usuario', 'TikTok'));
+    expect(incrustado('https://vm.tiktok.com/ZMabc123/')).toEqual(tarjeta('https://vm.tiktok.com/ZMabc123/', 'TikTok'));
+  });
+});
+
+describe('LinkedIn', () => {
+  test('post con slug (activity) → embed de feed, 600 px', () => {
+    expect(incrustado('https://www.linkedin.com/posts/usuario_bioing-activity-7123456789012345678-AbCd?utm=x')).toEqual({
+      tipo: 'iframe', proveedor: 'LinkedIn', src: 'https://www.linkedin.com/embed/feed/update/urn:li:activity:7123456789012345678', alto: 600,
+    });
+  });
+  test('URN de feed (share, ugcPost, codificado) → embed con el mismo URN', () => {
+    expect(incrustado('https://www.linkedin.com/feed/update/urn:li:share:7123456789')).toMatchObject({
+      src: 'https://www.linkedin.com/embed/feed/update/urn:li:share:7123456789',
+    });
+    expect(incrustado('https://www.linkedin.com/feed/update/urn%3Ali%3AugcPost%3A99')).toMatchObject({
+      src: 'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:99',
+    });
+  });
+  test('perfil o empresa → tarjeta', () => {
+    expect(incrustado('https://www.linkedin.com/company/udec')).toEqual(tarjeta('https://www.linkedin.com/company/udec', 'LinkedIn'));
+  });
+});
+
+describe('Pinterest', () => {
+  test('pin → widget oficial, 600 px; dominios regionales (.cl, cl.) cuentan igual', () => {
+    const src = 'https://assets.pinterest.com/ext/embed.html?id=123456789';
+    expect(incrustado('https://www.pinterest.com/pin/123456789/')).toEqual({ tipo: 'iframe', proveedor: 'Pinterest', src, alto: 600 });
+    expect(incrustado('https://cl.pinterest.com/pin/123456789/')).toMatchObject({ src });
+    expect(incrustado('https://www.pinterest.cl/pin/123456789/')).toMatchObject({ src });
+  });
+  test('pin.it, tablero o perfil → tarjeta', () => {
+    expect(incrustado('https://pin.it/4xYz')).toEqual(tarjeta('https://pin.it/4xYz', 'Pinterest'));
+    expect(incrustado('https://www.pinterest.com/usuario/tablero/')).toEqual(tarjeta('https://www.pinterest.com/usuario/tablero/', 'Pinterest'));
+  });
+});
+
+describe('Reddit', () => {
+  test('publicación → embed de Reddit, 500 px, con su slug', () => {
+    expect(incrustado('https://www.reddit.com/r/Biologia/comments/abc123/que_es_la_bio/?share=1')).toEqual({
+      tipo: 'iframe', proveedor: 'Reddit', src: 'https://embed.reddit.com/r/Biologia/comments/abc123/que_es_la_bio/', alto: 500,
+    });
+  });
+  test('subreddit o redd.it → tarjeta', () => {
+    expect(incrustado('https://www.reddit.com/r/Biologia/')).toEqual(tarjeta('https://www.reddit.com/r/Biologia/', 'Reddit'));
+    expect(incrustado('https://redd.it/abc123')).toEqual(tarjeta('https://redd.it/abc123', 'Reddit'));
+  });
+});
+
+describe('Dailymotion, Loom y TED', () => {
+  test('Dailymotion: video y enlace corto dai.ly → 16/9', () => {
+    expect(incrustado('https://www.dailymotion.com/video/x7tgad0')).toEqual({
+      tipo: 'iframe', proveedor: 'Dailymotion', src: 'https://www.dailymotion.com/embed/video/x7tgad0', proporcion: '16/9',
+    });
+    expect(incrustado('https://dai.ly/x7tgad0')).toMatchObject({ src: 'https://www.dailymotion.com/embed/video/x7tgad0' });
+  });
+  test('Loom: enlace de compartir → embed 16/9', () => {
+    expect(incrustado('https://www.loom.com/share/abc123def')).toEqual({
+      tipo: 'iframe', proveedor: 'Loom', src: 'https://www.loom.com/embed/abc123def', proporcion: '16/9',
+    });
+  });
+  test('TED: charla → embed 16/9', () => {
+    expect(incrustado('https://www.ted.com/talks/ken_robinson_says_schools_kill_creativity')).toEqual({
+      tipo: 'iframe', proveedor: 'TED', src: 'https://embed.ted.com/talks/ken_robinson_says_schools_kill_creativity', proporcion: '16/9',
+    });
+  });
+});
+
 describe('servicios sin iframe (tarjeta con nombre)', () => {
   test.each([
     ['https://x.com/usuario/status/1', 'X'],
     ['https://twitter.com/usuario/status/1', 'X'],
-    ['https://www.tiktok.com/@usuario/video/123', 'TikTok'],
+    ['https://www.tiktok.com/@usuario', 'TikTok'],
     ['https://www.linkedin.com/posts/abc', 'LinkedIn'],
     ['https://www.threads.net/@usuario/post/ABC', 'Threads'],
     ['https://bsky.app/profile/x.bsky.social/post/abc', 'Bluesky'],
+    ['https://www.flickr.com/photos/usuario/123', 'Flickr'],
+    ['https://flic.kr/p/abc', 'Flickr'],
+    ['https://www.deviantart.com/usuario/art/obra-1', 'DeviantArt'],
+    ['https://medium.com/@usuario/texto-1', 'Medium'],
+    ['https://gist.github.com/usuario/abc123', 'GitHub Gist'],
+    ['https://www.slideshare.net/usuario/presentacion', 'SlideShare'],
+    ['https://imgur.com/AbC123', 'Imgur'],
+    ['https://wa.me/56412345678', 'WhatsApp'],
+    ['https://chat.whatsapp.com/AbCdEf123', 'WhatsApp'],
+    ['https://whatsapp.com/channel/0029Va', 'WhatsApp'],
   ])('%s → %s', (url, proveedor) => {
     expect(incrustado(url)).toEqual(tarjeta(url, proveedor));
   });

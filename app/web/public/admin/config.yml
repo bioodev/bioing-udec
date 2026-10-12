@@ -182,7 +182,7 @@ collections:
         required: false
         max: 10
         summary: "{{titulo}} {{url}}"
-        hint: "Pega el enlace público (https) de Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps o Google Drive/Docs: se muestra como reproductor, después del cuerpo. Los demás servicios (X, TikTok, LinkedIn, Threads, Bluesky) y los enlaces no reconocidos se muestran como enlace."
+        hint: "Pega enlaces públicos (https) de Spotify, SoundCloud, YouTube, Vimeo, TikTok, Instagram, Facebook, LinkedIn, Twitch, Google Maps o Google Drive, entre otros: se muestran como reproductor. X y WhatsApp se muestran como enlace."
         fields:
           - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
@@ -251,7 +251,7 @@ collections:
         required: false
         max: 10
         summary: "{{titulo}} {{url}}"
-        hint: "Pega el enlace público (https) de Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps o Google Drive/Docs: se muestra como reproductor, después del cuerpo. Los demás servicios (X, TikTok, LinkedIn, Threads, Bluesky) y los enlaces no reconocidos se muestran como enlace."
+        hint: "Pega enlaces públicos (https) de Spotify, SoundCloud, YouTube, Vimeo, TikTok, Instagram, Facebook, LinkedIn, Twitch, Google Maps o Google Drive, entre otros: se muestran como reproductor. X y WhatsApp se muestran como enlace."
         fields:
           - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
@@ -423,7 +423,7 @@ collections:
         required: false
         max: 10
         summary: "{{titulo}} {{url}}"
-        hint: "Pega el enlace público (https) de Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps o Google Drive/Docs: se muestra como reproductor, después del cuerpo. Los demás servicios (X, TikTok, LinkedIn, Threads, Bluesky) y los enlaces no reconocidos se muestran como enlace."
+        hint: "Pega enlaces públicos (https) de Spotify, SoundCloud, YouTube, Vimeo, TikTok, Instagram, Facebook, LinkedIn, Twitch, Google Maps o Google Drive, entre otros: se muestran como reproductor. X y WhatsApp se muestran como enlace."
         fields:
           - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
