@@ -1,0 +1,59 @@
+---
+// Sección destacada del Inicio: imagen de fondo con parallax (src/scripts/parallax.ts), capa oscura para que el
+// texto blanco cumpla contraste AA en cualquier foto. Sin JavaScript la imagen queda centrada y fija.
+// `imagen_alt` vacío = imagen decorativa (alt="").
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import ArrowRight from 'phosphor-astro/ArrowRight.astro';
+import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
+
+interface Props {
+  seccion: {
+    titulo: string;
+    texto: string;
+    boton: string;
+    enlace: string;
+    imagen: ImageMetadata;
+    imagen_alt?: string;
+  };
+}
+const { seccion } = Astro.props;
+const externo = seccion.enlace.startsWith('https://');
+---
+<section class="relative isolate overflow-hidden bg-foreground text-white">
+  <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+    <!-- Más alta que la sección (120 %) para que el parallax tenga margen para desplazarse. -->
+    <div data-parallax class="absolute inset-x-0 -top-[10%] h-[120%]">
+      <Image
+        src={seccion.imagen}
+        alt={seccion.imagen_alt ?? ''}
+        widths={[640, 960, 1280, 1920, 2560]}
+        sizes="100vw"
+        loading="lazy"
+        class="h-full w-full object-cover"
+      />
+    </div>
+    <div class="absolute inset-0 bg-black/60"></div>
+  </div>
+
+  <div class="mx-auto flex min-h-[50vh] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center md:min-h-[60vh]">
+    <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">{seccion.titulo}</h2>
+    <p data-animar="fade-up" class="mx-auto mt-3 max-w-xl text-white/90">{seccion.texto}</p>
+    <a
+      href={seccion.enlace}
+      target={externo ? '_blank' : undefined}
+      rel={externo ? 'noopener' : undefined}
+      class="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90"
+    >
+      {seccion.boton}
+      {externo ? (
+        <>
+          <ArrowSquareOut class="size-4" aria-hidden="true" />
+          <span class="sr-only">(se abre en una ventana nueva)</span>
+        </>
+      ) : (
+        <ArrowRight class="size-4" aria-hidden="true" />
+      )}
+    </a>
+  </div>
+</section>

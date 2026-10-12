@@ -1,7 +1,9 @@
 ---
-// Agrupa filtros en un acordeón solo en móvil (< md). En escritorio el contenedor es `display: contents`:
-// sus campos se acomodan en la grilla del formulario como si no existiera, y el botón se oculta.
-// Sin JavaScript los filtros quedan visibles. Lógica en src/scripts/filtros-plegables.ts.
+// Agrupa los filtros de un listado en un pliegue: en móvil es un acordeón; en escritorio el botón queda junto
+// al buscador de texto y la región se acomoda en una grilla de `columnas` columnas. Parte plegado si no hay
+// filtros activos y desplegado si llegan por la URL (la decisión la toma el script). El texto de búsqueda
+// queda fuera del pliegue, en la página. Sin JavaScript el botón está oculto y los filtros quedan visibles.
+// Lógica en src/scripts/filtros-plegables.ts.
 import CaretDown from 'phosphor-astro/CaretDown.astro';
 import FunnelSimple from 'phosphor-astro/FunnelSimple.astro';
 
@@ -9,15 +11,21 @@ interface Props {
   id: string;
   /** Valores que significan "sin filtrar" (además del vacío), para contar los filtros activos. */
   neutros?: string[];
+  /** Columnas de la región en escritorio (≥ md). Con 1 la región es una columna. */
+  columnas?: 1 | 2 | 3 | 4;
 }
-const { id, neutros = [] } = Astro.props;
+const { id, neutros = [], columnas = 3 } = Astro.props;
+
+// Clases completas (no construidas) para que Tailwind las genere.
+const grilla = { 1: '', 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-cols-4' }[columnas];
 ---
 <button
   type="button"
   data-plegable-boton
   aria-controls={id}
-  aria-expanded="true"
-  class="flex h-11 w-full items-center justify-between rounded-lg border border-input px-4 text-sm font-medium md:hidden"
+  aria-expanded="false"
+  hidden
+  class="flex h-11 w-full items-center justify-between self-end rounded-lg border border-input px-4 text-sm font-medium"
 >
   <span class="flex items-center gap-2">
     <FunnelSimple class="size-4" aria-hidden="true" />
@@ -25,6 +33,14 @@ const { id, neutros = [] } = Astro.props;
   </span>
   <CaretDown class="size-4 transition-transform [[aria-expanded=true]>&]:rotate-180" aria-hidden="true" />
 </button>
-<div id={id} data-plegable data-neutros={neutros.join(',')} class="grid gap-4 data-[plegado]:max-md:hidden md:contents">
+<button
+  type="button"
+  data-plegable-limpiar={id}
+  hidden
+  class="h-11 w-full self-end rounded-lg px-4 text-sm font-medium text-primary underline-offset-4 hover:underline"
+>
+  Limpiar filtros
+</button>
+<div id={id} data-plegable data-neutros={neutros.join(',')} class={`grid gap-4 col-span-full data-[plegado]:hidden ${grilla}`}>
   <slot />
 </div>

@@ -5,8 +5,9 @@ import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
+import SeccionDestacada from '@/components/SeccionDestacada.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { anunciosVigentes, noticiasRecientes, proximasActividades, publicacionesInstagram, publicados } from '@/lib/contenido';
+import { anunciosVigentes, noticiasRecientes, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
 import { estaVigente } from '@/lib/reglas';
 import { getImage } from 'astro:assets';
 
@@ -21,6 +22,8 @@ const banners = (await publicados('banners'))
 const lcp = banners[0]
   ? await getImage({ src: banners[0].data.imagen, widths: [640, 1280, 1920], format: 'webp' }).catch(() => undefined)
   : undefined;
+
+const secciones = await seccionesInicio();
 
 const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
   noticiasRecientes(3), proximasActividades(), anunciosVigentes(), publicacionesInstagram(3),
@@ -82,11 +85,16 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
     </section>
   )}
 
-  <section class="bg-foreground text-background">
-    <div class="mx-auto max-w-6xl px-4 py-16 text-center">
-      <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Directorio de bioingenieros/as</h2>
-      <p data-animar="fade-up" class="mx-auto mt-3 max-w-xl opacity-80">Encuentra egresados/as por generación, área y organización.</p>
-      <a href="/directorio" class="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90">Ir al Directorio <ArrowRight class="size-4" aria-hidden="true" /></a>
-    </div>
-  </section>
+  {secciones.map((seccion) => <SeccionDestacada seccion={seccion} />)}
 </Base>
+
+<script>
+  import { iniciarParallax, limpiarParallax } from '@/scripts/parallax';
+
+  // Los <script> corren una vez; el parallax se reinicia en cada página del Inicio (ClientRouter).
+  document.addEventListener('astro:before-swap', limpiarParallax);
+  document.addEventListener('astro:page-load', () => {
+    if (location.pathname.replace(/\/$/, '') !== '') return;
+    iniciarParallax();
+  });
+</script>
