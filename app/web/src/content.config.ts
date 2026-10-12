@@ -69,7 +69,9 @@ const organizaciones = defineCollection({
 const incrustados = z.array(z.object({ url: z.url().startsWith('https://'), titulo: z.string().optional() })).max(10).optional();
 
 // Enlaces: botones bajo el título (inscripción, transmisión, más información). Etiqueta libre; mismo criterio https.
-const enlaces = z.array(z.object({ etiqueta: z.string().min(1).max(40), url: z.url().startsWith('https://') })).max(6).optional();
+// La URL es completa (https) o una ruta interna del sitio (/agenda, /p/mi-pagina); nunca `//host` ni `javascript:`.
+const urlEnlace = z.union([z.url().startsWith('https://'), z.string().regex(/^\/(?!\/)\S*$/)]);
+const enlaces = z.array(z.object({ etiqueta: z.string().min(1).max(40), url: urlEnlace })).max(6).optional();
 
 const noticias = defineCollection({
   loader: md('noticias'),

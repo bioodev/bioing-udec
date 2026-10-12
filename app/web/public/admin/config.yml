@@ -175,7 +175,7 @@ collections:
         hint: "Botones bajo el título: inscripción, transmisión, más información… Para reproducir videos, audios o publicaciones, usa Contenido incrustado."
         fields:
           - { name: etiqueta, label: Texto del botón, widget: string, hint: "Corto, p. ej.: Ver transmisión." }
-          - { name: url, label: Dirección, widget: string, type: url, hint: "Dirección completa que empieza con https://." }
+          - { name: url, label: Dirección, widget: string, pattern: ['^(https://|/[^/])', "Debe empezar con https:// o, si es una página del sitio, con / (p. ej. /agenda)."], hint: "Dirección completa (https://…) o, para una página del sitio, la ruta: /agenda, /p/mi-pagina." }
       - name: galeria
         label: Galería de imágenes
         label_singular: Imagen
@@ -264,7 +264,7 @@ collections:
         hint: "Botones bajo el título: inscripción, transmisión, más información… Para reproducir videos, audios o publicaciones, usa Contenido incrustado."
         fields:
           - { name: etiqueta, label: Texto del botón, widget: string, hint: "Corto, p. ej.: Ver transmisión." }
-          - { name: url, label: Dirección, widget: string, type: url, hint: "Dirección completa que empieza con https://." }
+          - { name: url, label: Dirección, widget: string, pattern: ['^(https://|/[^/])', "Debe empezar con https:// o, si es una página del sitio, con / (p. ej. /agenda)."], hint: "Dirección completa (https://…) o, para una página del sitio, la ruta: /agenda, /p/mi-pagina." }
       - { name: imagen, label: Imagen, widget: image, required: false }
       - name: incrustados
         label: Contenido incrustado
@@ -437,7 +437,7 @@ collections:
         hint: "Botones bajo el título: inscripción, transmisión, más información… Para reproducir videos, audios o publicaciones, usa Contenido incrustado."
         fields:
           - { name: etiqueta, label: Texto del botón, widget: string, hint: "Corto, p. ej.: Ver transmisión." }
-          - { name: url, label: Dirección, widget: string, type: url, hint: "Dirección completa que empieza con https://." }
+          - { name: url, label: Dirección, widget: string, pattern: ['^(https://|/[^/])', "Debe empezar con https:// o, si es una página del sitio, con / (p. ej. /agenda)."], hint: "Dirección completa (https://…) o, para una página del sitio, la ruta: /agenda, /p/mi-pagina." }
       - { name: bloques_titulo, label: Título de los bloques destacados, widget: string, required: false, hint: "Aparece sobre los bloques destacados. Déjalo vacío para mostrar solo los bloques." }
       - name: bloques
         label: Bloques destacados
