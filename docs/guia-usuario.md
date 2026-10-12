@@ -753,7 +753,8 @@ La imagen para compartir en redes se ajusta en **SEO del sitio** (sección 4.15)
   cualquier HTML que se pegue en el Cuerpo (no da error: simplemente no aparece). Para mapas, audio o videos de
   otros servicios usa **Contenido incrustado**, que va al final del texto de la Noticia o la Actividad, no dentro de él.
 - **Direcciones de enlaces.** Los campos de enlace aceptan direcciones que empiezan con `https://` (o `http://`) y, donde
-  se indica, rutas del sitio que empiezan con `/` (p. ej. `/agenda`). Un enlace con otro formato no se publica.
+  se indica, rutas del sitio que empiezan con `/` (p. ej. `/agenda`). El panel avisa si el formato no sirve; si aun así
+  se guarda uno inválido, la publicación se detiene y el sitio sigue mostrando la versión anterior hasta corregirlo.
 - **Documentos.** Hoy los Documentos se enlazan desde Google Drive (campo **Enlace al archivo (Drive)**). La
   subida de archivos al servidor (R2) no está en el panel; ver [`pendientes-infra.md`](pendientes-infra.md).
 
