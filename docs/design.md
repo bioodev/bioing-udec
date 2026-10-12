@@ -369,6 +369,9 @@ Componente `src/components/Navbar.astro` (el `<header>` completo; `Base.astro` s
   (`src/lib/ocultar-header.ts`, puro y con test). No se oculta con un desplegable abierto, con el foco dentro
   del header ni con el menú móvil abierto. Con `prefers-reduced-motion` el ocultado es instantáneo, sin
   transición: se decidió ocultar igual, porque no es una animación sino un cambio de posición.
+- **Menú dinámico**: los enlaces fijos viven en `MENU_PRINCIPAL`; las Páginas libres se agregan a «La carrera» o
+  «Comunidad» según `mostrar_en`, después de los fijos y ordenadas por título. Su bajada es la descripción del
+  enlace. El pie usa la misma fuente (`enlacesFooter`).
 - **Menú móvil (< 1024 px)**: un `Sheet` de Starwind (`<dialog>`, así que el `transform` del header no lo
   afecta) con «Buscar en el sitio» arriba, los mismos grupos con su título, un ícono Phosphor por enlace, la
   página activa con fondo `bg-muted`, barra lateral y `aria-current`, zonas táctiles de 44 px, y al final el

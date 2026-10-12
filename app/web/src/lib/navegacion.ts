@@ -76,3 +76,50 @@ export function entradaActiva(entrada: EntradaMenu, pathname: string): boolean {
   if (entrada.tipo === 'enlace') return esActual(entrada.enlace.href, pathname);
   return entrada.grupo.enlaces.some((e) => esActual(e.href, pathname));
 }
+
+// ── Páginas libres (colección paginas_libres, creada desde el panel) ──────────
+
+/** Valor del campo `mostrar_en` de una Página libre (ver public/admin/config.yml). */
+export type MostrarEn = 'ninguno' | 'footer' | 'la-carrera' | 'comunidad';
+
+/** Lo que el menú necesita de una Página libre; no depende de la colección en sí. */
+export interface PaginaLibreMenu {
+  titulo: string;
+  href: string;
+  bajada: string;
+  mostrar_en: MostrarEn;
+}
+
+// Qué valor de `mostrar_en` va a qué desplegable del navbar (y, en móvil, al mismo grupo).
+const GRUPO_DE_PAGINAS: Record<string, MostrarEn> = { 'La carrera': 'la-carrera', Comunidad: 'comunidad' };
+
+const porTitulo = (a: { titulo: string }, b: { titulo: string }) => a.titulo.localeCompare(b.titulo, 'es');
+
+/**
+ * Agrega cada Página libre a su desplegable, después de los enlaces fijos del grupo y ordenadas por título.
+ * No modifica `base`: los grupos que cambian son copias.
+ */
+export function menuConPaginas(base: EntradaMenu[], paginas: PaginaLibreMenu[]): EntradaMenu[] {
+  return base.map((entrada) => {
+    if (entrada.tipo !== 'grupo') return entrada;
+    const destino = GRUPO_DE_PAGINAS[entrada.grupo.etiqueta];
+    const extra: EnlaceMenu[] = paginas
+      .filter((p) => destino !== undefined && p.mostrar_en === destino)
+      .sort(porTitulo)
+      .map((p) => ({ etiqueta: p.titulo, href: p.href, descripcion: p.bajada }));
+    if (extra.length === 0) return entrada;
+    return { tipo: 'grupo', grupo: { ...entrada.grupo, enlaces: [...entrada.grupo.enlaces, ...extra] } };
+  });
+}
+
+/** Enlaces del pie: los fijos de `base` y, después, las Páginas libres que no están en «ninguno». */
+export function enlacesFooter<T extends { etiqueta: string; href: string }>(
+  base: T[],
+  paginas: PaginaLibreMenu[],
+): (T | { etiqueta: string; href: string })[] {
+  const extra = paginas
+    .filter((p) => p.mostrar_en !== 'ninguno')
+    .sort(porTitulo)
+    .map((p) => ({ etiqueta: p.titulo, href: p.href }));
+  return [...base, ...extra];
+}

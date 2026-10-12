@@ -7,7 +7,8 @@ import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
 import Logo from '@/components/Logo.astro';
 import Navbar from '@/components/Navbar.astro';
-import { MENU, URL_FCB } from '@/lib/navegacion';
+import { MENU, URL_FCB, enlacesFooter } from '@/lib/navegacion';
+import { paginasParaMenu } from '@/lib/contenido';
 import { jsonLd as serializarJsonLd, sitioWeb, type JsonLd } from '@/lib/schema';
 import ogPorDefecto from '@/assets/og-default.png';
 
@@ -15,6 +16,8 @@ interface Props { titulo: string; descripcion?: string; imagen?: string; jsonLd?
 const { titulo, descripcion = 'Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción.', imagen, jsonLd: jsonLdPagina } = Astro.props;
 const tituloPagina = titulo === 'BIOING+' ? titulo : `${titulo} · BIOING+`;
 const actual = Astro.url.pathname;
+// Pie: los enlaces fijos del menú y las Páginas libres que se muestran en el pie o en un desplegable.
+const enlacesPie = enlacesFooter(MENU.filter((item) => item.href !== '/'), await paginasParaMenu());
 // URL absoluta para canonical y Open Graph (Astro.site está definido en astro.config.mjs).
 const canonical = new URL(actual, Astro.site).href;
 const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefecto.src, Astro.site).href;
@@ -99,7 +102,7 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
           <nav aria-label="Navegación del pie" class="text-sm">
             <h2 class="text-sm font-semibold tracking-tight">Navegación</h2>
             <ul class="mt-3 grid gap-2">
-              {MENU.filter((item) => item.href !== '/').map((item) => (
+              {enlacesPie.map((item) => (
                 <li><a href={item.href} class="text-muted-foreground hover:text-primary">{item.etiqueta}</a></li>
               ))}
             </ul>

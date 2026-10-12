@@ -11,9 +11,9 @@ const CONTENIDO = new URL('../src/content/', import.meta.url).pathname;
 const MEDIOS = new URL('../src/assets/media/', import.meta.url).pathname;
 const PREFIJO = 'sint-';
 const AVISO = 'Contenido sintético generado por scripts/datos-sinteticos.mjs.';
-const COLECCIONES = ['areas', 'temas', 'organizaciones', 'personas', 'actividades', 'noticias', 'anuncios', 'documentos', 'banners', 'instagram'];
+const COLECCIONES = ['areas', 'temas', 'organizaciones', 'personas', 'actividades', 'noticias', 'anuncios', 'documentos', 'banners', 'instagram', 'paginas-libres'];
 
-const CANTIDAD = { organizaciones: 15, personas: 70, actividades: 24, noticias: 40, anuncios: 18, documentos: 30, banners: 7, instagram: 7 };
+const CANTIDAD = { organizaciones: 15, personas: 70, actividades: 24, noticias: 40, anuncios: 18, documentos: 30, banners: 8, instagram: 7 };
 
 // Fotos demo (src/assets/media). El texto alternativo describe lo que se ve en cada una.
 const DEMOS = ['demo-01.jpg', 'demo-02.jpg', 'demo-03.jpg', 'demo-04.jpg', 'demo-05.jpg', 'demo-06.jpg', 'demo-07.jpg'];
@@ -344,8 +344,25 @@ function generar() {
     });
   }
 
+  // Páginas libres: una por cada valor de `mostrar_en`. La de «ninguno» la enlaza un Banner (ver abajo).
+  const paginasLibres = [
+    { titulo: 'Becas y apoyo estudiantil', mostrar_en: 'ninguno', bajada: 'Ayudas económicas y de alimentación para estudiantes de Bioingeniería.' },
+    { titulo: 'Historia de la carrera', mostrar_en: 'la-carrera', bajada: 'Desde la creación del programa hasta hoy.' },
+    { titulo: 'Preguntas frecuentes', mostrar_en: 'footer', bajada: 'Respuestas a las consultas más comunes de estudiantes y egresados/as.' },
+  ];
+  const idsPaginas = {};
+  for (const { titulo, mostrar_en, bajada } of paginasLibres) {
+    const demo = alguno(DEMOS);
+    const id = idUnico('paginas-libres', titulo);
+    idsPaginas[mostrar_en] = id;
+    escribir('paginas-libres', id, {
+      titulo, publicado: true, bajada, mostrar_en,
+      imagen: `@/assets/media/${demo}`, imagen_alt: DEMO_ALT[demo],
+    }, cuerpo({ secciones: 2, imagen: alguno(DEMOS) }));
+  }
+
   // Banners (slides del carrusel del Inicio): 5 vigentes para probar autoplay,
-  // flechas y puntos; los últimos 2 prueban la visibilidad (uno futuro y uno vencido,
+  // flechas y puntos (una enlaza a una Página libre de «ninguno»); los últimos 3 prueban la visibilidad (futuros y vencidos,
   // que no deben mostrarse). `estaVigente()` los filtra en el build.
   const banners = [];
   const plantillasBanner = [
@@ -353,6 +370,7 @@ function generar() {
     ['Semana de la Bioingeniería', 'Charlas, talleres y encuentros con egresados', '/agenda'],
     ['Novedades de la comunidad', 'Lo último en noticias', '/noticias'],
     ['Directorio de egresados', 'Busca y conéctate con la comunidad', '/directorio'],
+    ['Becas y apoyo', 'Ayudas para estudiantes de la carrera', `/paginas/${idsPaginas.ninguno}`],
     ['Repositorio de documentos', 'Reglamentos, informes y publicaciones', '/repositorio'],
     ['Convocatoria de anuncios', 'Trabajo, prácticas y proyectos', '/anuncios'],
     ['Conoce la carrera', '¿Qué es la Bioingeniería en la UdeC?', '/bioingenieria'],
