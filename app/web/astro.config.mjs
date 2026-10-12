@@ -6,6 +6,8 @@ import { loadEnv } from 'vite';
 import { readFileSync } from 'node:fs';
 import { leerConfigMenu } from './src/lib/navegacion.ts';
 import { seccionesDesactivadas } from './src/integrations/secciones-desactivadas.ts';
+import { satteri } from '@astrojs/markdown-satteri';
+import { sanearHtml } from './src/lib/sanear-html.ts';
 
 // Astro no carga .env en process.env al leer esta config: se lee con loadEnv de Vite.
 // La variable del entorno (p. ej. la de Workers Builds) gana sobre el archivo .env.
@@ -26,6 +28,9 @@ export default defineConfig({
 		// Después de sitemap: quita del build las secciones apagadas y sus URL del sitemap.
 		seccionesDesactivadas(menu),
 	],
+	// El cuerpo Markdown del panel se sanea: sin HTML crudo (scripts, formularios, <meta refresh>…) ni enlaces
+	// javascript:/data:. Sätteri es el procesador por defecto de Astro 7; ver src/lib/sanear-html.ts.
+	markdown: { processor: satteri({ hastPlugins: [sanearHtml] }) },
 	vite: {
 		plugins: [tailwindcss()],
 		build: {

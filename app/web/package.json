@@ -21,6 +21,7 @@
     "dev:tunel": "bash scripts/dev-tunel.sh"
   },
   "dependencies": {
+    "@astrojs/markdown-satteri": "0.4.2",
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.4",
     "@starwind-ui/astro": "^1.2.1",
@@ -43,6 +44,7 @@
     "@faker-js/faker": "^10.6.0",
     "lighthouse": "13.5.0",
     "pagefind": "1.5.2",
+    "satteri": "0.10.5",
     "typescript": "^6.0.3",
     "vitest": "^5.0.3",
     "wrangler": "4.148.0"
