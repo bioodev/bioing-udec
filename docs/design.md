@@ -309,7 +309,7 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 - Sin gradientes, sin chrome decorativo y **una sola sombra**; hairlines (`--border: #e0e0e0`) en vez de
   sombras.
 - Tipografía del sistema (`system-ui, -apple-system`) y radios amplios (`--radius: 18px`).
-- Texto enriquecido del panel (cuerpo de Noticias, `/bioingenieria` y Páginas libres): clase `prose` de `@tailwindcss/typography`, con sus colores mapeados a los tokens del tema en `starwind.css`; el modo oscuro sale solo, sin `dark:prose-invert`.
+- Texto enriquecido del panel (cuerpo de Noticias y Páginas libres, con ¿Qué es la Bioingeniería?): clase `prose` de `@tailwindcss/typography`, con sus colores mapeados a los tokens del tema en `starwind.css`; el modo oscuro sale solo, sin `dark:prose-invert`.
 - Densidad baja: cada sección con aire y titulares `text-3xl`/`text-4xl` semibold con tracking negativo.
 
 ### Tokens (valores reales en `starwind.css`)
@@ -354,7 +354,7 @@ se aplica antes del primer pintado con un script inline en `<head>` (sin FOUC) y
 Componente `src/components/Navbar.astro` (el `<header>` completo; `Base.astro` solo lo incluye). Estructura en
 `MENU_PRINCIPAL` (`src/lib/navegacion.ts`), que agrupa los enlaces de `MENU` por `href` sin duplicar etiquetas:
 
-- **Escritorio (≥ 1024 px)**: `Inicio` · `La carrera ▾` (¿Qué es la Bioingeniería?, Repositorio) · `Noticias` ·
+- **Escritorio (≥ 1024 px)**: `Inicio` · `La carrera ▾` (Repositorio y, después, las Páginas libres con `mostrar_en: la-carrera`, como ¿Qué es la Bioingeniería?) · `Noticias` ·
   `Agenda` · `Comunidad ▾` (Directorio, Anuncios, Instagram). A la derecha: «Buscar» con la pista `Ctrl K`
   (≥ 1280 px), el tema y «FCB UdeC». Todo en una línea (`whitespace-nowrap`), también a 1024 px.
 - **Página activa**: enlace con `aria-current="page"` y barra inferior de 2 px `border-primary`; un grupo con
@@ -403,7 +403,7 @@ reintroducir efectos de puntos/impresión en el hero.
 - **Texto alternativo** de la imagen destacada: campo `imagen_alt` (en el detalle y en la tarjeta); sin él, la
   imagen es decorativa (`alt=""`).
 - **Video** (`video`, enlace de YouTube): `VideoModal` debajo del cuerpo, con el mismo comportamiento que en
-  Inicio/¿Qué es la Bioingeniería? (centrado, bloquea el desplazamiento del fondo). Si `idYouTube` no reconoce
+  Inicio y Páginas libres (centrado, bloquea el desplazamiento del fondo). Si `idYouTube` no reconoce
   el enlace, no se muestra nada.
 - **Galería** (`galeria`, hasta 12 imágenes con texto alternativo): grilla de miniaturas optimizadas (2 columnas en
   móvil, 3 en escritorio) debajo del video. Al hacer clic se abre un `<dialog>` con la versión de 1600 px (WebP):

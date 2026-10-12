@@ -29,7 +29,7 @@ más un acceso permanente a la web de la FCB. En el sitio el menú es sticky.
 
 - **Inicio**: contenido destacado y dinámico (Banners, noticias recientes, próximas actividades, anuncios
   vigentes, publicaciones de Instagram).
-- **¿Qué es la Bioingeniería?**: contenido institucional y un video que se abre en un modal.
+- **¿Qué es la Bioingeniería?**: Página libre (`/paginas/bioingenieria`, en «La carrera») con contenido institucional, un video que se abre en un modal y bloques destacados.
 - **Noticias**: con buscador y filtros por Tema, Persona mencionada y fecha; más archivo.
 - **Agenda**: Actividades con ficha propia; próximas (orden cronológico) y realizadas (archivo).
 - **Anuncios**: oportunidades (trabajo, práctica, pasantía, proyecto, convocatoria, colaboración).
@@ -150,7 +150,7 @@ Página de texto creada desde el panel (título, bajada, imagen opcional, conten
 _Avoid_: Página institucional, página, artículo
 
 **Página institucional**:
-Página de diseño a medida y archivo único (hoy, ¿Qué es la Bioingeniería?). El Encargado de comunicaciones edita sus textos desde el panel, pero cambiar su estructura requiere código. No es una Página libre.
+Página de diseño a medida y archivo único. Hoy no hay ninguna: ¿Qué es la Bioingeniería? es una Página libre. Cambiar la estructura de una página de este tipo requiere código. No es una Página libre.
 _Avoid_: Página libre, página fija
 
 **Banner**:

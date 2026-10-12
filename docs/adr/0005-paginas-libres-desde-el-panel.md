@@ -36,6 +36,18 @@ carrera pidió poder crear páginas desde el panel, algunas enlazadas desde un B
 - Cambiar la dirección de una página libre ya enlazada rompe esos enlaces; conviene revisarla antes de enlazarla.
 - Un nuevo desplegable, un nuevo valor de `mostrar_en` o un diseño propio **sí** requieren código.
 
+## Actualización 2026-10-12
+
+- **Campos nuevos (opcionales)** en las Páginas libres, para cualquier página: `video` (enlace de YouTube, se
+  muestra con `VideoModal` debajo de la bajada), `bloques_titulo` y `bloques` (lista de `{ titulo, texto }`, en
+  una franja oscura después del cuerpo). Con video o bloques, la página usa el diseño de ¿Qué es la
+  Bioingeniería?; sin ninguno, queda la columna de texto de siempre.
+- **Migración:** ¿Qué es la Bioingeniería? pasa a ser `src/content/paginas-libres/bioingenieria.md` con
+  `mostrar_en: la-carrera`. Su página en `/bioingenieria` se elimina **sin redirección** y su enlace sale de
+  `MENU`; la colección `paginas` queda solo con la entrada «Inicio». Los dos botones del final pasan a enlaces en
+  el cuerpo. La decisión 6 queda superada en esa parte: la página ya no tiene archivo propio.
+- **Ícono móvil:** las Páginas libres usan un ícono de documento; `/paginas/bioingenieria` conserva el matraz.
+
 ## Alternativas
 
 - **URL `/<nombre>`** (sin prefijo): descartada, choca con las secciones existentes (`/noticias`, `/agenda`…).

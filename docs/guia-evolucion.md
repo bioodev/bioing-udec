@@ -52,7 +52,7 @@ Las rutas son relativas a `app/web/` salvo que digan otra cosa.
 | Un dato que apunta a otra entrada | **Relación** (`widget: relation` + `reference()`) | `personas_mencionadas` en Noticias; `oferente` en Anuncios |
 | Un control o bloque visual reutilizable | **Componente** en `src/components/` | `TarjetaNoticia.astro`, `VideoModal.astro`, `FiltrosPlegables.astro`, `GaleriaImagenes.astro` |
 | Una pieza dentro del cuerpo de un texto (video, mapa, PDF) | **Componente de editor de Sveltia** + transformación en el build; o un campo dedicado | Ver §4. Hoy: campos `video` y `galeria` |
-| Una sección navegable con su propia URL | **Página nueva** (+ entrada en el menú) | `anuario.astro`, `bioingenieria.astro`, `instagram.astro` |
+| Una sección navegable con su propia URL | **Página nueva** (+ entrada en el menú) | `anuario.astro`, `instagram.astro` |
 | Un servicio externo que se incrusta | **Proveedor de embed** en la lista cerrada de la CSP | YouTube (`youtube-nocookie.com`), Vimeo, Drive, Instagram |
 
 Regla práctica: empezar por el nivel más bajo que resuelva el caso. Un campo nuevo es más barato que una
