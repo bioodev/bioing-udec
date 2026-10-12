@@ -188,7 +188,8 @@ export function incrustado(url: string, { dominios = [] }: OpcionesIncrustado = 
   // Dailymotion: video (`/video/<id>`) o enlace corto dai.ly/<id>.
   if (host === 'dailymotion.com' || host === 'dai.ly') {
     const id = (host === 'dai.ly' ? ruta.match(/^\/([\da-z]+)\/?$/i) : ruta.match(/^\/video\/([\da-z]+)\/?$/i))?.[1];
-    return id ? { tipo: 'iframe', proveedor: 'Dailymotion', src: `https://www.dailymotion.com/embed/video/${id}`, proporcion: '16/9' } : tarjeta('Dailymotion');
+    // El embed clásico (www.dailymotion.com/embed) redirige al reproductor de geo.dailymotion.com: se usa este directo.
+    return id ? { tipo: 'iframe', proveedor: 'Dailymotion', src: `https://geo.dailymotion.com/player.html?video=${id}`, proporcion: '16/9' } : tarjeta('Dailymotion');
   }
 
   if (host === 'loom.com') {

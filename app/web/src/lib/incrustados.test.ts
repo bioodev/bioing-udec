@@ -371,9 +371,9 @@ describe('Reddit', () => {
 describe('Dailymotion, Loom y TED', () => {
   test('Dailymotion: video y enlace corto dai.ly → 16/9', () => {
     expect(incrustado('https://www.dailymotion.com/video/x7tgad0')).toEqual({
-      tipo: 'iframe', proveedor: 'Dailymotion', src: 'https://www.dailymotion.com/embed/video/x7tgad0', proporcion: '16/9',
+      tipo: 'iframe', proveedor: 'Dailymotion', src: 'https://geo.dailymotion.com/player.html?video=x7tgad0', proporcion: '16/9',
     });
-    expect(incrustado('https://dai.ly/x7tgad0')).toMatchObject({ src: 'https://www.dailymotion.com/embed/video/x7tgad0' });
+    expect(incrustado('https://dai.ly/x7tgad0')).toMatchObject({ src: 'https://geo.dailymotion.com/player.html?video=x7tgad0' });
   });
   test('Loom: enlace de compartir → embed 16/9', () => {
     expect(incrustado('https://www.loom.com/share/abc123def')).toEqual({
