@@ -451,6 +451,15 @@ reintroducir efectos de puntos/impresión en el hero.
 - Video: el `VideoModal` debajo del resumen, en un ancho máximo de 28 rem. Botón «Ver más» → `/p/<id>`.
 - Sin JavaScript propio: el video usa el `VideoModal` existente. Las animaciones son `data-animar="fade-up"`.
 
+### Enlaces (botones bajo el título)
+
+- `Enlaces.astro`, bajo el título de Noticias, Actividades y Páginas libres. El botón principal (la inscripción de
+  una Actividad próxima) va relleno (`variant="primary"`); los demás, con borde (`variant="outline"`). Todos son
+  `rounded-full`: ancho completo en móvil y automático desde `sm`, en fila con `flex-wrap gap-3`.
+- Los externos llevan `ArrowUpRight`, abren en pestaña nueva y tienen un texto oculto «(se abre en una pestaña
+  nueva)» para lectores de pantalla. Los internos llevan `ArrowRight` y no abren pestaña nueva.
+- Sin estilos inline ni `onclick`. Si no hay botones, el componente no renderiza nada.
+
 ### Secciones destacadas del Inicio
 
 - Al final del Inicio hay una lista de **secciones destacadas** editable en el panel (colección `inicio`, archivo
