@@ -301,24 +301,27 @@ const redes = defineCollection({
 // verificación de buscadores. Todo opcional: sin archivo o sin clave, el sitio usa su valor por defecto (src/lib/seo.ts).
 const seoSitio = defineCollection({
   loader: yml('seo'),
-  schema: ({ image }) =>
-    z.object({
+  schema: ({ image }) => {
+    const listado = z.object({ descripcion: z.string().max(160).optional(), imagen: image().optional() }).optional();
+    return z.object({
       descripcion: z.string().max(160).optional(),
       imagen: image().optional(),
+      // Un objeto por listado: su descripción y su imagen para redes (og:image). Ambos opcionales.
       listados: z.object({
-        inicio: z.string().max(160).optional(),
-        noticias: z.string().max(160).optional(),
-        agenda: z.string().max(160).optional(),
-        anuncios: z.string().max(160).optional(),
-        repositorio: z.string().max(160).optional(),
-        directorio: z.string().max(160).optional(),
-        instagram: z.string().max(160).optional(),
+        inicio: listado,
+        noticias: listado,
+        agenda: listado,
+        anuncios: listado,
+        repositorio: listado,
+        directorio: listado,
+        instagram: listado,
       }).optional(),
       verificacion: z.object({
         google: z.string().regex(/^[A-Za-z0-9_-]+$/, 'Solo el código, sin etiqueta <meta> ni comillas.').optional(),
         bing: z.string().regex(/^[A-Za-z0-9_-]+$/, 'Solo el código, sin etiqueta <meta> ni comillas.').optional(),
       }).optional(),
-    }),
+    });
+  },
 });
 
 const instagram = defineCollection({

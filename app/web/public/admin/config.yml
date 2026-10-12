@@ -534,19 +534,68 @@ collections:
             required: false
             hint: "Horizontal, de 1200 × 630 px. Se usa cuando una página no trae su propia imagen. Si la dejas vacía, se usa la imagen por defecto del sitio."
           - name: listados
-            label: Descripción de cada listado
+            label: Descripción e imagen de cada listado
             widget: object
             collapsed: true
             required: false
-            hint: "Texto que aparece en Google para cada página de listado. Si lo dejas vacío, se usa el texto por defecto."
+            hint: "Para cada página de listado: el texto que aparece en Google y la imagen al compartirla en redes. Si los dejas vacíos, se usan los valores por defecto del sitio."
             fields:
-              - { name: inicio, label: Inicio, widget: text, required: false, maxlength: 160 }
-              - { name: noticias, label: Noticias, widget: text, required: false, maxlength: 160 }
-              - { name: agenda, label: Agenda, widget: text, required: false, maxlength: 160 }
-              - { name: anuncios, label: Anuncios, widget: text, required: false, maxlength: 160 }
-              - { name: repositorio, label: Repositorio, widget: text, required: false, maxlength: 160 }
-              - { name: directorio, label: Directorio, widget: text, required: false, maxlength: 160 }
-              - { name: instagram, label: Instagram, widget: text, required: false, maxlength: 160 }
+              - name: inicio
+                label: Inicio
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: noticias
+                label: Noticias
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: agenda
+                label: Agenda
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: anuncios
+                label: Anuncios
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: repositorio
+                label: Repositorio
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: directorio
+                label: Directorio
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: instagram
+                label: Instagram
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
           - name: verificacion
             label: Verificación de buscadores
             widget: object

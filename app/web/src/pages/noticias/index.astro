@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
 import CaretLeft from 'phosphor-astro/CaretLeft.astro';
 import CaretRight from 'phosphor-astro/CaretRight.astro';
-import { descripcionDeListado, noticiasVisibles } from '@/lib/contenido';
+import { descripcionDeListado, imagenDeListadoSeo, noticiasVisibles } from '@/lib/contenido';
 import { existentes, normalizar } from '@/lib/reglas';
 import { TODAS } from '@/lib/filtro-noticias';
 
@@ -32,8 +32,9 @@ const anios = [...new Set(noticias.map((n) => n.noticia.data.fecha.getUTCFullYea
 // Etiquetas (tags de texto libre) presentes en las noticias visibles, alfabéticas.
 const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?? []))].sort((a, b) => a.localeCompare(b, 'es'));
 const descripcion = await descripcionDeListado('noticias');
+const imagenListado = await imagenDeListadoSeo('noticias');
 ---
-<Base titulo="Noticias" descripcion={descripcion}>
+<Base titulo="Noticias" descripcion={descripcion} imagen={imagenListado}>
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title="Noticias de BIOING+" href="/noticias/rss.xml" />
   </Fragment>

@@ -32,11 +32,18 @@ export interface SeoEntrada {
   noindex?: boolean;
 }
 
+/** Texto e imagen para redes de un listado (src/content/seo/seo.yml, campo `listados`). */
+export interface SeoListado {
+  descripcion?: string;
+  /** Ruta de la imagen para redes (ya resuelta a su URL del build). */
+  imagen?: string;
+}
+
 /** Configuración del sitio (src/content/seo/seo.yml). */
 export interface SeoSitio {
   descripcion?: string;
   imagen?: string;
-  listados?: Partial<Record<Listado, string>>;
+  listados?: Partial<Record<Listado, SeoListado>>;
   verificacion?: { google?: string; bing?: string };
 }
 
@@ -71,10 +78,14 @@ export const imagenSitio = (sitio: SeoSitio | undefined): string | undefined => 
 
 /** Descripción de un listado: la del panel o la del código. El Inicio, sin texto propio, usa la del sitio. */
 export function descripcionListado(listado: Listado, sitio: SeoSitio | undefined): string {
-  const propia = texto(sitio?.listados?.[listado]);
+  const propia = texto(sitio?.listados?.[listado]?.descripcion);
   if (propia) return propia;
   return listado === 'inicio' ? descripcionSitio(sitio) : VALORES_POR_DEFECTO[listado];
 }
+
+/** Imagen para redes de un listado: la del listado, si no la del sitio (y, si tampoco, og-default.png del código). */
+export const imagenDeListado = (listado: Listado, sitio: SeoSitio | undefined): string | undefined =>
+  texto(sitio?.listados?.[listado]?.imagen) ?? imagenSitio(sitio);
 
 /** Metas de verificación de los buscadores. Solo se emiten los códigos con valor. */
 export function verificacionMetas(verificacion: SeoSitio['verificacion']): { name: string; content: string }[] {

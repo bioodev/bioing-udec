@@ -2,14 +2,15 @@
 import Base from '@/layouts/Base.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
-import { configuracionRedes, descripcionDeListado, publicacionesInstagram } from '@/lib/contenido';
+import { configuracionRedes, descripcionDeListado, imagenDeListadoSeo, publicacionesInstagram } from '@/lib/contenido';
 
 const publicaciones = await publicacionesInstagram();
 // El enlace «Seguir» sale de la red Instagram del panel (src/content/redes); si está vacía, no hay botón.
 const urlInstagram = (await configuracionRedes()).instagram;
 const descripcion = await descripcionDeListado('instagram');
+const imagenListado = await imagenDeListadoSeo('instagram');
 ---
-<Base titulo="Instagram" descripcion={descripcion}>
+<Base titulo="Instagram" descripcion={descripcion} imagen={imagenListado}>
   <section id="instagram-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="instagram-titulo">
     <h1 id="instagram-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Instagram</h1>
     <p class="mt-2 text-muted-foreground">Publicaciones seleccionadas de la cuenta de Bioingeniería UdeC.</p>

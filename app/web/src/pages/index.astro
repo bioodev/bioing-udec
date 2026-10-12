@@ -9,7 +9,7 @@ import SeccionDestacada from '@/components/SeccionDestacada.astro';
 import BandaComunidad from '@/components/BandaComunidad.astro';
 import PaginaDestacada from '@/components/PaginaDestacada.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { anunciosVigentes, bandaComunidad, configuracionMenu, descripcionDeListado, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
+import { anunciosVigentes, bandaComunidad, configuracionMenu, descripcionDeListado, imagenDeListadoSeo, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
 import { enlaceDisponible, seccionActiva } from '@/lib/navegacion';
 import { estaVigente } from '@/lib/reglas';
 import { getImage } from 'astro:assets';
@@ -39,8 +39,9 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
   noticiasRecientes(3), proximasActividades(), anunciosVigentes(), publicacionesInstagram(3),
 ]);
 const descripcion = await descripcionDeListado('inicio');
+const imagenListado = await imagenDeListadoSeo('inicio');
 ---
-<Base titulo="BIOING+" descripcion={descripcion}>
+<Base titulo="BIOING+" descripcion={descripcion} imagen={imagenListado}>
   {lcp && (
     <link
       slot="head"
