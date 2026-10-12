@@ -20,7 +20,7 @@ const varios = banners.length > 1;
   aria-roledescription="carrusel"
   aria-label="Destacados"
 >
-  <div class="flex transition-transform duration-500 ease-out motion-reduce:transition-none" data-carrusel-track>
+  <div class="flex cursor-grab touch-pan-y select-none active:cursor-grabbing transition-transform duration-500 ease-out motion-reduce:transition-none" data-carrusel-track>
     {banners.map((banner, i) => (
       <div
         class="relative min-w-full"
@@ -59,34 +59,35 @@ const varios = banners.length > 1;
 
   {varios && (
     <>
-      <div class="absolute inset-y-0 left-0 flex items-center">
+      {/* Los contenedores de los controles cubren todo el alto o el ancho: no deben tapar el swipe, solo los botones reciben el puntero. */}
+      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center">
         <button
           type="button"
           data-carrusel-anterior
           aria-label="Anterior"
-          class="m-3 flex size-11 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition hover:bg-background/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
+          class="pointer-events-auto m-3 flex size-11 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition hover:bg-background/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
         >
           <CaretLeft class="size-6" aria-hidden="true" />
         </button>
       </div>
-      <div class="absolute inset-y-0 right-0 flex items-center">
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center">
         <button
           type="button"
           data-carrusel-siguiente
           aria-label="Siguiente"
-          class="m-3 flex size-11 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition hover:bg-background/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
+          class="pointer-events-auto m-3 flex size-11 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition hover:bg-background/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
         >
           <CaretRight class="size-6" aria-hidden="true" />
         </button>
       </div>
-      <div class="absolute inset-x-0 bottom-4 flex justify-center gap-2" role="group" aria-label="Elegir diapositiva">
+      <div class="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center gap-2" role="group" aria-label="Elegir diapositiva">
         {banners.map((_, i) => (
           <button
             type="button"
             data-punto
             aria-label={`Ir a la diapositiva ${i + 1}`}
             aria-current={i === 0 ? 'true' : undefined}
-            class="h-2.5 w-2.5 rounded-full bg-background/40 transition hover:bg-background/70 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none aria-[current=true]:bg-background"
+            class="pointer-events-auto h-2.5 w-2.5 rounded-full bg-background/40 transition hover:bg-background/70 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none aria-[current=true]:bg-background"
           ></button>
         ))}
       </div>
@@ -95,6 +96,8 @@ const varios = banners.length > 1;
 </section>
 
 <script>
+  import { destinoArrastre } from '@/lib/carrusel';
+
   // Compartido entre re-evaluaciones del módulo (ClientRouter navega sin recargar):
   // se registran los intervalos de autoplay para limpiarlos al salir de la página.
   type VentanaCarrusel = Window & { __carruseles?: Set<number> };
@@ -143,6 +146,56 @@ const varios = banners.length > 1;
     anterior?.addEventListener('click', () => { mostrar(actual - 1); reanudar(); });
     siguiente?.addEventListener('click', () => { mostrar(actual + 1); reanudar(); });
     puntos.forEach((p, j) => p.addEventListener('click', () => { mostrar(j); reanudar(); }));
+    // Swipe con dedo o mouse: el track sigue al puntero y, al soltar, destinoArrastre decide si cambia de slide.
+    // touch-action: pan-y (en el track) deja el scroll vertical al navegador; solo se capturan gestos horizontales.
+    if (slides.length > 1) {
+      let inicioX = 0;
+      let inicioY = 0;
+      let inicioT = 0;
+      let dx = 0;
+      let arrastrando = false;
+      let horizontal: boolean | undefined;
+      let suprimirClic = false;
+
+      track.addEventListener('pointerdown', (e) => {
+        if (!e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) return;
+        arrastrando = true;
+        horizontal = undefined;
+        inicioX = e.clientX;
+        inicioY = e.clientY;
+        inicioT = performance.now();
+        dx = 0;
+      });
+      track.addEventListener('pointermove', (e) => {
+        if (!arrastrando) return;
+        dx = e.clientX - inicioX;
+        const dy = e.clientY - inicioY;
+        if (horizontal === undefined && Math.hypot(dx, dy) > 8) {
+          horizontal = Math.abs(dx) > Math.abs(dy);
+          if (!horizontal) { arrastrando = false; return; } // es scroll vertical: no es nuestro
+          track.setPointerCapture(e.pointerId);
+          track.style.transition = 'none';
+          detener();
+        }
+        if (horizontal) track.style.transform = `translateX(calc(-${actual * 100}% + ${dx}px))`;
+      });
+      const soltar = () => {
+        if (!arrastrando) return;
+        arrastrando = false;
+        if (!horizontal) return;
+        track.style.transition = '';
+        suprimirClic = Math.abs(dx) > 8; // un arrastre no debe activar el enlace «Conoce más» que quedó debajo
+        mostrar(actual + destinoArrastre({ dx, ancho: root.clientWidth, ms: performance.now() - inicioT }));
+        reanudar();
+      };
+      track.addEventListener('pointerup', soltar);
+      track.addEventListener('pointercancel', soltar);
+      track.addEventListener('click', (e) => {
+        if (suprimirClic) { e.preventDefault(); e.stopPropagation(); suprimirClic = false; }
+      }, true);
+      track.addEventListener('dragstart', (e) => e.preventDefault()); // sin arrastre nativo de imágenes y enlaces
+    }
+
     root.addEventListener('mouseenter', detener);
     root.addEventListener('mouseleave', reanudar);
     root.addEventListener('focusin', detener);

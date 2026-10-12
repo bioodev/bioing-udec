@@ -462,6 +462,16 @@ reintroducir efectos de puntos/impresión en el hero.
   ocupa casi toda la pantalla con la imagen en `object-contain`. Mientras hay un modal abierto, el fondo no se
   desplaza (`html:has(dialog[open]:modal)` en `starwind.css`).
 
+### Carrusel de Banners (Inicio)
+
+- `HeroCarrusel.astro`: flechas, puntos, autoplay de 6 s (se pausa con el puntero o el foco encima) y **swipe** con
+  dedo o mouse. El track sigue al puntero; al soltar, `destinoArrastre` (`src/lib/carrusel.ts`) cambia de slide si se
+  arrastró más del 20 % del ancho o fue un gesto rápido. `touch-action: pan-y` deja el scroll vertical al navegador, y
+  un arrastre no activa el botón «Conoce más» que quedó debajo.
+- Los contenedores de las flechas y los puntos llevan `pointer-events-none` (solo los botones reciben el puntero): si
+  no, tapan el swipe que empieza cerca de un borde.
+- Con un solo Banner vigente no hay controles ni swipe: se ve como una portada fija.
+
 ### Página destacada (bloque del Inicio)
 
 - Bloque entre el carrusel de Banners y «Noticias recientes» (`PaginaDestacada.astro`), para una Página libre con
