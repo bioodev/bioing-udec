@@ -136,3 +136,47 @@ describe('la regla /* permite el beacon de Cloudflare Web Analytics', () => {
     expect(directiva('connect-src')).toContain('https://cloudflareinsights.com');
   });
 });
+
+// Cabeceras de seguridad del sitio público (regla /*) y del panel (/admin/*). Guardianes: si alguien las quita o las
+// debilita, la prueba falla (revisión de seguridad del 2026-10-12).
+describe('cabeceras de seguridad', () => {
+  const headers = readFileSync(new URL('../../public/_headers', import.meta.url), 'utf8');
+  const publica = headers.slice(headers.indexOf('\n/*\n'), headers.indexOf('\n/admin/*'));
+  const panel = headers.slice(headers.indexOf('\n/admin/*'), headers.indexOf('\n/_astro/*'));
+  const csp = publica.match(/Content-Security-Policy: ([^\n]+)/)![1]!;
+  const directiva = (nombre: string) => csp.match(new RegExp(`(?:^|; )${nombre} ([^;]+)`))?.[1]?.split(' ') ?? [];
+
+  test('la CSP pública no admite scripts inline ni eval', () => {
+    expect(directiva('script-src')).not.toContain("'unsafe-inline'");
+    expect(directiva('script-src')).not.toContain("'unsafe-eval'");
+  });
+
+  test('la CSP pública limita formularios, base, objetos y quién incrusta el sitio', () => {
+    expect(directiva('form-action')).toEqual(["'self'"]);
+    expect(directiva('base-uri')).toEqual(["'self'"]);
+    expect(directiva('object-src')).toEqual(["'none'"]);
+    expect(directiva('frame-ancestors')).toEqual(["'none'"]);
+  });
+
+  test.each([
+    'X-Content-Type-Options: nosniff',
+    'Referrer-Policy: strict-origin-when-cross-origin',
+    'X-Frame-Options: DENY',
+    'Strict-Transport-Security: max-age=31536000; includeSubDomains',
+    'Cross-Origin-Opener-Policy: same-origin',
+  ])('el sitio público envía %s', (cabecera) => {
+    expect(publica).toContain(`\n  ${cabecera}\n`);
+  });
+
+  test('el sitio público desactiva cámara, micrófono, ubicación, pagos y USB', () => {
+    const politica = publica.match(/Permissions-Policy: ([^\n]+)/)?.[1] ?? '';
+    for (const permiso of ['camera', 'microphone', 'geolocation', 'payment', 'usb']) expect(politica).toContain(`${permiso}=()`);
+  });
+
+  test('el panel reemplaza (no suma) las cabeceras de /* que necesita distintas', () => {
+    for (const nombre of ['X-Frame-Options', 'Content-Security-Policy', 'Cross-Origin-Opener-Policy']) {
+      expect(panel).toContain(`! ${nombre}`);
+    }
+    expect(panel).toContain('Cross-Origin-Opener-Policy: same-origin-allow-popups');
+  });
+});

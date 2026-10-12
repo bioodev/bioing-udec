@@ -133,7 +133,7 @@ describe('esNoindex', () => {
 });
 
 describe('analiticaCloudflare (Cloudflare Web Analytics, sin cookies)', () => {
-  const TOKEN = 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6';
+  const TOKEN = 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6'; // gitleaks:allow (token ficticio de prueba)
 
   test('sin token no hay analítica', () => {
     expect(analiticaCloudflare(undefined)).toBeUndefined();
