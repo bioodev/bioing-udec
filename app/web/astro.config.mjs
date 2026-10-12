@@ -3,10 +3,16 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
+import { readFileSync } from 'node:fs';
+import { leerConfigMenu } from './src/lib/navegacion.ts';
+import { seccionesDesactivadas } from './src/integrations/secciones-desactivadas.ts';
 
 // Astro no carga .env en process.env al leer esta config: se lee con loadEnv de Vite.
 // La variable del entorno (p. ej. la de Workers Builds) gana sobre el archivo .env.
 const { SITE_URL } = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
+
+// Secciones que el panel apagó (src/content/menu/menu.yml). Una sección desactivada no se publica (ver ADR 0008).
+const menu = leerConfigMenu(readFileSync(`${process.cwd()}/src/content/menu/menu.yml`, 'utf8'));
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,6 +23,8 @@ export default defineConfig({
 			// No indexar el panel ni el catálogo interno de componentes.
 			filter: (pagina) => !['/admin/', '/componentes/'].some((ruta) => pagina.includes(ruta)),
 		}),
+		// Después de sitemap: quita del build las secciones apagadas y sus URL del sitemap.
+		seccionesDesactivadas(menu),
 	],
 	vite: {
 		plugins: [tailwindcss()],
