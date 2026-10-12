@@ -49,42 +49,42 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
   {paginaDestacada && <PaginaDestacada pagina={paginaDestacada} />}
 
   {noticias.length > 0 && (
-    <section id="inicio-noticias" class="mx-auto max-w-6xl px-4 py-16">
+    <section id="inicio-noticias" class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="inicio-noticias-titulo">
       <div class="flex flex-wrap items-end justify-between gap-4">
-        <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Noticias recientes</h2>
+        <h2 id="inicio-noticias-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Noticias recientes</h2>
         <a data-animar="fade-up" href="/noticias" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las noticias <ArrowRight class="size-4" aria-hidden="true" /></a>
       </div>
-      <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{noticias.map((n) => <TarjetaNoticia noticia={n} />)}</div>
+      <ul role="list" data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{noticias.map((n) => <li><TarjetaNoticia noticia={n} /></li>)}</ul>
     </section>
   )}
 
   {actividades.length > 0 && (
-    <section id="inicio-agenda" class="bg-muted">
+    <section id="inicio-agenda" class="bg-muted" aria-labelledby="inicio-agenda-titulo">
       <div class="mx-auto max-w-6xl px-4 py-16">
         <div class="flex flex-wrap items-end justify-between gap-4">
-          <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Próximas actividades</h2>
+          <h2 id="inicio-agenda-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Próximas actividades</h2>
           <a data-animar="fade-up" href="/agenda" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las actividades <ArrowRight class="size-4" aria-hidden="true" /></a>
         </div>
-        <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{actividades.slice(0, 3).map((a) => <TarjetaActividad actividad={a} />)}</div>
+        <ul role="list" data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{actividades.slice(0, 3).map((a) => <li><TarjetaActividad actividad={a} /></li>)}</ul>
       </div>
     </section>
   )}
 
   {anuncios.length > 0 && (
-    <section id="inicio-anuncios" class="mx-auto max-w-6xl px-4 py-16">
+    <section id="inicio-anuncios" class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="inicio-anuncios-titulo">
       <div class="flex flex-wrap items-end justify-between gap-4">
-        <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Anuncios</h2>
+        <h2 id="inicio-anuncios-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Anuncios</h2>
         <a data-animar="fade-up" href="/anuncios" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todos los anuncios <ArrowRight class="size-4" aria-hidden="true" /></a>
       </div>
-      <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{anuncios.slice(0, 3).map((a) => <TarjetaAnuncio anuncio={a} />)}</div>
+      <ul role="list" data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{anuncios.slice(0, 3).map((a) => <li><TarjetaAnuncio anuncio={a} /></li>)}</ul>
     </section>
   )}
 
   {pubInstagram.length > 0 && (
-    <section id="inicio-instagram" class="bg-muted">
+    <section id="inicio-instagram" class="bg-muted" aria-labelledby="inicio-instagram-titulo">
       <div class="mx-auto max-w-6xl px-4 py-16">
         <div class="flex flex-wrap items-end justify-between gap-4">
-          <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">En Instagram</h2>
+          <h2 id="inicio-instagram-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">En Instagram</h2>
           <a href="/instagram" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver más <ArrowRight class="size-4" aria-hidden="true" /></a>
         </div>
         <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{pubInstagram.map((p) => <PublicacionInstagram publicacion={p} />)}</div>

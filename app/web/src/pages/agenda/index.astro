@@ -34,8 +34,8 @@ const conteoInicial = contarAgenda(
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title="Agenda de BIOING+" href="/agenda/rss.xml" />
   </Fragment>
-  <section id="agenda-listado" class="mx-auto max-w-6xl px-4 py-12">
-    <h1 data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Agenda</h1>
+  <section id="agenda-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="agenda-titulo">
+    <h1 id="agenda-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Agenda</h1>
     <p class="mt-2 text-muted-foreground">Actividades de la comunidad de Bioingeniería UdeC.</p>
 
     <div class="mt-8 flex flex-wrap items-end justify-between gap-4">
@@ -66,7 +66,7 @@ const conteoInicial = contarAgenda(
     </div>
 
     <h2 class="sr-only">Resultados</h2>
-    <ul id="lista" data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <ul role="list" id="lista" data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {todas.map(({ actividad, estado }) => (
         <li data-texto={textoDe({ actividad, estado })} data-tipo={actividad.data.tipo} data-estado={estado}>
           <TarjetaActividad actividad={actividad} />

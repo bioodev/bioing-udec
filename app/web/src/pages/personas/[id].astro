@@ -43,13 +43,13 @@ const jsonLdPagina = [
 ];
 ---
 <Base titulo={persona.data.nombre} jsonLd={jsonLdPagina}>
-  <section id="persona-ficha" class="bg-muted">
+  <section id="persona-ficha" class="bg-muted" aria-labelledby="persona-titulo">
     <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:flex-row sm:items-center">
       {persona.data.foto
         ? <Image src={persona.data.foto} alt={persona.data.nombre} width={160} height={160} class="h-40 w-40 rounded-full object-cover" />
         : <div class="flex h-40 w-40 items-center justify-center rounded-full bg-background text-5xl font-semibold text-muted-foreground" aria-hidden="true">{persona.data.nombre.charAt(0)}</div>}
       <div>
-        <h1 class="text-4xl font-semibold tracking-tight">{persona.data.nombre}</h1>
+        <h1 id="persona-titulo" class="text-4xl font-semibold tracking-tight">{persona.data.nombre}</h1>
         {persona.data.descripcion && <p class="mt-2 text-lg text-muted-foreground">{persona.data.descripcion}</p>}
         {perfil && (
           <dl class="mt-4 grid gap-1 text-sm">
@@ -67,9 +67,9 @@ const jsonLdPagina = [
   </section>
 
   <div class="mx-auto max-w-6xl px-4 py-12 grid gap-12">
-    {expone.length > 0 && <section id="persona-expone"><h2 class="text-2xl font-semibold">Expuso en</h2><div class="mt-6 grid gap-6 md:grid-cols-3">{expone.map((a) => <TarjetaActividad actividad={a} sinId />)}</div></section>}
-    {organiza.length > 0 && <section id="persona-organiza"><h2 class="text-2xl font-semibold">Organizó</h2><div class="mt-6 grid gap-6 md:grid-cols-3">{organiza.map((a) => <TarjetaActividad actividad={a} sinId />)}</div></section>}
-    {noticias.length > 0 && <section id="persona-noticias"><h2 class="text-2xl font-semibold">Noticias</h2><div class="mt-6 grid gap-6 md:grid-cols-3">{noticias.map((n) => <TarjetaNoticia noticia={n} />)}</div></section>}
-    {ofrece.length > 0 && <section id="persona-oportunidades"><h2 class="text-2xl font-semibold">Oportunidades que ofrece</h2><div class="mt-6 grid gap-6 md:grid-cols-3">{ofrece.map((a) => <TarjetaAnuncio anuncio={a} />)}</div></section>}
+    {expone.length > 0 && <section id="persona-expone" aria-labelledby="persona-expone-titulo"><h2 id="persona-expone-titulo" class="text-2xl font-semibold">Expuso en</h2><ul role="list" class="mt-6 grid gap-6 md:grid-cols-3">{expone.map((a) => <li><TarjetaActividad actividad={a} sinId /></li>)}</ul></section>}
+    {organiza.length > 0 && <section id="persona-organiza" aria-labelledby="persona-organiza-titulo"><h2 id="persona-organiza-titulo" class="text-2xl font-semibold">Organizó</h2><ul role="list" class="mt-6 grid gap-6 md:grid-cols-3">{organiza.map((a) => <li><TarjetaActividad actividad={a} sinId /></li>)}</ul></section>}
+    {noticias.length > 0 && <section id="persona-noticias" aria-labelledby="persona-noticias-titulo"><h2 id="persona-noticias-titulo" class="text-2xl font-semibold">Noticias</h2><ul role="list" class="mt-6 grid gap-6 md:grid-cols-3">{noticias.map((n) => <li><TarjetaNoticia noticia={n} /></li>)}</ul></section>}
+    {ofrece.length > 0 && <section id="persona-oportunidades" aria-labelledby="persona-oportunidades-titulo"><h2 id="persona-oportunidades-titulo" class="text-2xl font-semibold">Oportunidades que ofrece</h2><ul role="list" class="mt-6 grid gap-6 md:grid-cols-3">{ofrece.map((a) => <li><TarjetaAnuncio anuncio={a} /></li>)}</ul></section>}
   </div>
 </Base>

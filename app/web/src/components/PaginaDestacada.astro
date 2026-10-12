@@ -20,7 +20,7 @@ const clavesDe = (bloques ?? []).slice(0, 3);
 const videoAlLado = !imagen && idVideo;
 const dosColumnas = imagen || videoAlLado;
 ---
-<section id="inicio-pagina-destacada" class="bg-muted">
+<section id="inicio-pagina-destacada" class="bg-muted" aria-labelledby="inicio-pagina-destacada-titulo">
   <div class={`mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 ${dosColumnas ? 'md:grid-cols-2' : ''}`}>
     {imagen && (
       <Image
@@ -39,7 +39,7 @@ const dosColumnas = imagen || videoAlLado;
     )}
     <div class={dosColumnas ? '' : 'max-w-2xl'}>
       <p data-animar="fade-up" class="text-sm font-medium uppercase tracking-wide text-primary">Destacado</p>
-      <h2 data-animar="fade-up" class="mt-2 text-3xl font-semibold tracking-tight">{titulo}</h2>
+      <h2 id="inicio-pagina-destacada-titulo" data-animar="fade-up" class="mt-2 text-3xl font-semibold tracking-tight">{titulo}</h2>
       <p data-animar="fade-up" class="mt-4 text-muted-foreground">{resumen_inicio ?? bajada}</p>
 
       {clavesDe.length > 0 && (

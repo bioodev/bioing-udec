@@ -12,7 +12,7 @@ const { items } = Astro.props;
 const grandes = await Promise.all(items.map((item) => getImage({ src: item.imagen, width: 1600, format: 'webp' })));
 ---
 <div data-galeria>
-  <ul class="grid grid-cols-2 gap-3 md:grid-cols-3">
+  <ul role="list" class="grid grid-cols-2 gap-3 md:grid-cols-3">
     {items.map((item, i) => (
       <li>
         <button
