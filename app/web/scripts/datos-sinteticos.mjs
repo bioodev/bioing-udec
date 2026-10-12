@@ -349,6 +349,25 @@ function generar() {
     ],
   }, cuerpo({ secciones: 2, imagen: 'demo-06.jpg', tabla: false }));
 
+  // Noticias de prueba para el SEO por contenido (bloque «SEO (opcional)»): una con título, descripción e imagen
+  // propios, y otra con «No mostrar en buscadores» (sale del sitemap y del buscador, pero sigue publicada).
+  escribir('noticias', `${PREFIJO}prueba-seo`, {
+    titulo: 'Prueba: SEO propio', fecha: fechaSola(dias(-4)), publicado: true,
+    imagen: '@/assets/media/demo-05.jpg', imagen_alt: DEMO_ALT['demo-05.jpg'],
+    bajada: 'Bajada de prueba: no debe usarse en buscadores porque el bloque SEO trae su propia descripción.',
+    seo: {
+      titulo: 'Prueba SEO: título para buscadores', descripcion: 'Descripción propia de prueba para buscadores y redes.',
+      imagen: '@/assets/media/demo-06.jpg',
+    },
+    temas: ['logros'], areas: ['biomateriales'],
+  }, cuerpo({ secciones: 1, tabla: false }));
+  escribir('noticias', `${PREFIJO}prueba-noindex`, {
+    titulo: 'Prueba: no indexada', fecha: fechaSola(dias(-5)), publicado: true,
+    bajada: 'Noticia de prueba con «No mostrar en buscadores»: debe seguir en el sitio y fuera del sitemap y del buscador.',
+    seo: { noindex: true },
+    temas: ['logros'], areas: ['biomateriales'],
+  }, cuerpo({ secciones: 1, tabla: false }));
+
   // Anuncios: vigentes, vencidos y sin fecha límite; enlace y contacto del mismo dominio.
   const tiposAnuncio = ['trabajo', 'practica', 'pasantia', 'proyecto', 'convocatoria', 'colaboracion', 'otra'];
   for (let i = 0; i < CANTIDAD.anuncios; i++) {

@@ -203,6 +203,18 @@ _Avoid_: Categoría, etiqueta, tag
 
 ### Gestión
 
+**SEO del sitio**:
+Configuración general de cómo aparece la carrera en buscadores y al compartir el sitio: descripción general, imagen por defecto para redes, descripción de cada listado y códigos de verificación de Google y Bing. Se edita en el panel como «SEO del sitio».
+_Avoid_: Metadatos, meta tags, configuración técnica
+
+**SEO (opcional)**:
+Bloque de una Noticia, Actividad, Anuncio, Documento o Página libre con título, descripción e imagen propios para buscadores y redes, y la opción «No mostrar en buscadores». Si está vacío, se usan el título, la bajada y la imagen de la propia ficha.
+_Avoid_: Metadatos, posicionamiento, SEO avanzado
+
+**No mostrar en buscadores**:
+Opción de una ficha que deja la página publicada y enlazada, pero la saca del mapa del sitio y del buscador del sitio. No es un Borrador: sigue visible.
+_Avoid_: Ocultar, privado, borrador
+
 **Encargado de comunicaciones**:
 Persona responsable de revisar, crear y publicar todo el contenido del sitio a partir de lo que envía la comunidad.
 _Avoid_: Administrador, editor, moderador

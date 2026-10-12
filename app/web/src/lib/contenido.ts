@@ -9,6 +9,7 @@ import { cifrasDelDirectorio, tarjetasComunidad, ultimosDocumentos } from './com
 import { areasMasFrecuentes, contarAreas } from './filtro-directorio';
 import { seccionActiva, type ConfigMenu, type PaginaLibreMenu } from './navegacion';
 import type { ConfigRedes } from './redes';
+import { descripcionListado, type Listado, type SeoEntrada, type SeoSitio } from './seo';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram' | 'paginasLibres';
 
@@ -231,6 +232,22 @@ export async function configuracionMenu(): Promise<ConfigMenu> {
 /** URLs de las redes sociales (src/content/redes/redes.yml). Vacío si el archivo no existe. */
 export async function configuracionRedes(): Promise<ConfigRedes> {
   return (await getEntry('redes', 'redes'))?.data ?? {};
+}
+
+/** SEO del sitio (src/content/seo/seo.yml). Sin archivo, todo queda en blanco y el sitio usa sus valores por defecto. */
+export async function configuracionSeo(): Promise<SeoSitio> {
+  const datos = (await getEntry('seo', 'seo'))?.data;
+  return { ...datos, imagen: datos?.imagen?.src };
+}
+
+/** Descripción de un listado (campo «Descripción de cada listado» del panel, o el texto por defecto). */
+export async function descripcionDeListado(listado: Listado) {
+  return descripcionListado(listado, await configuracionSeo());
+}
+
+/** Bloque SEO de una entrada, con la imagen ya resuelta a su ruta (para resolverSeo). */
+export function seoDeEntrada(seo: { titulo?: string; descripcion?: string; imagen?: { src: string }; noindex?: boolean } | undefined): SeoEntrada | undefined {
+  return seo && { ...seo, imagen: seo.imagen?.src };
 }
 
 /** Página libre destacada en el Inicio (solo una). Si hay varias marcadas, avisa en el build y muestra la primera. */

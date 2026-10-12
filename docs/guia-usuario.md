@@ -631,6 +631,47 @@ una ventana nueva). Los cambios se publican en uno o dos minutos después de gua
 > Si la red que quieres no está en la lista, avisa al equipo de desarrollo: agregar una red nueva exige un cambio en el
 > código, no solo en el panel.
 
+### 4.15 Cómo aparece el sitio en Google y al compartirlo (SEO)
+
+Sirve para controlar el texto que ve quien busca la carrera en Google y el que aparece al compartir un enlace en
+WhatsApp, Facebook o LinkedIn. Casi nunca hace falta tocar nada: si los campos quedan vacíos, el sitio usa el título,
+la bajada y la imagen de cada página.
+
+**Dos lugares:**
+- **SEO del sitio** (en **Páginas**): valores generales de todo el sitio.
+- **SEO (opcional)**: un bloque plegado dentro de Noticias, Actividades, Anuncios, Documentos y Páginas libres. Solo
+  afecta a esa ficha.
+
+**SEO del sitio: qué es cada campo.**
+- **Descripción del sitio**: una o dos frases sobre la carrera. Aparece en Google y al compartir el sitio. Máximo 160
+  caracteres.
+- **Imagen para compartir por defecto**: la imagen que sale al compartir una página que no trae la suya. Horizontal,
+  1200 × 630 px.
+- **Descripción de cada listado**: el texto que Google muestra para Noticias, Agenda, Anuncios, Repositorio,
+  Directorio, Instagram y el Inicio. Déjalo vacío para usar el texto por defecto.
+- **Verificación de buscadores**: si Google Search Console o Bing Webmaster te pide confirmar el sitio, pega aquí solo el
+  código (el valor de `content="…"`), no la etiqueta completa.
+
+**SEO (opcional) de cada contenido: qué es cada campo.**
+- **Título para buscadores y redes**: reemplaza el título en Google y en las redes (máximo 60 caracteres). No escribas
+  «· BIOING+»: se agrega solo.
+- **Descripción para buscadores y redes**: el texto que aparece bajo el título en Google (máximo 160 caracteres).
+- **Imagen para compartir**: la imagen que sale al compartir esa página. Si la dejas vacía, se usa la imagen de la
+  página o, si no tiene, la del sitio.
+- **No mostrar en buscadores**: marca esta casilla solo si no quieres que Google indexe esa página. La página sigue
+  publicada y enlazada en el sitio, pero sale del mapa del sitio y del buscador del sitio.
+
+**Pasos.**
+1. Abre **Páginas** y entra en **SEO del sitio**, o abre el contenido que quieres ajustar.
+2. Despliega **SEO (opcional)** y completa solo los campos que necesites.
+3. Guarda.
+
+**Cómo comprobar que quedó bien.** Los cambios se publican en uno o dos minutos. Para ver el texto que muestra el
+sitio, abre la página y mira la pestaña del navegador (el título). Google puede tardar días o semanas en reflejar un
+cambio de descripción.
+
+> Un título o una descripción demasiado largos se cortan en Google. Por eso los campos tienen límite de caracteres.
+
 ## 5. Imágenes y archivos
 
 - **Qué se puede subir.** Imágenes de mapa de bits (JPG, PNG y similares). Las fotos de iPhone en HEIC se
@@ -897,6 +938,15 @@ sobre fondo gris y, si hay bloques, la franja oscura. Sin ninguno, es una column
 | Campo (label) | Obligatorio | Para qué sirve |
 |---|---|---|
 | Instagram, Facebook, X (Twitter), LinkedIn, YouTube, TikTok, Threads, Bluesky, Mastodon / Fediverso | No | Dirección completa del perfil (`https://…`). Vacío = la red no aparece en el pie |
+
+### SEO
+
+- **SEO del sitio** (Páginas): descripción del sitio, imagen por defecto, descripción de cada listado y códigos de
+  verificación de buscadores. Todo opcional.
+- **SEO (opcional)** (Noticias, Actividades, Anuncios, Documentos y Páginas libres): título y descripción para
+  buscadores y redes (máx. 60 y 160 caracteres), imagen para compartir y «No mostrar en buscadores».
+
+Detalle en la sección 4.15.
 
 ## Apéndice B · Preguntas frecuentes
 

@@ -33,6 +33,12 @@ describe('filtrarSitemap', () => {
     expect(filtrarSitemap(xml, {})).toBe(xml);
   });
 
+  test('quita las URL de páginas que piden noindex (sin tocar las demás)', () => {
+    const xml = sitemap('/', '/noticias/', '/noticias/borrador-sin-indexar/', '/p/bioingenieria/');
+    const filtrado = filtrarSitemap(xml, {}, new Set(['/noticias/borrador-sin-indexar/']));
+    expect(filtrado).toBe(sitemap('/', '/noticias/', '/p/bioingenieria/'));
+  });
+
   test('no toca el encabezado ni las etiquetas urlset', () => {
     const xml = sitemap('/instagram/');
     const filtrado = filtrarSitemap(xml, { instagram: false });

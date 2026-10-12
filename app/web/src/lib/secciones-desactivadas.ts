@@ -10,12 +10,16 @@ export const RUTAS_DESACTIVABLES = ['/instagram', '/directorio', '/anuario', '/a
 export const rutasInactivas = (config: ConfigMenu): string[] =>
   RUTAS_DESACTIVABLES.filter((ruta) => !seccionActiva(ruta, config));
 
-/** Quita del sitemap las URL cuya ruta ya no se publica. `xml` es el contenido de un `sitemap-*.xml`. */
-export function filtrarSitemap(xml: string, config: ConfigMenu): string {
+/**
+ * Quita del sitemap las URL cuya ruta ya no se publica, y las de `excluidas` (páginas con noindex, ver seo.ts).
+ * `xml` es el contenido de un `sitemap-*.xml`.
+ */
+export function filtrarSitemap(xml: string, config: ConfigMenu, excluidas: ReadonlySet<string> = new Set()): string {
   return xml.replace(/[ \t]*<url>[\s\S]*?<\/url>\r?\n?/g, (bloque) => {
     const loc = bloque.match(/<loc>([^<]+)<\/loc>/)?.[1];
     if (!loc) return bloque;
-    return seccionActiva(new URL(loc).pathname, config) ? bloque : '';
+    const ruta = new URL(loc).pathname;
+    return seccionActiva(ruta, config) && !excluidas.has(ruta) ? bloque : '';
   });
 }
 

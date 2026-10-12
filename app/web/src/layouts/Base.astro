@@ -10,14 +10,18 @@ import Logo from '@/components/Logo.astro';
 import Navbar from '@/components/Navbar.astro';
 import RedesSociales from '@/components/RedesSociales.astro';
 import { MENU, URL_FCB, enlacesFooter, seccionVisible } from '@/lib/navegacion';
-import { configuracionMenu, configuracionRedes, paginasParaMenu } from '@/lib/contenido';
+import { configuracionMenu, configuracionRedes, configuracionSeo, paginasParaMenu } from '@/lib/contenido';
 import { redesVisibles, urlsRedes } from '@/lib/redes';
 import { jsonLd as serializarJsonLd, sitioWeb, type JsonLd } from '@/lib/schema';
+import { descripcionSitio, imagenSitio, tituloDocumento, verificacionMetas } from '@/lib/seo';
 import ogPorDefecto from '@/assets/og-default.png';
 
-interface Props { titulo: string; descripcion?: string; imagen?: string; jsonLd?: JsonLd | JsonLd[] }
-const { titulo, descripcion = 'Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción.', imagen, jsonLd: jsonLdPagina } = Astro.props;
-const tituloPagina = titulo === 'BIOING+' ? titulo : `${titulo} · BIOING+`;
+interface Props { titulo: string; descripcion?: string; imagen?: string; jsonLd?: JsonLd | JsonLd[]; noindex?: boolean }
+const { titulo, descripcion: descripcionPagina, imagen, jsonLd: jsonLdPagina, noindex = false } = Astro.props;
+// SEO del sitio (src/content/seo/seo.yml): descripción e imagen por defecto cuando la página no trae las suyas.
+const seoSitio = await configuracionSeo();
+const descripcion = descripcionPagina ?? descripcionSitio(seoSitio);
+const tituloPagina = tituloDocumento(titulo);
 const actual = Astro.url.pathname;
 // Pie: los enlaces fijos del menú que el panel no oculta, y las Páginas libres que se muestran en el pie o en un desplegable.
 const configMenu = await configuracionMenu();
@@ -27,7 +31,8 @@ const enlacesPie = enlacesFooter(
 );
 // URL absoluta para canonical y Open Graph (Astro.site está definido en astro.config.mjs).
 const canonical = new URL(actual, Astro.site).href;
-const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefecto.src, Astro.site).href;
+const imagenPagina = imagen ?? imagenSitio(seoSitio);
+const imagenOG = imagenPagina ? new URL(imagenPagina, Astro.site).href : new URL(ogPorDefecto.src, Astro.site).href;
 // Datos estructurados: WebSite + Organization del sitio en todas las páginas, más los
 // bloques propios de la página (migas, entidad de la ficha, listados…).
 const configRedes = await configuracionRedes();
@@ -50,6 +55,8 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
       })();
     </script>
     <meta name="description" content={descripcion} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {verificacionMetas(seoSitio.verificacion).map((meta) => <meta name={meta.name} content={meta.content} />)}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <ClientRouter />
     <script is:inline>

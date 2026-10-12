@@ -1,9 +1,10 @@
 ---
+import { resolverSeo } from '@/lib/seo';
 import { getEntries, type CollectionEntry } from 'astro:content';
 import Base from '@/layouts/Base.astro';
 import { Badge } from '@/components/starwind/badge';
 import { Button } from '@/components/starwind/button';
-import { documentosDelRepositorio } from '@/lib/contenido';
+import { documentosDelRepositorio, seoDeEntrada } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
 import { vistaPreviaDrive } from '@/lib/enlaces';
@@ -35,8 +36,9 @@ const jsonLdPagina = [
   ),
   jsonLdDocumento(documento, { site: Astro.site, url: enlace, temas: temas.map((t) => t.data.nombre) }),
 ];
+const seo = resolverSeo({ titulo: documento.data.titulo, descripcion: `${TIPOS_DOCUMENTO[documento.data.tipo]} · ${documento.data.titulo}` }, seoDeEntrada(documento.data.seo));
 ---
-<Base titulo={documento.data.titulo} descripcion={`${TIPOS_DOCUMENTO[documento.data.tipo]} · ${documento.data.titulo}`} jsonLd={jsonLdPagina}>
+<Base titulo={seo.titulo} descripcion={seo.descripcion} imagen={seo.imagen} noindex={seo.noindex} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
     <div class="flex flex-wrap items-center gap-2">
       <Badge variant="outline">{TIPOS_DOCUMENTO[documento.data.tipo]}</Badge>

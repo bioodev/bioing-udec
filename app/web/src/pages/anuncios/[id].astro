@@ -1,10 +1,11 @@
 ---
+import { resolverSeo } from '@/lib/seo';
 import { getEntries, getEntry, render, type CollectionEntry } from 'astro:content';
 import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import { Badge } from '@/components/starwind/badge';
 import { Button } from '@/components/starwind/button';
-import { anunciosVisibles, formatoFecha } from '@/lib/contenido';
+import { anunciosVisibles, formatoFecha, seoDeEntrada } from '@/lib/contenido';
 import { anuncioVigente, existentes } from '@/lib/reglas';
 import { migas, ofertaLaboral } from '@/lib/schema';
 import { TIPOS_ANUNCIO } from '@/lib/anuncios';
@@ -49,8 +50,9 @@ const jsonLdPagina = [
   ),
   ...(oferta ? [oferta] : []),
 ];
+const seo = resolverSeo({ titulo: anuncio.data.titulo, descripcion: `${TIPOS_ANUNCIO[anuncio.data.tipo]} · ${anuncio.data.titulo}` }, seoDeEntrada(anuncio.data.seo));
 ---
-<Base titulo={anuncio.data.titulo} descripcion={`${TIPOS_ANUNCIO[anuncio.data.tipo]} · ${anuncio.data.titulo}`} jsonLd={jsonLdPagina}>
+<Base titulo={seo.titulo} descripcion={seo.descripcion} imagen={seo.imagen} noindex={seo.noindex} jsonLd={jsonLdPagina}>
   <article class="mx-auto max-w-3xl px-4 py-12">
     <div class="flex flex-wrap items-center gap-2">
       <Badge variant="outline">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Badge>

@@ -6,7 +6,7 @@ import TarjetaEgresado from '@/components/TarjetaEgresado.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
-import { egresadosDelDirectorio, formularioDirectorio } from '@/lib/contenido';
+import { descripcionDeListado, egresadosDelDirectorio, formularioDirectorio } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { listaElementos } from '@/lib/schema';
 import { contarAreas, TODAS } from '@/lib/filtro-directorio';
@@ -41,8 +41,9 @@ const jsonLdPagina = listaElementos(
   egresados.map(({ persona }) => ({ name: persona.data.nombre, url: `/personas/${persona.id}` })),
   Astro.site,
 );
+const descripcion = await descripcionDeListado('directorio');
 ---
-<Base titulo="Directorio" descripcion="Directorio de bioingenieros/as egresados/as de la Universidad de Concepción." jsonLd={jsonLdPagina}>
+<Base titulo="Directorio" descripcion={descripcion} jsonLd={jsonLdPagina}>
   <section id="directorio-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="directorio-titulo">
     <h1 id="directorio-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Directorio de bioingenieros/as</h1>
     <p class="mt-2 text-muted-foreground">Egresados/as que autorizaron publicar su perfil.</p>

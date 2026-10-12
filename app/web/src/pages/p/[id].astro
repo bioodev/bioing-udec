@@ -1,4 +1,5 @@
 ---
+import { resolverSeo } from '@/lib/seo';
 // Página libre: texto creado desde el panel (src/content/paginas-libres). Solo las publicadas tienen ruta.
 import { render, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
@@ -7,7 +8,7 @@ import Migas from '@/components/Migas.astro';
 import VideoModal from '@/components/VideoModal.astro';
 import Incrustados from '@/components/Incrustados.astro';
 import Enlaces from '@/components/Enlaces.astro';
-import { paginasLibres } from '@/lib/contenido';
+import { paginasLibres, seoDeEntrada } from '@/lib/contenido';
 import { idYouTube } from '@/lib/enlaces';
 import { migas } from '@/lib/schema';
 
@@ -30,8 +31,9 @@ const bloques = pagina.data.bloques ?? [];
 // Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?»: cabecera ancha, cuerpo sobre
 // fondo gris y franja oscura. Sin ninguno, queda la columna de texto de siempre.
 const conDiseno = video !== null || bloques.length > 0;
+const seo = resolverSeo({ titulo: pagina.data.titulo, descripcion: pagina.data.bajada, imagen: pagina.data.imagen?.src }, seoDeEntrada(pagina.data.seo));
 ---
-<Base titulo={pagina.data.titulo} descripcion={pagina.data.bajada} imagen={pagina.data.imagen?.src} jsonLd={migas(rutas, Astro.site)}>
+<Base titulo={seo.titulo} descripcion={seo.descripcion} imagen={seo.imagen} noindex={seo.noindex} jsonLd={migas(rutas, Astro.site)}>
   {conDiseno ? (
     <article>
       <section id="pagina-cabecera" class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="pagina-titulo">
