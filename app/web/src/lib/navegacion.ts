@@ -72,22 +72,68 @@ export type SeccionOcultable = 'noticias' | 'agenda' | 'instagram' | 'directorio
 /** Forma del archivo del panel: una clave por sección. Una clave ausente cuenta como visible. */
 export type ConfigMenu = Partial<Record<SeccionOcultable, boolean>>;
 
+/** Rutas de cada sección. El anuario (PDF del Directorio) depende del Directorio: sale con él. */
 const SECCION_DE_RUTA: Record<string, SeccionOcultable> = {
   '/noticias': 'noticias',
   '/agenda': 'agenda',
   '/instagram': 'instagram',
   '/directorio': 'directorio',
+  '/anuario': 'directorio',
   '/anuncios': 'anuncios',
   '/repositorio': 'repositorio',
 };
 
 /**
- * Una ruta se muestra salvo que el panel la haya desactivado. Las rutas que no son secciones ocultables
- * (Inicio, Páginas libres) siempre se muestran. Ocultar no borra la página: solo la saca de menú, pie y llms.txt.
+ * Secciones que el panel puede desactivar del todo: dejan de publicarse (404, sitemap, buscador, Inicio).
+ * Noticias y Agenda son el núcleo: apagarlas solo las oculta del menú y del pie.
+ */
+const DESACTIVABLES = new Set<SeccionOcultable>(['instagram', 'directorio', 'anuncios', 'repositorio']);
+
+const CLAVES_CONFIG: SeccionOcultable[] = ['noticias', 'agenda', 'instagram', 'directorio', 'anuncios', 'repositorio'];
+
+/** La sección a la que pertenece una ruta (`/anuncios/x` → `anuncios`), o undefined si no depende de ninguna. */
+export function seccionDeRuta(ruta: string): SeccionOcultable | undefined {
+  const sinQuery = ruta.split(/[?#]/)[0];
+  const prefijo = Object.keys(SECCION_DE_RUTA).find((p) => esActual(p, sinQuery));
+  return prefijo === undefined ? undefined : SECCION_DE_RUTA[prefijo];
+}
+
+/**
+ * Una ruta se muestra en menú, pie y llms.txt salvo que su sección esté apagada en el panel. Las rutas que no son
+ * secciones (Inicio, Páginas libres, fichas de personas) siempre se muestran. Ocultar no borra la página.
  */
 export function seccionVisible(href: string, config: ConfigMenu): boolean {
-  const seccion = SECCION_DE_RUTA[href];
+  const seccion = seccionDeRuta(href);
   return seccion === undefined || config[seccion] !== false;
+}
+
+/**
+ * Una ruta se publica (build, sitemap, buscador, Inicio) salvo que pertenezca a una sección desactivable que el
+ * panel tiene apagada. Noticias y Agenda siempre se publican.
+ */
+export function seccionActiva(ruta: string, config: ConfigMenu): boolean {
+  const seccion = seccionDeRuta(ruta);
+  return seccion === undefined || !DESACTIVABLES.has(seccion) || config[seccion] !== false;
+}
+
+/** Un enlace interno (ruta del sitio) solo se ofrece si su sección está activa; los externos siempre. */
+export function enlaceDisponible(url: string, config: ConfigMenu): boolean {
+  if (!url.startsWith('/') || url.startsWith('//')) return true;
+  return seccionActiva(url, config);
+}
+
+/**
+ * Lee `src/content/menu/menu.yml` sin un parser: el archivo solo tiene pares `clave: true|false` y comentarios.
+ * Lo que no es un booleano o una clave conocida se ignora, así que cuenta como visible.
+ */
+export function leerConfigMenu(texto: string): ConfigMenu {
+  const config: ConfigMenu = {};
+  for (const linea of texto.split('\n')) {
+    const par = linea.match(/^([a-z]+):\s*(true|false)\s*(?:#.*)?$/);
+    const clave = par?.[1] as SeccionOcultable | undefined;
+    if (par && clave && CLAVES_CONFIG.includes(clave)) config[clave] = par[2] === 'true';
+  }
+  return config;
 }
 
 /** Quita del menú las secciones ocultas; un grupo que se queda sin enlaces visibles desaparece. */

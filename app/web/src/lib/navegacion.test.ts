@@ -2,11 +2,15 @@ import { describe, expect, test } from 'vitest';
 import {
   MENU,
   MENU_PRINCIPAL,
+  enlaceDisponible,
   entradaActiva,
   enlacesFooter,
   esActual,
   filtrarMenu,
+  leerConfigMenu,
   menuConPaginas,
+  seccionActiva,
+  seccionDeRuta,
   seccionVisible,
   type ConfigMenu,
   type EnlaceMenu,
@@ -186,6 +190,101 @@ describe('seccionVisible', () => {
     };
     expect(seccionVisible('/', todas)).toBe(true);
     expect(seccionVisible('/p/bioingenieria', todas)).toBe(true);
+  });
+});
+
+const TODAS_APAGADAS: ConfigMenu = {
+  noticias: false, agenda: false, instagram: false, directorio: false, anuncios: false, repositorio: false,
+};
+
+describe('seccionDeRuta', () => {
+  test('una ruta pertenece a la sección de su prefijo, con subrutas', () => {
+    expect(seccionDeRuta('/anuncios')).toBe('anuncios');
+    expect(seccionDeRuta('/anuncios/')).toBe('anuncios');
+    expect(seccionDeRuta('/anuncios/oferta-1')).toBe('anuncios');
+    expect(seccionDeRuta('/repositorio/decreto-2024')).toBe('repositorio');
+  });
+
+  test('el anuario del Directorio pertenece al Directorio', () => {
+    expect(seccionDeRuta('/anuario')).toBe('directorio');
+  });
+
+  test('no confunde un prefijo parcial, ni ignora la query o el ancla', () => {
+    expect(seccionDeRuta('/anunciosx')).toBeUndefined();
+    expect(seccionDeRuta('/personas/ana')).toBeUndefined();
+    expect(seccionDeRuta('/')).toBeUndefined();
+    expect(seccionDeRuta('/instagram?x=1#ini')).toBe('instagram');
+  });
+});
+
+describe('seccionActiva', () => {
+  test('sin configuración, todo se publica', () => {
+    for (const { href } of MENU) expect(seccionActiva(href, {}), href).toBe(true);
+  });
+
+  test('una sección desactivable apagada no se publica, ni sus subrutas ni el anuario', () => {
+    expect(seccionActiva('/anuncios', { anuncios: false })).toBe(false);
+    expect(seccionActiva('/anuncios/oferta-1', { anuncios: false })).toBe(false);
+    expect(seccionActiva('/instagram', { instagram: false })).toBe(false);
+    expect(seccionActiva('/repositorio/x', { repositorio: false })).toBe(false);
+    expect(seccionActiva('/anuario', { directorio: false })).toBe(false);
+  });
+
+  test('el Directorio apagado no quita las fichas de personas', () => {
+    expect(seccionActiva('/personas/ana', { directorio: false })).toBe(true);
+  });
+
+  test('Noticias y Agenda son el núcleo: apagarlas las oculta del menú, no las deja de publicar', () => {
+    expect(seccionActiva('/noticias', { noticias: false })).toBe(true);
+    expect(seccionActiva('/agenda/charla-1', { agenda: false })).toBe(true);
+    expect(seccionVisible('/noticias', { noticias: false })).toBe(false);
+  });
+
+  test('Inicio y las rutas que no son secciones siempre se publican', () => {
+    expect(seccionActiva('/', TODAS_APAGADAS)).toBe(true);
+    expect(seccionActiva('/p/bioingenieria', TODAS_APAGADAS)).toBe(true);
+  });
+});
+
+describe('seccionVisible con subrutas', () => {
+  test('oculta también las subrutas de una sección apagada', () => {
+    expect(seccionVisible('/anuncios/oferta-1', { anuncios: false })).toBe(false);
+  });
+});
+
+describe('enlaceDisponible', () => {
+  test('un enlace interno a una sección apagada no está disponible', () => {
+    expect(enlaceDisponible('/directorio', { directorio: false })).toBe(false);
+    expect(enlaceDisponible('/anuncios/oferta-1?x=1', { anuncios: false })).toBe(false);
+  });
+
+  test('los demás enlaces internos y los externos siempre están disponibles', () => {
+    expect(enlaceDisponible('/directorio', {})).toBe(true);
+    expect(enlaceDisponible('/noticias', { noticias: false })).toBe(true);
+    expect(enlaceDisponible('/p/bioingenieria', TODAS_APAGADAS)).toBe(true);
+    expect(enlaceDisponible('https://www.instagram.com/x', TODAS_APAGADAS)).toBe(true);
+  });
+});
+
+describe('leerConfigMenu', () => {
+  test('lee un booleano por sección del archivo del panel, con sus comentarios', () => {
+    const texto = [
+      '# Menú del sitio.',
+      'noticias: true',
+      'agenda: true',
+      'instagram: false  # comentario',
+      'directorio: true',
+      'anuncios: false',
+      'repositorio: true',
+    ].join('\n');
+    expect(leerConfigMenu(texto)).toEqual({
+      noticias: true, agenda: true, instagram: false, directorio: true, anuncios: false, repositorio: true,
+    });
+  });
+
+  test('una clave ausente, desconocida o con un valor que no es booleano no cuenta', () => {
+    expect(leerConfigMenu('anuncios: quizá\nclave_rara: false\n')).toEqual({});
+    expect(leerConfigMenu('')).toEqual({});
   });
 });
 
