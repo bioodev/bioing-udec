@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
+import Incrustados from '@/components/Incrustados.astro';
 import { Badge } from '@/components/starwind/badge';
 import { Button } from '@/components/starwind/button';
 import { formatoFechaHora, noticiasDeActividad, publicados } from '@/lib/contenido';
@@ -107,6 +108,8 @@ const jsonLdPagina = [
     {actividad.data.imagen && <Image src={actividad.data.imagen} alt="" class="mt-8 w-full rounded-lg" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
 
     <div class="prose mt-8 max-w-none"><Content /></div>
+
+    <Incrustados items={actividad.data.incrustados ?? []} />
 
     {(organizadores.length > 0 || expositores.length > 0) && (
       <section class="mt-10 border-t border-border pt-6 text-sm">

@@ -132,7 +132,9 @@ Tabla *síntoma → causa probable → acción inmediata → a quién avisar →
 - El sitio no carga / muestra error.
 - El build falla o el sitio quedó congelado (sin la actualización diaria).
 - El panel no deja guardar o no inicia sesión.
-- Un embed de Instagram, Drive o YouTube dejó de funcionar.
+- Un embed (Instagram, Drive, YouTube, Spotify, SoundCloud, Apple Podcasts, Facebook, Google Maps) dejó de
+  funcionar: revisar `frame-src` en `public/_headers` y la regla en `src/lib/incrustados.ts`; el servicio pudo
+  cambiar el formato de su enlace.
 - Un enlace de Documento responde "sin permiso" (archivo movido o permiso cambiado).
 - El buscador no encuentra contenido o `/buscar` aparece vacío.
 - El dominio venció o el DNS apunta mal.

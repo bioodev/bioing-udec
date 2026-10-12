@@ -94,7 +94,7 @@ _Avoid_: Base de datos, buscador de bioingenieros
 ### Contenidos
 
 **Noticia**:
-Publicación de actualidad sobre la comunidad de Bioingeniería, con fecha, Temas, Áreas, Personas mencionadas y Organizaciones mencionadas. Opcionalmente tiene texto alternativo de la imagen destacada, un video de YouTube y una galería de hasta 12 imágenes.
+Publicación de actualidad sobre la comunidad de Bioingeniería, con fecha, Temas, Áreas, Personas mencionadas y Organizaciones mencionadas. Opcionalmente tiene texto alternativo de la imagen destacada, un video de YouTube, una galería de hasta 12 imágenes y Contenido incrustado.
 _Avoid_: Artículo, post, nota
 
 **Persona mencionada** / **Organización mencionada**:
@@ -102,7 +102,7 @@ Persona u Organización que figura en una Noticia; no implica autoría. La Notic
 _Avoid_: Participante, autor, etiquetado
 
 **Actividad**:
-Evento con fecha y lugar o modalidad (seminario, charla, congreso, taller, encuentro) publicado en la Agenda.
+Evento con fecha y lugar o modalidad (seminario, charla, congreso, taller, encuentro) publicado en la Agenda. Opcionalmente tiene Contenido incrustado.
 _Avoid_: Evento, evento de agenda
 
 **Agenda**:
@@ -160,6 +160,10 @@ _Avoid_: Destacado, slider, hero
 **Publicación de Instagram**:
 Publicación o reel de la cuenta de Instagram de la carrera que el Encargado de comunicaciones selecciona para mostrar en el sitio pegando su enlace; una Noticia puede tener una relacionada.
 _Avoid_: Post, feed
+
+**Contenido incrustado**:
+Enlaces públicos de servicios externos (Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps, Google Drive/Docs) que el sitio muestra como reproductor después del cuerpo de una Noticia o una Actividad. Los demás servicios, o los enlaces no reconocidos, se muestran como tarjeta con el enlace.
+_Avoid_: Embed, widget, iframe
 
 ### Clasificación
 

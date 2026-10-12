@@ -175,6 +175,17 @@ collections:
         fields:
           - { name: imagen, label: Imagen, widget: image }
           - { name: alt, label: Texto alternativo, widget: string, hint: "Describe lo que se ve en la imagen. No repitas el título." }
+      - name: incrustados
+        label: Contenido incrustado
+        label_singular: Contenido incrustado
+        widget: list
+        required: false
+        max: 10
+        summary: "{{titulo}} {{url}}"
+        hint: "Pega el enlace público (https) de Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps o Google Drive/Docs: se muestra como reproductor, después del cuerpo. Los demás servicios (X, TikTok, LinkedIn, Threads, Bluesky) y los enlaces no reconocidos se muestran como enlace."
+        fields:
+          - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
+          - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
       - { name: body, label: Cuerpo, widget: richtext }
 
   - name: actividades
@@ -233,6 +244,17 @@ collections:
       - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
       - { name: enlace_inscripcion, label: Enlace de inscripción o información, widget: string, type: url, required: false }
       - { name: imagen, label: Imagen, widget: image, required: false }
+      - name: incrustados
+        label: Contenido incrustado
+        label_singular: Contenido incrustado
+        widget: list
+        required: false
+        max: 10
+        summary: "{{titulo}} {{url}}"
+        hint: "Pega el enlace público (https) de Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps o Google Drive/Docs: se muestra como reproductor, después del cuerpo. Los demás servicios (X, TikTok, LinkedIn, Threads, Bluesky) y los enlaces no reconocidos se muestran como enlace."
+        fields:
+          - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
+          - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
       - { name: body, label: Descripción, widget: richtext }
 
   - name: anuncios

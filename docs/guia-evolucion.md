@@ -191,22 +191,43 @@ colección; una colección es más barata que una página nueva.
 - **Cuándo:** se quiere incrustar un video, documento o mapa de un servicio nuevo (por ejemplo, Vimeo ya
   está; uno nuevo sería, p. ej., un visor de documentos distinto de Drive).
 - **Cómo:**
-  1. **Validar el enlace:** agregar un parser puro en `src/lib/enlaces.ts` (como `idYouTube` o
-     `vistaPreviaDrive`), que devuelva la URL de inserción o `null` si no reconoce el enlace, con su prueba en
-     `src/lib/enlaces.test.ts`. Un enlace no reconocido no se muestra.
+  1. **Validar el enlace:** agregar la regla en `src/lib/incrustados.ts`, que es el punto único para sumar
+     proveedores de contenido incrustado. Reutiliza los parsers de `src/lib/enlaces.ts` (`idYouTube`,
+     `vistaPreviaDrive`) y de `src/lib/instagram.ts` (`embedInstagram`). Si el servicio no admite iframe, va a
+     la lista de tarjetas-enlace (`SIN_IFRAME`). Escribir los casos en `src/lib/incrustados.test.ts`: al menos
+     uno válido y uno inválido, y los hosts con y sin `www.` o `m.`. Un enlace no reconocido se muestra como
+     tarjeta-enlace, nunca como reproductor.
   2. **Lista cerrada en la CSP:** agregar el origen a `frame-src` de la regla `/*` en `public/_headers`. Si el
      proveedor sirve miniaturas, agregarlo a `img-src`. Ver la advertencia de `_headers` sobre la suma de reglas:
      no tocar la regla `/admin/*` por esto.
-  3. **Componente:** un `<iframe>` con `title` descriptivo, `loading="lazy"` y una relación de aspecto reservada
-     (`aspect-video` o `aspect-[3/4]`), como en `src/pages/repositorio/[id].astro`.
+  3. **Componente:** `src/components/Incrustados.astro` ya renderiza los `<iframe>` (con `title`,
+     `loading="lazy"` y alto fijo o `aspect-video`). Para un proveedor nuevo basta con agregar, si hace falta,
+     su permiso en `PERMISOS` y su alto en `ALTO`. Las clases van completas, sin construirlas con texto.
   4. **Documentación:** agregar el proveedor a la lista de `architecture.md` §7 y a la tabla de incidentes de
      `guia-mantencion.md` §9.
 - **Cómo verificar:** la CSP **no se aplica en `npm run dev`**, así que una violación solo aparece sobre el
   build servido: `npm run build && npm run postbuild && npx wrangler dev` (sirve `dist/` según `wrangler.jsonc`).
   Revisar que la cabecera llegue con `curl -I`, que el embed cargue y que la consola del navegador no muestre
   errores de `frame-src`.
-- **Cómo revertir:** quitar el origen de `frame-src` y el parser. Los contenidos que ya usan el enlace dejan de
-  mostrar el embed sin romper la página, porque el parser devuelve `null`.
+- **Cómo revertir:** quitar el origen de `frame-src` y la regla del parser. Los contenidos que ya usan el enlace
+  pasan a verse como tarjeta-enlace, sin romper la página, porque el parser nunca lanza un error.
+
+**Proveedores de contenido incrustado** (estado actual de `src/lib/incrustados.ts`):
+
+| Proveedor | Se muestra como | Origen en `frame-src` |
+|---|---|---|
+| YouTube | `VideoModal` (sin cookies) | `www.youtube-nocookie.com` |
+| Spotify | reproductor, 152 px (episodio, pista) o 352 px | `open.spotify.com` |
+| SoundCloud | reproductor, 166 px (pista) o 450 px (set) | `w.soundcloud.com` |
+| Apple Podcasts | reproductor, 175 px (episodio) o 450 px | `embed.podcasts.apple.com` |
+| Vimeo | reproductor 16:9 | `player.vimeo.com` |
+| Instagram | reproductor, 600 px (publicación o reel) | `www.instagram.com` |
+| Facebook | plugin de publicación (600 px) o de video 16:9 | `www.facebook.com` |
+| Google Maps | mapa de búsqueda, 400 px, o el `embed` tal cual | `www.google.com` |
+| Google Drive / Docs | vista previa, 480 px | `drive.google.com`, `docs.google.com` |
+| X, TikTok, LinkedIn, Threads, Bluesky, `maps.app.goo.gl` | tarjeta-enlace con el nombre del servicio | ninguno |
+| Cualquier otra `https:` | tarjeta-enlace sin nombre | ninguno |
+
 
 ---
 

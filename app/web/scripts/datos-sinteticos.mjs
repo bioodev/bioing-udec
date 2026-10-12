@@ -30,6 +30,14 @@ const DEMO_ALT = {
 // Pools curados en español (bioingeniería: acuicultura, biomateriales, alimentos, salud, medio ambiente, bioprocesos).
 const VIDEOS = ['https://www.youtube.com/watch?v=yLxPo7uBv-Q', 'https://www.youtube.com/watch?v=SyYaQjP3MoU', 'https://youtu.be/mO-W-WL7Alk'];
 const EMOJIS = ['🧬', '🔬', '🌊', '🧪'];
+// Contenido incrustado: un enlace por servicio (Spotify episodio, SoundCloud, Maps, Facebook y TikTok, que sale como tarjeta).
+const INCRUSTADOS = {
+  spotify: { url: 'https://open.spotify.com/episode/4rOoJ6Egrf8K2IrywzwOMk?si=ejemplo', titulo: 'Episodio: biomateriales en la práctica' },
+  soundcloud: { url: 'https://soundcloud.com/bioingenieria-udec/grabacion-charla', titulo: 'Grabación de la charla' },
+  maps: { url: 'https://www.google.com/maps?q=Universidad+de+Concepci%C3%B3n', titulo: 'Universidad de Concepción' },
+  facebook: { url: 'https://www.facebook.com/bioingenieria.udec/posts/pfbid0ejemplo' },
+  tiktok: { url: 'https://www.tiktok.com/@bioingenieria.udec/video/7300000000000000000', titulo: 'Video en TikTok' },
+};
 const ETIQUETAS = ['biomateriales', 'acuicultura', 'bioprocesos', 'salud pública', 'medio ambiente', 'industria alimentaria', 'innovación', 'egresados', 'investigación', 'vinculación'];
 // En singular: los verbos de VERBOS_NOTICIA van en tercera persona singular.
 const SUJETOS_NOTICIA = ['Un grupo de estudiantes de Bioingeniería', 'El laboratorio de biomateriales', 'Una egresada de la carrera', 'Un equipo de la FCB', 'Un equipo de investigación de la UdeC', 'La carrera de Bioingeniería'];
@@ -273,6 +281,7 @@ function generar() {
       areas: algunos(areas, 1, 2),
       enlace_inscripcion: quizas(0.5, 'https://forms.gle/ejemplo'),
       imagen: `@/assets/media/${alguno(DEMOS)}`,
+      incrustados: i === 0 ? [INCRUSTADOS.soundcloud, INCRUSTADOS.maps] : undefined,
     }, cuerpo({ secciones: 2 }));
   }
 
@@ -301,6 +310,7 @@ function generar() {
       organizaciones_mencionadas: algunos(organizaciones, 0, 2),
       actividad: cobertura,
       instagram: quizas(0.2, alguno(instagramIds)),
+      incrustados: i === 0 ? [INCRUSTADOS.spotify] : i === 1 ? [INCRUSTADOS.facebook, INCRUSTADOS.tiktok] : undefined,
     }, cuerpo({ secciones: en.number.int({ min: 2, max: 4 }), imagen: en.datatype.boolean({ probability: 0.4 }) ? alguno(DEMOS) : undefined }));
   }
 
@@ -314,6 +324,16 @@ function generar() {
     etiquetas: ['prueba', 'galería', 'video'],
     temas: ['logros'], areas: ['biomateriales'],
   }, cuerpo({ secciones: 2, imagen: 'demo-06.jpg', emoji: true, tabla: false }));
+
+  // Noticia de prueba fija con contenido incrustado: un reproductor por servicio y la tarjeta de TikTok.
+  escribir('noticias', `${PREFIJO}prueba-contenido-incrustado`, {
+    titulo: 'Prueba: contenido incrustado', fecha: fechaSola(dias(-2)), publicado: true,
+    imagen: '@/assets/media/demo-07.jpg', imagen_alt: DEMO_ALT['demo-07.jpg'],
+    bajada: 'Noticia de prueba para revisar Spotify, SoundCloud, Google Maps, Facebook y TikTok.',
+    etiquetas: ['prueba', 'incrustados'],
+    temas: ['logros'], areas: ['biomateriales'],
+    incrustados: [INCRUSTADOS.spotify, INCRUSTADOS.soundcloud, INCRUSTADOS.maps, INCRUSTADOS.facebook, INCRUSTADOS.tiktok],
+  }, cuerpo({ secciones: 2, imagen: 'demo-06.jpg', tabla: false }));
 
   // Anuncios: vigentes, vencidos y sin fecha límite; enlace y contacto del mismo dominio.
   const tiposAnuncio = ['trabajo', 'practica', 'pasantia', 'proyecto', 'convocatoria', 'colaboracion', 'otra'];

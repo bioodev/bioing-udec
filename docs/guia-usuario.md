@@ -130,7 +130,7 @@ organizaciones.
 - Obligatorios: Título, Fecha de publicación, Publicado, Cuerpo.
 - Opcionales: Imagen destacada y su Texto alternativo de la imagen, Bajada, Etiquetas (tags), Temas, Áreas,
   Personas mencionadas, Organizaciones mencionadas, Actividad que cubre, Publicación de Instagram relacionada,
-  Video (YouTube) y Galería de imágenes (hasta 12).
+  Video (YouTube), Galería de imágenes (hasta 12) y Contenido incrustado (hasta 10 enlaces).
 
 **Pasos.**
 1. Ve a la colección **Noticias** y crea una entrada nueva.
@@ -146,11 +146,21 @@ organizaciones.
    corresponde a una publicación de Instagram, elígela en **Publicación de Instagram relacionada**.
 8. Opcional: en **Video (YouTube)** pega el enlace del video (solo YouTube; se muestra debajo del cuerpo, en una
    ventana que se abre al hacer clic). En **Galería de imágenes** agrega hasta 12 imágenes; cada una lleva su
-   **Texto alternativo**.
+   **Texto alternativo**. Opcional: en **Contenido incrustado** pega enlaces públicos (ver el recuadro de abajo).
 9. Escribe el **Cuerpo** (ver §5 para imágenes, enlaces y listas).
 10. Activa **Publicado** y guarda.
 
 > _Pantallazo pendiente: formulario de la Noticia (imagen destacada, Galería y Cuerpo)._
+
+**Contenido incrustado** (Noticias y Actividades). Pega la dirección pública del contenido, la que aparece en la
+barra del navegador. El sitio arma el reproductor solo; no hace falta copiar código.
+- **Se ven como reproductor:** Spotify (episodios, programas, listas, álbumes y artistas), SoundCloud, Apple
+  Podcasts, YouTube, Vimeo, Instagram (publicaciones y reels), Facebook (publicaciones y videos), Google Maps
+  (enlaces largos de `google.com/maps`, como los de escritorio) y Google Drive o Docs.
+- **Se ven como tarjeta con el enlace:** X, TikTok, LinkedIn, Threads, Bluesky, los enlaces cortos de Google
+  Maps (`maps.app.goo.gl`, que genera la app del celular) y cualquier otra dirección `https://`. Los servicios que no se incrustan
+  siguen siendo visibles y llevan al lector al sitio original.
+- **Título:** opcional, pero recomendado. Lo leen los lectores de pantalla y aparece en la tarjeta.
 
 **Cómo comprobar que quedó bien.** Espera unos minutos y revisa la noticia en el sitio: aparece en `/noticias`,
 en Inicio si es reciente, y en la Ficha de cada Persona u Organización vinculada. Si la fecha es futura, no
@@ -161,6 +171,8 @@ aparece hasta ese día. Ábrela también en el celular.
 - Una foto de la galería sin texto alternativo: ese campo es obligatorio.
 - Más de 12 imágenes en la galería: el límite es 12.
 - Un video que no es de YouTube: no se muestra.
+- Pegar el código HTML del embed en vez del enlace: el sitio solo lee enlaces (`https://`).
+- Un servicio no listado en el recuadro: se ve como tarjeta con el enlace, no como reproductor.
 - Crear una Persona o Organización duplicada en vez de elegir la que ya existe (ver §6).
 - Una fecha futura: la Noticia no aparece hasta ese día.
 
@@ -172,7 +184,8 @@ o modalidad y sus organizadores.
 **Campos.**
 - Obligatorios: Nombre de la actividad, Publicado, Tipo, Inicio, Modalidad, Organizadores (al menos uno),
   Descripción.
-- Opcionales: Término, Lugar, Expositores, Áreas, Enlace de inscripción o información, Imagen.
+- Opcionales: Término, Lugar, Expositores, Áreas, Enlace de inscripción o información, Imagen y Contenido
+  incrustado.
 
 **Pasos.**
 1. Ve a la colección **Agenda** y crea una entrada nueva.
@@ -186,7 +199,7 @@ o modalidad y sus organizadores.
 8. En **Expositores**, elige a las personas que presentan, dictan o modera la actividad.
 9. Asigna **Áreas**. Si hay inscripción, pega el **Enlace de inscripción o información** (con `https://`).
    Opcional: sube una **Imagen**.
-10. Escribe la **Descripción**.
+10. Escribe la **Descripción**. Opcional: en **Contenido incrustado** pega enlaces públicos (ver §4.1).
 11. Activa **Publicado** y guarda.
 
 > _Pantallazo pendiente: formulario de una Actividad (fechas, Modalidad y Organizadores)._
@@ -197,6 +210,7 @@ no está activa (ver §2.2).
 
 **Errores típicos:**
 - Olvidar un organizador: el campo es obligatorio.
+- Pegar un enlace de Facebook o de otro servicio sin `https://`: no se reconoce.
 - Escribir el enlace de inscripción sin `https://`.
 - Dejar el **Término** con la fecha de otro día: revisa que las fechas sean las correctas antes de publicar.
 - Esperar que una actividad terminada pase a Realizadas de inmediato (ver §2.2).
@@ -544,8 +558,8 @@ aparece en la lista del pie. Si elegiste *Ninguno*, no aparece en ningún menú,
 - **Emojis.** Se escriben o se pegan directamente en el texto (🧬 🔬 🌊 se ven bien).
 - **Enlaces.** Usa un texto descriptivo: «Ver las bases», no «clic aquí».
 - **Listas, citas y tablas.** Se pueden usar en el **Cuerpo**. Las tablas, simples.
-- **Qué no se puede** dentro del texto: pegar HTML, iframes, PDFs o mapas incrustados. Hoy no está soportado. La
-  forma de agregarlos se describe en la guía de evolución `docs/guia-evolucion.md` (en preparación).
+- **Qué no se puede** dentro del texto: pegar HTML, iframes o PDFs. Para mapas, audio o videos de otros servicios
+  usa **Contenido incrustado**, que va al final del texto de la Noticia o la Actividad, no dentro de él.
 - **Documentos.** Hoy los Documentos se enlazan desde Google Drive (campo **Enlace al archivo (Drive)**). La
   subida de archivos al servidor (R2) no está en el panel; ver [`pendientes-infra.md`](pendientes-infra.md).
 
@@ -684,6 +698,9 @@ Los términos completos están en [`context.md`](context.md).
 | Galería de imágenes | No | Hasta 12 imágenes en una grilla que se amplía al hacer clic |
 | ↳ Imagen | Sí dentro de cada entrada | Imagen de la galería |
 | ↳ Texto alternativo | Sí dentro de cada entrada | Describe la imagen de la galería |
+| Contenido incrustado | No | Hasta 10 enlaces que se muestran después del cuerpo, como reproductor o tarjeta |
+| ↳ Enlace | Sí dentro de cada entrada | Dirección pública (`https://`) |
+| ↳ Título | No dentro de cada entrada | Describe el contenido para lectores de pantalla |
 | Cuerpo | Sí | Texto principal de la noticia |
 
 ### Agenda (colección de Actividades)
@@ -702,6 +719,7 @@ Los términos completos están en [`context.md`](context.md).
 | Áreas | No | Campos profesionales |
 | Enlace de inscripción o información | No | Enlace externo para inscribirse o informarse |
 | Imagen | No | Imagen de la actividad |
+| Contenido incrustado | No | Hasta 10 enlaces que se muestran después de la descripción |
 | Descripción | Sí | Texto principal de la actividad |
 
 ### Anuncios

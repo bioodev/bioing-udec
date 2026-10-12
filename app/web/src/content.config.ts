@@ -64,6 +64,10 @@ const organizaciones = defineCollection({
 
 // ── Contenidos ────────────────────────────────────────────
 
+// Contenido incrustado (Spotify, SoundCloud, mapas…): URLs públicas que convierte src/lib/incrustados.ts.
+// Solo https: la tarjeta-enlace va directo al href.
+const incrustados = z.array(z.object({ url: z.url().startsWith('https://'), titulo: z.string().optional() })).max(10).optional();
+
 const noticias = defineCollection({
   loader: md('noticias'),
   schema: ({ image }) =>
@@ -75,6 +79,7 @@ const noticias = defineCollection({
       imagen_alt: z.string().optional(), // describe la imagen destacada; sin él, la imagen se trata como decorativa
       video: z.url().optional(), // enlace de YouTube; si no es de un video reconocido, la página no lo muestra
       galeria: z.array(z.object({ imagen: image(), alt: z.string() })).max(12).optional(),
+      incrustados,
       bajada: z.string().optional(),
       etiquetas: z.array(z.string()).optional(), // tags de texto libre; la categoría editorial sigue siendo `temas`
       temas: referencias('temas'),
@@ -105,6 +110,7 @@ const actividades = defineCollection({
       areas: referencias('areas'),
       enlace_inscripcion: z.url().optional(),
       imagen: image().optional(),
+      incrustados,
     }),
 });
 
