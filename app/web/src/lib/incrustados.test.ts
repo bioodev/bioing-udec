@@ -395,6 +395,16 @@ describe('servicios sin iframe (tarjeta con nombre)', () => {
     ['https://www.linkedin.com/posts/abc', 'LinkedIn'],
     ['https://www.threads.net/@usuario/post/ABC', 'Threads'],
     ['https://bsky.app/profile/x.bsky.social/post/abc', 'Bluesky'],
+    ['https://www.flickr.com/photos/usuario/123', 'Flickr'],
+    ['https://flic.kr/p/abc', 'Flickr'],
+    ['https://www.deviantart.com/usuario/art/obra-1', 'DeviantArt'],
+    ['https://medium.com/@usuario/texto-1', 'Medium'],
+    ['https://gist.github.com/usuario/abc123', 'GitHub Gist'],
+    ['https://www.slideshare.net/usuario/presentacion', 'SlideShare'],
+    ['https://imgur.com/AbC123', 'Imgur'],
+    ['https://wa.me/56412345678', 'WhatsApp'],
+    ['https://chat.whatsapp.com/AbCdEf123', 'WhatsApp'],
+    ['https://whatsapp.com/channel/0029Va', 'WhatsApp'],
   ])('%s → %s', (url, proveedor) => {
     expect(incrustado(url)).toEqual(tarjeta(url, proveedor));
   });

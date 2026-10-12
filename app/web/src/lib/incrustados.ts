@@ -9,7 +9,8 @@ export type Incrustado =
   | { tipo: 'youtube'; id: string }
   | { tipo: 'enlace'; proveedor: string | null; url: string };
 
-// Servicios sin reproductor por iframe estable (X, Threads, Bluesky, perfiles, enlaces cortos): tarjeta con su nombre.
+// Servicios sin reproductor por iframe estable o sin embed oficial (X, Threads, WhatsApp, enlaces cortos…):
+// se muestran como tarjeta con su nombre. X se evaluó (docs/guia-evolucion.md §3.6) y queda como tarjeta.
 const SIN_IFRAME = new Map([
   ['x.com', 'X'],
   ['twitter.com', 'X'],
@@ -23,6 +24,16 @@ const SIN_IFRAME = new Map([
   ['bsky.app', 'Bluesky'],
   ['maps.app.goo.gl', 'Google Maps'],
   ['deezer.page.link', 'Deezer'],
+  ['flickr.com', 'Flickr'],
+  ['flic.kr', 'Flickr'],
+  ['deviantart.com', 'DeviantArt'],
+  ['medium.com', 'Medium'],
+  ['gist.github.com', 'GitHub Gist'],
+  ['slideshare.net', 'SlideShare'],
+  ['imgur.com', 'Imgur'],
+  ['whatsapp.com', 'WhatsApp'],
+  ['chat.whatsapp.com', 'WhatsApp'],
+  ['wa.me', 'WhatsApp'],
 ]);
 
 // Pinterest tiene dominios regionales: pinterest.cl, cl.pinterest.com, etc.
