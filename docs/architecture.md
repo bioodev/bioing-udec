@@ -97,6 +97,8 @@ enlaces. Las páginas publicadas (`paginasParaMenu()` en `src/lib/contenido.ts`)
 
 **Secciones ocultables**: el archivo único `src/content/menu/menu.yml` (colección `menu` en `content.config.ts`, editado como archivo «Menú» de la colección `paginas` en `config.yml`) tiene un booleano por sección fija. `configuracionMenu()` (`src/lib/contenido.ts`) lo lee; `seccionVisible` y `filtrarMenu` (`navegacion.ts`) lo aplican en `Navbar.astro`, en el pie de `Base.astro` (también en el bloque «Comunidad») y en `seccionesLlms` (`llms.ts`). Si el archivo o una clave falta, la sección se muestra. Ocultar no toca las páginas: `[seccion].astro` sigue generando solo las rutas «Próximamente».
 
+**Redes sociales en el pie**: el archivo único `src/content/redes/redes.yml` (colección `redes` en `content.config.ts`, editado como archivo «Redes sociales» de la colección `paginas` en `config.yml`) tiene una URL opcional por red (ADR 0008). `configuracionRedes()` (`src/lib/contenido.ts`) lo lee; `redesVisibles` y `urlsRedes` (`src/lib/redes.ts`, puro y probado en `redes.test.ts`) filtran las vacías y dan el orden. `RedesSociales.astro` dibuja los íconos en la columna de marca del pie, `Base.astro` pasa las URLs a `sitioWeb` (`sameAs`) y `instagram.astro` toma la URL de Instagram de aquí.
+
 **Referencias entre colecciones**: guardan el slug (`entry.id`) de la entrada referenciada. Una referencia
 rota (p. ej. una Persona borrada que sigue mencionada) se registra como `[ERROR] [content] Invalid content
 reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEntries()` con `existentes()`
