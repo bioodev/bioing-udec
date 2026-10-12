@@ -95,16 +95,18 @@ const unir = (...partes) => partes.filter(Boolean).join(' · ');
 
 /** Valores que arma cada página antes del bloque SEO (src/pages/<colección>/[id].astro). */
 export function valoresArmados(coleccion, datos) {
+  // Mientras el título está vacío (borrador recién creado) la vista previa no muestra un hueco.
+  const titulo = texto(datos.titulo) ?? 'Sin título';
   switch (coleccion) {
     case 'noticias':
     case 'paginas_libres':
-      return { titulo: datos.titulo, descripcion: datos.bajada, imagen: datos.imagen };
+      return { titulo, descripcion: datos.bajada, imagen: datos.imagen };
     case 'actividades':
-      return { titulo: datos.titulo, descripcion: unir(TIPOS.actividades[datos.tipo], cuandoActividad(datos.inicio, datos.fin)) };
+      return { titulo, descripcion: unir(TIPOS.actividades[datos.tipo], cuandoActividad(datos.inicio, datos.fin)) };
     case 'anuncios':
-      return { titulo: datos.titulo, descripcion: unir(TIPOS.anuncios[datos.tipo], datos.titulo) };
+      return { titulo, descripcion: unir(TIPOS.anuncios[datos.tipo], titulo) };
     case 'documentos':
-      return { titulo: datos.titulo, descripcion: unir(TIPOS.documentos[datos.tipo], datos.titulo) };
+      return { titulo, descripcion: unir(TIPOS.documentos[datos.tipo], titulo) };
     default:
       throw new Error(`Colección sin vista previa SEO: ${coleccion}`);
   }

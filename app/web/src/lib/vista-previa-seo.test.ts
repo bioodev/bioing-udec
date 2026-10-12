@@ -108,6 +108,11 @@ describe('vistaPrevia', () => {
     expect(doc.descripcion).toBe('Reglamento · Reglamento 1');
   });
 
+  test('sin título todavía muestra «Sin título», no un sufijo suelto', () => {
+    const v = vistaPrevia('noticias', { titulo: '  ' }, { slug: 'b' });
+    expect(v.titulo).toBe('Sin título · BIOING+');
+  });
+
   test('página libre usa /p/', () => {
     const v = vistaPrevia('paginas_libres', { titulo: 'Quiénes somos', bajada: 'Somos…' }, { slug: 'quienes' });
     expect(v.url).toBe('bioing…/p/quienes');
