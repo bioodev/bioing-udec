@@ -27,7 +27,8 @@ const estilo = {
     position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7,
     filter: 'sepia(0.22) saturate(1.06) brightness(0.95)',
   },
-  sinImagen: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af', fontSize: '14px', padding: '12px', textAlign: 'center' },
+  // Sin imagen: la nota va arriba a la izquierda para no tapar el título centrado.
+  sinImagen: { position: 'absolute', top: '8px', left: '12px', color: '#9ca3af', fontSize: '13px' },
   velo: { position: 'absolute', inset: 0, background: 'rgba(29, 29, 31, 0.3)' },
   contenido: { position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: 'inherit', boxSizing: 'border-box' },
   contenidoEscritorio: { padding: '48px 24px' },
