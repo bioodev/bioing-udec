@@ -455,6 +455,66 @@ collections:
             required: false
             pattern: ['^https://', 'Debe empezar con https://']
             hint: "Enlace al formulario para sumarse al Directorio, p. ej.: https://docs.google.com/forms/d/e/TU_ID/viewform. Déjalo vacío si aún no hay formulario: el Inicio y /directorio no muestran el botón."
+          - name: sumarse_icono
+            label: "Ícono del bloque «¿Eres egresado/a?»"
+            widget: select
+            required: false
+            options: &iconos_phosphor
+              - { label: Periódico, value: Newspaper }
+              - { label: Calendario, value: CalendarDots }
+              - { label: Megáfono, value: Megaphone }
+              - { label: Libros, value: Books }
+              - { label: Grupo, value: UsersThree }
+              - { label: Instagram, value: InstagramLogo }
+              - { label: Matraz, value: Flask }
+              - { label: ADN, value: Dna }
+              - { label: Microscopio, value: Microscope }
+              - { label: Átomo, value: Atom }
+              - { label: Hoja, value: Leaf }
+              - { label: Birrete, value: GraduationCap }
+              - { label: Maletín, value: Briefcase }
+              - { label: Acuerdo, value: Handshake }
+              - { label: Idea, value: Lightbulb }
+              - { label: Estrella, value: Star }
+              - { label: Corazón, value: Heart }
+              - { label: Cohete, value: Rocket }
+              - { label: Trofeo, value: Trophy }
+              - { label: Globo terráqueo, value: Globe }
+              - { label: Ubicación, value: MapPin }
+              - { label: Documento, value: FileText }
+              - { label: Carpeta, value: Folder }
+              - { label: Gráfico, value: ChartBar }
+              - { label: Código, value: Code }
+              - { label: Engranaje, value: Gear }
+              - { label: Información, value: Info }
+              - { label: Pregunta, value: Question }
+              - { label: Destello, value: Sparkle }
+              - { label: Personas, value: Users }
+              - { label: Estudiante, value: Student }
+              - { label: Pizarra, value: Chalkboard }
+              - { label: Píldora, value: Pill }
+              - { label: Latido, value: Heartbeat }
+              - { label: Tubo de ensayo, value: TestTube }
+              - { label: Planta, value: Plant }
+              - { label: Gota, value: Drop }
+              - { label: Pez, value: Fish }
+              - { label: Procesador, value: Cpu }
+              - { label: Robot, value: Robot }
+              - { label: Banco, value: Bank }
+              - { label: Certificado, value: Certificate }
+              - { label: Medalla, value: Medal }
+              - { label: Sumar persona, value: UserPlus }
+            hint: "Ícono que aparece junto al título del bloque, en /directorio. Déjalo vacío para no mostrar ícono."
+          - name: sumarse_imagen
+            label: "Imagen del bloque «¿Eres egresado/a?»"
+            widget: image
+            required: false
+            hint: "Imagen de cabecera del bloque, en /directorio (horizontal y ancha, p. ej. 1600 × 700 px). Déjala vacía para no mostrar imagen."
+          - name: sumarse_imagen_alt
+            label: "Texto alternativo de la imagen del bloque"
+            widget: string
+            required: false
+            hint: "Describe lo que se ve (para lectores de pantalla). Déjalo vacío si la imagen es solo decorativa."
           - { name: anuncios, label: "Sección «Anuncios» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
           - { name: repositorio, label: "Sección «Repositorio» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
       - name: redes
@@ -534,19 +594,68 @@ collections:
             required: false
             hint: "Horizontal, de 1200 × 630 px. Se usa cuando una página no trae su propia imagen. Si la dejas vacía, se usa la imagen por defecto del sitio."
           - name: listados
-            label: Descripción de cada listado
+            label: Descripción e imagen de cada listado
             widget: object
             collapsed: true
             required: false
-            hint: "Texto que aparece en Google para cada página de listado. Si lo dejas vacío, se usa el texto por defecto."
+            hint: "Para cada página de listado: el texto que aparece en Google y la imagen al compartirla en redes. Si los dejas vacíos, se usan los valores por defecto del sitio."
             fields:
-              - { name: inicio, label: Inicio, widget: text, required: false, maxlength: 160 }
-              - { name: noticias, label: Noticias, widget: text, required: false, maxlength: 160 }
-              - { name: agenda, label: Agenda, widget: text, required: false, maxlength: 160 }
-              - { name: anuncios, label: Anuncios, widget: text, required: false, maxlength: 160 }
-              - { name: repositorio, label: Repositorio, widget: text, required: false, maxlength: 160 }
-              - { name: directorio, label: Directorio, widget: text, required: false, maxlength: 160 }
-              - { name: instagram, label: Instagram, widget: text, required: false, maxlength: 160 }
+              - name: inicio
+                label: Inicio
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: noticias
+                label: Noticias
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: agenda
+                label: Agenda
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: anuncios
+                label: Anuncios
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: repositorio
+                label: Repositorio
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: directorio
+                label: Directorio
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
+              - name: instagram
+                label: Instagram
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+                  - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
           - name: verificacion
             label: Verificación de buscadores
             widget: object
@@ -556,6 +665,70 @@ collections:
             fields:
               - { name: google, label: Código de Google Search Console, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta google-site-verification. Ej.: abc123_XYZ-9." }
               - { name: bing, label: Código de Bing Webmaster, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta msvalidate.01." }
+
+      - name: encabezados
+        label: Encabezados de los listados
+        file: /app/web/src/content/encabezados/encabezados.yml
+        format: yml
+        fields:
+          - name: noticias
+            label: Noticias
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Noticias. Si los dejas vacíos, la página se ve como siempre."
+            fields: &encabezado_campos
+              - name: imagen
+                label: Imagen de cabecera
+                widget: image
+                required: false
+                hint: "Horizontal y ancha (p. ej. 1600 × 700 px). Va sobre el título. Si la dejas vacía, la página no tiene imagen."
+              - name: imagen_alt
+                label: Texto alternativo de la imagen
+                widget: string
+                required: false
+                hint: "Describe lo que se ve (para lectores de pantalla). Déjalo vacío si la imagen es solo decorativa."
+              - name: icono
+                label: Ícono junto al título
+                widget: select
+                required: false
+                options: *iconos_phosphor
+                hint: "Opcional. Aparece junto al título de la página."
+          - name: agenda
+            label: Agenda
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Agenda. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+          - name: anuncios
+            label: Anuncios
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Anuncios. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+          - name: repositorio
+            label: Repositorio
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Repositorio. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+          - name: directorio
+            label: Directorio
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Directorio. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+          - name: instagram
+            label: Instagram
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Instagram. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
 
   # ── Páginas libres (se crean desde el panel; cada una vive en /p/<slug>) ──
 

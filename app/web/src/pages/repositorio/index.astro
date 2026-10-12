@@ -1,13 +1,14 @@
 ---
 import { getEntries } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import EncabezadoListado from '@/components/EncabezadoListado.astro';
 import FiltrosPlegables from '@/components/FiltrosPlegables.astro';
 import TarjetaDocumento from '@/components/TarjetaDocumento.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { NativeSelect, NativeSelectOption } from '@/components/starwind/native-select';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
-import { descripcionDeListado, documentosDelRepositorio } from '@/lib/contenido';
+import { descripcionDeListado, imagenDeListadoSeo, documentosDelRepositorio , encabezadoDeListado } from '@/lib/contenido';
 import { existentes, normalizar } from '@/lib/reglas';
 import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
 import { TODOS } from '@/lib/filtro-repositorio';
@@ -29,10 +30,12 @@ const total = documentos.length;
 const textoDe = (d: (typeof documentos)[number]) =>
   normalizar(`${d.documento.data.titulo} ${d.documento.data.descripcion ?? ''} ${(d.documento.data.palabras_clave ?? []).join(' ')}`);
 const descripcion = await descripcionDeListado('repositorio');
+const imagenListado = await imagenDeListadoSeo('repositorio');
+const encabezado = await encabezadoDeListado('repositorio');
 ---
-<Base titulo="Repositorio" descripcion={descripcion}>
+<Base titulo="Repositorio" descripcion={descripcion} imagen={imagenListado}>
   <section id="repositorio-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="repositorio-titulo">
-    <h1 id="repositorio-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Repositorio</h1>
+    <EncabezadoListado id="repositorio-titulo" titulo="Repositorio" {...encabezado} />
     <p class="mt-2 text-muted-foreground">Documentos de interés para la comunidad de Bioingeniería UdeC.</p>
 
     {total === 0 ? (

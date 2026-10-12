@@ -44,6 +44,7 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 - [`0008-secciones-desactivables.md`](adr/0008-secciones-desactivables.md) — secciones fijas que el panel desactiva del todo (404, sitemap, buscador, Inicio), con integración de build.
 - [`0009-redes-sociales-campos-fijos.md`](adr/0009-redes-sociales-campos-fijos.md) — redes sociales del pie como campos fijos opcionales en el panel (Mastodon/Fediverso con `rel="me"`).
 - [`0010-seo-desde-el-panel.md`](adr/0010-seo-desde-el-panel.md) — SEO configurable desde el panel: descripción y verificación del sitio, bloque SEO por contenido y «No mostrar en buscadores».
+- [`0011-encabezados-de-listado-e-iconos.md`](adr/0011-encabezados-de-listado-e-iconos.md) — imagen e ícono opcionales en los encabezados de los listados y en el bloque «¿Eres egresado/a?»; lista curada de íconos Phosphor en el panel.
 - [`0005-paginas-libres-desde-el-panel.md`](adr/0005-paginas-libres-desde-el-panel.md) — páginas creables desde el panel, en `/p/<slug>`, con `mostrar_en` para el menú o el pie.
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)

@@ -1,10 +1,11 @@
 ---
 import { getEntry } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import EncabezadoListado from '@/components/EncabezadoListado.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
-import { anunciosVencidos, anunciosVigentes, descripcionDeListado } from '@/lib/contenido';
+import { anunciosVencidos, anunciosVigentes, descripcionDeListado, imagenDeListadoSeo , encabezadoDeListado } from '@/lib/contenido';
 import { normalizar } from '@/lib/reglas';
 import { TIPOS_ANUNCIO } from '@/lib/anuncios';
 import { TODOS } from '@/lib/filtro-anuncios';
@@ -31,10 +32,12 @@ const nombreOferente = async (a: (typeof vigentes)[number]) => {
 };
 const textos = new Map(await Promise.all([...vigentes, ...vencidos].map(async (a) => [a.id, normalizar(`${a.data.titulo} ${await nombreOferente(a)}`)] as const)));
 const descripcion = await descripcionDeListado('anuncios');
+const imagenListado = await imagenDeListadoSeo('anuncios');
+const encabezado = await encabezadoDeListado('anuncios');
 ---
-<Base titulo="Anuncios" descripcion={descripcion}>
+<Base titulo="Anuncios" descripcion={descripcion} imagen={imagenListado}>
   <section id="anuncios-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="anuncios-titulo">
-    <h1 id="anuncios-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Anuncios</h1>
+    <EncabezadoListado id="anuncios-titulo" titulo="Anuncios" {...encabezado} />
     <p class="mt-2 text-muted-foreground">Oportunidades para la comunidad de Bioingeniería UdeC.</p>
     <p class="mt-2 text-muted-foreground">¿Tienes una oportunidad para la comunidad? Escríbele a la persona encargada de comunicaciones.</p>
 

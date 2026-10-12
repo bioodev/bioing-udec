@@ -4,6 +4,7 @@ import {
   descripcionListado,
   descripcionSitio,
   esNoindex,
+  imagenDeListado,
   imagenSitio,
   resolverSeo,
   tituloDocumento,
@@ -72,11 +73,37 @@ describe('descripcionListado', () => {
   });
 
   test('el valor del panel gana sobre el del código', () => {
-    expect(descripcionListado('agenda', { listados: { agenda: 'Charlas y seminarios.' } })).toBe('Charlas y seminarios.');
+    expect(descripcionListado('agenda', { listados: { agenda: { descripcion: 'Charlas y seminarios.' } } })).toBe('Charlas y seminarios.');
+  });
+
+  test('un listado sin descripción en el panel (aunque tenga imagen) usa el texto por defecto', () => {
+    expect(descripcionListado('agenda', { listados: { agenda: { imagen: '/_astro/agenda.webp' } } })).toBe(
+      'Actividades de la comunidad de Bioingeniería UdeC: seminarios, charlas, congresos y más.',
+    );
   });
 
   test('inicio hereda la descripción del sitio cuando el panel no la define', () => {
     expect(descripcionListado('inicio', { descripcion: 'Sitio de la carrera.' })).toBe('Sitio de la carrera.');
+  });
+});
+
+describe('imagenDeListado (precedencia: imagen del listado → imagen del sitio → undefined)', () => {
+  test('la imagen del listado gana sobre la del sitio', () => {
+    const sitio = { imagen: '/_astro/sitio.png', listados: { agenda: { imagen: '/_astro/agenda.webp' } } };
+    expect(imagenDeListado('agenda', sitio)).toBe('/_astro/agenda.webp');
+  });
+
+  test('sin imagen del listado usa la del sitio', () => {
+    const sitio = { imagen: '/_astro/sitio.png', listados: { agenda: { descripcion: 'Texto' } } };
+    expect(imagenDeListado('agenda', sitio)).toBe('/_astro/sitio.png');
+  });
+
+  test('una imagen vacía o con solo espacios cuenta como ausente', () => {
+    expect(imagenDeListado('noticias', { imagen: '/_astro/sitio.png', listados: { noticias: { imagen: '  ' } } })).toBe('/_astro/sitio.png');
+  });
+
+  test('sin imagen en el panel no hay imagen (la página usa og-default.png)', () => {
+    expect(imagenDeListado('directorio', undefined)).toBeUndefined();
   });
 });
 

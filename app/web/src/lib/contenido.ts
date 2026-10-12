@@ -9,7 +9,7 @@ import { cifrasDelDirectorio, tarjetasComunidad, ultimosDocumentos } from './com
 import { areasMasFrecuentes, contarAreas } from './filtro-directorio';
 import { seccionActiva, type ConfigMenu, type PaginaLibreMenu } from './navegacion';
 import type { ConfigRedes } from './redes';
-import { descripcionListado, type Listado, type SeoEntrada, type SeoSitio } from './seo';
+import { descripcionListado, imagenDeListado, type Listado, type SeoEntrada, type SeoSitio } from './seo';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram' | 'paginasLibres';
 
@@ -237,12 +237,26 @@ export async function configuracionRedes(): Promise<ConfigRedes> {
 /** SEO del sitio (src/content/seo/seo.yml). Sin archivo, todo queda en blanco y el sitio usa sus valores por defecto. */
 export async function configuracionSeo(): Promise<SeoSitio> {
   const datos = (await getEntry('seo', 'seo'))?.data;
-  return { ...datos, imagen: datos?.imagen?.src };
+  const listados = datos?.listados && Object.fromEntries(
+    Object.entries(datos.listados).map(([listado, valores]) => [listado, { ...valores, imagen: valores?.imagen?.src }]),
+  );
+  return { ...datos, imagen: datos?.imagen?.src, listados };
 }
 
 /** Descripción de un listado (campo «Descripción de cada listado» del panel, o el texto por defecto). */
 export async function descripcionDeListado(listado: Listado) {
   return descripcionListado(listado, await configuracionSeo());
+}
+
+/** Imagen para redes de un listado: la del listado, o la del sitio. undefined = og-default.png (lo resuelve Base). */
+export async function imagenDeListadoSeo(listado: Listado) {
+  return imagenDeListado(listado, await configuracionSeo());
+}
+
+/** Encabezado de un listado (src/content/encabezados/encabezados.yml): imagen de cabecera e ícono, ambos opcionales. */
+export async function encabezadoDeListado(listado: Exclude<Listado, 'inicio'>) {
+  const valores = (await getEntry('encabezados', 'encabezados'))?.data[listado];
+  return { imagen: valores?.imagen, imagenAlt: valores?.imagen_alt, icono: valores?.icono };
 }
 
 /** Bloque SEO de una entrada, con la imagen ya resuelta a su ruta (para resolverSeo). */

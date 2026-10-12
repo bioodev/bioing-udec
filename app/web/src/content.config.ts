@@ -265,7 +265,7 @@ const inicio = defineCollection({
 // dejan de publicarse (ADR 0008). Una clave ausente cuenta como visible.
 const menu = defineCollection({
   loader: yml('menu'),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     noticias: z.boolean().default(true),
     agenda: z.boolean().default(true),
     instagram: z.boolean().default(true),
@@ -277,7 +277,33 @@ const menu = defineCollection({
       .string()
       .refine((url) => url === '' || /^https:\/\/\S+$/.test(url), 'Debe ser una dirección completa que empiece con https://')
       .optional(),
+    // Bloque «¿Eres egresado/a?» de /directorio: ícono (lista en src/lib/iconos.ts; uno desconocido no se muestra) e
+    // imagen de cabecera con su texto alternativo. Todo opcional.
+    sumarse_icono: z.string().optional(),
+    sumarse_imagen: image().optional(),
+    sumarse_imagen_alt: z.string().optional(),
   }),
+});
+
+// Encabezados de los listados (ADR 0011): imagen de cabecera (con texto alternativo) e ícono, opcionales por listado.
+// Sin valores, cada página se ve como antes. El Inicio no tiene encabezado: ya tiene el carrusel.
+const encabezados = defineCollection({
+  loader: yml('encabezados'),
+  schema: ({ image }) => {
+    const encabezado = z.object({
+      imagen: image().optional(),
+      imagen_alt: z.string().optional(),
+      icono: z.string().optional(), // nombre de la lista src/lib/iconos.ts; uno desconocido no muestra ícono
+    }).optional();
+    return z.object({
+      noticias: encabezado,
+      agenda: encabezado,
+      anuncios: encabezado,
+      repositorio: encabezado,
+      directorio: encabezado,
+      instagram: encabezado,
+    });
+  },
 });
 
 // Redes sociales: una URL opcional por red (pie, botón de /instagram y sameAs). Una clave ausente = sin red.
@@ -301,24 +327,27 @@ const redes = defineCollection({
 // verificación de buscadores. Todo opcional: sin archivo o sin clave, el sitio usa su valor por defecto (src/lib/seo.ts).
 const seoSitio = defineCollection({
   loader: yml('seo'),
-  schema: ({ image }) =>
-    z.object({
+  schema: ({ image }) => {
+    const listado = z.object({ descripcion: z.string().max(160).optional(), imagen: image().optional() }).optional();
+    return z.object({
       descripcion: z.string().max(160).optional(),
       imagen: image().optional(),
+      // Un objeto por listado: su descripción y su imagen para redes (og:image). Ambos opcionales.
       listados: z.object({
-        inicio: z.string().max(160).optional(),
-        noticias: z.string().max(160).optional(),
-        agenda: z.string().max(160).optional(),
-        anuncios: z.string().max(160).optional(),
-        repositorio: z.string().max(160).optional(),
-        directorio: z.string().max(160).optional(),
-        instagram: z.string().max(160).optional(),
+        inicio: listado,
+        noticias: listado,
+        agenda: listado,
+        anuncios: listado,
+        repositorio: listado,
+        directorio: listado,
+        instagram: listado,
       }).optional(),
       verificacion: z.object({
         google: z.string().regex(/^[A-Za-z0-9_-]+$/, 'Solo el código, sin etiqueta <meta> ni comillas.').optional(),
         bing: z.string().regex(/^[A-Za-z0-9_-]+$/, 'Solo el código, sin etiqueta <meta> ni comillas.').optional(),
       }).optional(),
-    }),
+    });
+  },
 });
 
 const instagram = defineCollection({
@@ -339,5 +368,5 @@ const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, redes, seo: seoSitio, instagram, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, redes, seo: seoSitio, encabezados, instagram, areas, temas,
 };

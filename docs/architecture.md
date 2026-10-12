@@ -89,7 +89,8 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Inicio** | archivo único `src/content/inicio/inicio.md`: banda «Comunidad y documentos» (título y tarjetas del Directorio y del Repositorio: título, texto, botón, foto opcional) y lista de secciones destacadas (título, texto, botón, enlace, imagen, texto alternativo, publicado) |
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
-| **SEO del sitio** | archivo único `src/content/seo/seo.yml` (colección `seo`): descripción general, imagen por defecto, descripción de cada listado y códigos de verificación de Google y Bing. Todo opcional (ADR 0010) |
+| **SEO del sitio** | archivo único `src/content/seo/seo.yml` (colección `seo`): descripción general, imagen por defecto, descripción e imagen para redes de cada listado y códigos de verificación de Google y Bing. Todo opcional (ADR 0010) |
+| **Encabezados de los listados** | archivo único `src/content/encabezados/encabezados.yml` (colección `encabezados`): un objeto por listado con imagen de cabecera, texto alternativo e ícono. `EncabezadoListado.astro` lo dibuja en el `<h1>` de cada listado; `encabezadoDeListado()` lo lee. Todo opcional (ADR 0011) |
 
 Las colecciones Noticias, Actividades, Anuncios, Documentos y Páginas libres traen además un campo `seo` opcional
 (título ≤ 60, descripción ≤ 160, imagen y `noindex`), editado como bloque «SEO (opcional)». En `config.yml` ese bloque se define una vez con el ancla `&seo_contenido` y las demás colecciones lo referencian con `*seo_contenido`: no lo copies a mano.
@@ -102,6 +103,8 @@ enlaces. Las páginas publicadas (`paginasParaMenu()` en `src/lib/contenido.ts`)
 **Secciones ocultables**: el archivo único `src/content/menu/menu.yml` (colección `menu` en `content.config.ts`, editado como archivo «Menú» de la colección `paginas` en `config.yml`) tiene un booleano por sección fija. `configuracionMenu()` (`src/lib/contenido.ts`) lo lee; `seccionVisible` y `filtrarMenu` (`navegacion.ts`) lo aplican en `Navbar.astro`, en el pie de `Base.astro` (también en el bloque «Comunidad») y en `seccionesLlms` (`llms.ts`). Si el archivo o una clave falta, la sección se muestra. Ocultar no toca las páginas: `[seccion].astro` sigue generando solo las rutas «Próximamente».
 
 **Secciones desactivadas del todo** (ADR 0008): `seccionActiva` y `enlaceDisponible` (`navegacion.ts`) deciden qué se publica. `astro.config.mjs` lee `menu.yml` con `leerConfigMenu` y registra la integración `src/integrations/secciones-desactivadas.ts`, que en `astro:build:done` borra de `dist/` las rutas inactivas, filtra el sitemap y cambia por texto los enlaces a ellas en el HTML (con aviso). El Inicio (`index.astro`) y la ficha de persona filtran sus bloques y migajas con las mismas funciones.
+
+**Íconos del panel** (ADR 0011): la lista curada está en `src/lib/iconos.ts`, el ancla `&iconos_phosphor` de `config.yml` y el mapa de componentes en `src/components/Icono.astro` (imports estáticos de `phosphor-astro`). `iconos.test.ts` comprueba que las tres coincidan. Un nombre desconocido no muestra ícono.
 
 **Redes sociales en el pie**: el archivo único `src/content/redes/redes.yml` (colección `redes` en `content.config.ts`, editado como archivo «Redes sociales» de la colección `paginas` en `config.yml`) tiene una URL opcional por red (ADR 0009). `configuracionRedes()` (`src/lib/contenido.ts`) lo lee; `redesVisibles` y `urlsRedes` (`src/lib/redes.ts`, puro y probado en `redes.test.ts`) filtran las vacías y dan el orden. `RedesSociales.astro` dibuja los íconos en la columna de marca del pie, `Base.astro` pasa las URLs a `sitioWeb` (`sameAs`) y `instagram.astro` toma la URL de Instagram de aquí.
 

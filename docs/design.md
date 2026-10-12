@@ -602,3 +602,14 @@ encabezado, un solo `<main>`, `<section>` con nombre):
   Una sección sin encabezado (p. ej. un bloque de datos) es un `<div>` con su `id`.
 - **Página libre en diseño ancho** (`/p/[id]`): la rama con bloques va dentro de un `<article>`, igual que la simple.
 - **Contacto** de un anuncio: `<address>` (dentro de la tarjeta, que es el anuncio del autor).
+
+### Encabezado de los listados (ADR 0011)
+
+- `EncabezadoListado.astro` es el `<h1>` de las seis páginas de listado. Con imagen, la imagen va arriba a ancho completo,
+  con `rounded-xl`, proporción 16/7 en móvil y 3/1 desde `sm`, y el título debajo con 24 px de separación. Sin velo: el
+  contraste del título no depende de la foto ni del modo oscuro.
+- El ícono va a la izquierda del título, en `text-primary`, de 36 px (`size-9`), decorativo (`aria-hidden`). Sin ícono,
+  el título no cambia de clases.
+- Sin imagen ni ícono, el encabezado es el de siempre (`text-4xl font-semibold tracking-tight`).
+- El bloque «¿Eres egresado/a?» del Directorio usa el mismo criterio: la imagen, si hay, va a sangre en la parte de arriba
+  de la tarjeta, y el ícono de 28 px (`size-7`) va junto al título.

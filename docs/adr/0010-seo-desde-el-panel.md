@@ -16,9 +16,11 @@ cambio de código.
 ## Decisión
 
 1. **SEO del sitio** (archivo único `src/content/seo/seo.yml`, colección `seo`, editado como archivo «SEO del sitio»
-   de la colección `paginas`): descripción general, imagen por defecto para redes (1200 × 630), descripción de cada
-   listado (por clave: inicio, noticias, agenda, anuncios, repositorio, directorio, instagram) y códigos de
-   verificación de Google (`google-site-verification`) y Bing (`msvalidate.01`). Solo se emiten los códigos con valor.
+   de la colección `paginas`): descripción general, imagen por defecto para redes (1200 × 630), descripción e imagen
+   para redes de cada listado (`listados.<clave>.descripcion` y `.imagen`; claves: inicio, noticias, agenda, anuncios,
+   repositorio, directorio, instagram) y códigos de verificación de Google (`google-site-verification`) y Bing
+   (`msvalidate.01`). Solo se emiten los códigos con valor. La imagen de un listado sigue la precedencia de
+   `imagenDeListado`: imagen del listado → imagen del sitio → `og-default.png` (ver también ADR 0011).
 2. **SEO por contenido** (bloque opcional «SEO (opcional)», colapsado, en Noticias, Actividades, Anuncios, Documentos y
    Páginas libres): `titulo` (máx. 60), `descripcion` (máx. 160), `imagen` para redes y `noindex` («No mostrar en
    buscadores»). Si el bloque está vacío, el sitio usa lo de siempre (título, bajada e imagen destacada).
@@ -45,6 +47,8 @@ cambio de código.
 - Un `noindex` no protege de enlaces externos: un buscador puede mostrar la URL sin contenido si ya la conoce.
   Para ocultar contenido de verdad hay que quitar la página (desactivarla o borrarla).
 - Agregar otro campo SEO exige cambiar `config.yml`, `content.config.ts`, `seo.ts` y esta decisión.
+- Pasar `listados.<clave>` de texto a objeto (`descripcion` e `imagen`) fue una migración: `seo.yml`, el esquema y
+  `config.yml` cambian juntos, y el `<head>` de las páginas quedó igual (comprobado comparando los builds).
 
 ## Alternativas
 

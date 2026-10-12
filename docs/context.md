@@ -204,12 +204,20 @@ _Avoid_: Categoría, etiqueta, tag
 ### Gestión
 
 **SEO del sitio**:
-Configuración general de cómo aparece la carrera en buscadores y al compartir el sitio: descripción general, imagen por defecto para redes, descripción de cada listado y códigos de verificación de Google y Bing. Se edita en el panel como «SEO del sitio».
+Configuración general de cómo aparece la carrera en buscadores y al compartir el sitio: descripción general, imagen por defecto para redes, descripción e imagen para redes de cada listado y códigos de verificación de Google y Bing. Se edita en el panel como «SEO del sitio».
 _Avoid_: Metadatos, meta tags, configuración técnica
 
 **SEO (opcional)**:
 Bloque de una Noticia, Actividad, Anuncio, Documento o Página libre con título, descripción e imagen propios para buscadores y redes, y la opción «No mostrar en buscadores». Si está vacío, se usan el título, la bajada y la imagen de la propia ficha.
 _Avoid_: Metadatos, posicionamiento, SEO avanzado
+
+**Encabezado de listado**:
+Franja superior de Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram: una imagen de cabecera opcional (con texto alternativo) y un ícono opcional junto al título. Se edita en el panel como «Encabezados de los listados». Sin imagen ni ícono, la página se ve como siempre.
+_Avoid_: Banner de sección, portada de listado, hero
+
+**Ícono**:
+Dibujo de la lista curada de Phosphor que el panel ofrece para los encabezados y para el bloque «¿Eres egresado/a?». Se elige en un desplegable; no se sube un archivo.
+_Avoid_: Icono personalizado, logo de sección, SVG
 
 **No mostrar en buscadores**:
 Opción de una ficha que deja la página publicada y enlazada, pero la saca del mapa del sitio y del buscador del sitio. No es un Borrador: sigue visible.

@@ -649,6 +649,8 @@ la bajada y la imagen de cada página.
   1200 × 630 px.
 - **Descripción de cada listado**: el texto que Google muestra para Noticias, Agenda, Anuncios, Repositorio,
   Directorio, Instagram y el Inicio. Déjalo vacío para usar el texto por defecto.
+- **Imagen para compartir** (dentro de cada listado): la imagen que sale al compartir esa página en redes. Si la dejas
+  vacía, se usa la imagen por defecto del sitio.
 - **Verificación de buscadores**: si Google Search Console o Bing Webmaster te pide confirmar el sitio, pega aquí solo el
   código (el valor de `content="…"`), no la etiqueta completa.
 
@@ -671,6 +673,32 @@ sitio, abre la página y mira la pestaña del navegador (el título). Google pue
 cambio de descripción.
 
 > Un título o una descripción demasiado largos se cortan en Google. Por eso los campos tienen límite de caracteres.
+
+### 4.16 Imagen e ícono de los listados y del bloque del Directorio
+
+Sirve para dar identidad visual a Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram, y al bloque «¿Eres
+egresado/a y no apareces?» de `/directorio`. Todo es opcional: si los campos quedan vacíos, la página se ve como siempre.
+
+**Dónde.**
+- **Encabezados de los listados** (en **Páginas**): un bloque por listado, con **Imagen de cabecera**, **Texto
+  alternativo de la imagen** y **Ícono junto al título**.
+- **Secciones del sitio** (en **Páginas**): **Imagen del bloque «¿Eres egresado/a?»**, su texto alternativo y el
+  **Ícono del bloque**.
+
+**Cómo queda.**
+- La imagen va arriba de la página, ancha y baja, con el título debajo. Conviene una foto horizontal de unos 1600 × 700 px.
+- El ícono va a la izquierda del título. Se elige de una lista de dibujos (p. ej. Periódico, Calendario, Libros, Matraz).
+  Si eliges un ícono que no está en la lista, no sale ninguno.
+- El texto alternativo describe lo que se ve en la foto (para quien usa lector de pantalla). Si la imagen es solo
+  decorativa, déjalo vacío.
+
+**Pasos.**
+1. Abre **Páginas** y entra en **Encabezados de los listados** (o en **Secciones del sitio** para el bloque del Directorio).
+2. Despliega el listado que quieres cambiar, sube la imagen, escribe el texto alternativo y elige el ícono.
+3. Guarda. El cambio se publica en uno o dos minutos.
+
+**Cómo comprobar que quedó bien.** Abre la página del listado y revisa el encabezado en el computador y en el celular.
+La imagen para compartir en redes se ajusta en **SEO del sitio** (sección 4.15).
 
 ## 5. Imágenes y archivos
 
