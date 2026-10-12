@@ -154,6 +154,59 @@ describe('Drive y Docs', () => {
   });
 });
 
+describe('Deezer', () => {
+  test('track y episodio van en 152 px; con prefijo de país (/cl/)', () => {
+    expect(incrustado('https://www.deezer.com/cl/track/3135556')).toEqual({
+      tipo: 'iframe', proveedor: 'Deezer', src: 'https://widget.deezer.com/widget/auto/track/3135556', alto: 152,
+    });
+    expect(incrustado('https://deezer.com/episode/987654')).toMatchObject({ src: 'https://widget.deezer.com/widget/auto/episode/987654', alto: 152 });
+  });
+  test('álbum, playlist y show van en 352 px', () => {
+    expect(incrustado('https://www.deezer.com/album/302127')).toMatchObject({ src: 'https://widget.deezer.com/widget/auto/album/302127', alto: 352 });
+    expect(incrustado('https://www.deezer.com/playlist/1963962142')).toMatchObject({ alto: 352 });
+    expect(incrustado('https://www.deezer.com/show/4321')).toMatchObject({ alto: 352 });
+  });
+  test('enlace corto deezer.page.link y perfiles → tarjeta', () => {
+    expect(incrustado('https://deezer.page.link/AbC')).toEqual(tarjeta('https://deezer.page.link/AbC', 'Deezer'));
+    expect(incrustado('https://www.deezer.com/us/artist/27')).toEqual(tarjeta('https://www.deezer.com/us/artist/27', 'Deezer'));
+  });
+});
+
+describe('Audiomack', () => {
+  test('canción va en 252 px; álbum y playlist en 400 px', () => {
+    expect(incrustado('https://audiomack.com/artista/song/mi-tema?x=1')).toEqual({
+      tipo: 'iframe', proveedor: 'Audiomack', src: 'https://audiomack.com/embed/song/artista/mi-tema', alto: 252,
+    });
+    expect(incrustado('https://www.audiomack.com/artista/album/disco')).toMatchObject({
+      src: 'https://audiomack.com/embed/album/artista/disco', alto: 400,
+    });
+    expect(incrustado('https://audiomack.com/artista/playlist/lista')).toMatchObject({ alto: 400 });
+  });
+  test('perfil de artista → tarjeta', () => {
+    expect(incrustado('https://audiomack.com/artista')).toEqual(tarjeta('https://audiomack.com/artista', 'Audiomack'));
+  });
+});
+
+describe('Acast', () => {
+  test('episodio va en 190 px; podcast completo en 450 px', () => {
+    expect(incrustado('https://shows.acast.com/mi-show/episodes/episodio-1')).toEqual({
+      tipo: 'iframe', proveedor: 'Acast', src: 'https://embed.acast.com/mi-show/episodio-1', alto: 190,
+    });
+    expect(incrustado('https://shows.acast.com/mi-show')).toEqual({
+      tipo: 'iframe', proveedor: 'Acast', src: 'https://embed.acast.com/mi-show', alto: 450,
+    });
+  });
+});
+
+describe('Audioboom', () => {
+  test('publicación → embed v4, 200 px, con o sin slug', () => {
+    expect(incrustado('https://audioboom.com/posts/8123456-bioingenieria-en-vivo')).toEqual({
+      tipo: 'iframe', proveedor: 'Audioboom', src: 'https://embeds.audioboom.com/posts/8123456/embed/v4', alto: 200,
+    });
+    expect(incrustado('https://audioboom.com/posts/8123456')).toMatchObject({ src: 'https://embeds.audioboom.com/posts/8123456/embed/v4' });
+  });
+});
+
 describe('YouTube listas', () => {
   test('playlist → embed sin cookies de videoseries, 16/9', () => {
     expect(incrustado('https://www.youtube.com/playlist?list=PLabc-123_x')).toEqual({

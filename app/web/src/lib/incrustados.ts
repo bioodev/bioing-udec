@@ -22,6 +22,7 @@ const SIN_IFRAME = new Map([
   ['threads.net', 'Threads'],
   ['bsky.app', 'Bluesky'],
   ['maps.app.goo.gl', 'Google Maps'],
+  ['deezer.page.link', 'Deezer'],
 ]);
 
 // Pinterest tiene dominios regionales: pinterest.cl, cl.pinterest.com, etc.
@@ -187,6 +188,31 @@ export function incrustado(url: string, { dominios = [] }: OpcionesIncrustado = 
   if (host === 'ted.com') {
     const slug = ruta.match(/^\/talks\/([\w-]+)\/?$/)?.[1];
     return slug ? { tipo: 'iframe', proveedor: 'TED', src: `https://embed.ted.com/talks/${slug}`, proporcion: '16/9' } : tarjeta('TED');
+  }
+
+  // Audio: Deezer (con prefijo de país), Audiomack, Acast y Audioboom.
+  if (host === 'deezer.com') {
+    const m = ruta.match(/^\/(?:[a-z]{2}\/)?(track|album|playlist|episode|show)\/(\d+)\/?$/);
+    if (!m) return tarjeta('Deezer');
+    return { tipo: 'iframe', proveedor: 'Deezer', src: `https://widget.deezer.com/widget/auto/${m[1]}/${m[2]}`, alto: m[1] === 'track' || m[1] === 'episode' ? 152 : 352 };
+  }
+
+  if (host === 'audiomack.com') {
+    const m = ruta.match(/^\/([^/]+)\/(song|album|playlist)\/([^/]+)\/?$/);
+    if (!m) return tarjeta('Audiomack');
+    return { tipo: 'iframe', proveedor: 'Audiomack', src: `https://audiomack.com/embed/${m[2]}/${m[1]}/${m[3]}`, alto: m[2] === 'song' ? 252 : 400 };
+  }
+
+  if (host === 'shows.acast.com') {
+    const episodio = ruta.match(/^\/([^/]+)\/episodes\/([^/]+)\/?$/);
+    if (episodio) return { tipo: 'iframe', proveedor: 'Acast', src: `https://embed.acast.com/${episodio[1]}/${episodio[2]}`, alto: 190 };
+    const show = ruta.match(/^\/([^/]+)\/?$/)?.[1];
+    return show ? { tipo: 'iframe', proveedor: 'Acast', src: `https://embed.acast.com/${show}`, alto: 450 } : tarjeta('Acast');
+  }
+
+  if (host === 'audioboom.com') {
+    const id = ruta.match(/^\/posts\/(\d+)(?:-[^/]*)?\/?$/)?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'Audioboom', src: `https://embeds.audioboom.com/posts/${id}/embed/v4`, alto: 200 } : tarjeta('Audioboom');
   }
 
   return tarjeta(SIN_IFRAME.get(host) ?? null);
