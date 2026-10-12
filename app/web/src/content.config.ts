@@ -277,6 +277,8 @@ const menu = defineCollection({
       .string()
       .refine((url) => url === '' || /^https:\/\/\S+$/.test(url), 'Debe ser una dirección completa que empiece con https://')
       .optional(),
+    // Ícono del bloque «¿Eres egresado/a?» (lista en src/lib/iconos.ts). Un valor desconocido no muestra ícono.
+    sumarse_icono: z.string().optional(),
   }),
 });
 

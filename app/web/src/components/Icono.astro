@@ -1,0 +1,61 @@
+---
+// Ícono de Phosphor por nombre (la lista del panel está en src/lib/iconos.ts, ADR 0011). Un nombre que no
+// está en el mapa no muestra nada: el ícono es decorativo y nunca rompe el build.
+import Newspaper from 'phosphor-astro/Newspaper.astro';
+import CalendarDots from 'phosphor-astro/CalendarDots.astro';
+import Megaphone from 'phosphor-astro/Megaphone.astro';
+import Books from 'phosphor-astro/Books.astro';
+import UsersThree from 'phosphor-astro/UsersThree.astro';
+import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
+import Flask from 'phosphor-astro/Flask.astro';
+import Dna from 'phosphor-astro/Dna.astro';
+import Microscope from 'phosphor-astro/Microscope.astro';
+import Atom from 'phosphor-astro/Atom.astro';
+import Leaf from 'phosphor-astro/Leaf.astro';
+import GraduationCap from 'phosphor-astro/GraduationCap.astro';
+import Briefcase from 'phosphor-astro/Briefcase.astro';
+import Handshake from 'phosphor-astro/Handshake.astro';
+import Lightbulb from 'phosphor-astro/Lightbulb.astro';
+import Star from 'phosphor-astro/Star.astro';
+import Heart from 'phosphor-astro/Heart.astro';
+import Rocket from 'phosphor-astro/Rocket.astro';
+import Trophy from 'phosphor-astro/Trophy.astro';
+import Globe from 'phosphor-astro/Globe.astro';
+import MapPin from 'phosphor-astro/MapPin.astro';
+import FileText from 'phosphor-astro/FileText.astro';
+import Folder from 'phosphor-astro/Folder.astro';
+import ChartBar from 'phosphor-astro/ChartBar.astro';
+import Code from 'phosphor-astro/Code.astro';
+import Gear from 'phosphor-astro/Gear.astro';
+import Info from 'phosphor-astro/Info.astro';
+import Question from 'phosphor-astro/Question.astro';
+import Sparkle from 'phosphor-astro/Sparkle.astro';
+import Users from 'phosphor-astro/Users.astro';
+import Student from 'phosphor-astro/Student.astro';
+import Chalkboard from 'phosphor-astro/Chalkboard.astro';
+import Pill from 'phosphor-astro/Pill.astro';
+import Heartbeat from 'phosphor-astro/Heartbeat.astro';
+import TestTube from 'phosphor-astro/TestTube.astro';
+import Plant from 'phosphor-astro/Plant.astro';
+import Drop from 'phosphor-astro/Drop.astro';
+import Fish from 'phosphor-astro/Fish.astro';
+import Cpu from 'phosphor-astro/Cpu.astro';
+import Robot from 'phosphor-astro/Robot.astro';
+import Bank from 'phosphor-astro/Bank.astro';
+import Certificate from 'phosphor-astro/Certificate.astro';
+import Medal from 'phosphor-astro/Medal.astro';
+import UserPlus from 'phosphor-astro/UserPlus.astro';
+
+const mapa = {
+  Newspaper, CalendarDots, Megaphone, Books, UsersThree, InstagramLogo, Flask, Dna, Microscope,
+  Atom, Leaf, GraduationCap, Briefcase, Handshake, Lightbulb, Star, Heart, Rocket, Trophy, Globe,
+  MapPin, FileText, Folder, ChartBar, Code, Gear, Info, Question, Sparkle, Users, Student,
+  Chalkboard, Pill, Heartbeat, TestTube, Plant, Drop, Fish, Cpu, Robot, Bank, Certificate, Medal,
+  UserPlus,
+};
+
+interface Props { nombre?: string; class?: string }
+const { nombre, class: clase } = Astro.props;
+const Componente = nombre && Object.hasOwn(mapa, nombre) ? mapa[nombre as keyof typeof mapa] : undefined;
+---
+{Componente && <Componente class={clase} aria-hidden="true" />}

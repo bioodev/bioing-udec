@@ -455,6 +455,56 @@ collections:
             required: false
             pattern: ['^https://', 'Debe empezar con https://']
             hint: "Enlace al formulario para sumarse al Directorio, p. ej.: https://docs.google.com/forms/d/e/TU_ID/viewform. Déjalo vacío si aún no hay formulario: el Inicio y /directorio no muestran el botón."
+          - name: sumarse_icono
+            label: "Ícono del bloque «¿Eres egresado/a?»"
+            widget: select
+            required: false
+            options: &iconos_phosphor
+              - { label: Periódico, value: Newspaper }
+              - { label: Calendario, value: CalendarDots }
+              - { label: Megáfono, value: Megaphone }
+              - { label: Libros, value: Books }
+              - { label: Grupo, value: UsersThree }
+              - { label: Instagram, value: InstagramLogo }
+              - { label: Matraz, value: Flask }
+              - { label: ADN, value: Dna }
+              - { label: Microscopio, value: Microscope }
+              - { label: Átomo, value: Atom }
+              - { label: Hoja, value: Leaf }
+              - { label: Birrete, value: GraduationCap }
+              - { label: Maletín, value: Briefcase }
+              - { label: Acuerdo, value: Handshake }
+              - { label: Idea, value: Lightbulb }
+              - { label: Estrella, value: Star }
+              - { label: Corazón, value: Heart }
+              - { label: Cohete, value: Rocket }
+              - { label: Trofeo, value: Trophy }
+              - { label: Globo terráqueo, value: Globe }
+              - { label: Ubicación, value: MapPin }
+              - { label: Documento, value: FileText }
+              - { label: Carpeta, value: Folder }
+              - { label: Gráfico, value: ChartBar }
+              - { label: Código, value: Code }
+              - { label: Engranaje, value: Gear }
+              - { label: Información, value: Info }
+              - { label: Pregunta, value: Question }
+              - { label: Destello, value: Sparkle }
+              - { label: Personas, value: Users }
+              - { label: Estudiante, value: Student }
+              - { label: Pizarra, value: Chalkboard }
+              - { label: Píldora, value: Pill }
+              - { label: Latido, value: Heartbeat }
+              - { label: Tubo de ensayo, value: TestTube }
+              - { label: Planta, value: Plant }
+              - { label: Gota, value: Drop }
+              - { label: Pez, value: Fish }
+              - { label: Procesador, value: Cpu }
+              - { label: Robot, value: Robot }
+              - { label: Banco, value: Bank }
+              - { label: Certificado, value: Certificate }
+              - { label: Medalla, value: Medal }
+              - { label: Sumar persona, value: UserPlus }
+            hint: "Ícono que aparece junto al título del bloque, en /directorio. Déjalo vacío para no mostrar ícono."
           - { name: anuncios, label: "Sección «Anuncios» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
           - { name: repositorio, label: "Sección «Repositorio» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
       - name: redes
