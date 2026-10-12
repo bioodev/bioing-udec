@@ -114,21 +114,24 @@ cómo revertir*. Los incidentes van como tabla en §9.
 - Tamaño del repositorio (aviso al pasar 1 GB) y caché de imágenes optimizadas.
 - Buscador Pagefind (se regenera en `postbuild`), sitemap, `robots.txt`, `llms.txt`, feeds RSS y JSON-LD
   (`npm run verificar:jsonld`).
-- **Analítica sin cookies (Cloudflare Web Analytics)** — _pendiente de activar_. Pasos concretos:
-  1. Cuenta de Cloudflare de la carrera. En un sitio *proxied*, la inyección se activa desde el panel
-     (*Web Analytics → Add site → hostname*); la alternativa para hostnames no proxied es el snippet manual
-     con token (el token **no** es un secreto: está atado al dominio).
-  2. **Ampliar la CSP** de `app/web/public/_headers` o el navegador bloqueará el beacon: agregar
-     `https://static.cloudflareinsights.com` y `https://cloudflareinsights.com` a `script-src` y a
-     `connect-src` (hoy son `'self'`).
-  3. Dos detalles documentados: la inyección automática **solo** aplica en dominios proxied (no en
-     `*.workers.dev`) y falla si la respuesta lleva `Cache-Control: public, no-transform`; y como el sitio
-     navega en el cliente (View Transitions), hay que revisar el modo `spa` del beacon para no subcontar
-     páginas vistas.
-  4. Retención: 6 meses en el panel, sin exportación de datos crudos (si se necesitara más, habría que
-     evaluar otra herramienta).
-  5. Verificar en DevTools (llamadas a `cloudflareinsights`), sin errores de CSP, y que el panel registre
-     visitas a los 5–10 minutos.
+- **Analítica sin cookies (Cloudflare Web Analytics)** — _implementada; falta el token de la cuenta de la carrera_
+  (ADR 0012). Pasos para activarla:
+  1. Cuenta de Cloudflare de la carrera. En *Web Analytics → Add site* se indica el dominio y se copia el token del
+     *manual snippet*. Se pega **solo el token** en «SEO del sitio → Analítica (opcional)». No es secreto: va atado al dominio.
+     Si el sitio está en un dominio *proxied* por Cloudflare, la analítica puede activarse desde el panel de Cloudflare sin
+     token; en ese caso el campo se deja vacío para no contar dos veces.
+  2. La CSP ya admite `https://static.cloudflareinsights.com` (`script-src`) y `https://cloudflareinsights.com`
+     (`connect-src`) en la regla `/*` de `public/_headers`. `src/lib/csp.test.ts` lo vigila.
+  3. El beacon se carga con `spa: true` (`analiticaCloudflare` en `src/lib/seo.ts`) porque el sitio navega con
+     ClientRouter. Cloudflare lo tiene activado por defecto; se deja explícito.
+  4. Dos detalles documentados por Cloudflare: la inyección automática **solo** aplica en dominios *proxied* (no en
+     `*.workers.dev`) y falla si la respuesta lleva `Cache-Control: public, no-transform`.
+  5. Retención: 6 meses en el panel, sin exportación de datos crudos (si se necesitara más, habría que evaluar otra
+     herramienta).
+  6. Verificar: sin errores de CSP en la consola del build servido (`npx wrangler dev --env qa`), llamadas a
+     `cloudflareinsights` en DevTools y visitas en el panel 5–10 minutos después.
+  7. El patrón del token (20–64 letras y números, en `seo.ts` y en `config.yml`) no está confirmado en la documentación de
+     Cloudflare. Si el panel rechaza un token real, revisar ese patrón.
 
 ## 9. Incidentes (runbook)
 

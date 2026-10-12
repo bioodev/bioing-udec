@@ -211,6 +211,10 @@ _Avoid_: Metadatos, meta tags, configuración técnica
 Bloque de una Noticia, Actividad, Anuncio, Documento, Página libre o Persona con título, descripción e imagen propios para buscadores y redes, y la opción «No mostrar en buscadores». Si está vacío, se usan el título, la bajada y la imagen de la propia ficha (en una Persona: su nombre, su descripción breve y su foto).
 _Avoid_: Metadatos, posicionamiento, SEO avanzado
 
+**Analítica (opcional)**:
+Medición de visitas del sitio con Cloudflare Web Analytics, sin cookies ni banner. Se configura en el panel como el grupo «Analítica (opcional)» de «SEO del sitio», con el token que entrega Cloudflare. Sin token, el sitio no mide nada (ADR 0012).
+_Avoid_: Google Analytics, seguimiento, tracking, cookies
+
 **Encabezado de listado**:
 Franja superior de Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram: una imagen de cabecera opcional (con texto alternativo) y un ícono opcional junto al título. Se edita en el panel como «Encabezados de los listados». Sin imagen ni ícono, la página se ve como siempre.
 _Avoid_: Banner de sección, portada de listado, hero

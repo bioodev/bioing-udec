@@ -195,6 +195,9 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
   entrada → valor armado por la página → `seo.yml` → valor por defecto del código. `Base.astro` agrega el sufijo
   « · BIOING+» una sola vez, emite `<meta name="robots" content="noindex">` si la página lo pide y las metas de
   verificación de Google (`google-site-verification`) y Bing (`msvalidate.01`) solo con códigos cargados.
+- **Analítica sin cookies** (ADR 0012): `Base.astro` carga el beacon de Cloudflare Web Analytics solo si
+  `analiticaCloudflare()` (`src/lib/seo.ts`) recibe un token válido de `seo.yml`; `spa: true` mide las navegaciones del
+  ClientRouter. La CSP de `public/_headers` admite `static.cloudflareinsights.com` (script) y `cloudflareinsights.com` (connect).
 - **No mostrar en buscadores** (`noindex`): la página sigue publicada y enlazada. La integración
   `src/integrations/secciones-desactivadas.ts` la saca del sitemap detectando la meta en el HTML generado, y
   `scripts/postbuild-pagefind.mjs` no la indexa. `llms.txt` lista solo secciones, así que no la incluye de todos modos.
