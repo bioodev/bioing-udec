@@ -5,8 +5,8 @@ import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import Incrustados from '@/components/Incrustados.astro';
+import Enlaces from '@/components/Enlaces.astro';
 import { Badge } from '@/components/starwind/badge';
-import { Button } from '@/components/starwind/button';
 import { formatoFechaHora, noticiasDeActividad, publicados } from '@/lib/contenido';
 import { actividadEsProxima, existentes } from '@/lib/reglas';
 import { MODALIDADES, TIPOS_ACTIVIDAD } from '@/lib/agenda';
@@ -14,7 +14,6 @@ import { migas, actividad as jsonLdActividad } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import MapPin from 'phosphor-astro/MapPin.astro';
 import Users from 'phosphor-astro/Users.astro';
-import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
 
 export async function getStaticPaths() {
   const actividades = await publicados('actividades');
@@ -97,13 +96,11 @@ const jsonLdPagina = [
       )}
     </dl>
 
-    {actividad.data.enlace_inscripcion && esProxima && (
-      <p class="mt-6">
-        <Button as="a" href={actividad.data.enlace_inscripcion} target="_blank" rel="noopener" class="rounded-full">
-          Inscripción o información<ArrowSquareOut class="size-4" aria-hidden="true" />
-        </Button>
-      </p>
-    )}
+    {/* La inscripción es el botón principal solo mientras la Actividad es próxima; los Enlaces se ven siempre. */}
+    <Enlaces
+      principal={esProxima && actividad.data.enlace_inscripcion ? { etiqueta: 'Inscripción o información', url: actividad.data.enlace_inscripcion } : undefined}
+      items={actividad.data.enlaces ?? []}
+    />
 
     {actividad.data.imagen && <Image src={actividad.data.imagen} alt="" class="mt-8 w-full rounded-lg" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
 

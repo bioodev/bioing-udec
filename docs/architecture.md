@@ -80,12 +80,12 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 |---|---|
 | **Personas** | nombre, descripción, foto, ficha activa, Perfil de egresado (autorizado, generación, año de egreso, Áreas, Organización, cargo, enlaces) |
 | **Organizaciones** | nombre, tipo (empresa, institución, laboratorio, agrupación), sitio web, logo, ficha activa |
-| **Noticias** | título, fecha, imagen, bajada, Temas, Áreas, Personas y Organizaciones mencionadas, Actividad (cobertura), Publicación de Instagram, etiquetas libres, Contenido incrustado (hasta 10) |
-| **Actividades** | título, tipo (seminario, charla, congreso, taller, …), inicio, fin, modalidad, lugar, Organizadores, Expositores, Áreas, enlace de inscripción, imagen, Contenido incrustado (hasta 10) |
+| **Noticias** | título, fecha, imagen, bajada, Temas, Áreas, Personas y Organizaciones mencionadas, Actividad (cobertura), Publicación de Instagram, etiquetas libres, Enlaces (hasta 6), Contenido incrustado (hasta 10) |
+| **Actividades** | título, tipo (seminario, charla, congreso, taller, …), inicio, fin, modalidad, lugar, Organizadores, Expositores, Áreas, enlace de inscripción (botón principal), Enlaces (hasta 6), imagen, Contenido incrustado (hasta 10) |
 | **Anuncios** | título, tipo de oportunidad, Oferente, Áreas, fecha, fecha límite, Contacto, enlace |
 | **Documentos** | título, tipo, año, enlace (Drive), descripción, Temas, Áreas, palabras clave |
 | **Banners** | título, texto, imagen, enlace, inicio, fin |
-| **Páginas libres** | título, publicado, bajada (obligatoria), imagen y texto alternativo, `mostrar_en` (ninguno, footer, la-carrera, comunidad), destacar en el Inicio y resumen para el Inicio (una sola destacada, ADR 0006), video (YouTube), título y lista de bloques destacados, y cuerpo; una por archivo en `src/content/paginas-libres/` (ADR 0005). ¿Qué es la Bioingeniería? es una de ellas |
+| **Páginas libres** | título, publicado, bajada (obligatoria), imagen y texto alternativo, `mostrar_en` (ninguno, footer, la-carrera, comunidad), destacar en el Inicio y resumen para el Inicio (una sola destacada, ADR 0006), video (YouTube), Enlaces (hasta 6), título y lista de bloques destacados, y cuerpo; una por archivo en `src/content/paginas-libres/` (ADR 0005). ¿Qué es la Bioingeniería? es una de ellas |
 | **Inicio** | archivo único `src/content/inicio/inicio.md`: lista de secciones destacadas (título, texto, botón, enlace, imagen, texto alternativo, publicado) |
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
@@ -151,6 +151,11 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
   `src/lib/incrustados.ts`, un parser puro con prueba: a partir de la URL pegada decide el reproductor (o la
   tarjeta-enlace para lo que no se incrusta) y es el único punto para sumar un proveedor. El componente
   `src/components/Incrustados.astro` lo renderiza.
+- Los **Enlaces** (campo `enlaces`, hasta 6 `{ etiqueta, url }`) son botones de texto corto bajo el título de
+  Noticias, Actividades y Páginas libres (`src/components/Enlaces.astro`). No reproducen nada: eso es el contenido
+  incrustado. En una Actividad, `enlace_inscripcion` es el botón principal y los `enlaces` van a su lado. La regla
+  interno/externo es `esInterno()` en `src/lib/enlaces.ts` (ruta relativa o mismo host, con prueba): los externos
+  abren en pestaña nueva y los internos no.
 - El **logo** tiene una sola fuente: `src/assets/logo.svg`, renderizado por `src/components/Logo.astro` en
   navbar y footer (hoy es un placeholder hasta la identidad definitiva).
 - **Navbar**: el header vive en `src/components/Navbar.astro` (escritorio y menú móvil), con la estructura de

@@ -130,7 +130,7 @@ organizaciones.
 - Obligatorios: Título, Fecha de publicación, Publicado, Cuerpo.
 - Opcionales: Imagen destacada y su Texto alternativo de la imagen, Bajada, Etiquetas (tags), Temas, Áreas,
   Personas mencionadas, Organizaciones mencionadas, Actividad que cubre, Publicación de Instagram relacionada,
-  Video (YouTube), Galería de imágenes (hasta 12) y Contenido incrustado (hasta 10 enlaces).
+  Video (YouTube), Enlaces (hasta 6), Galería de imágenes (hasta 12) y Contenido incrustado (hasta 10 enlaces).
 
 **Pasos.**
 1. Ve a la colección **Noticias** y crea una entrada nueva.
@@ -146,11 +146,18 @@ organizaciones.
    corresponde a una publicación de Instagram, elígela en **Publicación de Instagram relacionada**.
 8. Opcional: en **Video (YouTube)** pega el enlace del video (solo YouTube; se muestra debajo del cuerpo, en una
    ventana que se abre al hacer clic). En **Galería de imágenes** agrega hasta 12 imágenes; cada una lleva su
-   **Texto alternativo**. Opcional: en **Contenido incrustado** pega enlaces públicos (ver el recuadro de abajo).
+   **Texto alternativo**. Opcional: en **Enlaces** agrega botones (ver el recuadro de abajo). Y en **Contenido
+   incrustado** pega enlaces públicos (ver el recuadro de abajo).
 9. Escribe el **Cuerpo** (ver §5 para imágenes, enlaces y listas).
 10. Activa **Publicado** y guarda.
 
 > _Pantallazo pendiente: formulario de la Noticia (imagen destacada, Galería y Cuerpo)._
+
+**Enlaces** (Noticias, Actividades y Páginas libres). Son botones con un texto corto que aparecen bajo el título y
+llevan a otra página: inscripción, transmisión, más información, bases. Cada uno tiene una **Etiqueta** (el texto
+del botón, p. ej. «Ver transmisión») y una **Dirección** (con `https://`, o una ruta del sitio como `/agenda`). Hasta
+6 por ficha. Los que llevan a otro sitio se abren en una pestaña nueva. Para **reproducir** un video, un audio o una
+publicación, no uses Enlaces: usa **Contenido incrustado**.
 
 **Contenido incrustado** (Noticias, Actividades y Páginas libres). Pega la dirección pública del contenido, la que aparece en la
 barra del navegador. El sitio arma el reproductor solo; no hace falta copiar código.
@@ -189,7 +196,7 @@ o modalidad y sus organizadores.
 **Campos.**
 - Obligatorios: Nombre de la actividad, Publicado, Tipo, Inicio, Modalidad, Organizadores (al menos uno),
   Descripción.
-- Opcionales: Término, Lugar, Expositores, Áreas, Enlace de inscripción o información, Imagen y Contenido
+- Opcionales: Término, Lugar, Expositores, Áreas, Enlace de inscripción o información, Enlaces, Imagen y Contenido
   incrustado.
 
 **Pasos.**
@@ -202,8 +209,9 @@ o modalidad y sus organizadores.
 6. Elige la **Modalidad**: Presencial, En línea o Híbrida. Si es presencial o híbrida, escribe el **Lugar**.
 7. En **Organizadores**, agrega una entrada por cada organizador y elige si es una Persona o una Organización.
 8. En **Expositores**, elige a las personas que presentan, dictan o modera la actividad.
-9. Asigna **Áreas**. Si hay inscripción, pega el **Enlace de inscripción o información** (con `https://`).
-   Opcional: sube una **Imagen**.
+9. Asigna **Áreas**. Si hay inscripción, pega el **Enlace de inscripción o información** (con `https://`): es el
+   botón principal, que aparece relleno mientras la actividad no ha pasado. Opcional: en **Enlaces** agrega otros
+   botones (p. ej. «Ver transmisión» o «Más información») que se muestran a su lado. Opcional: sube una **Imagen**.
 10. Escribe la **Descripción**. Opcional: en **Contenido incrustado** pega enlaces públicos (ver §4.1).
 11. Activa **Publicado** y guarda.
 
@@ -519,6 +527,7 @@ dirección en el sitio, y decidir si aparece en un menú, en el pie o solo se ll
 - **Contenido**: el texto de la página.
 - **Video (YouTube)** (opcional): se muestra debajo de la bajada, en una ventana al hacer clic. Solo se reconocen
   enlaces de YouTube.
+- **Enlaces** (opcional, hasta 6): botones bajo la bajada, cada uno con su Etiqueta y su Dirección (ver §4.1).
 - **Título de los bloques destacados** y **Bloques destacados** (opcionales): una franja oscura después del
   contenido, con un bloque por cada punto (Título y Texto). Si no escribes el título de los bloques, la franja no
   lleva título.
@@ -706,6 +715,7 @@ Los términos completos están en [`context.md`](context.md).
 | Actividad que cubre | No | Actividad realizada que relata la noticia (Cobertura) |
 | Publicación de Instagram relacionada | No | Publicación de Instagram vinculada a la noticia |
 | Video (YouTube) | No | Video que se muestra debajo del cuerpo |
+| Enlaces | No | Hasta 6 botones bajo el título: Etiqueta y Dirección |
 | Galería de imágenes | No | Hasta 12 imágenes en una grilla que se amplía al hacer clic |
 | ↳ Imagen | Sí dentro de cada entrada | Imagen de la galería |
 | ↳ Texto alternativo | Sí dentro de cada entrada | Describe la imagen de la galería |
@@ -728,7 +738,8 @@ Los términos completos están en [`context.md`](context.md).
 | Organizadores | Sí (al menos uno) | Personas u Organizaciones responsables |
 | Expositores | No | Personas que presentan, dictan o modera |
 | Áreas | No | Campos profesionales |
-| Enlace de inscripción o información | No | Enlace externo para inscribirse o informarse |
+| Enlace de inscripción o información | No | Enlace externo para inscribirse o informarse; es el botón principal |
+| Enlaces | No | Hasta 6 botones a su lado: Etiqueta y Dirección |
 | Imagen | No | Imagen de la actividad |
 | Contenido incrustado | No | Hasta 10 enlaces que se muestran después de la descripción |
 | Descripción | Sí | Texto principal de la actividad |
@@ -785,6 +796,7 @@ Los términos completos están en [`context.md`](context.md).
 | Texto alternativo de la imagen | No | Descripción para lectores de pantalla |
 | Mostrar en | Sí (por defecto: Ninguno) | Ninguno, Pie de página, Menú «La carrera» o Menú «Comunidad» |
 | Video (YouTube) | No | Video que se abre en una ventana, debajo de la bajada |
+| Enlaces | No | Hasta 6 botones bajo la bajada: Etiqueta y Dirección |
 | Título de los bloques destacados | No | Título sobre la franja de bloques; vacío, la franja no lleva título |
 | Bloques destacados | No | Franja oscura después del contenido, en dos columnas |
 | ↳ Título | Sí dentro de cada bloque | Título del bloque |

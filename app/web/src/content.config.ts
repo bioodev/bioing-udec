@@ -68,6 +68,9 @@ const organizaciones = defineCollection({
 // Solo https: la tarjeta-enlace va directo al href.
 const incrustados = z.array(z.object({ url: z.url().startsWith('https://'), titulo: z.string().optional() })).max(10).optional();
 
+// Enlaces: botones bajo el título (inscripción, transmisión, más información). Etiqueta libre; mismo criterio https.
+const enlaces = z.array(z.object({ etiqueta: z.string().min(1).max(40), url: z.url().startsWith('https://') })).max(6).optional();
+
 const noticias = defineCollection({
   loader: md('noticias'),
   schema: ({ image }) =>
@@ -78,6 +81,7 @@ const noticias = defineCollection({
       imagen: image().optional(),
       imagen_alt: z.string().optional(), // describe la imagen destacada; sin él, la imagen se trata como decorativa
       video: z.url().optional(), // enlace de YouTube; si no es de un video reconocido, la página no lo muestra
+      enlaces,
       galeria: z.array(z.object({ imagen: image(), alt: z.string() })).max(12).optional(),
       incrustados,
       bajada: z.string().optional(),
@@ -108,7 +112,8 @@ const actividades = defineCollection({
       organizadores: z.array(personaUOrganizacion).nonempty(),
       expositores: referencias('personas'),
       areas: referencias('areas'),
-      enlace_inscripcion: z.url().optional(),
+      enlace_inscripcion: z.url().optional(), // botón principal
+      enlaces,
       imagen: image().optional(),
       incrustados,
     }),
@@ -176,6 +181,7 @@ const paginasLibres = defineCollection({
       destacar_inicio: z.boolean().default(false), // solo una a la vez (src/lib/pagina-destacada.ts)
       resumen_inicio: z.string().optional(), // resumen del bloque del Inicio; sin él, se usa la bajada
       video: z.url().optional(), // se abre en una ventana (VideoModal); si no es de YouTube, no se muestra
+      enlaces,
       bloques_titulo: z.string().optional(),
       bloques: z.array(z.object({ titulo: z.string(), texto: z.string() })).optional(),
       incrustados,

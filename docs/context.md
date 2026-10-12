@@ -94,7 +94,7 @@ _Avoid_: Base de datos, buscador de bioingenieros
 ### Contenidos
 
 **Noticia**:
-Publicación de actualidad sobre la comunidad de Bioingeniería, con fecha, Temas, Áreas, Personas mencionadas y Organizaciones mencionadas. Opcionalmente tiene texto alternativo de la imagen destacada, un video de YouTube, una galería de hasta 12 imágenes y Contenido incrustado.
+Publicación de actualidad sobre la comunidad de Bioingeniería, con fecha, Temas, Áreas, Personas mencionadas y Organizaciones mencionadas. Opcionalmente tiene texto alternativo de la imagen destacada, un video de YouTube, hasta 6 Enlaces, una galería de hasta 12 imágenes y Contenido incrustado.
 _Avoid_: Artículo, post, nota
 
 **Persona mencionada** / **Organización mencionada**:
@@ -102,7 +102,7 @@ Persona u Organización que figura en una Noticia; no implica autoría. La Notic
 _Avoid_: Participante, autor, etiquetado
 
 **Actividad**:
-Evento con fecha y lugar o modalidad (seminario, charla, congreso, taller, encuentro) publicado en la Agenda. Opcionalmente tiene Contenido incrustado.
+Evento con fecha y lugar o modalidad (seminario, charla, congreso, taller, encuentro) publicado en la Agenda. Opcionalmente tiene una inscripción (botón principal) y hasta 6 Enlaces, además de Contenido incrustado.
 _Avoid_: Evento, evento de agenda
 
 **Agenda**:
@@ -146,7 +146,7 @@ La colección buscable de Documentos.
 _Avoid_: Biblioteca, archivo, drive
 
 **Página libre**:
-Página de texto creada desde el panel (título, bajada, imagen opcional, contenido, video de YouTube opcional y bloques destacados opcionales) que vive en `/p/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
+Página de texto creada desde el panel (título, bajada, imagen opcional, contenido, video de YouTube opcional, hasta 6 Enlaces y bloques destacados opcionales) que vive en `/p/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
 _Avoid_: Página institucional, página, artículo
 
 **Página destacada**:
@@ -168,6 +168,10 @@ _Avoid_: Post, feed
 **Contenido incrustado**:
 Enlaces públicos de servicios externos (Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps, Google Drive/Docs) que el sitio muestra como reproductor después del cuerpo de una Noticia, una Actividad o una Página libre, bajo el título «Multimedia». Los demás servicios, o los enlaces no reconocidos, se muestran como tarjeta con el enlace.
 _Avoid_: Embed, widget, iframe
+
+**Enlace**:
+Botón con etiqueta libre (p. ej. «Inscripción», «Ver transmisión», «Más información») bajo el título de una Noticia, una Actividad o una Página libre; hasta 6 por ficha. Lleva a una dirección externa o interna. No reproduce nada: para videos, audios o publicaciones, usar Contenido incrustado.
+_Avoid_: Link, botón, vínculo, enlace suelto
 
 ### Clasificación
 

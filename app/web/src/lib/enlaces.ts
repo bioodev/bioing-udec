@@ -29,3 +29,15 @@ export function idYouTube(url: string): string | null {
     id = u.pathname === '/watch' ? u.searchParams.get('v') : u.pathname.match(/^\/(?:shorts|embed)\/([\w-]+)/)?.[1];
   return id && ID_YT.test(id) ? id : null;
 }
+
+/** Si el enlace apunta al propio sitio: ruta relativa o mismo host que `sitio` (sin www). */
+export function esInterno(url: string, sitio?: string | URL): boolean {
+  if (url.startsWith('/')) return !url.startsWith('//');
+  if (!sitio) return false;
+  const host = (h: string) => h.replace(/^www\./, '');
+  try {
+    return host(new URL(url).hostname) === host(new URL(sitio).hostname);
+  } catch {
+    return false;
+  }
+}
