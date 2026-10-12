@@ -3,7 +3,8 @@
 // previa simple del contenido (una plantilla propia reemplaza la de Sveltia). Las reglas están en
 // vista-previa-seo-reglas.js. Sveltia expone CMS, h y createClass como globales (sin JSX ni build).
 // Límites: la descripción general del sitio y la imagen por defecto vienen de src/content/seo/seo.yml y de
-// src/assets/og-default.png, que el panel no lee; se aproximan y se dice en la vista previa.
+// una copia de src/assets/og-default.png (public/admin/og-default.png, con prueba de igualdad). La descripción
+// general del sitio no la lee el panel: se aproxima.
 import { IMAGEN_SITIO, RUTAS, vistaPrevia } from './vista-previa-seo-reglas.js';
 
 const { h, createClass } = window;
@@ -63,10 +64,10 @@ function crearVistaPrevia(coleccion) {
       const v = vistaPrevia(coleccion, datos, { slug: entry.get('slug') });
 
       // Imagen para redes: la del bloque SEO o la destacada; si no hay, la del sitio.
-      const urlTarjeta = v.imagen ? urlDe(getAsset, v.imagen) : urlDe(getAsset, IMAGEN_SITIO);
+      const urlTarjeta = v.imagen ? urlDe(getAsset, v.imagen) : IMAGEN_SITIO;
       const imagenTarjeta = urlTarjeta
         ? h('img', { src: urlTarjeta, alt: '', style: estilo.imagen })
-        : h('div', { style: estilo.sinImagen }, v.imagen ? 'La imagen elegida no está disponible en la vista previa' : 'Imagen por defecto del sitio');
+        : h('div', { style: estilo.sinImagen }, 'La imagen elegida no está disponible en la vista previa');
 
       const urlContenido = urlDe(getAsset, datos.imagen);
       const cuerpo = CON_CUERPO.includes(coleccion) ? widgetFor('body') : null;

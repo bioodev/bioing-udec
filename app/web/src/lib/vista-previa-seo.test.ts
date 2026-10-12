@@ -1,5 +1,6 @@
 // La vista previa del panel (public/admin/vista-previa-seo-reglas.js) no importa código del sitio: copia sus reglas.
 // Estas pruebas comprueban que la copia dé lo mismo que el sitio (src/lib/seo.ts y las constantes de tipos).
+import { readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
 import {
   avisos,
@@ -149,5 +150,13 @@ describe('vistaPrevia', () => {
 describe('avisos', () => {
   test('sin problemas no hay avisos', () => {
     expect(avisos({ titulo: 'Corto · BIOING+', descripcion: 'Algo', noindex: false })).toEqual([]);
+  });
+});
+
+describe('imagen por defecto del panel', () => {
+  test('public/admin/og-default.png es idéntica a src/assets/og-default.png', () => {
+    const sitio = readFileSync(new URL('../assets/og-default.png', import.meta.url));
+    const panel = readFileSync(new URL('../../public/admin/og-default.png', import.meta.url));
+    expect(panel.equals(sitio)).toBe(true);
   });
 });

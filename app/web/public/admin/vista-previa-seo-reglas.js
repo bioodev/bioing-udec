@@ -10,8 +10,11 @@ export const LIMITE_TITULO = 60;
 export const LIMITE_DESCRIPCION = 160;
 const ZONA_HORARIA = 'America/Santiago';
 
-/** Imagen por defecto del sitio (src/assets/og-default.png). Ruta que se pide a getAsset. */
-export const IMAGEN_SITIO = '@/assets/og-default.png';
+/**
+ * Imagen por defecto del sitio. Es una copia de src/assets/og-default.png: si cambia una, cambia la otra
+ * (la prueba src/lib/vista-previa-seo.test.ts compara los dos archivos byte a byte).
+ */
+export const IMAGEN_SITIO = '/admin/og-default.png';
 
 /** Etiquetas de los tipos, con las mismas claves que guarda el panel. */
 export const TIPOS = {
