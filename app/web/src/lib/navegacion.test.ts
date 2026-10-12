@@ -1,5 +1,15 @@
 import { describe, expect, test } from 'vitest';
-import { MENU, MENU_PRINCIPAL, entradaActiva, esActual, type EnlaceMenu } from './navegacion';
+import {
+  MENU,
+  MENU_PRINCIPAL,
+  entradaActiva,
+  enlacesFooter,
+  esActual,
+  menuConPaginas,
+  type EnlaceMenu,
+  type EntradaMenu,
+  type PaginaLibreMenu,
+} from './navegacion';
 
 const enlaces = (): EnlaceMenu[] =>
   MENU_PRINCIPAL.flatMap((entrada) => (entrada.tipo === 'enlace' ? [entrada.enlace] : entrada.grupo.enlaces));
@@ -63,5 +73,82 @@ describe('entradaActiva', () => {
   test('un enlace suelto solo se activa en su sección', () => {
     expect(entradaActiva(entrada('Noticias'), '/noticias/x')).toBe(true);
     expect(entradaActiva(entrada('Noticias'), '/agenda')).toBe(false);
+  });
+});
+
+describe('menuConPaginas', () => {
+  const pagina = (titulo: string, mostrar_en: PaginaLibreMenu['mostrar_en'], bajada = `Bajada de ${titulo}`): PaginaLibreMenu => ({
+    titulo,
+    href: `/paginas/${titulo.toLowerCase().replace(/\s+/g, '-')}`,
+    bajada,
+    mostrar_en,
+  });
+  const grupo = (etiqueta: string, entradas: EntradaMenu[]) =>
+    entradas.find((e) => e.tipo === 'grupo' && e.grupo.etiqueta === etiqueta) as Extract<EntradaMenu, { tipo: 'grupo' }>;
+
+  test('agrega a su grupo, después de los enlaces fijos y ordenadas por título', () => {
+    const menu = menuConPaginas(MENU_PRINCIPAL, [
+      pagina('Zeta', 'la-carrera'),
+      pagina('Árbol', 'la-carrera'),
+      pagina('Beca', 'la-carrera'),
+    ]);
+    const etiquetas = grupo('La carrera', menu).grupo.enlaces.map((e) => e.etiqueta);
+    expect(etiquetas).toEqual(['¿Qué es la Bioingeniería?', 'Repositorio', 'Árbol', 'Beca', 'Zeta']);
+  });
+
+  test('usa la bajada como descripción del enlace', () => {
+    const menu = menuConPaginas(MENU_PRINCIPAL, [pagina('Beca', 'comunidad', 'Fondos para estudiantes.')]);
+    const enlace = grupo('Comunidad', menu).grupo.enlaces.find((e) => e.etiqueta === 'Beca');
+    expect(enlace).toEqual({ etiqueta: 'Beca', href: '/paginas/beca', descripcion: 'Fondos para estudiantes.' });
+  });
+
+  test('un valor distinto de un grupo no la agrega a ese grupo', () => {
+    const menu = menuConPaginas(MENU_PRINCIPAL, [pagina('Beca', 'la-carrera'), pagina('Foro', 'comunidad')]);
+    const carrera = grupo('La carrera', menu).grupo.enlaces.map((e) => e.etiqueta);
+    const comunidad = grupo('Comunidad', menu).grupo.enlaces.map((e) => e.etiqueta);
+    expect(carrera).toContain('Beca');
+    expect(carrera).not.toContain('Foro');
+    expect(comunidad).toContain('Foro');
+    expect(comunidad).not.toContain('Beca');
+  });
+
+  test('«ninguno» y «footer» no aparecen en ningún desplegable', () => {
+    const menu = menuConPaginas(MENU_PRINCIPAL, [pagina('Oculta', 'ninguno'), pagina('Pie', 'footer')]);
+    const todas = menu.flatMap((e) => (e.tipo === 'grupo' ? e.grupo.enlaces.map((x) => x.etiqueta) : []));
+    expect(todas).not.toContain('Oculta');
+    expect(todas).not.toContain('Pie');
+  });
+
+  test('no muta MENU_PRINCIPAL', () => {
+    const antes = structuredClone(MENU_PRINCIPAL);
+    menuConPaginas(MENU_PRINCIPAL, [pagina('Beca', 'la-carrera')]);
+    expect(MENU_PRINCIPAL).toEqual(antes);
+  });
+
+  test('sin páginas devuelve el mismo menú', () => {
+    expect(menuConPaginas(MENU_PRINCIPAL, [])).toEqual(MENU_PRINCIPAL);
+  });
+});
+
+describe('enlacesFooter', () => {
+  const base = MENU.filter((i) => i.href !== '/').map(({ etiqueta, href }) => ({ etiqueta, href }));
+  const pagina = (titulo: string, mostrar_en: PaginaLibreMenu['mostrar_en']): PaginaLibreMenu => ({
+    titulo,
+    href: `/paginas/${titulo.toLowerCase()}`,
+    bajada: 'x',
+    mostrar_en,
+  });
+
+  test('agrega después de los fijos las páginas que no son «ninguno», ordenadas por título', () => {
+    const enlaces = enlacesFooter(base, [pagina('Zeta', 'footer'), pagina('Oculta', 'ninguno'), pagina('Beca', 'la-carrera')]);
+    expect(enlaces.slice(0, base.length)).toEqual(base);
+    expect(enlaces.slice(base.length).map((e) => e.etiqueta)).toEqual(['Beca', 'Zeta']);
+  });
+
+  test('no agrega «ninguno» y no cambia la lista base', () => {
+    const antes = structuredClone(base);
+    const enlaces = enlacesFooter(base, [pagina('Oculta', 'ninguno')]);
+    expect(enlaces).toEqual(base);
+    expect(base).toEqual(antes);
   });
 });
