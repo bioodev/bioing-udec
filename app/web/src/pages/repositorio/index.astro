@@ -30,7 +30,7 @@ const textoDe = (d: (typeof documentos)[number]) =>
   normalizar(`${d.documento.data.titulo} ${d.documento.data.descripcion ?? ''} ${(d.documento.data.palabras_clave ?? []).join(' ')}`);
 ---
 <Base titulo="Repositorio" descripcion="Documentos de interés para la comunidad de Bioingeniería UdeC: decretos, reglamentos, informes y más.">
-  <section class="mx-auto max-w-6xl px-4 py-12">
+  <section id="repositorio-listado" class="mx-auto max-w-6xl px-4 py-12">
     <h1 data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Repositorio</h1>
     <p class="mt-2 text-muted-foreground">Documentos de interés para la comunidad de Bioingeniería UdeC.</p>
 

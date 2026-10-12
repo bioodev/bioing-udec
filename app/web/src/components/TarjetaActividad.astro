@@ -13,8 +13,10 @@ import MapPin from 'phosphor-astro/MapPin.astro';
 import Users from 'phosphor-astro/Users.astro';
 import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 
-interface Props { actividad: CollectionEntry<'actividades'> }
-const { actividad } = Astro.props;
+// `sinId`: la misma actividad puede salir dos veces en una página (p. ej. Persona: expone y organiza),
+// así que la tarjeta lleva data-id en lugar de id para no duplicarlo.
+interface Props { actividad: CollectionEntry<'actividades'>; sinId?: boolean }
+const { actividad, sinId = false } = Astro.props;
 
 const ZONA = 'America/Santiago';
 const hora = (d: Date) => d.toLocaleTimeString('es-CL', { timeZone: ZONA, hour: '2-digit', minute: '2-digit' });
@@ -47,7 +49,7 @@ const enlace = actividad.data.enlace_inscripcion ?? `/agenda/${actividad.id}`;
 const externo = String(enlace).startsWith('http://') || String(enlace).startsWith('https://');
 const lugar = actividad.data.lugar ?? MODALIDADES[actividad.data.modalidad];
 ---
-<article class="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
+<article id={sinId ? undefined : `actividad-${actividad.id}`} data-id={sinId ? actividad.id : undefined} class="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
   {actividad.data.imagen
     ? <Image src={actividad.data.imagen} alt="" class="aspect-video w-full object-cover" widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
     : <div class="aspect-video w-full bg-muted" aria-hidden="true"></div>}
