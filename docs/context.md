@@ -22,7 +22,7 @@ Encargado de comunicaciones publique de forma autónoma sin depender de un servi
 
 ### Menú principal
 
-INICIO | ¿QUÉ ES LA BIOINGENIERÍA? | NOTICIAS | AGENDA | INSTAGRAM | DIRECTORIO | ANUNCIOS | REPOSITORIO,
+INICIO | LA CARRERA ▾ (REPOSITORIO y las Páginas libres de «La carrera», como ¿QUÉ ES LA BIOINGENIERÍA?) | NOTICIAS | AGENDA | COMUNIDAD ▾ (DIRECTORIO, ANUNCIOS, INSTAGRAM y las Páginas libres de «Comunidad»),
 más un acceso permanente a la web de la FCB. En el sitio el menú es sticky.
 
 ### Secciones
