@@ -49,6 +49,9 @@ carrera pidió poder crear páginas desde el panel, algunas enlazadas desde un B
 - **Ícono móvil:** las Páginas libres usan un ícono de documento; `/p/bioingenieria` conserva el matraz.
 - **Prefijo corto:** la URL pasa a `/p/<id>` por brevedad; se descartó ponerlas en la raíz para no validar choques
   con secciones. Noticias y Agenda mantienen sus rutas legibles.
+- **Posición en el menú:** en «La carrera» las Páginas libres van **antes** de los enlaces fijos, para que
+  ¿Qué es la Bioingeniería? quede primera (la propuesta la ubica en el primer nivel del menú); en «Comunidad»
+  siguen después. Sigue sin haber un campo de orden.
 
 ## Alternativas
 

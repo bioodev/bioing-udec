@@ -132,3 +132,21 @@ _Propuesta:_ Sí, solo en español.
 **6.6 ¿Qué es imprescindible para marzo de 2027?**
 Si no alcanza el tiempo, ¿qué secciones pueden quedar para una segunda etapa?
 _Propuesta:_ Para marzo de 2027: Inicio, ¿Qué es la Bioingeniería?, Directorio y Noticias. En la segunda etapa: Agenda, Anuncios, Repositorio y el anuario PDF.
+
+## 7. Inicio y páginas
+
+**7.1 ¿«¿Qué es la Bioingeniería?» debe aparecer en el Inicio?**
+La propuesta la pone como ítem de primer nivel del menú y pide que el Inicio priorice el contenido dinámico, pero
+no la incluye en el Inicio. Hoy es una Página libre (`/p/bioingenieria`) y va primera en el menú «La carrera ▾».
+_Propuesta (prototipo en la rama `prototipo-destacado`, ADR 0006 en estado Proposed):_ un switch «Destacar en el
+Inicio» en las Páginas libres. La página destacada se muestra como un bloque entre el carrusel y «Noticias
+recientes», con su resumen, el video en una ventana y un enlace «Ver más». Puntos a decidir:
+- ¿Una sola página destacada a la vez, o hasta dos? (Se propone una, para no alejar las noticias, sobre todo en
+  el celular).
+- ¿El resumen sale de la bajada o de un campo propio «Resumen para el Inicio»?
+- ¿Se muestran «datos clave» (por ejemplo, los primeros bloques destacados de la página)?
+- ¿Basta con el desplegable «La carrera ▾», o «¿Qué es la Bioingeniería?» debe ser un enlace de primer nivel,
+  como en la propuesta?
+- Quedarían tres formas de destacar algo en el Inicio: los Banners (temporales, en el carrusel), la página
+  destacada (institucional, permanente) y las Secciones destacadas (accesos al final). ¿Se entiende la
+  diferencia?

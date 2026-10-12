@@ -93,14 +93,20 @@ describe('menuConPaginas', () => {
   const grupo = (etiqueta: string, entradas: EntradaMenu[]) =>
     entradas.find((e) => e.tipo === 'grupo' && e.grupo.etiqueta === etiqueta) as Extract<EntradaMenu, { tipo: 'grupo' }>;
 
-  test('agrega a su grupo, después de los enlaces fijos y ordenadas por título', () => {
+  test('en «La carrera» van antes de los enlaces fijos, ordenadas por título', () => {
     const menu = menuConPaginas(MENU_PRINCIPAL, [
       pagina('Zeta', 'la-carrera'),
       pagina('Árbol', 'la-carrera'),
       pagina('Beca', 'la-carrera'),
     ]);
     const etiquetas = grupo('La carrera', menu).grupo.enlaces.map((e) => e.etiqueta);
-    expect(etiquetas).toEqual(['Repositorio', 'Árbol', 'Beca', 'Zeta']);
+    expect(etiquetas).toEqual(['Árbol', 'Beca', 'Zeta', 'Repositorio']);
+  });
+
+  test('en «Comunidad» van después de los enlaces fijos, ordenadas por título', () => {
+    const menu = menuConPaginas(MENU_PRINCIPAL, [pagina('Zeta', 'comunidad'), pagina('Beca', 'comunidad')]);
+    const etiquetas = grupo('Comunidad', menu).grupo.enlaces.map((e) => e.etiqueta);
+    expect(etiquetas).toEqual(['Directorio', 'Anuncios', 'Instagram', 'Beca', 'Zeta']);
   });
 
   test('usa la bajada como descripción del enlace', () => {

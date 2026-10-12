@@ -89,25 +89,32 @@ export interface PaginaLibreMenu {
   mostrar_en: MostrarEn;
 }
 
-// Qué valor de `mostrar_en` va a qué desplegable del navbar (y, en móvil, al mismo grupo).
-const GRUPO_DE_PAGINAS: Record<string, MostrarEn> = { 'La carrera': 'la-carrera', Comunidad: 'comunidad' };
+// Qué valor de `mostrar_en` va a qué desplegable del navbar (y, en móvil, al mismo grupo) y dónde se ubican las
+// páginas: en «La carrera» van primero (ahí está «¿Qué es la Bioingeniería?»); en «Comunidad», al final.
+const GRUPO_DE_PAGINAS: Record<string, { valor: MostrarEn; posicion: 'inicio' | 'final' }> = {
+  'La carrera': { valor: 'la-carrera', posicion: 'inicio' },
+  Comunidad: { valor: 'comunidad', posicion: 'final' },
+};
 
 const porTitulo = (a: { titulo: string }, b: { titulo: string }) => a.titulo.localeCompare(b.titulo, 'es');
 
 /**
- * Agrega cada Página libre a su desplegable, después de los enlaces fijos del grupo y ordenadas por título.
- * No modifica `base`: los grupos que cambian son copias.
+ * Agrega cada Página libre a su desplegable, ordenadas por título, antes o después de los enlaces fijos del grupo
+ * según `GRUPO_DE_PAGINAS`. No modifica `base`: los grupos que cambian son copias.
  */
 export function menuConPaginas(base: EntradaMenu[], paginas: PaginaLibreMenu[]): EntradaMenu[] {
   return base.map((entrada) => {
     if (entrada.tipo !== 'grupo') return entrada;
     const destino = GRUPO_DE_PAGINAS[entrada.grupo.etiqueta];
+    if (!destino) return entrada;
     const extra: EnlaceMenu[] = paginas
-      .filter((p) => destino !== undefined && p.mostrar_en === destino)
+      .filter((p) => p.mostrar_en === destino.valor)
       .sort(porTitulo)
       .map((p) => ({ etiqueta: p.titulo, href: p.href, descripcion: p.bajada }));
     if (extra.length === 0) return entrada;
-    return { tipo: 'grupo', grupo: { ...entrada.grupo, enlaces: [...entrada.grupo.enlaces, ...extra] } };
+    const fijos = entrada.grupo.enlaces;
+    const enlaces = destino.posicion === 'inicio' ? [...extra, ...fijos] : [...fijos, ...extra];
+    return { tipo: 'grupo', grupo: { ...entrada.grupo, enlaces } };
   });
 }
 
