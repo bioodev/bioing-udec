@@ -165,6 +165,17 @@ collections:
         hint: Solo si la Noticia es la Cobertura de una Actividad ya realizada.
       - { name: instagram, label: Publicación de Instagram relacionada, widget: relation, collection: instagram, display_fields: [titulo], required: false }
       - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo del cuerpo, en una ventana al hacer clic." }
+      - name: enlaces
+        label: Enlaces
+        label_singular: Enlace
+        widget: list
+        required: false
+        max: 6
+        summary: "{{etiqueta}}"
+        hint: "Botones bajo el título: inscripción, transmisión, más información… Para reproducir videos, audios o publicaciones, usa Contenido incrustado."
+        fields:
+          - { name: etiqueta, label: Texto del botón, widget: string, hint: "Corto, p. ej.: Ver transmisión." }
+          - { name: url, label: Dirección, widget: string, type: url, hint: "Dirección completa que empieza con https://." }
       - name: galeria
         label: Galería de imágenes
         label_singular: Imagen
@@ -243,6 +254,17 @@ collections:
         required: false
       - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
       - { name: enlace_inscripcion, label: Enlace de inscripción o información, widget: string, type: url, required: false }
+      - name: enlaces
+        label: Enlaces
+        label_singular: Enlace
+        widget: list
+        required: false
+        max: 6
+        summary: "{{etiqueta}}"
+        hint: "Botones bajo el título: inscripción, transmisión, más información… Para reproducir videos, audios o publicaciones, usa Contenido incrustado."
+        fields:
+          - { name: etiqueta, label: Texto del botón, widget: string, hint: "Corto, p. ej.: Ver transmisión." }
+          - { name: url, label: Dirección, widget: string, type: url, hint: "Dirección completa que empieza con https://." }
       - { name: imagen, label: Imagen, widget: image, required: false }
       - name: incrustados
         label: Contenido incrustado
@@ -405,6 +427,17 @@ collections:
       - { name: destacar_inicio, label: Destacar en el Inicio, widget: boolean, default: false, hint: "Se muestra un bloque bajo el carrusel del Inicio. Solo se muestra una página destacada a la vez." }
       - { name: resumen_inicio, label: Resumen para el Inicio, widget: text, required: false, hint: "3 o 4 líneas. Si lo dejas vacío, se usa la bajada." }
       - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo de la bajada, en una ventana al hacer clic." }
+      - name: enlaces
+        label: Enlaces
+        label_singular: Enlace
+        widget: list
+        required: false
+        max: 6
+        summary: "{{etiqueta}}"
+        hint: "Botones bajo el título: inscripción, transmisión, más información… Para reproducir videos, audios o publicaciones, usa Contenido incrustado."
+        fields:
+          - { name: etiqueta, label: Texto del botón, widget: string, hint: "Corto, p. ej.: Ver transmisión." }
+          - { name: url, label: Dirección, widget: string, type: url, hint: "Dirección completa que empieza con https://." }
       - { name: bloques_titulo, label: Título de los bloques destacados, widget: string, required: false, hint: "Aparece sobre los bloques destacados. Déjalo vacío para mostrar solo los bloques." }
       - name: bloques
         label: Bloques destacados
