@@ -365,7 +365,8 @@ Componente `src/components/Navbar.astro` (el `<header>` completo; `Base.astro` s
   cierran, `Escape` cierra y devuelve el foco al botón, Tab fuera del panel lo cierra, clic fuera lo cierra y
   abrir uno cierra el otro. Solo se abren con clic o teclado (no hay hover).
 - **Atajo de búsqueda**: `Ctrl+K` / `Cmd+K` en cualquier lugar, y `/` cuando el foco no está en un campo de
-  texto. Navega a `/buscar` con `navigate()` de ClientRouter y enfoca el campo del buscador si ya existe.
+  texto. Abre el modal del buscador (ver «Buscador» abajo); si el modal no está disponible (`npm run dev`), va a
+  `/buscar` con `navigate()` de ClientRouter y enfoca su campo.
 - **Ocultar al bajar**: el header (`sticky`) se oculta al bajar pasados 80 px y reaparece al subir
   (`src/lib/ocultar-header.ts`, puro y con test). No se oculta con un desplegable abierto, con el foco dentro
   del header ni con el menú móvil abierto. Con `prefers-reduced-motion` el ocultado es instantáneo, sin
@@ -380,6 +381,25 @@ Componente `src/components/Navbar.astro` (el `<header>` completo; `Base.astro` s
   tema y «Facultad de Ciencias Biológicas». Cada enlace cierra el menú al navegar.
 - **Comportamiento**: `src/scripts/navbar.ts`. Los listeners se registran una sola vez y se delegan en
   `document`; el estado de cada página se reinicia en `astro:page-load`.
+
+### Buscador (modal y `/buscar`)
+
+- **Modal** (Pagefind component UI, `<pagefind-modal id="buscador">` en `Base.astro`): el botón «Buscar» del
+  escritorio, la entrada «Buscar en el sitio» del menú móvil y `Ctrl+K` / `/` lo abren sobre la página actual.
+  Esc lo cierra y el foco vuelve al botón. En el menú móvil el modal se abre cuando el Sheet termina de cerrarse.
+- **Solo en el build.** El elemento se renderiza con `import.meta.env.PROD`; el script `pagefind-component-ui.js` y
+  su CSS (`/pagefind/`, generados por el postbuild) se agregan después de la carga (`requestIdleCallback`) desde
+  `src/scripts/buscador.ts`. En `npm run dev` no hay modal y los botones llevan a `/buscar`.
+- **Estilo**: `src/styles/buscador.css` mapea las variables `--pf-*` a los tokens de `starwind.css` sobre el propio
+  `<pagefind-modal>`, así sigue el modo oscuro (`.dark`). El resaltado de coincidencias usa `--primary` (en oscuro, un
+  azul más claro): Pagefind lo cambia solo con `[data-pf-theme="dark"]`, que el sitio no usa.
+- **`/buscar`** conserva la UI clásica (`pagefind-ui.js`), con el estilo de la página. Se decidió no migrarla a la
+  UI de componentes para no tener que rehacer sus filtros y resultados: el modal ya da el mismo buscador en todo el
+  sitio, y `/buscar` queda como página directa (enlaces, pie, mejora progresiva).
+- **«Volver»** (`/buscar`, ícono `ArrowLeft`): sin JS es un enlace a `/`. Con JS, si hay de dónde volver (referrer
+  del mismo sitio o navegación interna de ClientRouter, regla `puedeVolverAtras` en `src/lib/volver.ts`), usa
+  `history.back()`; si no, va a `/`.
+- Pagefind indexa solo `<main data-pagefind-body>`: el modal y el navbar no entran en el índice.
 
 ### Hero (Inicio)
 
@@ -500,6 +520,10 @@ encabezados sin saltos y estados vacíos («Aún no hay…») en las páginas si
 ### ids
 
 Sirven para anclas (`#inicio-anuncios`), analítica y pruebas. Convención:
+
+- Piezas fijas ya asignadas: `navbar` (header), `navbar-menu` y `navbar-menu-movil` (los dos menús), `navbar-buscar`
+  y `navbar-buscar-movil` (los botones de búsqueda), `contenido` (`<main>`), `pie` (footer), `buscador` (modal),
+  `buscar` (sección de `/buscar`) y `seccion-<ruta>` (páginas «próximamente»).
 
 - Formato: español, kebab-case, sin tildes, con el prefijo de la página o de la pieza: `inicio-noticias`,
   `agenda-listado`, `noticia-galeria`, `actividad-cobertura`, `anuario-generacion-2015`, `pagina-bloques`.

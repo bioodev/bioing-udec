@@ -2,6 +2,7 @@
 import '@/styles/starwind.css';
 import '@/styles/animaciones.css';
 import '@/styles/transitions.css';
+import '@/styles/buscador.css';
 import { ClientRouter } from 'astro:transitions';
 import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
@@ -87,7 +88,7 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
       <slot />
     </main>
 
-    <footer class="bg-muted print:hidden">
+    <footer id="pie" class="bg-muted print:hidden">
       <div class="mx-auto max-w-6xl px-4 py-12">
         <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <!-- Marca -->
@@ -146,11 +147,14 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
         </div>
       </div>
     </footer>
+    <!-- Modal del buscador: solo en el build (Pagefind lo genera en postbuild). Lo abre navbar.ts / buscador.ts. -->
+    {import.meta.env.PROD && <pagefind-modal id="buscador"></pagefind-modal>}
   </body>
   <script>
     import { iniciarAnimaciones, limpiarAnimaciones } from '@/scripts/animaciones';
     import { iniciarFiltrosPlegables } from '@/scripts/filtros-plegables';
     import { iniciarNavbar } from '@/scripts/navbar';
+    import { iniciarBuscadorModal, iniciarVolver } from '@/scripts/buscador';
 
     // Tema claro/oscuro: ClientRouter (View Transitions) puede resetear las clases del
     // <html> al navegar (lo mismo que pasa con .anima), así que se re-aplica la preferencia
@@ -171,6 +175,8 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
       iniciarAnimaciones();
       iniciarFiltrosPlegables();
       iniciarNavbar();
+      iniciarBuscadorModal();
+      iniciarVolver();
     });
 
     // Los formularios de filtros (role="search") filtran en el cliente: Enter no debe enviarlos.

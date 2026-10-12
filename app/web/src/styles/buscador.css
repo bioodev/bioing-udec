@@ -1,0 +1,23 @@
+/* Modal del buscador (Pagefind component UI): colores y tipografía del tema BIOING+.
+   Se declaran sobre el propio <pagefind-modal> para ganar a las variables de :root de
+   pagefind-component-ui.css, que se carga después. Como usan los tokens de starwind.css,
+   siguen el modo oscuro (.dark en <html>) sin una regla aparte. */
+pagefind-modal {
+  --pf-font: inherit;
+  --pf-background: var(--background);
+  --pf-text: var(--foreground);
+  --pf-text-secondary: var(--muted-foreground);
+  --pf-text-muted: var(--muted-foreground);
+  --pf-border: var(--border);
+  --pf-hover: var(--muted);
+  --pf-border-focus: var(--outline);
+  --pf-outline-focus: var(--outline);
+  --pf-modal-backdrop: color-mix(in oklab, var(--foreground) 45%, transparent);
+  --pf-border-radius: var(--radius-md);
+  /* El resaltado de coincidencias es color de texto: el de :root (oscuro) no lo cambia el modo .dark. */
+  --pf-mark: var(--primary);
+}
+
+.dark pagefind-modal {
+  --pf-mark: #7cb8ff;
+}

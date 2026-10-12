@@ -4,6 +4,7 @@
 // `astro:page-load`.
 import { navigate } from 'astro:transitions/client';
 import { ocultarHeader } from '@/lib/ocultar-header';
+import { abrirBuscador, modalBuscador } from '@/scripts/buscador';
 
 let escuchando = false;
 let enfocarBuscadorAlLlegar = false;
@@ -88,16 +89,33 @@ function enfocarBuscador(intentos = 30): void {
   if (intentos > 0) setTimeout(() => enfocarBuscador(intentos - 1), 100);
 }
 
+// Con el modal disponible (build), Ctrl+K y `/` lo abren sobre la página actual. Sin él (dev, o el
+// componente aún no cargó) se va a /buscar, como antes.
 function irABuscar(): void {
   if (enBuscar()) {
     enfocarBuscador();
     return;
   }
+  if (abrirBuscador()) return;
   enfocarBuscadorAlLlegar = true;
   navigate('/buscar');
 }
 
 function registrarListeners(): void {
+  // Botones «Buscar» (escritorio y menú móvil): abren el modal en vez de navegar. Va en captura para
+  // adelantarse al ClientRouter; con Ctrl, Cmd, Shift, Alt o clic medio sigue el enlace normal.
+  document.addEventListener('click', (evento) => {
+    if (evento.button !== 0 || evento.ctrlKey || evento.metaKey || evento.shiftKey || evento.altKey) return;
+    const objetivo = evento.target instanceof Element ? evento.target : null;
+    if (!objetivo?.closest('a[data-buscar]') || enBuscar() || !modalBuscador()) return;
+    evento.preventDefault();
+    // En el menú móvil el Sheet sigue abierto: el modal se abre al terminar de cerrarse el Sheet,
+    // para que el foco no vuelva al botón del menú por encima del modal.
+    const hoja = document.querySelector<HTMLDialogElement>('dialog[data-sw-drawer-popup][open]');
+    if (hoja) hoja.addEventListener('close', () => abrirBuscador(), { once: true });
+    else abrirBuscador();
+  }, true);
+
   document.addEventListener('click', (evento) => {
     const objetivo = evento.target instanceof Element ? evento.target : null;
     const boton = objetivo?.closest<HTMLButtonElement>('[data-desplegable-boton]');

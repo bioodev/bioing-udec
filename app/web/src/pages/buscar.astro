@@ -1,11 +1,16 @@
 ---
 import Base from '@/layouts/Base.astro';
+import ArrowLeft from 'phosphor-astro/ArrowLeft.astro';
 ---
 <Base titulo="Buscar" descripcion="Buscador del sitio BIOING+: noticias, actividades, anuncios, documentos, personas y organizaciones.">
   <Fragment slot="head">
-    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+    {import.meta.env.PROD && <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />}
   </Fragment>
-  <section class="mx-auto max-w-3xl px-4 py-12">
+  <section id="buscar" class="mx-auto max-w-3xl px-4 py-12">
+    <!-- Sin JS vuelve a la portada; con JS, scripts/buscador.ts usa history.back() si hay de dónde volver. -->
+    <a href="/" data-volver class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+      <ArrowLeft class="size-4" aria-hidden="true" />Volver
+    </a>
     <h1 class="text-3xl font-semibold tracking-tight">Buscar en BIOING+</h1>
     <p class="mt-2 text-muted-foreground">Encuentra noticias, actividades, anuncios, documentos, personas y organizaciones de la comunidad.</p>
     <div id="pagefind" data-pagefind-ignore class="mt-8"></div>
@@ -35,8 +40,8 @@ import Base from '@/layouts/Base.astro';
   .pagefind-ui__result-title a:hover { text-decoration: underline; }
 </style>
 
-<!-- pagefind-ui.js se genera en el postbuild (dist/pagefind/); is:inline evita que Astro lo bundlee. -->
-<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<!-- pagefind-ui.js se genera en el postbuild (dist/pagefind/); solo existe en el build (en dev no hay índice). is:inline evita que Astro lo bundlee. -->
+{import.meta.env.PROD && <script is:inline src="/pagefind/pagefind-ui.js"></script>}
 <script is:inline>
   // ClientRouter reemplaza el DOM al navegar y este script no se vuelve a ejecutar: el buscador
   // se inicia en cada astro:page-load (también en la carga directa). La marca data-iniciado vive
