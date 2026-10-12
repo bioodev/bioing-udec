@@ -674,6 +674,21 @@ cambio de descripción.
 
 > Un título o una descripción demasiado largos se cortan en Google. Por eso los campos tienen límite de caracteres.
 
+**Vista previa en el panel.** Al editar Noticias, Actividades, Anuncios, Documentos o Páginas libres, a la
+derecha del formulario aparece la vista previa del contenido:
+- **Resultado de Google**: el título (con «· BIOING+», cortado a unos 60 caracteres), la dirección de la página y la
+  descripción (cortada a unos 160). Es una aproximación de cómo se ve en Google, no la de Google exacta.
+- **Al compartir en redes**: la imagen, el título y la descripción de la tarjeta. Si la entrada no tiene imagen, se
+  muestra la imagen por defecto del sitio.
+- **Antes de publicar**: avisos breves. «Sin descripción propia» indica que se usa la descripción general del sitio.
+  «Título largo» indica que Google lo cortará. «Marcada como “No mostrar en buscadores”» confirma la casilla.
+- **Así se ve el contenido**: una vista simple del título, la bajada, la imagen y el cuerpo de la entrada.
+
+**Límites de la vista previa.** No muestra el texto exacto de cada buscador ni cómo se ve en el móvil. La descripción
+general del sitio no se lee desde el panel, así que el aviso «Sin descripción propia» no sabe cuál es. En Actividades,
+la descripción se arma con el tipo y la fecha, igual que en el sitio; si falta el tipo o la fecha, el aviso aparece
+hasta completarlos.
+
 ### 4.16 Imagen e ícono de los listados y del bloque del Directorio
 
 Sirve para dar identidad visual a Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram, y al bloque «¿Eres
