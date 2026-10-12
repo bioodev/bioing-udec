@@ -749,8 +749,11 @@ La imagen para compartir en redes se ajusta en **SEO del sitio** (sección 4.15)
 - **Emojis.** Se escriben o se pegan directamente en el texto (🧬 🔬 🌊 se ven bien).
 - **Enlaces.** Usa un texto descriptivo: «Ver las bases», no «clic aquí».
 - **Listas, citas y tablas.** Se pueden usar en el **Cuerpo**. Las tablas, simples.
-- **Qué no se puede** dentro del texto: pegar HTML, iframes o PDFs. Para mapas, audio o videos de otros servicios
-  usa **Contenido incrustado**, que va al final del texto de la Noticia o la Actividad, no dentro de él.
+- **Qué no se puede** dentro del texto: pegar HTML, iframes o PDFs. Por seguridad, el sitio **borra al publicar**
+  cualquier HTML que se pegue en el Cuerpo (no da error: simplemente no aparece). Para mapas, audio o videos de
+  otros servicios usa **Contenido incrustado**, que va al final del texto de la Noticia o la Actividad, no dentro de él.
+- **Direcciones de enlaces.** Los campos de enlace aceptan direcciones que empiezan con `https://` (o `http://`) y, donde
+  se indica, rutas del sitio que empiezan con `/` (p. ej. `/agenda`). Un enlace con otro formato no se publica.
 - **Documentos.** Hoy los Documentos se enlazan desde Google Drive (campo **Enlace al archivo (Drive)**). La
   subida de archivos al servidor (R2) no está en el panel; ver [`pendientes-infra.md`](pendientes-infra.md).
 
