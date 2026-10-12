@@ -22,7 +22,7 @@ const externo = seccion.enlace.startsWith('https://');
 // Las secciones no tienen id propio: el ancla sale del título (sin tildes). Los títulos deben ser distintos.
 const id = `inicio-seccion-${seccion.titulo.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 ---
-<section id={id} class="relative isolate overflow-hidden bg-foreground text-white">
+<section id={id} class="relative isolate overflow-hidden bg-foreground text-white" aria-labelledby={`${id}-titulo`}>
   <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
     <!-- Más alta que la sección (120 %) para que el parallax tenga margen para desplazarse. -->
     <div data-parallax class="absolute inset-x-0 -top-[10%] h-[120%]">
@@ -39,7 +39,7 @@ const id = `inicio-seccion-${seccion.titulo.normalize('NFD').replace(/[̀-ͯ]/g,
   </div>
 
   <div class="mx-auto flex min-h-[50vh] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center md:min-h-[60vh]">
-    <h2 data-animar="fade-up" class="text-3xl font-semibold tracking-tight">{seccion.titulo}</h2>
+    <h2 id={`${id}-titulo`} data-animar="fade-up" class="text-3xl font-semibold tracking-tight">{seccion.titulo}</h2>
     <p data-animar="fade-up" class="mx-auto mt-3 max-w-xl text-white/90">{seccion.texto}</p>
     <a
       href={seccion.enlace}

@@ -126,8 +126,8 @@ const jsonLdPagina = [
     )}
 
     {ig?.data.publicado && (
-      <section id="noticia-instagram" class="mt-10">
-        <h2 class="text-xl font-semibold tracking-tight">En Instagram</h2>
+      <section id="noticia-instagram" class="mt-10" aria-labelledby="noticia-instagram-titulo">
+        <h2 id="noticia-instagram-titulo" class="text-xl font-semibold tracking-tight">En Instagram</h2>
         <div class="mt-4 max-w-md"><PublicacionInstagram publicacion={ig} /></div>
       </section>
     )}
@@ -135,12 +135,12 @@ const jsonLdPagina = [
     {cobertura && (
       <aside class="mt-10 rounded-lg bg-muted p-5">
         <p class="flex items-center gap-1.5 text-sm text-muted-foreground"><CalendarBlank class="size-4" aria-hidden="true" />Cobertura de la actividad</p>
-        <p class="font-semibold"><a href={`/agenda/${cobertura.id}`} class="hover:text-primary">{cobertura.data.titulo}</a> · {formatoFechaHora(cobertura.data.inicio)}</p>
+        <p class="font-semibold"><a href={`/agenda/${cobertura.id}`} class="hover:text-primary">{cobertura.data.titulo}</a> · <time datetime={cobertura.data.inicio.toISOString()}>{formatoFechaHora(cobertura.data.inicio)}</time></p>
       </aside>
     )}
 
     {(personas.length > 0 || organizaciones.length > 0) && (
-      <section id="noticia-datos" class="mt-10 border-t border-border pt-6 text-sm">
+      <div id="noticia-datos" class="mt-10 border-t border-border pt-6 text-sm">
         {personas.length > 0 && (
           <p><span class="text-muted-foreground">Personas: </span>
             {personas.map((p, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="personas" entrada={p} /></>)}
@@ -151,7 +151,7 @@ const jsonLdPagina = [
             {organizaciones.map((o, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="organizaciones" entrada={o} /></>)}
           </p>
         )}
-      </section>
+      </div>
     )}
     </div>
   </article>
@@ -162,7 +162,7 @@ const jsonLdPagina = [
         <h2 id="te-puede-interesar" class="text-3xl font-semibold tracking-tight">Te puede interesar</h2>
         <a href="/noticias" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las noticias <ArrowRight class="size-4" aria-hidden="true" /></a>
       </div>
-      <div class="mt-8 grid gap-6 md:grid-cols-3">{relacionadas.map((n) => <TarjetaNoticia noticia={n} />)}</div>
+      <ul role="list" class="mt-8 grid gap-6 md:grid-cols-3">{relacionadas.map((n) => <li><TarjetaNoticia noticia={n} /></li>)}</ul>
     </section>
   )}
 </Base>

@@ -36,8 +36,8 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title="Noticias de BIOING+" href="/noticias/rss.xml" />
   </Fragment>
-  <section id="noticias-listado" class="mx-auto max-w-6xl px-4 py-12">
-    <h1 data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Noticias</h1>
+  <section id="noticias-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="noticias-titulo">
+    <h1 id="noticias-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Noticias</h1>
 
     <form id="filtros" class="mt-8 flex flex-col gap-4 md:flex-row md:flex-wrap md:items-end" role="search">
       <div class="grid gap-2 md:min-w-64 md:flex-1">
@@ -102,7 +102,7 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
 
     <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{noticias.length} noticias</p>
     <h2 class="sr-only">Resultados</h2>
-    <ul id="lista" data-animar="grilla" class="mt-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <ul role="list" id="lista" data-animar="grilla" class="mt-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {noticias.map(({ noticia, temas, personas }) => (
         <li
           data-texto={normalizar(`${noticia.data.titulo} ${noticia.data.bajada ?? ''}`)}

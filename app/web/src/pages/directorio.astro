@@ -34,8 +34,8 @@ const jsonLdPagina = listaElementos(
 );
 ---
 <Base titulo="Directorio" descripcion="Directorio de bioingenieros/as egresados/as de la Universidad de Concepción." jsonLd={jsonLdPagina}>
-  <section id="directorio-listado" class="mx-auto max-w-6xl px-4 py-12">
-    <h1 data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Directorio de bioingenieros/as</h1>
+  <section id="directorio-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="directorio-titulo">
+    <h1 id="directorio-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Directorio de bioingenieros/as</h1>
     <p class="mt-2 text-muted-foreground">Egresados/as que autorizaron publicar su perfil.</p>
     <p class="mt-2">
       <a href="/anuario" class="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
@@ -87,7 +87,7 @@ const jsonLdPagina = listaElementos(
 
     <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{egresados.length} egresados/as</p>
     <h2 class="sr-only">Resultados</h2>
-    <ul id="resultados" data-animar="grilla" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <ul role="list" id="resultados" data-animar="grilla" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {egresados.map((e) => (
         <TarjetaEgresado persona={e.persona} areas={e.areas.map((a) => a.data.nombre)} organizacion={e.organizacion?.data.nombre} />
       ))}

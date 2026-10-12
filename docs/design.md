@@ -537,3 +537,22 @@ Sirven para anclas (`#inicio-anuncios`), analítica y pruebas. Convención:
   título sin tildes. Por eso los títulos de las secciones deben ser distintos.
 - No duplicar: un id repetido en una página rompe las anclas. Antes de agregar uno, buscar que no exista ya
   (`VideoModal` usa `video-<id>-titulo`).
+
+### HTML semántico
+
+Convenciones que mantienen la semántica de las páginas (auditoría sobre `dist/`: 1 `<h1>`, sin saltos de
+encabezado, un solo `<main>`, `<section>` con nombre):
+
+- **Tarjetas** (`TarjetaNoticia` es la referencia): `<article>` con `relative` y `group`; el enlace va en el
+  título (`<h3><a … after:absolute after:inset-0>`), y el área del enlace cubre toda la tarjeta. El foco se marca
+  en la tarjeta con `has-[:focus-visible]:outline-2`. Las tarjetas que son un `<li>` (Egresado) conservan el
+  `<li>` como caja y usan `<article>` dentro. Sin enlaces dentro de otros enlaces.
+- **Listados de tarjetas**: `<ul role="list">` con un `<li>` por tarjeta (Tailwind quita los bullets y Safari
+  pierde la semántica sin `role="list"`).
+- **Fechas**: `<time datetime>` en toda fecha visible. Fecha sola → `AAAA-MM-DD`; con hora → ISO con el offset
+  (ver «Trampas conocidas» en `AGENTS.md`).
+- **Secciones con nombre**: cada `<section>` lleva `aria-labelledby` apuntando al id de su encabezado
+  (`<prefijo>-titulo`, p. ej. `inicio-noticias-titulo`). En los listados el encabezado es el `<h1>` de la página.
+  Una sección sin encabezado (p. ej. un bloque de datos) es un `<div>` con su `id`.
+- **Página libre en diseño ancho** (`/p/[id]`): la rama con bloques va dentro de un `<article>`, igual que la simple.
+- **Contacto** de un anuncio: `<address>` (dentro de la tarjeta, que es el anuncio del autor).

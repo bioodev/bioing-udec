@@ -7,13 +7,16 @@ import FileText from 'phosphor-astro/FileText.astro';
 interface Props { documento: CollectionEntry<'documentos'>; temas: string[] }
 const { documento, temas } = Astro.props;
 ---
-<a id={`documento-${documento.id}`} href={`/repositorio/${documento.id}`} class="group block rounded-lg border border-border bg-card p-5 transition hover:border-outline/60">
+<article id={`documento-${documento.id}`} class="group relative rounded-lg border border-border bg-card p-5 transition hover:border-outline/60 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-outline">
   <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
     <FileText class="size-4 shrink-0" aria-hidden="true" />
     <Badge variant="default">{TIPOS_DOCUMENTO[documento.data.tipo]}</Badge>
     <span>{documento.data.anio}</span>
   </div>
-  <h3 class="mt-2 text-lg font-semibold leading-snug group-hover:text-primary">{documento.data.titulo}</h3>
+  <h3 class="mt-2 text-lg font-semibold leading-snug">
+    {/* Enlace principal que extiende su área a toda la tarjeta. */}
+    <a href={`/repositorio/${documento.id}`} class="group-hover:text-primary after:absolute after:inset-0 after:content-['']">{documento.data.titulo}</a>
+  </h3>
   {documento.data.descripcion && <p class="mt-2 line-clamp-2 text-sm text-muted-foreground">{documento.data.descripcion}</p>}
   {temas.length > 0 && <p class="mt-3 text-sm text-muted-foreground">{temas.join(' · ')}</p>}
-</a>
+</article>

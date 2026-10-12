@@ -53,8 +53,8 @@ const fecha = new Date().toLocaleDateString('es-CL', { timeZone: 'America/Santia
       <p class="mt-12 text-center text-muted-foreground">Aún no hay egresados/as en el Directorio.</p>
     ) : (
       grupos.map((grupo) => (
-        <section id={`anuario-generacion-${grupo.generacion ?? 'no-informada'}`} class="anuario-grupo mt-12">
-          <h2 class="text-2xl font-semibold tracking-tight">{grupo.generacion === null ? 'Generación no informada' : `Generación ${grupo.generacion}`}</h2>
+        <section id={`anuario-generacion-${grupo.generacion ?? 'no-informada'}`} class="anuario-grupo mt-12" aria-labelledby={`anuario-generacion-${grupo.generacion ?? 'no-informada'}-titulo`}>
+          <h2 id={`anuario-generacion-${grupo.generacion ?? 'no-informada'}-titulo`} class="text-2xl font-semibold tracking-tight">{grupo.generacion === null ? 'Generación no informada' : `Generación ${grupo.generacion}`}</h2>
           <div class="mt-4 grid gap-4 sm:grid-cols-2 print:grid-cols-2">
             {grupo.personas.map((d) => (
               <article id={`persona-${d.id}`} class="anuario-ficha rounded-lg border border-border p-4">
