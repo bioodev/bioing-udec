@@ -173,6 +173,8 @@ const paginasLibres = defineCollection({
       imagen: image().optional(),
       imagen_alt: z.string().optional(),
       mostrar_en: z.enum(['ninguno', 'footer', 'la-carrera', 'comunidad']).default('ninguno'),
+      destacar_inicio: z.boolean().default(false), // solo una a la vez (src/lib/pagina-destacada.ts)
+      resumen_inicio: z.string().optional(), // resumen del bloque del Inicio; sin él, se usa la bajada
       video: z.url().optional(), // se abre en una ventana (VideoModal); si no es de YouTube, no se muestra
       bloques_titulo: z.string().optional(),
       bloques: z.array(z.object({ titulo: z.string(), texto: z.string() })).optional(),

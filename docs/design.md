@@ -439,6 +439,18 @@ reintroducir efectos de puntos/impresión en el hero.
   ocupa casi toda la pantalla con la imagen en `object-contain`. Mientras hay un modal abierto, el fondo no se
   desplaza (`html:has(dialog[open]:modal)` en `starwind.css`).
 
+### Página destacada (bloque del Inicio)
+
+- Bloque entre el carrusel de Banners y «Noticias recientes» (`PaginaDestacada.astro`), para una Página libre con
+  **Destacar en el Inicio**. Solo se muestra una a la vez; la elige `paginaDestacadaInicio()` (`src/lib/contenido.ts`,
+  regla pura en `src/lib/pagina-destacada.ts`).
+- Fondo `bg-muted`, etiqueta «Destacado», título h2 y resumen (`resumen_inicio` o, si falta, la bajada). Con imagen,
+  dos columnas en escritorio (la imagen a la izquierda) y la imagen arriba en móvil; sin imagen, una columna.
+- Hasta tres títulos de los bloques destacados se muestran como chips («datos clave»). Se eligió chips porque el
+  bloque es un resumen: los textos largos quedan en la página.
+- Video: el `VideoModal` debajo del resumen, en un ancho máximo de 28 rem. Botón «Ver más» → `/p/<id>`.
+- Sin JavaScript propio: el video usa el `VideoModal` existente. Las animaciones son `data-animar="fade-up"`.
+
 ### Secciones destacadas del Inicio
 
 - Al final del Inicio hay una lista de **secciones destacadas** editable en el panel (colección `inicio`, archivo

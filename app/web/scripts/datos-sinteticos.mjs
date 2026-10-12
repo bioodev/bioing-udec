@@ -371,6 +371,8 @@ function generar() {
     { titulo: 'Becas y apoyo estudiantil', mostrar_en: 'ninguno', bajada: 'Ayudas económicas y de alimentación para estudiantes de Bioingeniería.' },
     {
       titulo: 'Historia de la carrera', mostrar_en: 'la-carrera', bajada: 'Desde la creación del programa hasta hoy.',
+      // Marcada en el Inicio a propósito: junto con «¿Qué es la Bioingeniería?» dispara el aviso de «varias destacadas».
+      destacar_inicio: true, resumen_inicio: 'Contenido de prueba. Un recorrido por los hitos de la carrera, desde sus inicios hasta hoy.',
       video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', bloques_titulo: 'Hitos de la carrera',
       bloques: [
         { titulo: 'Creación del programa', texto: 'Contenido de prueba. Primeros años de la carrera y su plan de estudios.' },

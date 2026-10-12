@@ -4,6 +4,7 @@ import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './reglas';
 import { noticiasRelacionadas } from './relacionadas';
 import { seccionesPublicadas } from './secciones-inicio';
+import { paginaDestacada } from './pagina-destacada';
 import type { PaginaLibreMenu } from './navegacion';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram' | 'paginasLibres';
@@ -174,4 +175,17 @@ export async function egresadosDelDirectorio() {
 export async function seccionesInicio() {
   const entrada = await getEntry('inicio', 'inicio');
   return seccionesPublicadas(entrada?.data.secciones ?? []);
+}
+
+/** Página libre destacada en el Inicio (solo una). Si hay varias marcadas, avisa en el build y muestra la primera. */
+export async function paginaDestacadaInicio() {
+  const paginas = await publicados('paginasLibres');
+  const { destacada, fuera } = paginaDestacada(
+    paginas.map((p) => ({ titulo: p.data.titulo, destacar_inicio: p.data.destacar_inicio, publicado: p.data.publicado, entrada: p })),
+  );
+  if (fuera.length > 0) {
+    const nombres = fuera.map((p) => `«${p.entrada.data.titulo}»`).join(', ');
+    console.warn(`[paginas-libres] Solo una página puede estar destacada en el Inicio. Se muestra «${destacada?.entrada.data.titulo}»; quedan fuera ${nombres}.`);
+  }
+  return destacada?.entrada ?? null;
 }

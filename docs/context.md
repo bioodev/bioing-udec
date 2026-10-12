@@ -149,6 +149,10 @@ _Avoid_: Biblioteca, archivo, drive
 Página de texto creada desde el panel (título, bajada, imagen opcional, contenido, video de YouTube opcional y bloques destacados opcionales) que vive en `/p/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
 _Avoid_: Página institucional, página, artículo
 
+**Página destacada**:
+Página libre marcada con «Destacar en el Inicio», que se muestra como bloque entre el carrusel de Banners y las Noticias recientes. Solo una a la vez: si hay varias marcadas, el sitio muestra una (la primera por título) y avisa en el build.
+_Avoid_: Sección destacada (esa es un bloque al final del Inicio), Banner, portada
+
 **Página institucional**:
 Página de diseño a medida y archivo único. Hoy no hay ninguna: ¿Qué es la Bioingeniería? es una Página libre. Cambiar la estructura de una página de este tipo requiere código. No es una Página libre.
 _Avoid_: Página libre, página fija
