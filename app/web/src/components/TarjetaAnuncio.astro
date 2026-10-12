@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { Badge } from '@/components/starwind/badge';
+import Distintivo from '@/components/Distintivo.astro';
 import { formatoFecha } from '@/lib/contenido';
 import { TIPOS_ANUNCIO } from '@/lib/anuncios';
 import { anuncioVigente } from '@/lib/reglas';
@@ -13,8 +13,8 @@ const { anuncio, vencido = !anuncioVigente(anuncio.data, new Date()) } = Astro.p
 ---
 <article id={`anuncio-${anuncio.id}`} class="group relative rounded-lg border border-border bg-card p-5 tarjeta-elevada tarjeta-elevada-enlace has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-outline">
   <div class="flex flex-wrap items-center gap-2">
-    <Badge variant="default">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Badge>
-    {vencido && <Badge variant="secondary">Vencido</Badge>}
+    <Distintivo clase="tipo">{TIPOS_ANUNCIO[anuncio.data.tipo]}</Distintivo>
+    {vencido && <Distintivo clase="vencido">Vencido</Distintivo>}
   </div>
   <h3 class="mt-2 text-lg font-semibold leading-snug">
     {/* Enlace principal que extiende su área a toda la tarjeta. */}

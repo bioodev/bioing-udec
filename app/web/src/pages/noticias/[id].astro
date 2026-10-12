@@ -18,7 +18,7 @@ import Enlaces from '@/components/Enlaces.astro';
 import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { Badge } from '@/components/starwind/badge';
+import Distintivo from '@/components/Distintivo.astro';
 
 export async function getStaticPaths() {
   const noticias = await noticiasVisibles();
@@ -84,7 +84,7 @@ const seo = resolverSeo({ titulo: noticia.data.titulo, descripcion: noticia.data
           <div>
             <dt class="text-muted-foreground">Categoría</dt>
             <dd class="mt-1 flex flex-wrap gap-2">
-              {temas.map((t) => <Badge variant="outline" href={`/noticias?tema=${t.id}`}>{t.data.nombre}</Badge>)}
+              {temas.map((t) => <Distintivo clase="tema" href={`/noticias?tema=${t.id}`}>{t.data.nombre}</Distintivo>)}
             </dd>
           </div>
         )}
@@ -92,7 +92,7 @@ const seo = resolverSeo({ titulo: noticia.data.titulo, descripcion: noticia.data
           <div>
             <dt class="text-muted-foreground">Etiquetas</dt>
             <dd class="mt-1 flex flex-wrap gap-2">
-              {etiquetas.map((e) => <Badge variant="secondary" href={`/noticias?etiqueta=${encodeURIComponent(e)}`}>#{e}</Badge>)}
+              {etiquetas.map((e) => <Distintivo clase="etiqueta" href={`/noticias?etiqueta=${encodeURIComponent(e)}`}>{e}</Distintivo>)}
             </dd>
           </div>
         )}

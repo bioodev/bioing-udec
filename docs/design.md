@@ -332,6 +332,24 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 | `--sombra-tarjeta` (reposo) | `0 1px 2px rgb(0 0 0 / 0.04), 0 2px 8px rgb(0 0 0 / 0.04)` | `… / 0.3` (ambas sombras) |
 | `--sombra-tarjeta-hover` | `0 4px 12px rgb(0 0 0 / 0.08), 0 12px 32px rgb(0 0 0 / 0.08)` | `0 4px 12px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.5)` |
 
+### Badges
+
+Un solo componente, `Distintivo.astro`, con la regla y el ícono (Phosphor, decorativo) de cada clase de dato. El
+mismo dato se ve igual en el listado y en el detalle. No usar `<Badge>` directo en las páginas.
+
+| Clase | Estilo | Ícono | Ejemplos |
+|---|---|---|---|
+| `tipo` | con borde (`outline`) | `Tag` | Charla, Oferta de trabajo, Decreto |
+| `tema` | con borde | `FolderSimple` | Logros, Institucional (Noticias; enlaza al filtro) |
+| `modalidad` | con borde | `MapPin` / `Monitor` / `Devices` | Presencial / En línea / Híbrida |
+| `clave` | con borde | `Hash` | Palabras clave del Repositorio |
+| `etiqueta` | gris (`secondary`) | `Hash` (reemplaza el «#» escrito) | Etiquetas libres de Noticias (enlazan al filtro) |
+| `vencido` / `realizada` | gris | `CalendarX` / `CheckCircle` | Anuncio vencido, Actividad realizada |
+
+- **Con borde para clasificar** (lo más frecuente, lo más liviano); **gris para estados y etiquetas libres**.
+- **El negro (`default`) no se usa**: pesaba más que el dato. Si algo debe destacar (p. ej. «Vence pronto»), va con el
+  acento azul (`primary`).
+
 ### Componentes y marca
 
 - **Componentes** en `src/components/starwind/`; los propios del sitio (tarjetas de Noticia, Actividad,

@@ -1,0 +1,31 @@
+---
+// Badge del sitio con su regla de estilo en un solo lugar (docs/design.md, «Badges»):
+//   - Con borde (outline), para clasificar: tipo, tema, modalidad y palabra clave.
+//   - Gris (secondary), para estados y etiquetas libres: Vencido, Realizada, #etiqueta.
+//   - Negro (default): no se usa.
+// Cada clase lleva su ícono Phosphor (decorativo). La modalidad elige el ícono según su valor.
+import { Badge } from '@/components/starwind/badge';
+import type { MODALIDADES } from '@/lib/agenda';
+import Tag from 'phosphor-astro/Tag.astro';
+import FolderSimple from 'phosphor-astro/FolderSimple.astro';
+import Hash from 'phosphor-astro/Hash.astro';
+import MapPin from 'phosphor-astro/MapPin.astro';
+import Monitor from 'phosphor-astro/Monitor.astro';
+import Devices from 'phosphor-astro/Devices.astro';
+import CalendarX from 'phosphor-astro/CalendarX.astro';
+import CheckCircle from 'phosphor-astro/CheckCircle.astro';
+
+type Clase = 'tipo' | 'tema' | 'modalidad' | 'clave' | 'etiqueta' | 'vencido' | 'realizada';
+interface Props {
+  clase: Clase;
+  modalidad?: keyof typeof MODALIDADES;
+  href?: string;
+}
+const { clase, modalidad, href } = Astro.props;
+
+const ICONOS_MODALIDAD = { presencial: MapPin, 'en-linea': Monitor, hibrida: Devices };
+const ICONOS = { tipo: Tag, tema: FolderSimple, clave: Hash, etiqueta: Hash, vencido: CalendarX, realizada: CheckCircle };
+const Icono = clase === 'modalidad' ? ICONOS_MODALIDAD[modalidad ?? 'presencial'] : ICONOS[clase];
+const variante = clase === 'etiqueta' || clase === 'vencido' || clase === 'realizada' ? 'secondary' : 'outline';
+---
+<Badge variant={variante} href={href}><Icono class="size-3.5" aria-hidden="true" /><slot /></Badge>

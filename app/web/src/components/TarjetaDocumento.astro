@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { Badge } from '@/components/starwind/badge';
+import Distintivo from '@/components/Distintivo.astro';
 import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
 import FileText from 'phosphor-astro/FileText.astro';
 
@@ -10,7 +10,7 @@ const { documento, temas } = Astro.props;
 <article id={`documento-${documento.id}`} class="group relative rounded-lg border border-border bg-card p-5 tarjeta-elevada tarjeta-elevada-enlace has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-outline">
   <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
     <FileText class="size-4 shrink-0" aria-hidden="true" />
-    <Badge variant="default">{TIPOS_DOCUMENTO[documento.data.tipo]}</Badge>
+    <Distintivo clase="tipo">{TIPOS_DOCUMENTO[documento.data.tipo]}</Distintivo>
     <span>{documento.data.anio}</span>
   </div>
   <h3 class="mt-2 text-lg font-semibold leading-snug">

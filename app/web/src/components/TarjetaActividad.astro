@@ -2,7 +2,7 @@
 import { getEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import { Badge } from '@/components/starwind/badge';
+import Distintivo from '@/components/Distintivo.astro';
 import { Button } from '@/components/starwind/button';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import { formatoFecha } from '@/lib/contenido';
@@ -55,7 +55,7 @@ const lugar = actividad.data.lugar ?? MODALIDADES[actividad.data.modalidad];
     : <div class="aspect-video w-full bg-muted" aria-hidden="true"></div>}
   <div class="flex flex-1 flex-col gap-2 p-5">
     <div class="flex flex-wrap items-center gap-2">
-      <Badge variant="default">{TIPOS_ACTIVIDAD[actividad.data.tipo]}</Badge>
+      <Distintivo clase="tipo">{TIPOS_ACTIVIDAD[actividad.data.tipo]}</Distintivo>
       <span class="text-xs text-muted-foreground">{MODALIDADES[actividad.data.modalidad]}</span>
     </div>
     <h3 class="text-lg font-semibold leading-snug">
