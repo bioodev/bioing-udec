@@ -1,6 +1,7 @@
 ---
 import { getEntries } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import EncabezadoListado from '@/components/EncabezadoListado.astro';
 import FiltrosPlegables from '@/components/FiltrosPlegables.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import { Input } from '@/components/starwind/input';
@@ -11,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
 import CaretLeft from 'phosphor-astro/CaretLeft.astro';
 import CaretRight from 'phosphor-astro/CaretRight.astro';
-import { descripcionDeListado, imagenDeListadoSeo, noticiasVisibles } from '@/lib/contenido';
+import { descripcionDeListado, imagenDeListadoSeo, noticiasVisibles , encabezadoDeListado } from '@/lib/contenido';
 import { existentes, normalizar } from '@/lib/reglas';
 import { TODAS } from '@/lib/filtro-noticias';
 
@@ -33,13 +34,14 @@ const anios = [...new Set(noticias.map((n) => n.noticia.data.fecha.getUTCFullYea
 const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?? []))].sort((a, b) => a.localeCompare(b, 'es'));
 const descripcion = await descripcionDeListado('noticias');
 const imagenListado = await imagenDeListadoSeo('noticias');
+const encabezado = await encabezadoDeListado('noticias');
 ---
 <Base titulo="Noticias" descripcion={descripcion} imagen={imagenListado}>
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title="Noticias de BIOING+" href="/noticias/rss.xml" />
   </Fragment>
   <section id="noticias-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="noticias-titulo">
-    <h1 id="noticias-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Noticias</h1>
+    <EncabezadoListado id="noticias-titulo" titulo="Noticias" {...encabezado} />
 
     <form id="filtros" class="mt-8 flex flex-col gap-4 md:flex-row md:flex-wrap md:items-end" role="search">
       <div class="grid gap-2 md:min-w-64 md:flex-1">

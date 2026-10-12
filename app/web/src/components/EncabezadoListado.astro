@@ -1,0 +1,18 @@
+---
+// Encabezado de un listado: el <h1> de la página, con una imagen de cabecera y un ícono opcionales (ADR 0011).
+// Sin imagen ni ícono, el marcado es el de siempre. El ícono es decorativo (lo anuncia el título).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icono from './Icono.astro';
+import { esIcono } from '@/lib/iconos';
+
+interface Props { id: string; titulo: string; imagen?: ImageMetadata; imagenAlt?: string; icono?: string }
+const { id, titulo, imagen, imagenAlt, icono } = Astro.props;
+const clases = esIcono(icono) ? 'flex items-center gap-3 text-4xl font-semibold tracking-tight' : 'text-4xl font-semibold tracking-tight';
+---
+{imagen && (
+  <div class="mb-6 overflow-hidden rounded-xl">
+    <Image src={imagen} alt={imagenAlt ?? ''} class="aspect-[16/7] w-full object-cover sm:aspect-[3/1]" widths={[640, 960, 1280]} sizes="(min-width: 1152px) 1152px, 100vw" />
+  </div>
+)}
+<h1 id={id} data-animar="fade-up" class={clases}>{esIcono(icono) && <Icono nombre={icono} class="size-9 shrink-0 text-primary" />}{titulo}</h1>

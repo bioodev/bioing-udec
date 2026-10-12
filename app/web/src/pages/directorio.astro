@@ -1,12 +1,13 @@
 ---
 import { getEntries, getEntry } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import EncabezadoListado from '@/components/EncabezadoListado.astro';
 import FiltrosPlegables from '@/components/FiltrosPlegables.astro';
 import TarjetaEgresado from '@/components/TarjetaEgresado.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
-import { descripcionDeListado, imagenDeListadoSeo, egresadosDelDirectorio, formularioDirectorio } from '@/lib/contenido';
+import { descripcionDeListado, imagenDeListadoSeo, egresadosDelDirectorio, formularioDirectorio, encabezadoDeListado } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { listaElementos } from '@/lib/schema';
 import { contarAreas, TODAS } from '@/lib/filtro-directorio';
@@ -43,10 +44,11 @@ const jsonLdPagina = listaElementos(
 );
 const descripcion = await descripcionDeListado('directorio');
 const imagenListado = await imagenDeListadoSeo('directorio');
+const encabezado = await encabezadoDeListado('directorio');
 ---
 <Base titulo="Directorio" descripcion={descripcion} imagen={imagenListado} jsonLd={jsonLdPagina}>
   <section id="directorio-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="directorio-titulo">
-    <h1 id="directorio-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Directorio de bioingenieros/as</h1>
+    <EncabezadoListado id="directorio-titulo" titulo="Directorio de bioingenieros/as" {...encabezado} />
     <p class="mt-2 text-muted-foreground">Egresados/as que autorizaron publicar su perfil.</p>
     <p class="mt-2">
       <a href="/anuario" class="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">

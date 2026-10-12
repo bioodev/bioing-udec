@@ -656,6 +656,70 @@ collections:
               - { name: google, label: Código de Google Search Console, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta google-site-verification. Ej.: abc123_XYZ-9." }
               - { name: bing, label: Código de Bing Webmaster, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta msvalidate.01." }
 
+      - name: encabezados
+        label: Encabezados de los listados
+        file: /app/web/src/content/encabezados/encabezados.yml
+        format: yml
+        fields:
+          - name: noticias
+            label: Noticias
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Noticias. Si los dejas vacíos, la página se ve como siempre."
+            fields: &encabezado_campos
+              - name: imagen
+                label: Imagen de cabecera
+                widget: image
+                required: false
+                hint: "Horizontal y ancha (p. ej. 1600 × 700 px). Va sobre el título. Si la dejas vacía, la página no tiene imagen."
+              - name: imagen_alt
+                label: Texto alternativo de la imagen
+                widget: string
+                required: false
+                hint: "Describe lo que se ve (para lectores de pantalla). Déjalo vacío si la imagen es solo decorativa."
+              - name: icono
+                label: Ícono junto al título
+                widget: select
+                required: false
+                options: *iconos_phosphor
+                hint: "Opcional. Aparece junto al título de la página."
+          - name: agenda
+            label: Agenda
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Agenda. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+          - name: anuncios
+            label: Anuncios
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Anuncios. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+          - name: repositorio
+            label: Repositorio
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Repositorio. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+          - name: directorio
+            label: Directorio
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Directorio. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+          - name: instagram
+            label: Instagram
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Imagen de cabecera e ícono de la página de Instagram. Si los dejas vacíos, la página se ve como siempre."
+            fields: *encabezado_campos
+
   # ── Páginas libres (se crean desde el panel; cada una vive en /p/<slug>) ──
 
   - name: paginas_libres

@@ -282,6 +282,27 @@ const menu = defineCollection({
   }),
 });
 
+// Encabezados de los listados (ADR 0011): imagen de cabecera (con texto alternativo) e ícono, opcionales por listado.
+// Sin valores, cada página se ve como antes. El Inicio no tiene encabezado: ya tiene el carrusel.
+const encabezados = defineCollection({
+  loader: yml('encabezados'),
+  schema: ({ image }) => {
+    const encabezado = z.object({
+      imagen: image().optional(),
+      imagen_alt: z.string().optional(),
+      icono: z.string().optional(), // nombre de la lista src/lib/iconos.ts; uno desconocido no muestra ícono
+    }).optional();
+    return z.object({
+      noticias: encabezado,
+      agenda: encabezado,
+      anuncios: encabezado,
+      repositorio: encabezado,
+      directorio: encabezado,
+      instagram: encabezado,
+    });
+  },
+});
+
 // Redes sociales: una URL opcional por red (pie, botón de /instagram y sameAs). Una clave ausente = sin red.
 const urlRed = z.string().regex(/^https:\/\/\S+$/, 'Debe ser una dirección completa que empiece con https://');
 const redes = defineCollection({
@@ -344,5 +365,5 @@ const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, redes, seo: seoSitio, instagram, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, redes, seo: seoSitio, encabezados, instagram, areas, temas,
 };

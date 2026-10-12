@@ -1,11 +1,12 @@
 ---
 import Base from '@/layouts/Base.astro';
+import EncabezadoListado from '@/components/EncabezadoListado.astro';
 import FiltrosPlegables from '@/components/FiltrosPlegables.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/starwind/select';
-import { actividadesRealizadas, descripcionDeListado, imagenDeListadoSeo, proximasActividades } from '@/lib/contenido';
+import { actividadesRealizadas, descripcionDeListado, imagenDeListadoSeo, proximasActividades , encabezadoDeListado } from '@/lib/contenido';
 import { actividadEsProxima, normalizar } from '@/lib/reglas';
 import { TIPOS_ACTIVIDAD } from '@/lib/agenda';
 import { contarAgenda, TODAS, type EstadoActividad } from '@/lib/filtro-agenda';
@@ -31,13 +32,14 @@ const conteoInicial = contarAgenda(
 );
 const descripcion = await descripcionDeListado('agenda');
 const imagenListado = await imagenDeListadoSeo('agenda');
+const encabezado = await encabezadoDeListado('agenda');
 ---
 <Base titulo="Agenda" descripcion={descripcion} imagen={imagenListado}>
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title="Agenda de BIOING+" href="/agenda/rss.xml" />
   </Fragment>
   <section id="agenda-listado" class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="agenda-titulo">
-    <h1 id="agenda-titulo" data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Agenda</h1>
+    <EncabezadoListado id="agenda-titulo" titulo="Agenda" {...encabezado} />
     <p class="mt-2 text-muted-foreground">Actividades de la comunidad de Bioingeniería UdeC.</p>
 
     <div class="mt-8 flex flex-wrap items-end justify-between gap-4">
