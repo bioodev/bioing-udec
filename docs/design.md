@@ -445,10 +445,12 @@ reintroducir efectos de puntos/impresión en el hero.
   **Destacar en el Inicio**. Solo se muestra una a la vez; la elige `paginaDestacadaInicio()` (`src/lib/contenido.ts`,
   regla pura en `src/lib/pagina-destacada.ts`).
 - Fondo `bg-muted`, etiqueta «Destacado», título h2 y resumen (`resumen_inicio` o, si falta, la bajada). Con imagen,
-  dos columnas en escritorio (la imagen a la izquierda) y la imagen arriba en móvil; sin imagen, una columna.
+  dos columnas en escritorio (la imagen a la izquierda) y la imagen arriba en móvil. Sin imagen pero con video, el
+  video ocupa ese lugar (para no dejar media sección vacía); sin imagen ni video, una columna.
 - Hasta tres títulos de los bloques destacados se muestran como chips («datos clave»). Se eligió chips porque el
   bloque es un resumen: los textos largos quedan en la página.
-- Video: el `VideoModal` debajo del resumen, en un ancho máximo de 28 rem. Botón «Ver más» → `/p/<id>`.
+- Video: con imagen, el `VideoModal` va debajo del resumen, en un ancho máximo de 28 rem; sin imagen, al lado del
+  texto (ver arriba). Botón «Ver más» → `/p/<id>`.
 - Sin JavaScript propio: el video usa el `VideoModal` existente. Las animaciones son `data-animar="fade-up"`.
 
 ### Enlaces (botones bajo el título)
