@@ -309,6 +309,7 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 - Sin gradientes, sin chrome decorativo y **una sola sombra**; hairlines (`--border: #e0e0e0`) en vez de
   sombras.
 - Tipografía del sistema (`system-ui, -apple-system`) y radios amplios (`--radius: 18px`).
+- Texto enriquecido del panel (cuerpo de Noticias, `/bioingenieria` y Páginas libres): clase `prose` de `@tailwindcss/typography`, con sus colores mapeados a los tokens del tema en `starwind.css`; el modo oscuro sale solo, sin `dark:prose-invert`.
 - Densidad baja: cada sección con aire y titulares `text-3xl`/`text-4xl` semibold con tracking negativo.
 
 ### Tokens (valores reales en `starwind.css`)
