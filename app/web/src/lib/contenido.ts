@@ -170,13 +170,6 @@ export async function egresadosDelDirectorio() {
   return personas.sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
 }
 
-/** Página institucional de archivo único (colección `paginas`). */
-export async function pagina(id: 'bioingenieria') {
-  const entrada = await getEntry('paginas', id);
-  if (!entrada) throw new Error(`Falta src/content/paginas/${id}.md`);
-  return entrada;
-}
-
 /** Secciones destacadas del Inicio publicadas, en el orden de la lista del CMS (colección `inicio`). */
 export async function seccionesInicio() {
   const entrada = await getEntry('inicio', 'inicio');

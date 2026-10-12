@@ -332,21 +332,6 @@ collections:
   - name: paginas
     label: Páginas
     files:
-      - name: bioingenieria
-        label: ¿Qué es la Bioingeniería?
-        file: /app/web/src/content/paginas/bioingenieria.md
-        fields:
-          - { name: titulo, label: Título, widget: string }
-          - { name: bajada, label: Bajada, widget: text }
-          - { name: video, label: Video institucional (YouTube), widget: string, type: url, required: false, hint: Enlace de YouTube. Se muestra en una ventana al hacer clic. }
-          - name: caracteristicas
-            label: Características de la carrera
-            widget: list
-            required: false
-            fields:
-              - { name: titulo, label: Título, widget: string }
-              - { name: texto, label: Texto, widget: text }
-          - { name: body, label: Presentación, widget: richtext }
       - name: inicio
         label: Inicio
         file: /app/web/src/content/inicio/inicio.md
