@@ -202,6 +202,62 @@ describe('Twitch', () => {
   });
 });
 
+describe('TikTok', () => {
+  test('video → player oficial, vertical (740 px) para no estirarlo', () => {
+    expect(incrustado('https://www.tiktok.com/@usuario/video/7000000000000000000?lang=es')).toEqual({
+      tipo: 'iframe', proveedor: 'TikTok', src: 'https://www.tiktok.com/player/v1/7000000000000000000', alto: 740, vertical: true,
+    });
+  });
+  test('perfil y enlaces cortos vm./vt. → tarjeta', () => {
+    expect(incrustado('https://www.tiktok.com/@usuario')).toEqual(tarjeta('https://www.tiktok.com/@usuario', 'TikTok'));
+    expect(incrustado('https://vm.tiktok.com/ZMabc123/')).toEqual(tarjeta('https://vm.tiktok.com/ZMabc123/', 'TikTok'));
+  });
+});
+
+describe('LinkedIn', () => {
+  test('post con slug (activity) → embed de feed, 600 px', () => {
+    expect(incrustado('https://www.linkedin.com/posts/usuario_bioing-activity-7123456789012345678-AbCd?utm=x')).toEqual({
+      tipo: 'iframe', proveedor: 'LinkedIn', src: 'https://www.linkedin.com/embed/feed/update/urn:li:activity:7123456789012345678', alto: 600,
+    });
+  });
+  test('URN de feed (share, ugcPost, codificado) → embed con el mismo URN', () => {
+    expect(incrustado('https://www.linkedin.com/feed/update/urn:li:share:7123456789')).toMatchObject({
+      src: 'https://www.linkedin.com/embed/feed/update/urn:li:share:7123456789',
+    });
+    expect(incrustado('https://www.linkedin.com/feed/update/urn%3Ali%3AugcPost%3A99')).toMatchObject({
+      src: 'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:99',
+    });
+  });
+  test('perfil o empresa → tarjeta', () => {
+    expect(incrustado('https://www.linkedin.com/company/udec')).toEqual(tarjeta('https://www.linkedin.com/company/udec', 'LinkedIn'));
+  });
+});
+
+describe('Pinterest', () => {
+  test('pin → widget oficial, 600 px; dominios regionales (.cl, cl.) cuentan igual', () => {
+    const src = 'https://assets.pinterest.com/ext/embed.html?id=123456789';
+    expect(incrustado('https://www.pinterest.com/pin/123456789/')).toEqual({ tipo: 'iframe', proveedor: 'Pinterest', src, alto: 600 });
+    expect(incrustado('https://cl.pinterest.com/pin/123456789/')).toMatchObject({ src });
+    expect(incrustado('https://www.pinterest.cl/pin/123456789/')).toMatchObject({ src });
+  });
+  test('pin.it, tablero o perfil → tarjeta', () => {
+    expect(incrustado('https://pin.it/4xYz')).toEqual(tarjeta('https://pin.it/4xYz', 'Pinterest'));
+    expect(incrustado('https://www.pinterest.com/usuario/tablero/')).toEqual(tarjeta('https://www.pinterest.com/usuario/tablero/', 'Pinterest'));
+  });
+});
+
+describe('Reddit', () => {
+  test('publicación → embed de Reddit, 500 px, con su slug', () => {
+    expect(incrustado('https://www.reddit.com/r/Biologia/comments/abc123/que_es_la_bio/?share=1')).toEqual({
+      tipo: 'iframe', proveedor: 'Reddit', src: 'https://embed.reddit.com/r/Biologia/comments/abc123/que_es_la_bio/', alto: 500,
+    });
+  });
+  test('subreddit o redd.it → tarjeta', () => {
+    expect(incrustado('https://www.reddit.com/r/Biologia/')).toEqual(tarjeta('https://www.reddit.com/r/Biologia/', 'Reddit'));
+    expect(incrustado('https://redd.it/abc123')).toEqual(tarjeta('https://redd.it/abc123', 'Reddit'));
+  });
+});
+
 describe('Dailymotion, Loom y TED', () => {
   test('Dailymotion: video y enlace corto dai.ly → 16/9', () => {
     expect(incrustado('https://www.dailymotion.com/video/x7tgad0')).toEqual({
@@ -225,7 +281,7 @@ describe('servicios sin iframe (tarjeta con nombre)', () => {
   test.each([
     ['https://x.com/usuario/status/1', 'X'],
     ['https://twitter.com/usuario/status/1', 'X'],
-    ['https://www.tiktok.com/@usuario/video/123', 'TikTok'],
+    ['https://www.tiktok.com/@usuario', 'TikTok'],
     ['https://www.linkedin.com/posts/abc', 'LinkedIn'],
     ['https://www.threads.net/@usuario/post/ABC', 'Threads'],
     ['https://bsky.app/profile/x.bsky.social/post/abc', 'Bluesky'],

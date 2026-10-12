@@ -5,20 +5,27 @@ import { idYouTube, vistaPreviaDrive } from './enlaces';
 import { embedInstagram } from './instagram';
 
 export type Incrustado =
-  | { tipo: 'iframe'; proveedor: string; src: string; alto?: number; proporcion?: '16/9' }
+  | { tipo: 'iframe'; proveedor: string; src: string; alto?: number; proporcion?: '16/9'; vertical?: true }
   | { tipo: 'youtube'; id: string }
   | { tipo: 'enlace'; proveedor: string | null; url: string };
 
-// Servicios que no se incrustan (la CSP no deja sus scripts): se muestran como tarjeta con su nombre.
+// Servicios sin reproductor por iframe estable (X, Threads, Bluesky, perfiles, enlaces cortos): tarjeta con su nombre.
 const SIN_IFRAME = new Map([
   ['x.com', 'X'],
   ['twitter.com', 'X'],
   ['tiktok.com', 'TikTok'],
+  ['vm.tiktok.com', 'TikTok'],
+  ['vt.tiktok.com', 'TikTok'],
   ['linkedin.com', 'LinkedIn'],
+  ['pin.it', 'Pinterest'],
+  ['redd.it', 'Reddit'],
   ['threads.net', 'Threads'],
   ['bsky.app', 'Bluesky'],
   ['maps.app.goo.gl', 'Google Maps'],
 ]);
+
+// Pinterest tiene dominios regionales: pinterest.cl, cl.pinterest.com, etc.
+const PINTEREST = /^(?:[a-z]{2}\.)?pinterest\.(?:com|cl)$/;
 
 const decodificar = (texto: string) => {
   try { return decodeURIComponent(texto); } catch { return texto; }
@@ -120,6 +127,33 @@ export function incrustado(url: string, { dominios = [] }: OpcionesIncrustado = 
     const proveedor = host === 'docs.google.com' ? 'Google Docs' : 'Google Drive';
     const src = vistaPreviaDrive(canonica);
     return src ? { tipo: 'iframe', proveedor, src, alto: 480 } : tarjeta(proveedor);
+  }
+
+  // TikTok: video (`/@usuario/video/<id>`), reproductor vertical. Perfiles y enlaces cortos, tarjeta.
+  if (host === 'tiktok.com') {
+    const id = ruta.match(/^\/@[\w.]+\/video\/(\d+)\/?$/)?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'TikTok', src: `https://www.tiktok.com/player/v1/${id}`, alto: 740, vertical: true } : tarjeta('TikTok');
+  }
+
+  // LinkedIn: post por su URN (activity, share o ugcPost), que el embed de feed acepta tal cual.
+  if (host === 'linkedin.com') {
+    const decodificada = decodificar(ruta);
+    const actividad = decodificada.match(/^\/posts\/[^/]*-activity-(\d+)/)?.[1];
+    const feed = decodificada.match(/^\/feed\/update\/urn:li:(activity|share|ugcPost):(\d+)/);
+    const urn = actividad ? `urn:li:activity:${actividad}` : feed ? `urn:li:${feed[1]}:${feed[2]}` : null;
+    return urn ? { tipo: 'iframe', proveedor: 'LinkedIn', src: `https://www.linkedin.com/embed/feed/update/${urn}`, alto: 600 } : tarjeta('LinkedIn');
+  }
+
+  if (PINTEREST.test(host)) {
+    const id = ruta.match(/^\/pin\/(\d+)\/?$/)?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'Pinterest', src: `https://assets.pinterest.com/ext/embed.html?id=${id}`, alto: 600 } : tarjeta('Pinterest');
+  }
+
+  if (host === 'reddit.com') {
+    const publicacion = ruta.match(/^\/r\/\w+\/comments\/\w+(?:\/[^/]*)?\/?$/);
+    return publicacion
+      ? { tipo: 'iframe', proveedor: 'Reddit', src: `https://embed.reddit.com${ruta.replace(/\/?$/, '/')}`, alto: 500 }
+      : tarjeta('Reddit');
   }
 
   // Twitch: canal, video archivado, clip (clips.twitch.tv o dentro de un canal). Necesita `parent`.
