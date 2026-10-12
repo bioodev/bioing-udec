@@ -365,7 +365,8 @@ function generar() {
   }
 
   // Páginas libres: una por cada valor de `mostrar_en`. La de «ninguno» la enlaza un Banner (ver abajo).
-  // La de «la-carrera» trae video y bloques destacados, para probar el diseño de «¿Qué es la Bioingeniería?».
+  // La de «la-carrera» trae video y bloques destacados, para probar el diseño de «¿Qué es la Bioingeniería?»;
+  // la de «footer», contenido incrustado en la columna de texto.
   const paginasLibres = [
     { titulo: 'Becas y apoyo estudiantil', mostrar_en: 'ninguno', bajada: 'Ayudas económicas y de alimentación para estudiantes de Bioingeniería.' },
     {
@@ -378,7 +379,10 @@ function generar() {
         { titulo: 'Hoy', texto: 'Contenido de prueba. Actividades, investigación y vinculación con la comunidad.' },
       ],
     },
-    { titulo: 'Preguntas frecuentes', mostrar_en: 'footer', bajada: 'Respuestas a las consultas más comunes de estudiantes y egresados/as.' },
+    {
+      titulo: 'Preguntas frecuentes', mostrar_en: 'footer', bajada: 'Respuestas a las consultas más comunes de estudiantes y egresados/as.',
+      incrustados: [INCRUSTADOS.spotify, INCRUSTADOS.maps],
+    },
   ];
   const idsPaginas = {};
   for (const { titulo, mostrar_en, bajada, ...extra } of paginasLibres) {

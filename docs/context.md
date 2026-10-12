@@ -162,7 +162,7 @@ Publicación o reel de la cuenta de Instagram de la carrera que el Encargado de 
 _Avoid_: Post, feed
 
 **Contenido incrustado**:
-Enlaces públicos de servicios externos (Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps, Google Drive/Docs) que el sitio muestra como reproductor después del cuerpo de una Noticia o una Actividad. Los demás servicios, o los enlaces no reconocidos, se muestran como tarjeta con el enlace.
+Enlaces públicos de servicios externos (Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps, Google Drive/Docs) que el sitio muestra como reproductor después del cuerpo de una Noticia, una Actividad o una Página libre, bajo el título «Multimedia». Los demás servicios, o los enlaces no reconocidos, se muestran como tarjeta con el enlace.
 _Avoid_: Embed, widget, iframe
 
 ### Clasificación

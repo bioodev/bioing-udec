@@ -176,6 +176,7 @@ const paginasLibres = defineCollection({
       video: z.url().optional(), // se abre en una ventana (VideoModal); si no es de YouTube, no se muestra
       bloques_titulo: z.string().optional(),
       bloques: z.array(z.object({ titulo: z.string(), texto: z.string() })).optional(),
+      incrustados,
     }),
 });
 

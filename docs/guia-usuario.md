@@ -152,7 +152,7 @@ organizaciones.
 
 > _Pantallazo pendiente: formulario de la Noticia (imagen destacada, Galería y Cuerpo)._
 
-**Contenido incrustado** (Noticias y Actividades). Pega la dirección pública del contenido, la que aparece en la
+**Contenido incrustado** (Noticias, Actividades y Páginas libres). Pega la dirección pública del contenido, la que aparece en la
 barra del navegador. El sitio arma el reproductor solo; no hace falta copiar código.
 - **Se ven como reproductor:** Spotify (episodios, programas, listas, álbumes y artistas), SoundCloud, Apple
   Podcasts, YouTube, Vimeo, Instagram (publicaciones y reels), Facebook (publicaciones y videos), Google Maps
@@ -517,6 +517,7 @@ dirección en el sitio, y decidir si aparece en un menú, en el pie o solo se ll
 - **Título de los bloques destacados** y **Bloques destacados** (opcionales): una franja oscura después del
   contenido, con un bloque por cada punto (Título y Texto). Si no escribes el título de los bloques, la franja no
   lleva título.
+- **Contenido incrustado** (opcional): enlaces de Spotify, SoundCloud, mapas y otros servicios, que se muestran después del contenido (ver §4.1).
 
 Con video o bloques, la página se ve como **¿Qué es la Bioingeniería?**; sin ninguno, como una columna de texto.
 

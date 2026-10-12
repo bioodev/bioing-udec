@@ -5,6 +5,7 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import Migas from '@/components/Migas.astro';
 import VideoModal from '@/components/VideoModal.astro';
+import Incrustados from '@/components/Incrustados.astro';
 import { paginasLibres } from '@/lib/contenido';
 import { idYouTube } from '@/lib/enlaces';
 import { migas } from '@/lib/schema';
@@ -47,6 +48,7 @@ const conDiseno = video !== null || bloques.length > 0;
       <section class="bg-muted">
         <div class="mx-auto max-w-3xl px-4 py-16">
           <div class="prose max-w-none"><Content /></div>
+          <Incrustados items={pagina.data.incrustados ?? []} />
         </div>
       </section>
 
@@ -76,6 +78,7 @@ const conDiseno = video !== null || bloques.length > 0;
       </header>
 
       <div class="prose mt-8 max-w-none"><Content /></div>
+      <Incrustados items={pagina.data.incrustados ?? []} />
     </article>
   )}
 </Base>
