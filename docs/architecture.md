@@ -62,7 +62,7 @@ wrangler.jsonc       → despliegue como Cloudflare Workers (Static Assets)
 | UI | **Starwind UI v3** + **Tailwind v4** | Componentes copiados al repo (`src/components/starwind/`), tema en `src/styles/starwind.css` |
 | Íconos | **Phosphor** (`phosphor-astro`) | SVG sin tamaño propio: dimensionar con `size-*` |
 | Animación | **GSAP** + View Transitions | `src/scripts/animaciones.ts`, `src/styles/transitions.css` |
-| Buscador | **Pagefind** | Índice estático generado en `postbuild` |
+| Buscador | **Pagefind** | Índice estático generado en `postbuild`; modal (component UI) cargado de forma diferida y `/buscar` con la UI clásica |
 | Feeds | **@astrojs/rss** | `/noticias/rss.xml`, `/agenda/rss.xml` |
 | Sitemap | **@astrojs/sitemap** | `sitemap-index.xml` (excluye `/admin/` y `/componentes/`) |
 | Pruebas | **Vitest** (+ `lighthouse` y `wrangler` como devDependencies) | Reglas puras en `src/lib/*.test.ts` |
@@ -115,7 +115,7 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 | `/repositorio` · `/repositorio/[id]` | Buscador de Documentos + ficha con vista previa |
 | `/instagram` | Publicaciones seleccionadas |
 | `/p/[id]` | Página libre (solo las publicadas; aparece en el menú o el pie según `mostrar_en`) |
-| `/buscar` | Buscador general (Pagefind; solo funciona en build/preview) |
+| `/buscar` | Buscador general (Pagefind; solo funciona en build/preview). Con «Volver» (ver `design.md`, «Buscador») |
   Pagefind necesita `'wasm-unsafe-eval'` en `script-src` de la CSP pública (`public/_headers`) para compilar su WASM;
   sin eso el campo aparece pero no devuelve resultados. No habilita `eval` de JavaScript.
 | `/anuario` | Anuario imprimible de egresados/as (imprimir → PDF) |
@@ -163,6 +163,9 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 - **Navbar**: el header vive en `src/components/Navbar.astro` (escritorio y menú móvil), con la estructura de
   `MENU_PRINCIPAL` en `src/lib/navegacion.ts` y el comportamiento (desplegables, atajo `Ctrl+K`, ocultar al bajar)
   en `src/scripts/navbar.ts`. `MENU` sigue siendo la única lista de páginas para el footer, `llms.txt` y `schema.ts`.
+- **Buscador en modal**: `<pagefind-modal>` en `Base.astro` (solo en el build) y `src/scripts/buscador.ts`, que
+  agrega `/pagefind/pagefind-component-ui.js` y su CSS después de la carga. Son archivos del propio sitio, así que
+  caben en la CSP sin `'unsafe-inline'`. Decisión en `docs/adr/0007-buscador-en-modal.md`.
 
 ## 8. SEO, datos estructurados y descubrimiento
 

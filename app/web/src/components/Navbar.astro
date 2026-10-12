@@ -55,12 +55,12 @@ const clasesEnlaceMovil = (activo: boolean) =>
 const idPanel = (etiqueta: string) => `desplegable-${etiqueta.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-')}`;
 ---
 
-<header transition:name="encabezado" data-navbar class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur transition-transform duration-200 motion-reduce:transition-none print:hidden">
+<header id="navbar" transition:name="encabezado" data-navbar class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur transition-transform duration-200 motion-reduce:transition-none print:hidden">
   <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
     <a href="/" class="flex shrink-0 items-center gap-2" aria-label="BIOING+ — Inicio"><Logo variante="navbar" /></a>
 
     <!-- Escritorio -->
-    <nav aria-label="Principal" class="hidden h-full flex-1 items-center gap-5 text-sm lg:flex">
+    <nav id="navbar-menu" aria-label="Principal" class="hidden h-full flex-1 items-center gap-5 text-sm lg:flex">
       {menu.map((entrada) => {
         if (entrada.tipo === 'enlace') {
           const activo = esActual(entrada.enlace.href, actual);
@@ -102,7 +102,7 @@ const idPanel = (etiqueta: string) => `desplegable-${etiqueta.toLowerCase().norm
     </nav>
 
     <div class="hidden shrink-0 items-center gap-3 text-sm lg:flex">
-      <a href="/buscar" data-buscar class="inline-flex items-center gap-2 rounded-md border border-border px-2.5 py-1 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-outline">
+      <a href="/buscar" id="navbar-buscar" data-buscar class="inline-flex items-center gap-2 rounded-md border border-border px-2.5 py-1 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-outline">
         <MagnifyingGlass class="size-4" aria-hidden="true" />
         <span>Buscar</span>
         <kbd data-atajo class="hidden rounded border border-border px-1 font-sans text-xs xl:inline" aria-hidden="true"><span data-atajo-texto>Ctrl K</span></kbd>
@@ -117,9 +117,9 @@ const idPanel = (etiqueta: string) => `desplegable-${etiqueta.toLowerCase().norm
         <SheetTrigger aria-label="Abrir menú" class="p-2"><IconMenu class="size-6" aria-hidden="true" /></SheetTrigger>
         <SheetContent side="left">
           <SheetHeader><SheetTitle>BIOING+</SheetTitle></SheetHeader>
-          <nav aria-label="Principal (móvil)" class="flex flex-1 flex-col gap-1 overflow-y-auto px-4">
+          <nav id="navbar-menu-movil" aria-label="Principal (móvil)" class="flex flex-1 flex-col gap-1 overflow-y-auto px-4">
             <SheetClose asChild>
-              <a href="/buscar" class="flex min-h-11 items-center gap-3 rounded-md border border-border px-3 hover:bg-muted">
+              <a href="/buscar" id="navbar-buscar-movil" data-buscar class="flex min-h-11 items-center gap-3 rounded-md border border-border px-3 hover:bg-muted">
                 <MagnifyingGlass class="size-5" aria-hidden="true" />Buscar en el sitio
               </a>
             </SheetClose>
