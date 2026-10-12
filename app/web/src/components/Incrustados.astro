@@ -52,7 +52,7 @@ const PERMISOS: Record<string, string> = {
               loading="lazy"
               referrerpolicy="strict-origin-when-cross-origin"
               allow={PERMISOS[inc.proveedor]}
-              allowfullscreen={inc.proporcion !== undefined}
+              allowfullscreen={inc.proporcion !== undefined && !PERMISOS[inc.proveedor]?.includes('fullscreen')}
               class:list={['w-full rounded-lg border-0', inc.proporcion ? 'aspect-video' : (ALTO[inc.alto ?? 0] ?? 'aspect-video'), inc.vertical && 'mx-auto max-w-sm']}
             />
           )}
