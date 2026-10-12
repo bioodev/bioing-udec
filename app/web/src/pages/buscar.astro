@@ -38,17 +38,25 @@ import Base from '@/layouts/Base.astro';
 <!-- pagefind-ui.js se genera en el postbuild (dist/pagefind/); is:inline evita que Astro lo bundlee. -->
 <script is:inline src="/pagefind/pagefind-ui.js"></script>
 <script is:inline>
-  window.addEventListener('DOMContentLoaded', () => {
-    if (!window.PagefindUI) return;
+  // ClientRouter reemplaza el DOM al navegar y este script no se vuelve a ejecutar: el buscador
+  // se inicia en cada astro:page-load (también en la carga directa). La marca data-iniciado vive
+  // en el contenedor, que es nuevo en cada página, así que no se duplica la UI.
+  const enBuscar = () => /^\/buscar\/?$/.test(location.pathname);
+  function iniciarBuscador() {
+    const raiz = document.querySelector('#pagefind');
+    if (!enBuscar() || !raiz || raiz.hasAttribute('data-iniciado') || !window.PagefindUI) return;
+    raiz.setAttribute('data-iniciado', '');
     new window.PagefindUI({ element: '#pagefind', showSubResults: true });
     // Accesibilidad: anuncia los cambios en el conteo de resultados (aria-live).
-    const raiz = document.querySelector('#pagefind');
     const observer = new MutationObserver(() => {
-      const mensaje = raiz?.querySelector('.pagefind-ui__message, .pagefind-ui__result-count');
+      const mensaje = raiz.querySelector('.pagefind-ui__message, .pagefind-ui__result-count');
       if (mensaje && !mensaje.hasAttribute('aria-live')) mensaje.setAttribute('aria-live', 'polite');
     });
     // childList+subtree+characterData: Pagefind actualiza el texto del mensaje en su
     // render de Svelte; el observador reaplica aria-live si el nodo se recrea.
     observer.observe(raiz, { childList: true, subtree: true, characterData: true });
-  });
+  }
+  document.addEventListener('astro:page-load', iniciarBuscador);
+  if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', iniciarBuscador);
+  else iniciarBuscador();
 </script>
