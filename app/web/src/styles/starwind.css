@@ -236,14 +236,18 @@ html:has(dialog[open]:modal) {
     .tarjeta-elevada-enlace:hover {
       box-shadow: var(--sombra-tarjeta-hover);
     }
-    /* El borde toma el color del foco (como tenían Anuncios, Documentos y Egresados), en claro y en oscuro. */
-    .tarjeta-elevada-enlace:hover {
-      border-color: color-mix(in srgb, var(--outline) 60%, transparent);
-    }
   }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .tarjeta-elevada-enlace:hover {
       transform: translateY(-2px);
     }
+  }
+}
+
+/* El borde toma el color del foco al pasar el mouse (como tenían Anuncios, Documentos y Egresados). Va fuera de
+   @layer a propósito: dentro de components perdería contra la utilidad `border-border` de cada tarjeta. */
+@media (hover: hover) {
+  .tarjeta-elevada-enlace:hover {
+    border-color: color-mix(in srgb, var(--outline) 60%, transparent);
   }
 }
