@@ -20,7 +20,7 @@ const clavesDe = (bloques ?? []).slice(0, 3);
 const videoAlLado = !imagen && idVideo;
 const dosColumnas = imagen || videoAlLado;
 ---
-<section class="bg-muted">
+<section id="inicio-pagina-destacada" class="bg-muted">
   <div class={`mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 ${dosColumnas ? 'md:grid-cols-2' : ''}`}>
     {imagen && (
       <Image

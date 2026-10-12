@@ -19,8 +19,10 @@ interface Props {
 }
 const { seccion } = Astro.props;
 const externo = seccion.enlace.startsWith('https://');
+// Las secciones no tienen id propio: el ancla sale del título (sin tildes). Los títulos deben ser distintos.
+const id = `inicio-seccion-${seccion.titulo.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 ---
-<section class="relative isolate overflow-hidden bg-foreground text-white">
+<section id={id} class="relative isolate overflow-hidden bg-foreground text-white">
   <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
     <!-- Más alta que la sección (120 %) para que el parallax tenga margen para desplazarse. -->
     <div data-parallax class="absolute inset-x-0 -top-[10%] h-[120%]">

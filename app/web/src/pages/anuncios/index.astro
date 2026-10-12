@@ -32,7 +32,7 @@ const nombreOferente = async (a: (typeof vigentes)[number]) => {
 const textos = new Map(await Promise.all([...vigentes, ...vencidos].map(async (a) => [a.id, normalizar(`${a.data.titulo} ${await nombreOferente(a)}`)] as const)));
 ---
 <Base titulo="Anuncios" descripcion="Oportunidades para la comunidad de Bioingeniería UdeC: trabajo, prácticas, pasantías y convocatorias.">
-  <section class="mx-auto max-w-6xl px-4 py-12">
+  <section id="anuncios-listado" class="mx-auto max-w-6xl px-4 py-12">
     <h1 data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Anuncios</h1>
     <p class="mt-2 text-muted-foreground">Oportunidades para la comunidad de Bioingeniería UdeC.</p>
     <p class="mt-2 text-muted-foreground">¿Tienes una oportunidad para la comunidad? Escríbele a la persona encargada de comunicaciones.</p>
@@ -52,8 +52,8 @@ const textos = new Map(await Promise.all([...vigentes, ...vencidos].map(async (a
     <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{total === 1 ? '1 anuncio' : `${total} anuncios`}</p>
 
     {secciones.map((s) => (
-      <section data-seccion id={s.id} class="mt-10" aria-labelledby={`${s.id}-titulo`}>
-        <h2 id={`${s.id}-titulo`} class="text-2xl font-semibold tracking-tight">{s.titulo}</h2>
+      <section data-seccion id={`anuncios-${s.id}`} class="mt-10" aria-labelledby={`anuncios-${s.id}-titulo`}>
+        <h2 id={`anuncios-${s.id}-titulo`} class="text-2xl font-semibold tracking-tight">{s.titulo}</h2>
         <ul data-animar="grilla" class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {s.items.map((a) => (
             <li data-texto={textos.get(a.id)} data-tipo={a.data.tipo}>

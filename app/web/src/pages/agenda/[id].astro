@@ -109,7 +109,7 @@ const jsonLdPagina = [
     <Incrustados items={actividad.data.incrustados ?? []} />
 
     {(organizadores.length > 0 || expositores.length > 0) && (
-      <section class="mt-10 border-t border-border pt-6 text-sm">
+      <section id="actividad-datos" class="mt-10 border-t border-border pt-6 text-sm">
         {organizadores.length > 0 && (
           <p class="flex items-start gap-2">
             <Users class="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -127,7 +127,7 @@ const jsonLdPagina = [
     )}
 
     {noticias.length > 0 && (
-      <section class="mt-12">
+      <section id="actividad-cobertura" class="mt-12">
         <h2 class="text-2xl font-semibold">Cobertura</h2>
         <div class="mt-6 grid gap-6 md:grid-cols-2">{noticias.map((n) => <TarjetaNoticia noticia={n} />)}</div>
       </section>

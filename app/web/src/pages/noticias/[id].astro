@@ -119,14 +119,14 @@ const jsonLdPagina = [
     <Incrustados items={noticia.data.incrustados ?? []} />
 
     {galeria.length > 0 && (
-      <section class="mt-10" aria-labelledby="galeria-titulo">
+      <section id="noticia-galeria" class="mt-10" aria-labelledby="galeria-titulo">
         <h2 id="galeria-titulo" class="text-xl font-semibold tracking-tight">Galería</h2>
         <div class="mt-4"><GaleriaImagenes items={galeria} /></div>
       </section>
     )}
 
     {ig?.data.publicado && (
-      <section class="mt-10">
+      <section id="noticia-instagram" class="mt-10">
         <h2 class="text-xl font-semibold tracking-tight">En Instagram</h2>
         <div class="mt-4 max-w-md"><PublicacionInstagram publicacion={ig} /></div>
       </section>
@@ -140,7 +140,7 @@ const jsonLdPagina = [
     )}
 
     {(personas.length > 0 || organizaciones.length > 0) && (
-      <section class="mt-10 border-t border-border pt-6 text-sm">
+      <section id="noticia-datos" class="mt-10 border-t border-border pt-6 text-sm">
         {personas.length > 0 && (
           <p><span class="text-muted-foreground">Personas: </span>
             {personas.map((p, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="personas" entrada={p} /></>)}
@@ -157,7 +157,7 @@ const jsonLdPagina = [
   </article>
 
   {relacionadas.length > 0 && (
-    <section class="mx-auto max-w-6xl px-4 pb-16" aria-labelledby="te-puede-interesar">
+    <section id="noticia-relacionadas" class="mx-auto max-w-6xl px-4 pb-16" aria-labelledby="te-puede-interesar">
       <div class="flex flex-wrap items-end justify-between gap-4 border-t border-border pt-10">
         <h2 id="te-puede-interesar" class="text-3xl font-semibold tracking-tight">Te puede interesar</h2>
         <a href="/noticias" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las noticias <ArrowRight class="size-4" aria-hidden="true" /></a>

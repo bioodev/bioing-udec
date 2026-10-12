@@ -34,7 +34,7 @@ const conDiseno = video !== null || bloques.length > 0;
 <Base titulo={pagina.data.titulo} descripcion={pagina.data.bajada} imagen={pagina.data.imagen?.src} jsonLd={migas(rutas, Astro.site)}>
   {conDiseno ? (
     <>
-      <section class="mx-auto max-w-6xl px-4 py-16">
+      <section id="pagina-cabecera" class="mx-auto max-w-6xl px-4 py-16">
         <Migas items={rutas} />
         <h1 class="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl">{pagina.data.titulo}</h1>
         <p class="mt-4 max-w-3xl text-xl text-muted-foreground">{pagina.data.bajada}</p>
@@ -47,7 +47,7 @@ const conDiseno = video !== null || bloques.length > 0;
         {pagina.data.imagen && <Image src={pagina.data.imagen} alt={pagina.data.imagen_alt ?? ''} class="mt-10 aspect-video w-full max-w-4xl rounded-lg object-cover" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
       </section>
 
-      <section class="bg-muted">
+      <section id="pagina-contenido" class="bg-muted">
         <div class="mx-auto max-w-3xl px-4 py-16">
           <div class="prose max-w-none"><Content /></div>
           <Incrustados items={pagina.data.incrustados ?? []} />
@@ -55,7 +55,7 @@ const conDiseno = video !== null || bloques.length > 0;
       </section>
 
       {bloques.length > 0 && (
-        <section class="bg-foreground text-background">
+        <section id="pagina-bloques" class="bg-foreground text-background">
           <div class="mx-auto max-w-6xl px-4 py-16">
             {pagina.data.bloques_titulo && <h2 class="text-3xl font-semibold tracking-tight">{pagina.data.bloques_titulo}</h2>}
             <div class="mt-8 grid gap-8 md:grid-cols-2">

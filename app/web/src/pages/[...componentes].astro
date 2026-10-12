@@ -26,19 +26,19 @@ const colores = ['primary', 'background', 'foreground', 'muted', 'muted-foregrou
 ---
 <Base titulo="Componentes">
   <div class="mx-auto grid max-w-6xl gap-16 px-4 py-12">
-    <section>
+    <section id="componentes-colores">
       <h2 class="text-2xl font-semibold">Colores</h2>
       <div class="mt-4 flex flex-wrap gap-4">
         {colores.map((c) => <div class="text-xs"><div class="h-16 w-24 rounded-lg border border-border" style={`background: var(--${c})`}></div>{c}</div>)}
       </div>
     </section>
-    <section>
+    <section id="componentes-tipografia">
       <h2 class="text-2xl font-semibold">Tipografía</h2>
       <p class="text-5xl font-semibold tracking-tight">Título principal</p>
       <p class="text-3xl font-semibold tracking-tight">Título de sección</p>
       <p>Texto de cuerpo. <span class="text-muted-foreground">Texto secundario.</span></p>
     </section>
-    <section>
+    <section id="componentes-starwind">
       <h2 class="text-2xl font-semibold">Starwind</h2>
       <div class="mt-4 flex flex-wrap items-center gap-3">
         <Button variant="primary" class="rounded-full">Primario</Button>
@@ -48,8 +48,8 @@ const colores = ['primary', 'background', 'foreground', 'muted', 'muted-foregrou
         <Input placeholder="Input" class="max-w-xs" aria-label="Ejemplo de input" />
       </div>
     </section>
-    {banner && <section><h2 class="text-2xl font-semibold">Banner</h2><div class="mt-4"><Banner banner={banner} /></div></section>}
-    <section>
+    {banner && <section id="componentes-banner"><h2 class="text-2xl font-semibold">Banner</h2><div class="mt-4"><Banner banner={banner} /></div></section>}
+    <section id="componentes-tarjetas">
       <h2 class="text-2xl font-semibold">Tarjetas</h2>
       <div class="mt-4 grid gap-6 md:grid-cols-3">
         {conImagen && <TarjetaNoticia noticia={conImagen} />}

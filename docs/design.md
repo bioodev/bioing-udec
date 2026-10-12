@@ -496,3 +496,20 @@ Metas WCAG 2.1 AA y Lighthouse ≥ 90 en accesibilidad: skip-link al contenido, 
 activo, foco visible global (`:focus-visible`), nombres accesibles en los controles de Starwind, jerarquía de
 encabezados sin saltos y estados vacíos («Aún no hay…») en las páginas sin contenido.
 
+
+### ids
+
+Sirven para anclas (`#inicio-anuncios`), analítica y pruebas. Convención:
+
+- Formato: español, kebab-case, sin tildes, con el prefijo de la página o de la pieza: `inicio-noticias`,
+  `agenda-listado`, `noticia-galeria`, `actividad-cobertura`, `anuario-generacion-2015`, `pagina-bloques`.
+- Cada `<section>` lleva `id`. Las piezas únicas de una página (`inicio-carrusel`, `inicio-pagina-destacada`,
+  `incrustados`, `banner-<id>`) lo llevan en su elemento raíz.
+- Las tarjetas toman el id de su entrada: `noticia-<id>`, `actividad-<id>`, `anuncio-<id>`, `documento-<id>`,
+  `persona-<id>`, `instagram-<id>`. Si la misma tarjeta puede salir dos veces en una página, no lleva `id`: usa
+  `data-id` (p. ej. `TarjetaActividad` con `sinId` en `/personas/[id]`, donde una actividad puede estar en
+  «Expuso en» y en «Organizó»).
+- Las secciones de Inicio no tienen id en el contenido: `SeccionDestacada` deriva `inicio-seccion-<titulo>` del
+  título sin tildes. Por eso los títulos de las secciones deben ser distintos.
+- No duplicar: un id repetido en una página rompe las anclas. Antes de agregar uno, buscar que no exista ya
+  (`VideoModal` usa `video-<id>-titulo`).

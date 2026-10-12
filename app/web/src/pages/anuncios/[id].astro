@@ -8,6 +8,7 @@ import { anunciosVisibles, formatoFecha } from '@/lib/contenido';
 import { anuncioVigente, existentes } from '@/lib/reglas';
 import { migas, ofertaLaboral } from '@/lib/schema';
 import { TIPOS_ANUNCIO } from '@/lib/anuncios';
+import ArrowLeft from 'phosphor-astro/ArrowLeft.astro';
 import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
 
 export async function getStaticPaths() {
@@ -75,6 +76,6 @@ const jsonLdPagina = [
 
     <div class="prose mt-8 max-w-none"><Content /></div>
 
-    <p class="mt-10 border-t border-border pt-6 text-sm"><a href="/anuncios" class="text-primary hover:underline">← Volver a Anuncios</a></p>
+    <p class="mt-10 border-t border-border pt-6 text-sm"><a href="/anuncios" class="inline-flex items-center gap-1 text-primary hover:underline"><ArrowLeft class="size-4" aria-hidden="true" /> Volver a Anuncios</a></p>
   </article>
 </Base>

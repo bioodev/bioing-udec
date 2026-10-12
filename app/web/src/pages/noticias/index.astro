@@ -36,7 +36,7 @@ const etiquetas = [...new Set(noticias.flatMap((n) => n.noticia.data.etiquetas ?
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title="Noticias de BIOING+" href="/noticias/rss.xml" />
   </Fragment>
-  <section class="mx-auto max-w-6xl px-4 py-12">
+  <section id="noticias-listado" class="mx-auto max-w-6xl px-4 py-12">
     <h1 data-animar="fade-up" class="text-4xl font-semibold tracking-tight">Noticias</h1>
 
     <form id="filtros" class="mt-8 flex flex-col gap-4 md:flex-row md:flex-wrap md:items-end" role="search">
