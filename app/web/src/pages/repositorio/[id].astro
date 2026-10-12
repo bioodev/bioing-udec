@@ -8,6 +8,7 @@ import { existentes } from '@/lib/reglas';
 import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
 import { vistaPreviaDrive } from '@/lib/enlaces';
 import { migas, documento as jsonLdDocumento } from '@/lib/schema';
+import ArrowLeft from 'phosphor-astro/ArrowLeft.astro';
 import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
 
 export async function getStaticPaths() {
@@ -68,6 +69,6 @@ const jsonLdPagina = [
     </p>
     <p class="mt-2 text-sm text-muted-foreground">Si la vista previa no carga, abre el documento en una pestaña nueva.</p>
 
-    <p class="mt-10 border-t border-border pt-6 text-sm"><a href="/repositorio" class="text-primary hover:underline">← Volver al Repositorio</a></p>
+    <p class="mt-10 border-t border-border pt-6 text-sm"><a href="/repositorio" class="inline-flex items-center gap-1 text-primary hover:underline"><ArrowLeft class="size-4" aria-hidden="true" /> Volver al Repositorio</a></p>
   </article>
 </Base>
