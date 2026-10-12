@@ -1,5 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro';
+import FiltrosPlegables from '@/components/FiltrosPlegables.astro';
 import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
@@ -49,16 +50,18 @@ const conteoInicial = contarAgenda(
           <Label for="texto">Buscar</Label>
           <Input id="texto" name="texto" type="search" placeholder="Nombre o lugar de la actividad" autocomplete="off" />
         </div>
-        <div class="grid gap-2">
-          <Label id="etiqueta-tipo" for="tipo">Tipo</Label>
-          <Select id="tipo" name="tipo" defaultValue={TODAS}>
-            <SelectTrigger class="w-full" aria-labelledby="etiqueta-tipo"><SelectValue placeholder="Todos" /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value={TODAS}>Todos</SelectItem>
-              {tipos.map((t) => <SelectItem value={t}>{TIPOS_ACTIVIDAD[t]}</SelectItem>)}
-            </SelectContent>
-          </Select>
-        </div>
+        <FiltrosPlegables id="filtros-agenda-mas" neutros={[TODAS]} columnas={1}>
+          <div class="grid gap-2">
+            <Label id="etiqueta-tipo" for="tipo">Tipo</Label>
+            <Select id="tipo" name="tipo" defaultValue={TODAS}>
+              <SelectTrigger class="w-full" aria-labelledby="etiqueta-tipo"><SelectValue placeholder="Todos" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value={TODAS}>Todos</SelectItem>
+                {tipos.map((t) => <SelectItem value={t}>{TIPOS_ACTIVIDAD[t]}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+        </FiltrosPlegables>
       </form>
     </div>
 
