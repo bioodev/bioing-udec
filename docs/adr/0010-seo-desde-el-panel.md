@@ -54,3 +54,26 @@ cambio de código.
   caso.
 - **Un campo `noindex` que también quite la página**: mezcla dos decisiones. Desactivar una sección ya existe (ADR 0008)
   y «No mostrar en buscadores» debe dejar la página enlazada.
+
+## Apéndice (2026-10-12): vista previa en el panel
+
+Decisión de la persona responsable: al editar Noticias, Actividades, Anuncios, Documentos y Páginas libres, el panel
+muestra cómo aparece la entrada en Google y al compartirla, con avisos breves (sin descripción propia, título largo,
+«No mostrar en buscadores»). Se implementa con `CMS.registerPreviewTemplate` de Sveltia, sin build ni JSX.
+
+- **Dónde vive**: `public/admin/vista-previa-seo.js` (plantillas, cargado como módulo tras Sveltia en `index.html`) y
+  `public/admin/vista-previa-seo-reglas.js` (reglas puras, con su `.d.ts`). La imagen por defecto es
+  `public/admin/og-default.png`.
+- **Espejo, no import**: el panel no puede importar código del sitio, así que las reglas copian la precedencia de
+  `src/lib/seo.ts` y las etiquetas de tipos de `src/lib/{agenda,anuncios,repositorio}.ts`. `src/lib/vista-previa-seo.test.ts`
+  comprueba que den lo mismo y que `og-default.png` sea idéntica a `src/assets/og-default.png` byte a byte.
+- **Límites aceptados**: la descripción general del sitio (`seo.yml`) no se lee desde el panel, así que el aviso de
+  «Sin descripción propia» no sabe cuál es. El fallback a la imagen del sitio es la copia del panel. La fecha de una
+  Actividad se formatea igual que en el sitio (mismo `toLocaleString`), pero se calcula en el navegador del editor.
+- **Consecuencia de mantenimiento**: cambiar un tipo, un límite de caracteres, la imagen por defecto o la forma de
+  armar un título o una descripción exige cambiar también `vista-previa-seo-reglas.js` y su `.d.ts`, y correr
+  `npm run verificar` (las pruebas de espejo fallan si se desalinean).
+- **Verificación**: probado con Sveltia 0.235.1 (CDN de unpkg, sin versión fija) sobre un backend de prueba en memoria
+  y la configuración real de `config.yml` convertida, sin tocar el archivo. Se recorrió Noticias de punta a punta; las
+  demás colecciones se revisaron sin errores de consola, y solo Actividades se revisó en captura. `/admin/` en
+  `wrangler dev --env qa` carga sin errores de consola y con la CSP de `/admin/*`.
