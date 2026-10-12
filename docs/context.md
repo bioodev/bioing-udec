@@ -33,7 +33,8 @@ Decisión en `adr/0008-secciones-desactivables.md`.
 ### Secciones
 
 - **Inicio**: contenido destacado y dinámico (Banners, noticias recientes, próximas actividades, anuncios
-  vigentes, publicaciones de Instagram).
+  vigentes, publicaciones de Instagram, y la banda «Comunidad y documentos» con cifras del Directorio y los
+  últimos documentos del Repositorio).
 - **¿Qué es la Bioingeniería?**: Página libre (`/p/bioingenieria`, en «La carrera») con contenido institucional, un video que se abre en un modal y bloques destacados.
 - **Noticias**: con buscador y filtros por Tema, Persona mencionada y fecha; más archivo.
 - **Agenda**: Actividades con ficha propia; próximas (orden cronológico) y realizadas (archivo).
@@ -125,8 +126,12 @@ Persona que presenta, dicta o modera en una Actividad. Los asistentes no se regi
 _Avoid_: Participante, ponente, invitado
 
 **Sección destacada (del Inicio)**:
-Bloque con imagen de fondo, título, texto y botón que se muestra al final del Inicio, en el orden de su lista en el panel. Se publica o se oculta sin borrarla. Su enlace es una ruta interna o una URL externa.
+Bloque con imagen de fondo, título, texto y botón que se muestra al final del Inicio, en el orden de su lista en el panel. Se publica o se oculta sin borrarla. Su enlace es una ruta interna o una URL externa. Ya no incluye el Directorio ni el Repositorio, que tienen su propia banda.
 _Avoid_: Banner (los Banners son el carrusel superior), tarjeta, bloque fijo
+
+**Banda «Comunidad y documentos»**:
+Bloque del Inicio, antes de las Secciones destacadas, con dos tarjetas lado a lado (apiladas en móvil): el **Directorio** (cifras de egresados/as, generaciones y organizaciones, y un buscador por nombre que lleva a `/directorio?texto=…`) y el **Repositorio** (los 4 Documentos más recientes). Cada tarjeta tiene título, texto, botón y foto opcional, editables en el panel. Si el panel apaga el Directorio o el Repositorio, su tarjeta no sale; si apaga los dos, no sale la banda.
+_Avoid_: Sección destacada (la banda no es una lista editable de bloques), tarjeta de portada
 
 **Cobertura**:
 Noticia que relata una Actividad ya realizada; una Noticia cubre como máximo una Actividad.

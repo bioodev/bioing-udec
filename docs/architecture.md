@@ -86,7 +86,7 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Documentos** | título, tipo, año, enlace (Drive), descripción, Temas, Áreas, palabras clave |
 | **Banners** | título, texto, imagen, enlace, inicio, fin |
 | **Páginas libres** | título, publicado, bajada (obligatoria), imagen y texto alternativo, `mostrar_en` (ninguno, footer, la-carrera, comunidad), destacar en el Inicio y resumen para el Inicio (una sola destacada, ADR 0006), video (YouTube), Enlaces (hasta 6), título y lista de bloques destacados, y cuerpo; una por archivo en `src/content/paginas-libres/` (ADR 0005). ¿Qué es la Bioingeniería? es una de ellas |
-| **Inicio** | archivo único `src/content/inicio/inicio.md`: lista de secciones destacadas (título, texto, botón, enlace, imagen, texto alternativo, publicado) |
+| **Inicio** | archivo único `src/content/inicio/inicio.md`: banda «Comunidad y documentos» (título y tarjetas del Directorio y del Repositorio: título, texto, botón, foto opcional) y lista de secciones destacadas (título, texto, botón, enlace, imagen, texto alternativo, publicado) |
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
 
@@ -110,7 +110,7 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 
 | Ruta | Página |
 |---|---|
-| `/` | Inicio (hero en carrusel de Banners, página destacada de Páginas libres si hay una marcada, noticias, actividades, anuncios, Instagram, secciones destacadas con parallax) |
+| `/` | Inicio (hero en carrusel de Banners, página destacada de Páginas libres si hay una marcada, noticias, actividades, anuncios, Instagram, banda «Comunidad y documentos» con cifras del Directorio y últimos documentos, secciones destacadas con parallax) |
 | `/p/[id]` | Páginas libres publicadas; `/p/bioingenieria` es ¿Qué es la Bioingeniería? (video en modal y bloques destacados). `/bioingenieria` ya no existe y no redirige |
 | `/noticias` · `/noticias/[id]` | Listado con filtros y paginación de a 12 + ficha |
 | `/agenda` · `/agenda/[id]` | Próximas y realizadas (pestañas) + ficha |

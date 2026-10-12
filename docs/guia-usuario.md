@@ -486,8 +486,8 @@ conserva una y reasigna el contenido.
 
 ### 4.11 Editar las secciones destacadas del Inicio
 
-**Objetivo:** cambiar los bloques con foto que aparecen al final de la portada (por ejemplo, el del Directorio o el
-del Repositorio), agregar otros o ocultarlos.
+**Objetivo:** cambiar los bloques con foto que aparecen al final de la portada, agregar otros o ocultarlos. El
+Directorio y el Repositorio ya no van aquí: tienen su propia banda (ver más abajo).
 
 **Campos** (en la página **Inicio** del panel, lista **Secciones destacadas**):
 - **Título**, **Texto** y **Texto del botón**.
@@ -509,6 +509,36 @@ lista. El botón lleva a donde corresponde.
 **Errores típicos:**
 - Un enlace que no empieza con `/` ni con `https://`: el panel no deja guardarlo.
 - Una sección sin imagen de fondo: el sitio no se construye. Sube siempre una imagen.
+
+#### La banda «Comunidad y documentos»
+
+**Objetivo:** cambiar los textos de las tarjetas del Directorio y del Repositorio en la portada, o agregarles una foto.
+Las cifras y los documentos no se escriben a mano: se calculan solos.
+
+**Campos** (en la página **Inicio** del panel, sección **Comunidad y documentos**):
+- **Título de la banda**: el encabezado que va sobre las tarjetas.
+- **Tarjeta del Directorio** y **Tarjeta del Repositorio**, cada una con: **Título**, **Texto**, **Texto del botón**,
+  **Foto** (opcional, pequeña y horizontal) y **Texto alternativo de la foto** (déjalo vacío si la foto es solo
+  decorativa).
+
+**Qué sale solo:**
+- En el Directorio: cantidad de egresados/as con perfil autorizado, generaciones distintas y organizaciones distintas.
+  Una cifra en cero no se muestra.
+- En el Repositorio: los 4 documentos publicados más recientes (por año y, dentro del año, por título).
+- Un buscador por nombre en el Directorio: lo que se escribe lleva al Directorio con la lista ya filtrada.
+
+**Pasos.**
+1. Abre **Inicio** en el panel y ve a **Comunidad y documentos**.
+2. Edita los textos de cada tarjeta o sube una foto.
+3. Guarda.
+
+**Cómo comprobar que quedó bien.** En la portada, la banda aparece después de las Páginas destacadas. Escribe un
+nombre en el buscador del Directorio y pulsa «Buscar»: debe abrir el Directorio con esa búsqueda.
+
+**Errores típicos:**
+- Apagaste el Directorio o el Repositorio en **Secciones del sitio**: su tarjeta no sale. Si apagas los dos, no sale
+  la banda. El contenido no se borra.
+- La tarjeta del Repositorio no muestra documentos: no hay documentos publicados. Publica uno desde el Repositorio (4.4).
 
 ### 4.12 Crear una página
 
