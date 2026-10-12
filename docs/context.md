@@ -146,7 +146,7 @@ La colección buscable de Documentos.
 _Avoid_: Biblioteca, archivo, drive
 
 **Página libre**:
-Página de texto creada desde el panel (título, bajada, imagen opcional y contenido) que vive en `/paginas/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner).
+Página de texto creada desde el panel (título, bajada, imagen opcional, contenido, video de YouTube opcional y bloques destacados opcionales) que vive en `/paginas/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
 _Avoid_: Página institucional, página, artículo
 
 **Página institucional**:

@@ -395,6 +395,18 @@ collections:
           - { label: "Menú «La carrera»", value: la-carrera }
           - { label: "Menú «Comunidad»", value: comunidad }
         hint: "«Menú» la agrega al desplegable del navbar y también al pie. «Pie de página» solo al pie."
+      - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo de la bajada, en una ventana al hacer clic." }
+      - { name: bloques_titulo, label: Título de los bloques destacados, widget: string, required: false, hint: "Aparece sobre los bloques destacados. Déjalo vacío para mostrar solo los bloques." }
+      - name: bloques
+        label: Bloques destacados
+        widget: list
+        required: false
+        hint: "Se muestran en una franja oscura después del contenido, en dos columnas."
+        label_singular: Bloque destacado
+        summary: "{{titulo}}"
+        fields:
+          - { name: titulo, label: Título, widget: string }
+          - { name: texto, label: Texto, widget: text }
       - { name: body, label: Contenido, widget: richtext }
 
   - name: instagram
