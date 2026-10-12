@@ -522,7 +522,10 @@ a pantalla completa del Directorio y el Repositorio, que daban ~1,5 pantallas pa
   igual); título `h3`, texto, **cifras** en una `<dl>` de tres columnas (Egresados/as, Generaciones, Organizaciones) y
   un buscador por nombre. El buscador es un `<form action="/directorio" method="get" role="search">` con `<label>` (sr-only) y
   `<input type="search" name="texto">`; al enviar lleva a `/directorio?texto=…`, que el Directorio aplica al cargar.
-  Botón «Ir al Directorio» al pie de la tarjeta.
+  Debajo del buscador, **chips de áreas** («Explora por área»: las 5 áreas con más egresados/as, con su conteo), que son
+  enlaces a `/directorio?area=<id>`. Botón «Ir al Directorio» al pie de la tarjeta y, debajo, «¿Eres egresado/a? Suma tu
+  perfil» (enlace externo al formulario, con `target="_blank"` y `rel="noopener"`; ver guía de usuario §4.8). La línea solo
+  sale si hay formulario configurado.
 - **Tarjeta del Repositorio**: foto opcional igual, título, texto, los **4 documentos más recientes** en una
   `<ul role="list">` (cada ítem: título enlazado a `/repositorio/<id>` y, debajo, tipo y año), y «Ir al Repositorio».
 - **Sin datos**: cada cifra en cero no se muestra (nunca «0»; sin egresados/as no sale la `<dl>`); sin documentos no

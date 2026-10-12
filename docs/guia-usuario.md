@@ -389,6 +389,10 @@ corresponde. Antes del inicio y después del fin, no aparece.
 
 **Objetivo:** dar de alta o actualizar a un egresado o egresada en el Directorio, solo con su autorización.
 
+**Enlace al formulario.** El botón «Suma tu perfil» (en la tarjeta del Inicio) y el botón «Sumar mi perfil» (en
+`/directorio`) apuntan al Google Form que se configura en el panel: **Secciones del sitio** → «Formulario del Directorio
+(Google Form)». Pega la dirección completa (que empiece con `https://`). Si lo dejas vacío, ninguno de los dos botones sale.
+
 **Campos de la Persona.**
 - Obligatorios: Nombre y apellido, Ficha pública activa (por defecto: sí).
 - Opcionales: Descripción breve, Foto.

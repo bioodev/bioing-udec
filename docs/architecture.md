@@ -115,7 +115,7 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 | `/noticias` · `/noticias/[id]` | Listado con filtros y paginación de a 12 + ficha |
 | `/agenda` · `/agenda/[id]` | Próximas y realizadas (pestañas) + ficha |
 | `/anuncios` · `/anuncios/[id]` | Vigentes y archivo + ficha |
-| `/directorio` · `/personas/[id]` | Buscador de egresados/as + Ficha |
+| `/directorio` · `/personas/[id]` | Buscador de egresados/as (filtros, chips de áreas y vista por generación, reflejados en la URL) + Ficha |
 | `/repositorio` · `/repositorio/[id]` | Buscador de Documentos + ficha con vista previa |
 | `/instagram` | Publicaciones seleccionadas |
 | `/p/[id]` | Página libre (solo las publicadas; aparece en el menú o el pie según `mostrar_en`) |
@@ -134,7 +134,7 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 - **Reglas puras** en `src/lib/` (reglas de fecha, filtros, anuario, feeds, robots, llms, schema) con su
   `*.test.ts`. Las páginas no contienen lógica de negocio.
 - **Listados con filtros** renderizan todas las tarjetas con atributos `data-*` y un `<script>` filtra en el
-  cliente con la función pura correspondiente; `/noticias` además refleja los filtros en la URL y pagina.
+  cliente con la función pura correspondiente; `/noticias`, `/agenda`, `/anuncios`, `/repositorio` y `/directorio` reflejan los filtros en la URL con `sincronizarFiltrosEnUrl` (`src/scripts/url-filtros.ts`), y `/noticias` además pagina. En `/directorio` el orden «Por generación» también va en la URL (`?orden=generacion`) y reagrupa las mismas tarjetas, sin duplicarlas.
 - **Componentes** reutilizables en `src/components/` (tarjetas, `EnlaceFicha`, `HeroCarrusel`, …). Las
   tarjetas son 100 % clicables y reservan aspecto (`aspect-video`, `aspect-square`) para no tener CLS.
 - **Fechas**: los campos con hora llevan offset de America/Santiago y se muestran con `formatoFechaHora`;
