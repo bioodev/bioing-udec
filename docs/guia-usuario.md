@@ -561,6 +561,19 @@ aparece en la lista del pie. Si elegiste *Ninguno*, no aparece en ningún menú,
   y el sitio no avisa. Revisa los Banners antes de cambiar una dirección o despublicar una página.
 - Esperar que el cambio aparezca al instante: los cambios se publican en uno o dos minutos después de guardar.
 
+### 4.13 Mostrar u ocultar secciones del menú
+
+Sirve para quitar temporalmente una sección (por ejemplo, Anuncios fuera de temporada) sin borrar nada.
+
+**Pasos.**
+1. Abre **Páginas** en el panel y entra en **Menú**.
+2. Desmarca **Mostrar «Sección»** para cada sección que quieras ocultar. Las que dejes marcadas siguen visibles.
+3. Guarda.
+
+**Qué cambia.** La sección sale del menú (escritorio y móvil), del pie y de `llms.txt`. Su página sigue existiendo y se puede llegar a ella por un enlace directo, desde un Banner o desde otra página. Si ocultas todas las secciones de un desplegable, el desplegable desaparece. **Inicio** no se puede ocultar.
+
+**Cómo comprobar que quedó bien.** Recarga el sitio: la sección ya no aparece en el menú ni en el pie. Los cambios se publican en uno o dos minutos después de guardar.
+
 ## 5. Imágenes y archivos
 
 - **Qué se puede subir.** Imágenes de mapa de bits (JPG, PNG y similares). Las fotos de iPhone en HEIC se

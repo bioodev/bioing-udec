@@ -5,7 +5,10 @@ import {
   entradaActiva,
   enlacesFooter,
   esActual,
+  filtrarMenu,
   menuConPaginas,
+  seccionVisible,
+  type ConfigMenu,
   type EnlaceMenu,
   type EntradaMenu,
   type PaginaLibreMenu,
@@ -163,5 +166,67 @@ describe('enlacesFooter', () => {
     const enlaces = enlacesFooter(base, [pagina('Oculta', 'ninguno')]);
     expect(enlaces).toEqual(base);
     expect(base).toEqual(antes);
+  });
+});
+
+describe('seccionVisible', () => {
+  test('sin configuración, todas las secciones se muestran', () => {
+    for (const { href } of MENU) expect(seccionVisible(href, {}), href).toBe(true);
+  });
+
+  test('una sección desactivada no se muestra; las demás sí', () => {
+    const config: ConfigMenu = { anuncios: false };
+    expect(seccionVisible('/anuncios', config)).toBe(false);
+    expect(seccionVisible('/directorio', config)).toBe(true);
+  });
+
+  test('Inicio y las rutas que no son secciones ocultables siempre se muestran', () => {
+    const todas: ConfigMenu = {
+      noticias: false, agenda: false, instagram: false, directorio: false, anuncios: false, repositorio: false,
+    };
+    expect(seccionVisible('/', todas)).toBe(true);
+    expect(seccionVisible('/p/bioingenieria', todas)).toBe(true);
+  });
+});
+
+describe('filtrarMenu', () => {
+  const todas = (): ConfigMenu => ({});
+  const etiquetasDe = (menu: EntradaMenu[]) =>
+    menu.map((e) => (e.tipo === 'enlace' ? e.enlace.etiqueta : e.grupo.etiqueta));
+
+  test('sin configuración devuelve el mismo menú', () => {
+    expect(filtrarMenu(MENU_PRINCIPAL, todas())).toEqual(MENU_PRINCIPAL);
+  });
+
+  test('quita un enlace suelto oculto y deja el resto en orden', () => {
+    const menu = filtrarMenu(MENU_PRINCIPAL, { noticias: false });
+    expect(etiquetasDe(menu)).toEqual(['Inicio', 'La carrera', 'Agenda', 'Comunidad']);
+  });
+
+  test('quita un enlace de un grupo y conserva el grupo', () => {
+    const menu = filtrarMenu(MENU_PRINCIPAL, { anuncios: false });
+    const comunidad = menu.find((e) => e.tipo === 'grupo' && e.grupo.etiqueta === 'Comunidad') as Extract<EntradaMenu, { tipo: 'grupo' }>;
+    expect(comunidad.grupo.enlaces.map((e) => e.etiqueta)).toEqual(['Directorio', 'Instagram']);
+  });
+
+  test('un grupo sin enlaces visibles desaparece', () => {
+    const menu = filtrarMenu(MENU_PRINCIPAL, { directorio: false, anuncios: false, instagram: false });
+    expect(etiquetasDe(menu)).toEqual(['Inicio', 'La carrera', 'Noticias', 'Agenda']);
+  });
+
+  test('una Página libre del grupo mantiene visible «La carrera» aunque se oculte el Repositorio', () => {
+    const conPagina = menuConPaginas(MENU_PRINCIPAL, [
+      { titulo: '¿Qué es la Bioingeniería?', href: '/p/bioingenieria', bajada: 'x', mostrar_en: 'la-carrera' },
+    ]);
+    const menu = filtrarMenu(conPagina, { repositorio: false });
+    expect(etiquetasDe(menu)).toContain('La carrera');
+    const carrera = menu.find((e) => e.tipo === 'grupo' && e.grupo.etiqueta === 'La carrera') as Extract<EntradaMenu, { tipo: 'grupo' }>;
+    expect(carrera.grupo.enlaces.map((e) => e.etiqueta)).toEqual(['¿Qué es la Bioingeniería?']);
+  });
+
+  test('no muta MENU_PRINCIPAL', () => {
+    const antes = structuredClone(MENU_PRINCIPAL);
+    filtrarMenu(MENU_PRINCIPAL, { noticias: false, anuncios: false });
+    expect(MENU_PRINCIPAL).toEqual(antes);
   });
 });

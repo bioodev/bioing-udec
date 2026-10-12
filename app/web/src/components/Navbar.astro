@@ -18,12 +18,13 @@ import Megaphone from 'phosphor-astro/Megaphone.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
 import Logo from '@/components/Logo.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
-import { MENU_PRINCIPAL, URL_FCB, entradaActiva, esActual, menuConPaginas, type EnlaceMenu } from '@/lib/navegacion';
-import { paginasParaMenu } from '@/lib/contenido';
+import { MENU_PRINCIPAL, URL_FCB, entradaActiva, esActual, filtrarMenu, menuConPaginas, type EnlaceMenu } from '@/lib/navegacion';
+import { configuracionMenu, paginasParaMenu } from '@/lib/contenido';
 
 const actual = Astro.url.pathname;
 // Las Páginas libres se agregan a su desplegable (y al menú móvil, que usa la misma estructura).
-const menu = menuConPaginas(MENU_PRINCIPAL, await paginasParaMenu());
+// Luego se quitan las secciones que el panel oculta (src/content/menu/menu.yml).
+const menu = filtrarMenu(menuConPaginas(MENU_PRINCIPAL, await paginasParaMenu()), await configuracionMenu());
 
 // Ícono de cada página para el menú móvil (las páginas sin ícono propio usan House).
 const iconos: Record<string, typeof House> = {
