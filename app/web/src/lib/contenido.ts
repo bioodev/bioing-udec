@@ -6,6 +6,7 @@ import { noticiasRelacionadas } from './relacionadas';
 import { seccionesPublicadas } from './secciones-inicio';
 import { paginaDestacada } from './pagina-destacada';
 import type { ConfigMenu, PaginaLibreMenu } from './navegacion';
+import type { ConfigRedes } from './redes';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram' | 'paginasLibres';
 
@@ -180,6 +181,11 @@ export async function seccionesInicio() {
 /** Secciones del menú que el panel oculta (src/content/menu/menu.yml). Sin archivo, todo se muestra. */
 export async function configuracionMenu(): Promise<ConfigMenu> {
   return (await getEntry('menu', 'menu'))?.data ?? {};
+}
+
+/** URLs de las redes sociales (src/content/redes/redes.yml). Vacío si el archivo no existe. */
+export async function configuracionRedes(): Promise<ConfigRedes> {
+  return (await getEntry('redes', 'redes'))?.data ?? {};
 }
 
 /** Página libre destacada en el Inicio (solo una). Si hay varias marcadas, avisa en el build y muestra la primera. */

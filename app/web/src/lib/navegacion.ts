@@ -12,9 +12,6 @@ export const MENU = [
 // Pendiente de confirmar con el equipo BIOING+ la URL exacta de la FCB.
 export const URL_FCB = 'https://www.udec.cl';
 
-// Pendiente: cuenta oficial (preguntas-reunion 6.2)
-export const URL_INSTAGRAM = 'https://www.instagram.com/';
-
 // Estructura del header (desktop y menú móvil). Se construye a partir de MENU por `href`, así que
 // las etiquetas no se duplican. MENU sigue siendo la fuente para footer, llms.txt y schema.
 export interface EnlaceMenu {

@@ -42,6 +42,7 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 - [`0003-cuenta-central-anticipada-y-ambientes.md`](adr/0003-cuenta-central-anticipada-y-ambientes.md) — cuenta central adelantada; ambientes QA y producción.
 - [`0004-flujo-de-trabajo-una-persona.md`](adr/0004-flujo-de-trabajo-una-persona.md) — solo `main` se construye; QA a mano; agentes sin push.
 - [`0008-secciones-desactivables.md`](adr/0008-secciones-desactivables.md) — secciones fijas que el panel desactiva del todo (404, sitemap, buscador, Inicio), con integración de build.
+- [`0009-redes-sociales-campos-fijos.md`](adr/0009-redes-sociales-campos-fijos.md) — redes sociales del pie como campos fijos opcionales en el panel (Mastodon/Fediverso con `rel="me"`).
 - [`0005-paginas-libres-desde-el-panel.md`](adr/0005-paginas-libres-desde-el-panel.md) — páginas creables desde el panel, en `/p/<slug>`, con `mostrar_en` para el menú o el pie.
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)

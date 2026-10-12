@@ -44,6 +44,8 @@ Decisión en `adr/0008-secciones-desactivables.md`.
   biblioteca vive en Google Drive y el sitio enlaza cada Documento.
 - **Instagram**: publicaciones seleccionadas por el Encargado de comunicaciones (embed oficial, cargado
   bajo demanda).
+- **Redes sociales** (pie): enlaces a los perfiles de la comunidad (Instagram, Facebook, X, LinkedIn, YouTube,
+  TikTok, Threads, Bluesky, Mastodon / Fediverso), uno por red en el panel; solo se muestran las que tienen URL.
 - **Contacto**: fuera del sitio. Las altas, bajas y cambios del Directorio llegan por un enlace a un
   Google Form; los datos personales solo se publican con autorización previa.
 
@@ -165,6 +167,11 @@ _Avoid_: Página libre, página fija
 **Banner**:
 Pieza de portada con vigencia (inicio y fin) que enlaza a un contenido del sitio o a una URL externa; se muestra en el carrusel del Inicio. Es la forma de destacar algo temporal; los accesos permanentes al final del Inicio son Secciones destacadas.
 _Avoid_: Destacado, slider, hero
+
+**Redes sociales**:
+Perfil de la comunidad en una red social (Instagram, Facebook, X, LinkedIn, YouTube, TikTok, Threads, Bluesky o
+Mastodon / Fediverso). Se edita en el panel como un campo por red, en «Redes sociales». Aparece en el pie del sitio con
+su ícono, en el `sameAs` del JSON-LD y en el botón «Seguir en Instagram» de `/instagram`. No son botones de compartir.
 
 **Publicación de Instagram**:
 Publicación o reel de la cuenta de Instagram de la carrera que el Encargado de comunicaciones selecciona para mostrar en el sitio pegando su enlace; una Noticia puede tener una relacionada.

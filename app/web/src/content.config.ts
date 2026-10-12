@@ -224,6 +224,23 @@ const menu = defineCollection({
   }),
 });
 
+// Redes sociales: una URL opcional por red (pie, botón de /instagram y sameAs). Una clave ausente = sin red.
+const urlRed = z.string().regex(/^https:\/\/\S+$/, 'Debe ser una dirección completa que empiece con https://');
+const redes = defineCollection({
+  loader: yml('redes'),
+  schema: z.object({
+    instagram: urlRed.optional(),
+    facebook: urlRed.optional(),
+    x: urlRed.optional(),
+    linkedin: urlRed.optional(),
+    youtube: urlRed.optional(),
+    tiktok: urlRed.optional(),
+    threads: urlRed.optional(),
+    bluesky: urlRed.optional(),
+    mastodon: urlRed.optional(),
+  }),
+});
+
 const instagram = defineCollection({
   loader: yml('instagram'),
   schema: ({ image }) =>
@@ -242,5 +259,5 @@ const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, instagram, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, menu, redes, instagram, areas, temas,
 };

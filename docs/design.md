@@ -341,7 +341,10 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
   un placeholder hasta la identidad definitiva.
 - **Tarjetas 100 % clicables**: imagen y tarjeta llevan al detalle (Noticia/Actividad con overlay;
   Anuncio/Documento/Egresado con un solo enlace), conservando los enlaces secundarios.
-- **Footer**: columnas (marca, navegación derivada de `MENU`, comunidad, contacto) y barra de copyright.
+- **Footer**: columnas (marca, navegación derivada de `MENU`, comunidad, contacto) y barra de copyright. Bajo el
+  enlace a la FCB, en la columna de marca, van las redes sociales con URL (`RedesSociales.astro`): íconos de Phosphor
+  de 44 px de área táctil, sin texto visible, con nombre accesible («BIOING+ en Instagram») y el aviso sr-only de que
+  se abre en una ventana nueva. Si ninguna red tiene URL, no se dibuja nada (ni título).
 
 ### Tema claro/oscuro
 

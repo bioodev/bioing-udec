@@ -574,6 +574,29 @@ Sirve para quitar temporalmente una sección (por ejemplo, Anuncios fuera de tem
 
 **Cómo comprobar que quedó bien.** Recarga el sitio: la sección ya no aparece en el menú ni en el pie. Si la desactivaste del todo, su dirección (por ejemplo `/anuncios/`) ya da error 404. Los cambios se publican en uno o dos minutos después de guardar.
 
+### 4.14 Redes sociales del pie
+
+Sirve para mostrar en el pie del sitio los perfiles de la comunidad: cada red que tenga una dirección aparece con su
+logo. Las que dejes vacías no aparecen.
+
+**Pasos.**
+1. Abre **Páginas** en el panel y entra en **Redes sociales**.
+2. En el campo de cada red, pega la dirección completa del perfil, que empiece con `https://`. Por ejemplo:
+   `https://www.instagram.com/tu_cuenta`, o para Mastodon `https://mastodon.social/@bioing`.
+3. Para quitar una red, borra su dirección y deja el campo vacío.
+4. Guarda.
+
+**Qué cambia.** El pie muestra un ícono por cada red con dirección, en el orden fijo: Instagram, Facebook, X, LinkedIn,
+YouTube, TikTok, Threads, Bluesky y Mastodon / Fediverso. La página **Instagram** usa la dirección de Instagram para su
+botón «Seguir en Instagram»; si la dejas vacía, el botón no aparece. Las redes también quedan en los datos del sitio
+que leen los buscadores.
+
+**Cómo comprobar que quedó bien.** Recarga el sitio y mira el pie: cada ícono debe llevar al perfil correcto (se abre en
+una ventana nueva). Los cambios se publican en uno o dos minutos después de guardar.
+
+> Si la red que quieres no está en la lista, avisa al equipo de desarrollo: agregar una red nueva exige un cambio en el
+> código, no solo en el panel.
+
 ## 5. Imágenes y archivos
 
 - **Qué se puede subir.** Imágenes de mapa de bits (JPG, PNG y similares). Las fotos de iPhone en HEIC se
@@ -834,6 +857,12 @@ sobre fondo gris y, si hay bloques, la franja oscura. Sin ninguno, es una column
 | Campo (label) | Obligatorio | Para qué sirve |
 |---|---|---|
 | Nombre | Sí | Nombre de la entrada en la lista (Áreas o Temas) |
+
+### Redes sociales
+
+| Campo (label) | Obligatorio | Para qué sirve |
+|---|---|---|
+| Instagram, Facebook, X (Twitter), LinkedIn, YouTube, TikTok, Threads, Bluesky, Mastodon / Fediverso | No | Dirección completa del perfil (`https://…`). Vacío = la red no aparece en el pie |
 
 ## Apéndice B · Preguntas frecuentes
 

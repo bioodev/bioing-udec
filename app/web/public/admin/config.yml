@@ -410,6 +410,65 @@ collections:
           - { name: directorio, label: "Sección «Directorio» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
           - { name: anuncios, label: "Sección «Anuncios» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
           - { name: repositorio, label: "Sección «Repositorio» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
+      - name: redes
+        label: Redes sociales
+        file: /app/web/src/content/redes/redes.yml
+        format: yml
+        fields:
+          - name: instagram
+            label: "Instagram"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Dirección completa del perfil, p. ej.: https://www.instagram.com/tu_cuenta. Déjalo vacío si no hay perfil en esta red."
+          - name: facebook
+            label: "Facebook"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Dirección completa del perfil, p. ej.: https://www.facebook.com/tu_pagina. Déjalo vacío si no hay perfil en esta red."
+          - name: x
+            label: "X (Twitter)"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Dirección completa del perfil, p. ej.: https://x.com/tu_cuenta. Déjalo vacío si no hay perfil en esta red."
+          - name: linkedin
+            label: "LinkedIn"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Dirección completa del perfil, p. ej.: https://www.linkedin.com/company/tu-organizacion. Déjalo vacío si no hay perfil en esta red."
+          - name: youtube
+            label: "YouTube"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Dirección completa del perfil, p. ej.: https://www.youtube.com/@tu_canal. Déjalo vacío si no hay perfil en esta red."
+          - name: tiktok
+            label: "TikTok"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Dirección completa del perfil, p. ej.: https://www.tiktok.com/@tu_cuenta. Déjalo vacío si no hay perfil en esta red."
+          - name: threads
+            label: "Threads"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Dirección completa del perfil, p. ej.: https://www.threads.net/@tu_cuenta. Déjalo vacío si no hay perfil en esta red."
+          - name: bluesky
+            label: "Bluesky"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "Dirección completa del perfil, p. ej.: https://bsky.app/profile/tu-cuenta.bsky.social. Déjalo vacío si no hay perfil en esta red."
+          - name: mastodon
+            label: "Mastodon / Fediverso"
+            widget: string
+            required: false
+            pattern: ['^https://', 'Debe empezar con https://']
+            hint: "La dirección de tu perfil en cualquier instancia, p. ej. https://mastodon.social/@bioing. Déjalo vacío si no hay perfil en esta red."
 
   # ── Páginas libres (se crean desde el panel; cada una vive en /p/<slug>) ──
 

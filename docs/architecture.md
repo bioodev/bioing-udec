@@ -99,6 +99,8 @@ enlaces. Las páginas publicadas (`paginasParaMenu()` en `src/lib/contenido.ts`)
 
 **Secciones desactivadas del todo** (ADR 0008): `seccionActiva` y `enlaceDisponible` (`navegacion.ts`) deciden qué se publica. `astro.config.mjs` lee `menu.yml` con `leerConfigMenu` y registra la integración `src/integrations/secciones-desactivadas.ts`, que en `astro:build:done` borra de `dist/` las rutas inactivas, filtra el sitemap y cambia por texto los enlaces a ellas en el HTML (con aviso). El Inicio (`index.astro`) y la ficha de persona filtran sus bloques y migajas con las mismas funciones.
 
+**Redes sociales en el pie**: el archivo único `src/content/redes/redes.yml` (colección `redes` en `content.config.ts`, editado como archivo «Redes sociales» de la colección `paginas` en `config.yml`) tiene una URL opcional por red (ADR 0009). `configuracionRedes()` (`src/lib/contenido.ts`) lo lee; `redesVisibles` y `urlsRedes` (`src/lib/redes.ts`, puro y probado en `redes.test.ts`) filtran las vacías y dan el orden. `RedesSociales.astro` dibuja los íconos en la columna de marca del pie, `Base.astro` pasa las URLs a `sitioWeb` (`sameAs`) y `instagram.astro` toma la URL de Instagram de aquí.
+
 **Referencias entre colecciones**: guardan el slug (`entry.id`) de la entrada referenciada. Una referencia
 rota (p. ej. una Persona borrada que sigue mencionada) se registra como `[ERROR] [content] Invalid content
 reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEntries()` con `existentes()`
