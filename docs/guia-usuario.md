@@ -16,8 +16,11 @@ inventan pantallas).
 
 - Resumen de una pantalla: crear, editar, previsualizar y publicar todo el contenido del sitio.
 - Lo que **sí** se administra desde el panel: Noticias, Actividades, Anuncios, Documentos, Personas
-  (Fichas y Directorio), Organizaciones, Banners del Inicio, Páginas libres (incluida ¿Qué es la Bioingeniería?), Publicaciones de
+  (Fichas y Directorio), Organizaciones, Banners del Inicio, Páginas (incluida ¿Qué es la Bioingeniería?), Publicaciones de
   Instagram, y las listas de Áreas y Temas.
+- La sección **Archivos** (Inicio, Secciones del sitio, Redes sociales, SEO del sitio y Encabezados de los
+  listados) no es contenido: son cinco archivos únicos que se editan siempre en el mismo lugar, al final de la lista del
+  panel. **Páginas** no es la configuración: son páginas propias del sitio que se crean y se publican por separado.
 - Lo que **no** se hace desde el panel: cambiar el diseño, agregar secciones nuevas, pegar código, gestionar
   cuentas o usuarios, y (por ahora) aprobar contenido de otras personas.
 
@@ -81,9 +84,11 @@ y puedes abrir una entrada sin error.
 
 ### 2.3 La pantalla del panel
 
-- Cómo está organizado: las colecciones (Personas, Organizaciones, Noticias, Agenda, Anuncios, Repositorio,
-  Banners, Páginas, Instagram, Áreas, Temas) en una lista, un buscador interno y el botón de guardar
-  _(por verificar en el panel: disposición exacta)_.
+- Cómo está organizado: el menú lateral agrupa las colecciones en tres bloques separados por una línea:
+  **Contenido** (Noticias, Agenda, Anuncios, Repositorio, Banners, Páginas, Instagram), **Comunidad** (Personas,
+  Organizaciones) y **Listas** (Áreas, Temas). Al final va la sección **Archivos** (Inicio, Secciones del sitio,
+  Redes sociales, SEO del sitio y Encabezados de los listados). Cada colección tiene un buscador interno y el botón de
+  guardar _(por verificar en el panel: disposición exacta)_.
 - Cómo se guarda un borrador: deja **Publicado** desactivado y guarda. Para revisar cómo se ve, usa la vista
   previa del panel, pero **recuerda que no es idéntica al sitio**: revisa el resultado en el sitio, en celular
   y en computador.
@@ -135,31 +140,32 @@ organizaciones.
 **Pasos.**
 1. Ve a la colección **Noticias** y crea una entrada nueva.
 2. Escribe el **Título** y la **Fecha de publicación**.
-3. Sube la **Imagen destacada** y escribe su **Texto alternativo de la imagen**: describe lo que se ve, sin
+3. Escribe la **Bajada**: una o dos frases que acompañan el título.
+4. Escribe el **Cuerpo** (ver §5 para imágenes, enlaces y listas). Va justo después de la Bajada, así que no hace
+   falta bajar hasta el final del formulario.
+5. Sube la **Imagen destacada** y escribe su **Texto alternativo de la imagen**: describe lo que se ve, sin
    repetir el título.
-4. Escribe la **Bajada**: una o dos frases que acompañan el título.
-5. Asigna **Temas** (editoriales) y **Áreas** (profesionales).
-6. Vincula **Personas mencionadas** y **Organizaciones mencionadas**. Solo se pueden elegir entradas que ya
+6. Asigna **Temas** (editoriales) y **Áreas** (profesionales).
+7. Vincula **Personas mencionadas** y **Organizaciones mencionadas**. Solo se pueden elegir entradas que ya
    existen: si falta alguna, créala antes (ver §4.8 y §4.9).
    _(por verificar en el panel: crear una Persona nueva desde la misma Noticia, sin salir de ella)._
-7. Si la Noticia es la cobertura de una Actividad ya realizada, elígela en **Actividad que cubre**. Si
+8. Si la Noticia es la cobertura de una Actividad ya realizada, elígela en **Actividad que cubre**. Si
    corresponde a una publicación de Instagram, elígela en **Publicación de Instagram relacionada**.
-8. Opcional: en **Video (YouTube)** pega el enlace del video (solo YouTube; se muestra debajo del cuerpo, en una
+9. Opcional: en **Video (YouTube)** pega el enlace del video (solo YouTube; se muestra debajo del cuerpo, en una
    ventana que se abre al hacer clic). En **Galería de imágenes** agrega hasta 12 imágenes; cada una lleva su
    **Texto alternativo**. Opcional: en **Enlaces** agrega botones (ver el recuadro de abajo). Y en **Contenido
    incrustado** pega enlaces públicos (ver el recuadro de abajo).
-9. Escribe el **Cuerpo** (ver §5 para imágenes, enlaces y listas).
 10. Activa **Publicado** y guarda.
 
 > _Pantallazo pendiente: formulario de la Noticia (imagen destacada, Galería y Cuerpo)._
 
-**Enlaces** (Noticias, Actividades y Páginas libres). Son botones con un texto corto que aparecen bajo el título y
+**Enlaces** (Noticias, Actividades y Páginas). Son botones con un texto corto que aparecen bajo el título y
 llevan a otra página: inscripción, transmisión, más información, bases. Cada uno tiene una **Etiqueta** (el texto
 del botón, p. ej. «Ver transmisión») y una **Dirección** (con `https://`, o una ruta del sitio como `/agenda`). Hasta
 6 por ficha. Los que llevan a otro sitio se abren en una pestaña nueva. Para **reproducir** un video, un audio o una
 publicación, no uses Enlaces: usa **Contenido incrustado**.
 
-**Contenido incrustado** (Noticias, Actividades y Páginas libres). Pega la dirección pública del contenido, la que aparece en la
+**Contenido incrustado** (Noticias, Actividades y Páginas). Pega la dirección pública del contenido, la que aparece en la
 barra del navegador. El sitio arma el reproductor solo; no hace falta copiar código.
 - **Se ven como reproductor:** Spotify (episodios, programas, listas, álbumes y artistas), SoundCloud, Apple
   Podcasts, Deezer, Audiomack, Acast y Audioboom; YouTube (videos, Shorts y listas), Vimeo (también los privados con
@@ -297,7 +303,7 @@ bien.
 
 ### 4.5 Editar ¿Qué es la Bioingeniería?
 
-**Objetivo:** mantener al día la página institucional de la carrera. Es una **Página libre** (§4.12), así que se
+**Objetivo:** mantener al día la página institucional de la carrera. Es una **Página** (§4.12), así que se
 edita igual que cualquier otra y tiene su interruptor **Publicado**.
 
 **Dirección:** `/p/bioingenieria`. La página ya no existe en `/bioingenieria`, y no hay redirección.
@@ -308,7 +314,7 @@ edita igual que cualquier otra y tiene su interruptor **Publicado**.
 - Mostrar en: «Menú «La carrera»», que es como aparece en el menú.
 
 **Pasos.**
-1. Ve a **Páginas libres** → **¿Qué es la Bioingeniería?**.
+1. Ve a **Páginas** → **¿Qué es la Bioingeniería?**.
 2. Revisa el **Título** y escribe la **Bajada**.
 3. En **Video (YouTube)**, pega el enlace del video. Solo se reconocen enlaces de YouTube.
 4. En **Bloques destacados**, agrega un bloque por cada característica: **Título** y **Texto**. Si quieres un
@@ -500,7 +506,7 @@ conserva una y reasigna el contenido.
 **Objetivo:** cambiar los bloques con foto que aparecen al final de la portada, agregar otros o ocultarlos. El
 Directorio y el Repositorio ya no van aquí: tienen su propia banda (ver más abajo).
 
-**Campos** (en la página **Inicio** del panel, lista **Secciones destacadas**):
+**Campos** (en **Inicio**, dentro de **Archivos**; lista **Secciones destacadas**):
 - **Título**, **Texto** y **Texto del botón**.
 - **Enlace del botón**: una ruta interna que empieza con `/` (p. ej. `/directorio`) o una dirección completa que
   empieza con `https://`.
@@ -509,7 +515,7 @@ Directorio y el Repositorio ya no van aquí: tienen su propia banda (ver más ab
 - **Publicado**: desmárcalo para ocultar la sección sin borrarla.
 
 **Pasos.**
-1. Abre **Inicio** en el panel.
+1. Abre **Inicio** en **Archivos**.
 2. Para cambiar una sección, despliégala y edita sus campos. Para agregar otra, usa el botón de agregar de la lista.
 3. El orden de la lista es el orden en la portada: reordénalas en la lista según corresponda.
 4. Guarda.
@@ -526,7 +532,7 @@ lista. El botón lleva a donde corresponde.
 **Objetivo:** cambiar los textos de las tarjetas del Directorio y del Repositorio en la portada, o agregarles una foto.
 Las cifras y los documentos no se escriben a mano: se calculan solos.
 
-**Campos** (en la página **Inicio** del panel, sección **Comunidad y documentos**):
+**Campos** (en **Inicio**, dentro de **Archivos**; sección **Comunidad y documentos**):
 - **Título de la banda**: el encabezado que va sobre las tarjetas.
 - **Tarjeta del Directorio** y **Tarjeta del Repositorio**, cada una con: **Título**, **Texto**, **Texto del botón**,
   **Foto** (opcional, pequeña y horizontal) y **Texto alternativo de la foto** (déjalo vacío si la foto es solo
@@ -539,7 +545,7 @@ Las cifras y los documentos no se escriben a mano: se calculan solos.
 - Un buscador por nombre en el Directorio: lo que se escribe lleva al Directorio con la lista ya filtrada.
 
 **Pasos.**
-1. Abre **Inicio** en el panel y ve a **Comunidad y documentos**.
+1. Abre **Inicio** en **Archivos** y ve a **Comunidad y documentos**.
 2. Edita los textos de cada tarjeta o sube una foto.
 3. Guarda.
 
@@ -556,7 +562,7 @@ nombre en el buscador del Directorio y pulsa «Buscar»: debe abrir el Directori
 **Objetivo:** publicar un texto propio (becas, normas, preguntas frecuentes, historia de la carrera) con su
 dirección en el sitio, y decidir si aparece en un menú, en el pie o solo se llega desde un Banner.
 
-**Campos** (colección **Páginas libres**):
+**Campos** (colección **Páginas**):
 - **Título** y **Bajada** (obligatoria): la bajada va bajo el título, en buscadores y en el menú.
 - **Publicado**: mientras esté desmarcado, la página no tiene dirección (da 404).
 - **Imagen destacada** y **Texto alternativo** (opcional): describe lo que se ve, sin repetir el título.
@@ -582,7 +588,7 @@ dirección en el sitio, y decidir si aparece en un menú, en el pie o solo se ll
 Con video o bloques, la página se ve como **¿Qué es la Bioingeniería?**; sin ninguno, como una columna de texto.
 
 **Pasos.**
-1. Abre **Páginas libres** en el panel y crea una entrada nueva.
+1. Abre **Páginas** en el panel y crea una entrada nueva.
 2. Escribe el **Título**. El panel genera la dirección a partir de él: `/p/` seguido del título en minúsculas
    y con guiones. Revísala antes de enlazar la página.
 3. Escribe la **Bajada** (una o dos líneas).
@@ -607,7 +613,7 @@ aparece en la lista del pie. Si elegiste *Ninguno*, no aparece en ningún menú,
 Sirve para quitar temporalmente una sección (por ejemplo, Anuncios fuera de temporada) sin borrar nada.
 
 **Pasos.**
-1. Abre **Páginas** en el panel y entra en **Secciones del sitio**.
+1. Abre **Secciones del sitio** en el panel (está en **Archivos**, al final de la lista).
 2. Desmarca la casilla de cada sección que quieras quitar. Las que dejes marcadas siguen visibles. Para Noticias y Agenda la casilla dice «Mostrar… en el menú»; para las demás, «Sección… activa».
 3. Guarda.
 
@@ -621,7 +627,7 @@ Sirve para mostrar en el pie del sitio los perfiles de la comunidad: cada red qu
 logo. Las que dejes vacías no aparecen.
 
 **Pasos.**
-1. Abre **Páginas** en el panel y entra en **Redes sociales**.
+1. Abre **Redes sociales** en el panel (está en **Archivos**, al final de la lista).
 2. En el campo de cada red, pega la dirección completa del perfil, que empiece con `https://`. Por ejemplo:
    `https://www.instagram.com/tu_cuenta`, o para Mastodon `https://mastodon.social/@bioing`.
 3. Para quitar una red, borra su dirección y deja el campo vacío.
@@ -645,8 +651,8 @@ WhatsApp, Facebook o LinkedIn. Casi nunca hace falta tocar nada: si los campos q
 la bajada y la imagen de cada página.
 
 **Dos lugares:**
-- **SEO del sitio** (en **Páginas**): valores generales de todo el sitio.
-- **SEO (opcional)**: un bloque plegado dentro de Noticias, Actividades, Anuncios, Documentos, Páginas libres y
+- **SEO del sitio** (en **Archivos**): valores generales de todo el sitio.
+- **SEO (opcional)**: un bloque plegado dentro de Noticias, Actividades, Anuncios, Documentos, Páginas y
   Personas. Solo afecta a esa ficha.
 
 **SEO del sitio: qué es cada campo.**
@@ -671,7 +677,7 @@ la bajada y la imagen de cada página.
   publicada y enlazada en el sitio, pero sale del mapa del sitio y del buscador del sitio.
 
 **Pasos.**
-1. Abre **Páginas** y entra en **SEO del sitio**, o abre el contenido que quieres ajustar.
+1. Abre **SEO del sitio** (en **Archivos**), o abre el contenido que quieres ajustar.
 2. Despliega **SEO (opcional)** y completa solo los campos que necesites.
 3. Guarda.
 
@@ -681,7 +687,7 @@ cambio de descripción.
 
 > Un título o una descripción demasiado largos se cortan en Google. Por eso los campos tienen límite de caracteres.
 
-**Vista previa en el panel.** Al editar Noticias, Actividades, Anuncios, Documentos, Páginas libres o Personas, a la
+**Vista previa en el panel.** Al editar Noticias, Actividades, Anuncios, Documentos, Páginas o Personas, a la
 derecha del formulario aparece la vista previa. Va en este orden:
 - **Así se ve el contenido**: primero, una vista simple del título, la bajada, la imagen y el cuerpo de la entrada. En
   una Persona muestra su nombre, su descripción breve y su foto (no tiene cuerpo).
@@ -712,9 +718,9 @@ Sirve para dar identidad visual a Noticias, Agenda, Anuncios, Repositorio, Direc
 egresado/a y no apareces?» de `/directorio`. Todo es opcional: si los campos quedan vacíos, la página se ve como siempre.
 
 **Dónde.**
-- **Encabezados de los listados** (en **Páginas**): un bloque por listado, con **Imagen de cabecera**, **Texto
+- **Encabezados de los listados** (en **Archivos**): un bloque por listado, con **Imagen de cabecera**, **Texto
   alternativo de la imagen** y **Ícono junto al título**.
-- **Secciones del sitio** (en **Páginas**): **Imagen del bloque «¿Eres egresado/a?»**, su texto alternativo y el
+- **Secciones del sitio** (en **Archivos**): **Imagen del bloque «¿Eres egresado/a?»**, su texto alternativo y el
   **Ícono del bloque**.
 
 **Cómo queda.**
@@ -725,7 +731,7 @@ egresado/a y no apareces?» de `/directorio`. Todo es opcional: si los campos qu
   decorativa, déjalo vacío.
 
 **Pasos.**
-1. Abre **Páginas** y entra en **Encabezados de los listados** (o en **Secciones del sitio** para el bloque del Directorio).
+1. Abre **Encabezados de los listados** (en **Archivos**) o, para el bloque del Directorio, **Secciones del sitio**.
 2. Despliega el listado que quieres cambiar, sube la imagen, escribe el texto alternativo y elige el ícono.
 3. Guarda. El cambio se publica en uno o dos minutos.
 
@@ -961,7 +967,7 @@ Los términos completos están en [`context.md`](context.md).
 | Inicio de vigencia | Sí | Desde cuándo se muestra |
 | Fin de vigencia | Sí | Hasta cuándo se muestra |
 
-### Páginas libres
+### Páginas
 
 | Campo (label) | Obligatorio | Para qué sirve |
 |---|---|---|
@@ -1006,9 +1012,9 @@ sobre fondo gris y, si hay bloques, la franja oscura. Sin ninguno, es una column
 
 ### SEO
 
-- **SEO del sitio** (Páginas): descripción del sitio, imagen por defecto, descripción de cada listado y códigos de
+- **SEO del sitio** (en **Archivos**): descripción del sitio, imagen por defecto, descripción de cada listado y códigos de
   verificación de buscadores. Todo opcional.
-- **SEO (opcional)** (Noticias, Actividades, Anuncios, Documentos, Páginas libres y Personas): título y descripción para
+- **SEO (opcional)** (Noticias, Actividades, Anuncios, Documentos, Páginas y Personas): título y descripción para
   buscadores y redes (máx. 60 y 160 caracteres), imagen para compartir y «No mostrar en buscadores».
 
 Detalle en la sección 4.15.

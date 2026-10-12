@@ -35,3 +35,7 @@ debe poder actualizar el equipo desde el panel, sin tocar código.
   sin validar contra los íconos disponibles, y hay que resolver cada red desconocida.
 - **Enlaces en el pie como Páginas libres**: sin íconos, y mezcla los perfiles con el contenido del sitio.
 - **Dejar la cuenta fija en el código** (estado anterior): obliga a un cambio de código por cada cambio de perfil.
+
+## Nota (2026-10-12)
+
+Los archivos de la colección `paginas` (Inicio, Secciones del sitio, Redes sociales, SEO del sitio y Encabezados de los listados) están desde esta fecha en `singletons` del panel, en la sección «Archivos» (ADR 0013). Las rutas de archivo no cambiaron.

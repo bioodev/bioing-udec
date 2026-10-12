@@ -61,3 +61,7 @@ carrera pidió poder crear páginas desde el panel, algunas enlazadas desde un B
 - **Orden manual del menú** (un campo de posición): descartado. El orden alfabético basta y no hay un número que
   mantener.
 - **Páginas con diseño especial desde el panel:** descartado; siguen requiriendo código (ver `guia-evolucion.md` §3.5).
+
+## Nota (2026-10-12)
+
+Los archivos de la colección `paginas` (Inicio, Secciones del sitio, Redes sociales, SEO del sitio y Encabezados de los listados) están desde esta fecha en `singletons` del panel, en la sección «Archivos» (ADR 0013). Las rutas de archivo no cambiaron.
