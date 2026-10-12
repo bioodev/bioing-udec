@@ -95,6 +95,8 @@ enlaces. Las páginas publicadas (`paginasParaMenu()` en `src/lib/contenido.ts`)
 (desplegables «La carrera» y «Comunidad», y su menú móvil) y `enlacesFooter` (pie de `Base.astro`), según
 `mostrar_en`. Las funciones son puras y están probadas en `navegacion.test.ts`.
 
+**Secciones ocultables**: el archivo único `src/content/menu/menu.yml` (colección `menu` en `content.config.ts`, editado como archivo «Menú» de la colección `paginas` en `config.yml`) tiene un booleano por sección fija. `configuracionMenu()` (`src/lib/contenido.ts`) lo lee; `seccionVisible` y `filtrarMenu` (`navegacion.ts`) lo aplican en `Navbar.astro`, en el pie de `Base.astro` (también en el bloque «Comunidad») y en `seccionesLlms` (`llms.ts`). Si el archivo o una clave falta, la sección se muestra. Ocultar no toca las páginas: `[seccion].astro` sigue generando solo las rutas «Próximamente».
+
 **Referencias entre colecciones**: guardan el slug (`entry.id`) de la entrada referenciada. Una referencia
 rota (p. ej. una Persona borrada que sigue mencionada) se registra como `[ERROR] [content] Invalid content
 reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEntries()` con `existentes()`
