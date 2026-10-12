@@ -167,6 +167,21 @@ const paginas = defineCollection({
   }),
 });
 
+// Páginas libres: se crean desde el panel (una por archivo). Se publican en /paginas/<slug> y `mostrar_en`
+// decide si aparecen en el menú o en el pie (ver src/lib/navegacion.ts).
+const paginasLibres = defineCollection({
+  loader: md('paginas-libres'),
+  schema: ({ image }) =>
+    z.object({
+      titulo: z.string(),
+      publicado,
+      bajada: z.string(),
+      imagen: image().optional(),
+      imagen_alt: z.string().optional(),
+      mostrar_en: z.enum(['ninguno', 'footer', 'la-carrera', 'comunidad']).default('ninguno'),
+    }),
+});
+
 // Secciones destacadas del Inicio (archivo único; el orden de la lista es el orden en la página).
 const inicio = defineCollection({
   loader: md('inicio'),
@@ -205,5 +220,5 @@ const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginas, inicio, instagram, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginas, paginasLibres, inicio, instagram, areas, temas,
 };

@@ -371,6 +371,32 @@ collections:
               - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Descripción de la imagen para lectores de pantalla. Déjalo vacío si la imagen es solo decorativa." }
               - { name: publicado, label: Publicado, widget: boolean, default: true }
 
+  # ── Páginas libres (se crean desde el panel; cada una vive en /paginas/<slug>) ──
+
+  - name: paginas_libres
+    label: Páginas libres
+    label_singular: Página libre
+    folder: /app/web/src/content/paginas-libres
+    identifier_field: titulo
+    summary: "{{titulo}} · {{mostrar_en}} {{publicado | ternary('', '(borrador)')}}"
+    fields:
+      - { name: titulo, label: Título, widget: string }
+      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - { name: bajada, label: Bajada, widget: text, hint: "Una o dos líneas. Va bajo el título, en buscadores y en el desplegable del menú." }
+      - { name: imagen, label: Imagen destacada, widget: image, required: false }
+      - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título." }
+      - name: mostrar_en
+        label: Mostrar en
+        widget: select
+        default: ninguno
+        options:
+          - { label: "Ninguno (solo se llega por un enlace, p. ej. un Banner)", value: ninguno }
+          - { label: Pie de página, value: footer }
+          - { label: "Menú «La carrera»", value: la-carrera }
+          - { label: "Menú «Comunidad»", value: comunidad }
+        hint: "«Menú» la agrega al desplegable del navbar y también al pie. «Pie de página» solo al pie."
+      - { name: body, label: Contenido, widget: richtext }
+
   - name: instagram
     label: Instagram
     label_singular: Publicación de Instagram

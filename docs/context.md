@@ -145,6 +145,14 @@ _Avoid_: Archivo, recurso
 La colección buscable de Documentos.
 _Avoid_: Biblioteca, archivo, drive
 
+**Página libre**:
+Página de texto creada desde el panel (título, bajada, imagen opcional y contenido) que vive en `/paginas/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner).
+_Avoid_: Página institucional, página, artículo
+
+**Página institucional**:
+Página de diseño a medida y archivo único (hoy, ¿Qué es la Bioingeniería?). El Encargado de comunicaciones edita sus textos desde el panel, pero cambiar su estructura requiere código. No es una Página libre.
+_Avoid_: Página libre, página fija
+
 **Banner**:
 Pieza de portada con vigencia (inicio y fin) que enlaza a un contenido del sitio o a una URL externa; es el único mecanismo para destacar algo en el Inicio.
 _Avoid_: Destacado, slider, hero
