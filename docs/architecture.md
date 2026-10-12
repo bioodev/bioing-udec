@@ -107,6 +107,8 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 | `/repositorio` · `/repositorio/[id]` | Buscador de Documentos + ficha con vista previa |
 | `/instagram` | Publicaciones seleccionadas |
 | `/buscar` | Buscador general (Pagefind; solo funciona en build/preview) |
+  Pagefind necesita `'wasm-unsafe-eval'` en `script-src` de la CSP pública (`public/_headers`) para compilar su WASM;
+  sin eso el campo aparece pero no devuelve resultados. No habilita `eval` de JavaScript.
 | `/anuario` | Anuario imprimible de egresados/as (imprimir → PDF) |
 | `/noticias/rss.xml` · `/agenda/rss.xml` · `/robots.txt` · `/llms.txt` · `/sitemap-index.xml` | Artefactos generados |
 | `/404` · `/componentes` | 404 del sitio · catálogo interno (solo en `npm run dev`) |
