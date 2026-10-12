@@ -145,9 +145,9 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
   carga `lazy`. Mantener estos atributos al agregar imágenes.
 - Al **subir** desde el panel, `config.yml` reduce a 2048 px, convierte a WebP calidad 85 y acepta HEIC.
 - Los **Documentos** van a Google Drive (cuenta central, enlace) o a Cloudflare R2; el sitio muestra la vista
-  previa correspondiente. Los embeds de terceros forman una lista cerrada y se cargan de forma diferida:
-  YouTube sin cookies, Vimeo, Drive y Docs, Instagram, Spotify, SoundCloud, Apple Podcasts, Facebook y Google
-  Maps. El **contenido incrustado** de Noticias y Actividades (campo `incrustados`) se convierte en
+  previa correspondiente. Los embeds de terceros forman una lista cerrada (la tabla de
+  `docs/guia-evolucion.md` §3.6) y se cargan de forma diferida: YouTube sin cookies, Spotify, Vimeo, Twitch,
+  TikTok, Instagram, Google Maps, entre otros. El **contenido incrustado** de Noticias y Actividades (campo `incrustados`) se convierte en
   `src/lib/incrustados.ts`, un parser puro con prueba: a partir de la URL pegada decide el reproductor (o la
   tarjeta-enlace para lo que no se incrusta) y es el único punto para sumar un proveedor. El componente
   `src/components/Incrustados.astro` lo renderiza.
