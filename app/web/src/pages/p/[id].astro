@@ -6,6 +6,7 @@ import Base from '@/layouts/Base.astro';
 import Migas from '@/components/Migas.astro';
 import VideoModal from '@/components/VideoModal.astro';
 import Incrustados from '@/components/Incrustados.astro';
+import Enlaces from '@/components/Enlaces.astro';
 import { paginasLibres } from '@/lib/contenido';
 import { idYouTube } from '@/lib/enlaces';
 import { migas } from '@/lib/schema';
@@ -37,6 +38,7 @@ const conDiseno = video !== null || bloques.length > 0;
         <Migas items={rutas} />
         <h1 class="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl">{pagina.data.titulo}</h1>
         <p class="mt-4 max-w-3xl text-xl text-muted-foreground">{pagina.data.bajada}</p>
+        <Enlaces items={pagina.data.enlaces ?? []} />
         {video && (
           <div class="mt-10 max-w-4xl">
             <VideoModal id={video} titulo={`Video: ${pagina.data.titulo}`} />
@@ -74,6 +76,7 @@ const conDiseno = video !== null || bloques.length > 0;
         <Migas items={rutas} />
         <h1 class="mt-6 text-4xl font-semibold tracking-tight">{pagina.data.titulo}</h1>
         <p class="mt-4 text-xl text-muted-foreground">{pagina.data.bajada}</p>
+        <Enlaces items={pagina.data.enlaces ?? []} />
         {pagina.data.imagen && <Image src={pagina.data.imagen} alt={pagina.data.imagen_alt ?? ''} class="mt-8 aspect-video w-full rounded-lg object-cover" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
       </header>
 

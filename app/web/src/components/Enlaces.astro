@@ -1,0 +1,33 @@
+---
+// Botones de Enlaces bajo el título. `principal` es el botón relleno (p. ej. la inscripción de una Actividad).
+import { Button } from '@/components/starwind/button';
+import { esInterno } from '@/lib/enlaces';
+import ArrowRight from 'phosphor-astro/ArrowRight.astro';
+import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
+
+interface Enlace { etiqueta: string; url: string }
+interface Props { items?: Enlace[]; principal?: Enlace }
+const { items = [], principal } = Astro.props;
+---
+{(principal || items.length > 0) && (
+  <nav aria-label="Enlaces" class="mt-6 flex flex-wrap gap-3">
+    {[...(principal ? [{ ...principal, variant: 'primary' as const }] : []), ...items.map((e) => ({ ...e, variant: 'outline' as const }))].map((e) => {
+      // Interno: flecha a la derecha y misma pestaña. Externo: se abre en una pestaña nueva.
+      const interno = esInterno(e.url, Astro.site);
+      const Icono = interno ? ArrowRight : ArrowUpRight;
+      return (
+        <Button
+          as="a"
+          href={e.url}
+          variant={e.variant}
+          class="w-full rounded-full sm:w-auto"
+          {...(interno ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+        >
+          {e.etiqueta}
+          <Icono class="size-4" aria-hidden="true" />
+          {!interno && <span class="sr-only">(se abre en una pestaña nueva)</span>}
+        </Button>
+      );
+    })}
+  </nav>
+)}

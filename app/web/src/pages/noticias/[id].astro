@@ -13,6 +13,7 @@ import { idYouTube } from '@/lib/enlaces';
 import VideoModal from '@/components/VideoModal.astro';
 import GaleriaImagenes from '@/components/GaleriaImagenes.astro';
 import Incrustados from '@/components/Incrustados.astro';
+import Enlaces from '@/components/Enlaces.astro';
 import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
@@ -66,6 +67,7 @@ const jsonLdPagina = [
       <Migas items={rutas} />
       <h1 class="mt-6 text-4xl font-semibold tracking-tight">{noticia.data.titulo}</h1>
       {noticia.data.bajada && <p class="mt-4 text-xl text-muted-foreground">{noticia.data.bajada}</p>}
+      <Enlaces items={noticia.data.enlaces ?? []} />
       {noticia.data.imagen && <Image src={noticia.data.imagen} alt={noticia.data.imagen_alt ?? ''} class="mt-8 aspect-video w-full rounded-lg object-cover" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
     </header>
 
