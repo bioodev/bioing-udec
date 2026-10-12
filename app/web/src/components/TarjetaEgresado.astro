@@ -7,7 +7,7 @@ interface Props { persona: CollectionEntry<'personas'>; areas: string[]; organiz
 const { persona, areas, organizacion } = Astro.props;
 const perfil = persona.data.perfil_egresado!;
 ---
-<li id={`persona-${persona.id}`} class="group relative rounded-lg border border-border bg-card p-5 tarjeta-elevada tarjeta-elevada-enlace hover:border-outline/60 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-outline"
+<li id={`persona-${persona.id}`} class="group relative rounded-lg border border-border bg-card p-5 tarjeta-elevada tarjeta-elevada-enlace has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-outline"
     data-nombre={normalizar(persona.data.nombre)}
     data-generacion={perfil.generacion?.toString() ?? ''}
     data-areas={(perfil.areas ?? []).map((a) => a.id).join(' ')}

@@ -309,7 +309,9 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 - Sin gradientes ni chrome decorativo. **Sombra tenue solo en las tarjetas** (clase `tarjeta-elevada`, en
   `starwind.css`): en reposo, una sombra muy leve además del borde. Las tarjetas que son enlace
   (`tarjeta-elevada-enlace`: Noticia, Actividad, Anuncio, Documento, Egresado) suben 2 px y ganan sombra al pasar el
-  puntero o con foco de teclado dentro, en ~200 ms; con `prefers-reduced-motion` solo cambia la sombra. Esto se aparta
+  puntero (solo en dispositivos con puntero, `@media (hover: hover)`, para que no quede pegado al tocar; además el
+  borde toma el color del foco, `--outline` al 60 %) o con foco de teclado dentro, en ~200 ms; con
+  `prefers-reduced-motion` no suben. Esto se aparta
   de la referencia Apple, que no usa sombras en tarjetas. **Sin sombras** en botones, texto, títulos, navbar ni
   secciones; los hairlines (`--border: #e0e0e0`) siguen separando.
 - Tipografía del sistema (`system-ui, -apple-system`) y radios amplios (`--radius: 18px`).

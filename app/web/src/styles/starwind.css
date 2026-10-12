@@ -217,7 +217,7 @@ html:has(dialog[open]:modal) {
 }
 
 /* Tarjetas (ver docs/design.md, «Estilo»): sombra tenue en reposo. Las que son enlace (`tarjeta-elevada-enlace`)
-   suben 2 px y ganan sombra con foco de teclado dentro y, en dispositivos con puntero, al pasar el mouse (en
+   suben 2 px y ganan sombra (y, con el mouse, borde de color) con foco de teclado dentro y, en dispositivos con puntero, al pasar el mouse (en
    pantallas táctiles el :hover quedaría pegado tras tocar). El desplazamiento solo con movimiento permitido. */
 @layer components {
   .tarjeta-elevada {
@@ -226,9 +226,6 @@ html:has(dialog[open]:modal) {
   }
   .tarjeta-elevada-enlace:has(:focus-visible) {
     box-shadow: var(--sombra-tarjeta-hover);
-  }
-  .dark .tarjeta-elevada-enlace:has(:focus-visible) {
-    border-color: color-mix(in srgb, var(--foreground) 25%, transparent);
   }
   @media (prefers-reduced-motion: no-preference) {
     .tarjeta-elevada-enlace:has(:focus-visible) {
@@ -239,8 +236,9 @@ html:has(dialog[open]:modal) {
     .tarjeta-elevada-enlace:hover {
       box-shadow: var(--sombra-tarjeta-hover);
     }
-    .dark .tarjeta-elevada-enlace:hover {
-      border-color: color-mix(in srgb, var(--foreground) 25%, transparent);
+    /* El borde toma el color del foco (como tenían Anuncios, Documentos y Egresados), en claro y en oscuro. */
+    .tarjeta-elevada-enlace:hover {
+      border-color: color-mix(in srgb, var(--outline) 60%, transparent);
     }
   }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
