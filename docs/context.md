@@ -25,7 +25,10 @@ Encargado de comunicaciones publique de forma autónoma sin depender de un servi
 INICIO | LA CARRERA ▾ (REPOSITORIO y las Páginas libres de «La carrera», como ¿QUÉ ES LA BIOINGENIERÍA?) | NOTICIAS | AGENDA | COMUNIDAD ▾ (DIRECTORIO, ANUNCIOS, INSTAGRAM y las Páginas libres de «Comunidad»),
 más un acceso permanente a la web de la FCB. En el sitio el menú es sticky.
 El panel puede ocultar cualquiera de estas secciones fijas (NOTICIAS, AGENDA, INSTAGRAM, DIRECTORIO, ANUNCIOS,
-REPOSITORIO): se quitan del menú, del pie y de `llms.txt`, pero su página sigue existiendo. INICIO no se oculta.
+REPOSITORIO). NOTICIAS y AGENDA solo se quitan del menú, del pie y de `llms.txt`. INSTAGRAM, DIRECTORIO, ANUNCIOS y
+REPOSITORIO se pueden **desactivar del todo**: dejan de publicarse (404), salen del sitemap, del buscador, del JSON-LD
+y del Inicio, y sus enlaces se omiten. El contenido no se borra. DIRECTORIO incluye el anuario. INICIO no se oculta.
+Decisión en `adr/0008-secciones-desactivables.md`.
 
 ### Secciones
 
