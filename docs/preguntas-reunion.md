@@ -138,7 +138,7 @@ _Propuesta:_ Para marzo de 2027: Inicio, ¿Qué es la Bioingeniería?, Directori
 **7.1 ¿«¿Qué es la Bioingeniería?» debe aparecer en el Inicio?**
 La propuesta la pone como ítem de primer nivel del menú y pide que el Inicio priorice el contenido dinámico, pero
 no la incluye en el Inicio. Hoy es una Página libre (`/p/bioingenieria`) y va primera en el menú «La carrera ▾».
-_Propuesta (prototipo en la rama `prototipo-destacado`, ADR 0006 en estado Proposed):_ un switch «Destacar en el
+_Implementado (ADR 0006), para validar con la contraparte:_ un switch «Destacar en el
 Inicio» en las Páginas libres. La página destacada se muestra como un bloque entre el carrusel y «Noticias
 recientes», con su resumen, el video en una ventana y un enlace «Ver más». Puntos a decidir:
 - ¿Una sola página destacada a la vez, o hasta dos? (Se propone una, para no alejar las noticias, sobre todo en

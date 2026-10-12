@@ -1,6 +1,6 @@
 # 0006 · Página destacada en el Inicio
 
-- **Estado:** Proposed · 2026-10-12 · prototipo en la rama `prototipo-destacado`, pendiente de aprobación
+- **Estado:** Accepted · 2026-10-12 · la persona decidió integrarlo; los detalles (cuántas páginas, resumen, datos clave) siguen abiertos en `preguntas-reunion.md` 7.1
 - **Decisores:** proveedor
 - **Contexto relacionado:** `0005-paginas-libres-desde-el-panel.md` · `../guia-usuario.md` §4.12 · `../design.md` («Página destacada»)
 
