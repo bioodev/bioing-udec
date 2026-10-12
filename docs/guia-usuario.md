@@ -16,7 +16,7 @@ inventan pantallas).
 
 - Resumen de una pantalla: crear, editar, previsualizar y publicar todo el contenido del sitio.
 - Lo que **sí** se administra desde el panel: Noticias, Actividades, Anuncios, Documentos, Personas
-  (Fichas y Directorio), Organizaciones, Banners del Inicio, ¿Qué es la Bioingeniería?, Publicaciones de
+  (Fichas y Directorio), Organizaciones, Banners del Inicio, Páginas libres (incluida ¿Qué es la Bioingeniería?), Publicaciones de
   Instagram, y las listas de Áreas y Temas.
 - Lo que **no** se hace desde el panel: cambiar el diseño, agregar secciones nuevas, pegar código, gestionar
   cuentas o usuarios, y (por ahora) aprobar contenido de otras personas.
@@ -65,8 +65,8 @@ y puedes abrir una entrada sin error.
 ### 2.2 Cómo se publica (reglas que conviene saber de memoria)
 
 - **Borrador vs Publicado**: el interruptor `Publicado` es lo que hace visible un contenido. Si está
-  desactivado, el contenido queda como borrador y no aparece en el sitio. (Las ¿Qué es la Bioingeniería?
-  no tienen interruptor: su contenido se publica al guardar.)
+  desactivado, el contenido queda como borrador y no aparece en el sitio. Esto vale también para las Páginas
+  libres, incluida ¿Qué es la Bioingeniería?.
 - **Cada guardado es un cambio en el repositorio.** Cada vez que guardas, el panel registra un cambio en la
   rama `main` del repositorio del sitio.
 - **El sitio se actualiza solo cuando el despliegue automático esté conectado.** Hoy, en la vista previa, **no
@@ -270,27 +270,34 @@ bien.
 
 ### 4.5 Editar ¿Qué es la Bioingeniería?
 
-**Objetivo:** mantener al día la página institucional de la carrera.
+**Objetivo:** mantener al día la página institucional de la carrera. Es una **Página libre** (§4.12), así que se
+edita igual que cualquier otra y tiene su interruptor **Publicado**.
+
+**Dirección:** `/p/bioingenieria`. La página ya no existe en `/bioingenieria`, y no hay redirección.
 
 **Campos.**
-- Obligatorios: Título, Bajada, Presentación.
-- Opcionales: Video institucional (YouTube), Características de la carrera (bloques con Título y Texto).
+- Obligatorios: Título, Bajada, Contenido.
+- Opcionales: Video (YouTube), Título de los bloques destacados, Bloques destacados (Título y Texto).
+- Mostrar en: «Menú «La carrera»», que es como aparece en el menú.
 
 **Pasos.**
-1. Ve a **Páginas** → **¿Qué es la Bioingeniería?**.
+1. Ve a **Páginas libres** → **¿Qué es la Bioingeniería?**.
 2. Revisa el **Título** y escribe la **Bajada**.
-3. En **Video institucional (YouTube)**, pega el enlace del video. Solo se reconocen enlaces de YouTube.
-4. En **Características de la carrera**, agrega un bloque por cada característica: **Título** y **Texto**.
-5. Escribe la **Presentación** (el texto principal).
-6. Guarda. Esta página no tiene interruptor **Publicado**: se publica al guardar.
+3. En **Video (YouTube)**, pega el enlace del video. Solo se reconocen enlaces de YouTube.
+4. En **Bloques destacados**, agrega un bloque por cada característica: **Título** y **Texto**. Si quieres un
+   título sobre ellos, escríbelo en **Título de los bloques destacados** (p. ej. «Características de la carrera»).
+5. Escribe el **Contenido** (el texto principal). Los enlaces del final (p. ej. «Conoce a los egresados/as» o
+   «Facultad de Ciencias Biológicas») son enlaces dentro del texto: para cambiarlos, edita ese párrafo.
+6. Marca **Publicado** y guarda.
 
-**Cómo comprobar que quedó bien.** Abre **¿Qué es la Bioingeniería?** en el sitio, en el celular y en el
+**Cómo comprobar que quedó bien.** Abre `/p/bioingenieria` en el sitio, en el celular y en el
 computador. Si hay video, se abre en una ventana al hacer clic.
 
 **Errores típicos:**
 - Pegar un enlace de otra plataforma de video: solo se reconoce YouTube, así que el video no se muestra.
 - Dejar la **Bajada** vacía: es obligatoria.
-- Un bloque de característica con el Texto vacío: ambos campos son obligatorios.
+- Un bloque destacado con el Texto vacío: ambos campos son obligatorios.
+- Enlazar `/bioingenieria` desde otro lado: esa dirección ya no existe; usa `/p/bioingenieria`.
 
 ### 4.6 Seleccionar una publicación de Instagram
 
@@ -338,7 +345,7 @@ ve el carrusel con varios banners en el celular)_.
 2. Escribe el **Título** y activa **Publicado** cuando esté listo.
 3. Sube la **Imagen**.
 4. Escribe el **Texto** (opcional).
-5. En **Enlace**, escribe una ruta interna (p. ej. `/noticias/mi-noticia` o `/paginas/mi-pagina`) o una dirección
+5. En **Enlace**, escribe una ruta interna (p. ej. `/noticias/mi-noticia` o `/p/mi-pagina`) o una dirección
    completa externa (p. ej. `https://…`).
 6. Escribe el **Inicio de vigencia** y el **Fin de vigencia** (fecha y hora, hora de Chile).
 7. Guarda.
@@ -491,19 +498,26 @@ dirección en el sitio, y decidir si aparece en un menú, en el pie o solo se ll
   - *Menú «La carrera»*: aparece en ese desplegable del menú (y en el menú del celular), y también en el pie.
   - *Menú «Comunidad»*: igual, en ese desplegable.
 - **Contenido**: el texto de la página.
+- **Video (YouTube)** (opcional): se muestra debajo de la bajada, en una ventana al hacer clic. Solo se reconocen
+  enlaces de YouTube.
+- **Título de los bloques destacados** y **Bloques destacados** (opcionales): una franja oscura después del
+  contenido, con un bloque por cada punto (Título y Texto). Si no escribes el título de los bloques, la franja no
+  lleva título.
+
+Con video o bloques, la página se ve como **¿Qué es la Bioingeniería?**; sin ninguno, como una columna de texto.
 
 **Pasos.**
 1. Abre **Páginas libres** en el panel y crea una entrada nueva.
-2. Escribe el **Título**. El panel genera la dirección a partir de él: `/paginas/` seguido del título en minúsculas
+2. Escribe el **Título**. El panel genera la dirección a partir de él: `/p/` seguido del título en minúsculas
    y con guiones. Revísala antes de enlazar la página.
 3. Escribe la **Bajada** (una o dos líneas).
 4. Sube una **Imagen destacada** si la necesitas, y completa su texto alternativo.
 5. Elige **Mostrar en**.
 6. Escribe el **Contenido**.
 7. Marca **Publicado** cuando esté lista y guarda.
-8. Si la página es de *Ninguno*, enlázala desde un Banner: en **Enlace**, escribe `/paginas/<la-dirección>`.
+8. Si la página es de *Ninguno*, enlázala desde un Banner: en **Enlace**, escribe `/p/<la-dirección>`.
 
-**Cómo comprobar que quedó bien.** Abre `/paginas/<la-dirección>` y revisa el título, la bajada, la imagen y el
+**Cómo comprobar que quedó bien.** Abre `/p/<la-dirección>` y revisa el título, la bajada, la imagen y el
 texto. Si elegiste un menú, la página aparece en el desplegable, con su bajada como descripción. Si elegiste el pie,
 aparece en la lista del pie. Si elegiste *Ninguno*, no aparece en ningún menú, pero el Banner lleva a ella.
 
@@ -727,7 +741,7 @@ Los términos completos están en [`context.md`](context.md).
 | Publicado | Sí (por defecto: no) | Hace visible el banner |
 | Texto | No | Texto que acompaña la imagen |
 | Imagen | Sí | Imagen de la diapositiva |
-| Enlace | Sí | Ruta interna (`/noticias/…` o `/paginas/…`) o URL externa |
+| Enlace | Sí | Ruta interna (`/noticias/…` o `/p/…`) o URL externa |
 | Inicio de vigencia | Sí | Desde cuándo se muestra |
 | Fin de vigencia | Sí | Hasta cuándo se muestra |
 
@@ -735,25 +749,21 @@ Los términos completos están en [`context.md`](context.md).
 
 | Campo (label) | Obligatorio | Para qué sirve |
 |---|---|---|
-| Título | Sí | Título de la página; la dirección `/paginas/…` sale de él |
+| Título | Sí | Título de la página; la dirección `/p/…` sale de él |
 | Publicado | Sí (por defecto: no) | Sin publicar, la página da 404 |
 | Bajada | Sí | Resumen bajo el título, en buscadores y en el menú |
 | Imagen destacada | No | Imagen sobre el texto |
 | Texto alternativo de la imagen | No | Descripción para lectores de pantalla |
 | Mostrar en | Sí (por defecto: Ninguno) | Ninguno, Pie de página, Menú «La carrera» o Menú «Comunidad» |
+| Video (YouTube) | No | Video que se abre en una ventana, debajo de la bajada |
+| Título de los bloques destacados | No | Título sobre la franja de bloques; vacío, la franja no lleva título |
+| Bloques destacados | No | Franja oscura después del contenido, en dos columnas |
+| ↳ Título | Sí dentro de cada bloque | Título del bloque |
+| ↳ Texto | Sí dentro de cada bloque | Texto del bloque |
 | Contenido | No | El texto de la página |
 
-### ¿Qué es la Bioingeniería? (página institucional)
-
-| Campo (label) | Obligatorio | Para qué sirve |
-|---|---|---|
-| Título | Sí | Título de la página |
-| Bajada | Sí | Texto breve que acompaña el título |
-| Video institucional (YouTube) | No | Video que se abre en una ventana |
-| Características de la carrera | No | Bloques de características |
-| ↳ Título | Sí dentro de cada bloque | Título de la característica |
-| ↳ Texto | Sí dentro de cada bloque | Texto de la característica |
-| Presentación | Sí | Texto principal de la página |
+Con video o bloques destacados, la página usa el diseño de **¿Qué es la Bioingeniería?**: cabecera ancha, texto
+sobre fondo gris y, si hay bloques, la franja oscura. Sin ninguno, es una columna de texto.
 
 ### Instagram (Publicaciones de Instagram)
 

@@ -9,6 +9,7 @@ import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
 import House from 'phosphor-astro/House.astro';
 import Flask from 'phosphor-astro/Flask.astro';
+import FileText from 'phosphor-astro/FileText.astro';
 import Newspaper from 'phosphor-astro/Newspaper.astro';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import Files from 'phosphor-astro/Files.astro';
@@ -27,7 +28,6 @@ const menu = menuConPaginas(MENU_PRINCIPAL, await paginasParaMenu());
 // Ícono de cada página para el menú móvil (las páginas sin ícono propio usan House).
 const iconos: Record<string, typeof House> = {
   '/': House,
-  '/bioingenieria': Flask,
   '/repositorio': Files,
   '/noticias': Newspaper,
   '/agenda': CalendarBlank,
@@ -35,7 +35,12 @@ const iconos: Record<string, typeof House> = {
   '/anuncios': Megaphone,
   '/instagram': InstagramLogo,
 };
-const iconoDe = (href: string) => iconos[href] ?? House;
+// Las Páginas libres usan un documento; «¿Qué es la Bioingeniería?» conserva el matraz.
+const iconoDe = (href: string) => {
+  if (href === '/p/bioingenieria') return Flask;
+  if (href.startsWith('/p/')) return FileText;
+  return iconos[href] ?? House;
+};
 
 const clasesEnlaceEscritorio = (activo: boolean) =>
   ['inline-flex h-full items-center border-b-2 px-1 whitespace-nowrap transition-colors hover:text-primary',

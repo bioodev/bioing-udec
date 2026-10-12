@@ -1,9 +1,12 @@
 ---
 titulo: ¿Qué es la Bioingeniería?
+publicado: true
 bajada: Contenido de ejemplo. La Bioingeniería combina biología, medicina e ingeniería para resolver problemas de salud, ambiente e industria.
+mostrar_en: la-carrera
 # Contenido de ejemplo: reemplazar por el video institucional
 video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
-caracteristicas:
+bloques_titulo: Características de la carrera
+bloques:
   - titulo: Formación científica
     texto: Contenido de ejemplo. Base sólida en ciencias biológicas, matemáticas y físicas aplicadas a problemas reales.
   - titulo: Ingeniería aplicada
@@ -17,3 +20,5 @@ caracteristicas:
 Contenido de ejemplo. Borrar cuando haya contenido real.
 
 La Bioingeniería es una disciplina que integra los principios de la biología, la medicina y la ingeniería. En la Universidad de Concepción se forma a profesionales capaces de diseñar, desarrollar y evaluar tecnologías y soluciones para la salud, el medio ambiente y la industria, con una mirada científica y un fuerte compromiso con la comunidad.
+
+[Conoce a los egresados/as](/directorio) · [Facultad de Ciencias Biológicas](https://www.udec.cl)

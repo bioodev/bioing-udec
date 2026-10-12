@@ -22,14 +22,14 @@ Encargado de comunicaciones publique de forma autónoma sin depender de un servi
 
 ### Menú principal
 
-INICIO | ¿QUÉ ES LA BIOINGENIERÍA? | NOTICIAS | AGENDA | INSTAGRAM | DIRECTORIO | ANUNCIOS | REPOSITORIO,
+INICIO | LA CARRERA ▾ (REPOSITORIO y las Páginas libres de «La carrera», como ¿QUÉ ES LA BIOINGENIERÍA?) | NOTICIAS | AGENDA | COMUNIDAD ▾ (DIRECTORIO, ANUNCIOS, INSTAGRAM y las Páginas libres de «Comunidad»),
 más un acceso permanente a la web de la FCB. En el sitio el menú es sticky.
 
 ### Secciones
 
 - **Inicio**: contenido destacado y dinámico (Banners, noticias recientes, próximas actividades, anuncios
   vigentes, publicaciones de Instagram).
-- **¿Qué es la Bioingeniería?**: contenido institucional y un video que se abre en un modal.
+- **¿Qué es la Bioingeniería?**: Página libre (`/p/bioingenieria`, en «La carrera») con contenido institucional, un video que se abre en un modal y bloques destacados.
 - **Noticias**: con buscador y filtros por Tema, Persona mencionada y fecha; más archivo.
 - **Agenda**: Actividades con ficha propia; próximas (orden cronológico) y realizadas (archivo).
 - **Anuncios**: oportunidades (trabajo, práctica, pasantía, proyecto, convocatoria, colaboración).
@@ -146,11 +146,11 @@ La colección buscable de Documentos.
 _Avoid_: Biblioteca, archivo, drive
 
 **Página libre**:
-Página de texto creada desde el panel (título, bajada, imagen opcional y contenido) que vive en `/paginas/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner).
+Página de texto creada desde el panel (título, bajada, imagen opcional, contenido, video de YouTube opcional y bloques destacados opcionales) que vive en `/p/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
 _Avoid_: Página institucional, página, artículo
 
 **Página institucional**:
-Página de diseño a medida y archivo único (hoy, ¿Qué es la Bioingeniería?). El Encargado de comunicaciones edita sus textos desde el panel, pero cambiar su estructura requiere código. No es una Página libre.
+Página de diseño a medida y archivo único. Hoy no hay ninguna: ¿Qué es la Bioingeniería? es una Página libre. Cambiar la estructura de una página de este tipo requiere código. No es una Página libre.
 _Avoid_: Página libre, página fija
 
 **Banner**:

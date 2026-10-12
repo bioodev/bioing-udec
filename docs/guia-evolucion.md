@@ -52,7 +52,7 @@ Las rutas son relativas a `app/web/` salvo que digan otra cosa.
 | Un dato que apunta a otra entrada | **Relación** (`widget: relation` + `reference()`) | `personas_mencionadas` en Noticias; `oferente` en Anuncios |
 | Un control o bloque visual reutilizable | **Componente** en `src/components/` | `TarjetaNoticia.astro`, `VideoModal.astro`, `FiltrosPlegables.astro`, `GaleriaImagenes.astro` |
 | Una pieza dentro del cuerpo de un texto (video, mapa, PDF) | **Componente de editor de Sveltia** + transformación en el build; o un campo dedicado | Ver §4. Hoy: campos `video` y `galeria` |
-| Una sección navegable con su propia URL | **Página nueva** (+ entrada en el menú) | `anuario.astro`, `bioingenieria.astro`, `instagram.astro` |
+| Una sección navegable con su propia URL | **Página nueva** (+ entrada en el menú) | `anuario.astro`, `instagram.astro` |
 | Un servicio externo que se incrusta | **Proveedor de embed** en la lista cerrada de la CSP | YouTube (`youtube-nocookie.com`), Vimeo, Drive, Instagram |
 
 Regla práctica: empezar por el nivel más bajo que resuelva el caso. Un campo nuevo es más barato que una
@@ -159,7 +159,7 @@ colección; una colección es más barata que una página nueva.
 
 - **Cuándo:** una sección con URL propia (por ejemplo, un listado institucional).
 - **Antes de programar, revisa si basta una Página libre** (ADR 0005). Una Página libre es un texto con título,
-  bajada, imagen y cuerpo, creable desde el panel en `/paginas/<slug>`, que aparece en «La carrera», en
+  bajada, imagen y cuerpo, creable desde el panel en `/p/<slug>`, que aparece en «La carrera», en
   «Comunidad», en el pie o en ninguno. **Basta** para textos informativos sin lógica propia (normas, becas,
   preguntas frecuentes, historia). **Hace falta código** para un listado o buscador, una tabla con datos
   propios, un diseño especial, un nuevo desplegable o un nuevo valor de `mostrar_en`.

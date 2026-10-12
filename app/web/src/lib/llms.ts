@@ -6,7 +6,6 @@ import { MENU } from './navegacion';
 /** Descripciones breves por sección, solo para llms.txt (no se agregan a navegacion.ts). */
 export const DESCRIPCIONES_SECCIONES: Record<string, string> = {
   '/': 'Portada: noticias y anuncios destacados de la comunidad.',
-  '/bioingenieria': 'Qué es la Bioingeniería y su campo de acción.',
   '/noticias': 'Noticias de la comunidad de Bioingeniería.',
   '/agenda': 'Actividades: seminarios, charlas, congresos y talleres.',
   '/instagram': 'Publicaciones de Instagram de la carrera.',

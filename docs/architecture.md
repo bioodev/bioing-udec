@@ -85,8 +85,7 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Anuncios** | título, tipo de oportunidad, Oferente, Áreas, fecha, fecha límite, Contacto, enlace |
 | **Documentos** | título, tipo, año, enlace (Drive), descripción, Temas, Áreas, palabras clave |
 | **Banners** | título, texto, imagen, enlace, inicio, fin |
-| **Páginas** | archivo único institucional (¿Qué es la Bioingeniería?): título, bajada, video, características |
-| **Páginas libres** | título, publicado, bajada (obligatoria), imagen y texto alternativo, `mostrar_en` (ninguno, footer, la-carrera, comunidad) y cuerpo; una por archivo en `src/content/paginas-libres/` (ADR 0005) |
+| **Páginas libres** | título, publicado, bajada (obligatoria), imagen y texto alternativo, `mostrar_en` (ninguno, footer, la-carrera, comunidad), video (YouTube), título y lista de bloques destacados, y cuerpo; una por archivo en `src/content/paginas-libres/` (ADR 0005). ¿Qué es la Bioingeniería? es una de ellas |
 | **Inicio** | archivo único `src/content/inicio/inicio.md`: lista de secciones destacadas (título, texto, botón, enlace, imagen, texto alternativo, publicado) |
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
@@ -106,14 +105,14 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 | Ruta | Página |
 |---|---|
 | `/` | Inicio (hero en carrusel de Banners, noticias, actividades, anuncios, Instagram, secciones destacadas con parallax) |
-| `/bioingenieria` | ¿Qué es la Bioingeniería? (video en modal) |
+| `/p/[id]` | Páginas libres publicadas; `/p/bioingenieria` es ¿Qué es la Bioingeniería? (video en modal y bloques destacados). `/bioingenieria` ya no existe y no redirige |
 | `/noticias` · `/noticias/[id]` | Listado con filtros y paginación de a 12 + ficha |
 | `/agenda` · `/agenda/[id]` | Próximas y realizadas (pestañas) + ficha |
 | `/anuncios` · `/anuncios/[id]` | Vigentes y archivo + ficha |
 | `/directorio` · `/personas/[id]` | Buscador de egresados/as + Ficha |
 | `/repositorio` · `/repositorio/[id]` | Buscador de Documentos + ficha con vista previa |
 | `/instagram` | Publicaciones seleccionadas |
-| `/paginas/[id]` | Página libre (solo las publicadas; aparece en el menú o el pie según `mostrar_en`) |
+| `/p/[id]` | Página libre (solo las publicadas; aparece en el menú o el pie según `mostrar_en`) |
 | `/buscar` | Buscador general (Pagefind; solo funciona en build/preview) |
   Pagefind necesita `'wasm-unsafe-eval'` en `script-src` de la CSP pública (`public/_headers`) para compilar su WASM;
   sin eso el campo aparece pero no devuelve resultados. No habilita `eval` de JavaScript.

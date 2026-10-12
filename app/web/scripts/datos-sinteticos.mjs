@@ -345,19 +345,29 @@ function generar() {
   }
 
   // Páginas libres: una por cada valor de `mostrar_en`. La de «ninguno» la enlaza un Banner (ver abajo).
+  // La de «la-carrera» trae video y bloques destacados, para probar el diseño de «¿Qué es la Bioingeniería?».
   const paginasLibres = [
     { titulo: 'Becas y apoyo estudiantil', mostrar_en: 'ninguno', bajada: 'Ayudas económicas y de alimentación para estudiantes de Bioingeniería.' },
-    { titulo: 'Historia de la carrera', mostrar_en: 'la-carrera', bajada: 'Desde la creación del programa hasta hoy.' },
+    {
+      titulo: 'Historia de la carrera', mostrar_en: 'la-carrera', bajada: 'Desde la creación del programa hasta hoy.',
+      video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', bloques_titulo: 'Hitos de la carrera',
+      bloques: [
+        { titulo: 'Creación del programa', texto: 'Contenido de prueba. Primeros años de la carrera y su plan de estudios.' },
+        { titulo: 'Primeras generaciones', texto: 'Contenido de prueba. Egresados y egresadas de los primeros cursos.' },
+        { titulo: 'Laboratorios', texto: 'Contenido de prueba. Equipamiento y espacios de trabajo a lo largo del tiempo.' },
+        { titulo: 'Hoy', texto: 'Contenido de prueba. Actividades, investigación y vinculación con la comunidad.' },
+      ],
+    },
     { titulo: 'Preguntas frecuentes', mostrar_en: 'footer', bajada: 'Respuestas a las consultas más comunes de estudiantes y egresados/as.' },
   ];
   const idsPaginas = {};
-  for (const { titulo, mostrar_en, bajada } of paginasLibres) {
+  for (const { titulo, mostrar_en, bajada, ...extra } of paginasLibres) {
     const demo = alguno(DEMOS);
     const id = idUnico('paginas-libres', titulo);
     idsPaginas[mostrar_en] = id;
     escribir('paginas-libres', id, {
       titulo, publicado: true, bajada, mostrar_en,
-      imagen: `@/assets/media/${demo}`, imagen_alt: DEMO_ALT[demo],
+      imagen: `@/assets/media/${demo}`, imagen_alt: DEMO_ALT[demo], ...extra,
     }, cuerpo({ secciones: 2, imagen: alguno(DEMOS) }));
   }
 
@@ -370,10 +380,10 @@ function generar() {
     ['Semana de la Bioingeniería', 'Charlas, talleres y encuentros con egresados', '/agenda'],
     ['Novedades de la comunidad', 'Lo último en noticias', '/noticias'],
     ['Directorio de egresados', 'Busca y conéctate con la comunidad', '/directorio'],
-    ['Becas y apoyo', 'Ayudas para estudiantes de la carrera', `/paginas/${idsPaginas.ninguno}`],
+    ['Becas y apoyo', 'Ayudas para estudiantes de la carrera', `/p/${idsPaginas.ninguno}`],
     ['Repositorio de documentos', 'Reglamentos, informes y publicaciones', '/repositorio'],
     ['Convocatoria de anuncios', 'Trabajo, prácticas y proyectos', '/anuncios'],
-    ['Conoce la carrera', '¿Qué es la Bioingeniería en la UdeC?', '/bioingenieria'],
+    ['Conoce la carrera', '¿Qué es la Bioingeniería en la UdeC?', '/p/bioingenieria'],
   ];
   const imagenesBanner = DEMOS;
   plantillasBanner.forEach(([titulo, texto, enlace], i) => {

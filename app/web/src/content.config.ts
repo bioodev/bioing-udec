@@ -155,19 +155,7 @@ const banners = defineCollection({
     }),
 });
 
-// ── Páginas institucionales (colección de archivos únicos en config.yml) ──
-
-const paginas = defineCollection({
-  loader: md('paginas'),
-  schema: z.object({
-    titulo: z.string(),
-    bajada: z.string(),
-    video: z.url().optional(),
-    caracteristicas: z.array(z.object({ titulo: z.string(), texto: z.string() })).optional(),
-  }),
-});
-
-// Páginas libres: se crean desde el panel (una por archivo). Se publican en /paginas/<slug> y `mostrar_en`
+// Páginas libres: se crean desde el panel (una por archivo). Se publican en /p/<slug> y `mostrar_en`
 // decide si aparecen en el menú o en el pie (ver src/lib/navegacion.ts).
 const paginasLibres = defineCollection({
   loader: md('paginas-libres'),
@@ -179,6 +167,9 @@ const paginasLibres = defineCollection({
       imagen: image().optional(),
       imagen_alt: z.string().optional(),
       mostrar_en: z.enum(['ninguno', 'footer', 'la-carrera', 'comunidad']).default('ninguno'),
+      video: z.url().optional(), // se abre en una ventana (VideoModal); si no es de YouTube, no se muestra
+      bloques_titulo: z.string().optional(),
+      bloques: z.array(z.object({ titulo: z.string(), texto: z.string() })).optional(),
     }),
 });
 
@@ -220,5 +211,5 @@ const areas = defineCollection({ loader: yml('areas'), schema: z.object({ nombre
 const temas = defineCollection({ loader: yml('temas'), schema: z.object({ nombre: z.string() }) });
 
 export const collections = {
-  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginas, paginasLibres, inicio, instagram, areas, temas,
+  personas, organizaciones, noticias, actividades, anuncios, documentos, banners, paginasLibres, inicio, instagram, areas, temas,
 };

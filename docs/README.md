@@ -41,7 +41,7 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 - [`0002-estructura-de-la-documentacion.md`](adr/0002-estructura-de-la-documentacion.md) — esta estructura.
 - [`0003-cuenta-central-anticipada-y-ambientes.md`](adr/0003-cuenta-central-anticipada-y-ambientes.md) — cuenta central adelantada; ambientes QA y producción.
 - [`0004-flujo-de-trabajo-una-persona.md`](adr/0004-flujo-de-trabajo-una-persona.md) — solo `main` se construye; QA a mano; agentes sin push.
-- [`0005-paginas-libres-desde-el-panel.md`](adr/0005-paginas-libres-desde-el-panel.md) — páginas creables desde el panel, en `/paginas/<slug>`, con `mostrar_en` para el menú o el pie.
+- [`0005-paginas-libres-desde-el-panel.md`](adr/0005-paginas-libres-desde-el-panel.md) — páginas creables desde el panel, en `/p/<slug>`, con `mostrar_en` para el menú o el pie.
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)
 

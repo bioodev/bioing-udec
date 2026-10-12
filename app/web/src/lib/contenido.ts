@@ -21,7 +21,7 @@ export async function paginasLibres() {
 export async function paginasParaMenu(): Promise<PaginaLibreMenu[]> {
   return (await paginasLibres()).map((p) => ({
     titulo: p.data.titulo,
-    href: `/paginas/${p.id}`,
+    href: `/p/${p.id}`,
     bajada: p.data.bajada,
     mostrar_en: p.data.mostrar_en,
   }));
@@ -168,13 +168,6 @@ export async function egresadosDelDirectorio() {
     ({ data }) => data.ficha_activa && data.perfil_egresado?.autorizado === true,
   );
   return personas.sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
-}
-
-/** Página institucional de archivo único (colección `paginas`). */
-export async function pagina(id: 'bioingenieria') {
-  const entrada = await getEntry('paginas', id);
-  if (!entrada) throw new Error(`Falta src/content/paginas/${id}.md`);
-  return entrada;
 }
 
 /** Secciones destacadas del Inicio publicadas, en el orden de la lista del CMS (colección `inicio`). */

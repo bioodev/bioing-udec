@@ -65,9 +65,16 @@ describe('entradaActiva', () => {
 
   test('un grupo está activo si lo está alguno de sus enlaces, también en subrutas', () => {
     expect(entradaActiva(entrada('La carrera'), '/repositorio/x')).toBe(true);
-    expect(entradaActiva(entrada('La carrera'), '/bioingenieria')).toBe(true);
     expect(entradaActiva(entrada('Comunidad'), '/directorio/egresado')).toBe(true);
     expect(entradaActiva(entrada('Comunidad'), '/noticias')).toBe(false);
+  });
+
+  test('una Página libre del grupo también lo activa', () => {
+    const menu = menuConPaginas(MENU_PRINCIPAL, [
+      { titulo: '¿Qué es la Bioingeniería?', href: '/p/bioingenieria', bajada: 'x', mostrar_en: 'la-carrera' },
+    ]);
+    const carrera = menu.find((e) => e.tipo === 'grupo' && e.grupo.etiqueta === 'La carrera')!;
+    expect(entradaActiva(carrera, '/p/bioingenieria')).toBe(true);
   });
 
   test('un enlace suelto solo se activa en su sección', () => {
@@ -79,7 +86,7 @@ describe('entradaActiva', () => {
 describe('menuConPaginas', () => {
   const pagina = (titulo: string, mostrar_en: PaginaLibreMenu['mostrar_en'], bajada = `Bajada de ${titulo}`): PaginaLibreMenu => ({
     titulo,
-    href: `/paginas/${titulo.toLowerCase().replace(/\s+/g, '-')}`,
+    href: `/p/${titulo.toLowerCase().replace(/\s+/g, '-')}`,
     bajada,
     mostrar_en,
   });
@@ -93,13 +100,13 @@ describe('menuConPaginas', () => {
       pagina('Beca', 'la-carrera'),
     ]);
     const etiquetas = grupo('La carrera', menu).grupo.enlaces.map((e) => e.etiqueta);
-    expect(etiquetas).toEqual(['¿Qué es la Bioingeniería?', 'Repositorio', 'Árbol', 'Beca', 'Zeta']);
+    expect(etiquetas).toEqual(['Repositorio', 'Árbol', 'Beca', 'Zeta']);
   });
 
   test('usa la bajada como descripción del enlace', () => {
     const menu = menuConPaginas(MENU_PRINCIPAL, [pagina('Beca', 'comunidad', 'Fondos para estudiantes.')]);
     const enlace = grupo('Comunidad', menu).grupo.enlaces.find((e) => e.etiqueta === 'Beca');
-    expect(enlace).toEqual({ etiqueta: 'Beca', href: '/paginas/beca', descripcion: 'Fondos para estudiantes.' });
+    expect(enlace).toEqual({ etiqueta: 'Beca', href: '/p/beca', descripcion: 'Fondos para estudiantes.' });
   });
 
   test('un valor distinto de un grupo no la agrega a ese grupo', () => {
@@ -134,7 +141,7 @@ describe('enlacesFooter', () => {
   const base = MENU.filter((i) => i.href !== '/').map(({ etiqueta, href }) => ({ etiqueta, href }));
   const pagina = (titulo: string, mostrar_en: PaginaLibreMenu['mostrar_en']): PaginaLibreMenu => ({
     titulo,
-    href: `/paginas/${titulo.toLowerCase()}`,
+    href: `/p/${titulo.toLowerCase()}`,
     bajada: 'x',
     mostrar_en,
   });

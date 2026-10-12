@@ -323,7 +323,7 @@ collections:
       - name: enlace
         label: Enlace
         widget: string
-        hint: Ruta interna (p. ej. /noticias/mi-noticia o /paginas/mi-pagina) o URL externa.
+        hint: Ruta interna (p. ej. /noticias/mi-noticia o /p/mi-pagina) o URL externa.
       - { name: inicio, label: Inicio de vigencia, widget: datetime, input_timezone: America/Santiago }
       - { name: fin, label: Fin de vigencia, widget: datetime, input_timezone: America/Santiago }
 
@@ -332,21 +332,6 @@ collections:
   - name: paginas
     label: Páginas
     files:
-      - name: bioingenieria
-        label: ¿Qué es la Bioingeniería?
-        file: /app/web/src/content/paginas/bioingenieria.md
-        fields:
-          - { name: titulo, label: Título, widget: string }
-          - { name: bajada, label: Bajada, widget: text }
-          - { name: video, label: Video institucional (YouTube), widget: string, type: url, required: false, hint: Enlace de YouTube. Se muestra en una ventana al hacer clic. }
-          - name: caracteristicas
-            label: Características de la carrera
-            widget: list
-            required: false
-            fields:
-              - { name: titulo, label: Título, widget: string }
-              - { name: texto, label: Texto, widget: text }
-          - { name: body, label: Presentación, widget: richtext }
       - name: inicio
         label: Inicio
         file: /app/web/src/content/inicio/inicio.md
@@ -371,7 +356,7 @@ collections:
               - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Descripción de la imagen para lectores de pantalla. Déjalo vacío si la imagen es solo decorativa." }
               - { name: publicado, label: Publicado, widget: boolean, default: true }
 
-  # ── Páginas libres (se crean desde el panel; cada una vive en /paginas/<slug>) ──
+  # ── Páginas libres (se crean desde el panel; cada una vive en /p/<slug>) ──
 
   - name: paginas_libres
     label: Páginas libres
@@ -395,6 +380,18 @@ collections:
           - { label: "Menú «La carrera»", value: la-carrera }
           - { label: "Menú «Comunidad»", value: comunidad }
         hint: "«Menú» la agrega al desplegable del navbar y también al pie. «Pie de página» solo al pie."
+      - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo de la bajada, en una ventana al hacer clic." }
+      - { name: bloques_titulo, label: Título de los bloques destacados, widget: string, required: false, hint: "Aparece sobre los bloques destacados. Déjalo vacío para mostrar solo los bloques." }
+      - name: bloques
+        label: Bloques destacados
+        widget: list
+        required: false
+        hint: "Se muestran en una franja oscura después del contenido, en dos columnas."
+        label_singular: Bloque destacado
+        summary: "{{titulo}}"
+        fields:
+          - { name: titulo, label: Título, widget: string }
+          - { name: texto, label: Texto, widget: text }
       - { name: body, label: Contenido, widget: richtext }
 
   - name: instagram

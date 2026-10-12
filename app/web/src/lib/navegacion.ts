@@ -1,7 +1,6 @@
 // Menú principal (propuesta, sección 3). disponible: false → página "Próximamente".
 export const MENU = [
   { etiqueta: 'Inicio', href: '/', disponible: true },
-  { etiqueta: '¿Qué es la Bioingeniería?', href: '/bioingenieria', disponible: true },
   { etiqueta: 'Noticias', href: '/noticias', disponible: true },
   { etiqueta: 'Agenda', href: '/agenda', disponible: true },
   { etiqueta: 'Instagram', href: '/instagram', disponible: true },
@@ -44,8 +43,8 @@ export const MENU_PRINCIPAL: EntradaMenu[] = [
     tipo: 'grupo',
     grupo: {
       etiqueta: 'La carrera',
+      // «¿Qué es la Bioingeniería?» es una Página libre con mostrar_en: la-carrera (se agrega en menuConPaginas).
       enlaces: [
-        enlace('/bioingenieria', 'Contenido institucional y video de la carrera.'),
         enlace('/repositorio', 'Decretos, reglamentos e informes de interés.'),
       ],
     },
