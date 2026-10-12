@@ -409,6 +409,11 @@ reintroducir efectos de puntos/impresión en el hero.
   móvil, 3 en escritorio) debajo del video. Al hacer clic se abre un `<dialog>` con la versión de 1600 px (WebP):
   anterior/siguiente con botones o con ← →, cierre con Esc o el botón, contador «N de M» y el foco vuelve a la
   miniatura al cerrar. Navegación circular (`src/lib/galeria.ts`). Sin librerías; `GaleriaImagenes.astro`.
+- **Contenido incrustado** (`incrustados`, hasta 10 URLs): sección «Contenido incrustado» con h2 propio, en una
+  columna. En Noticias va después del video y antes de la galería; en Actividades, después del cuerpo. Cada
+  item es un reproductor de alto fijo por proveedor (clases Tailwind literales, `h-[152px]`…), `aspect-video`
+  para Vimeo y Facebook video, o el `VideoModal` si es YouTube; las tarjetas-enlace llevan el nombre del servicio,
+  el título o la URL y un ícono de enlace externo (`rel="noopener noreferrer"`). Sin estilos inline.
 
 ### Filtros de los listados y modales
 
