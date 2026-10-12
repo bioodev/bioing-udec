@@ -1,5 +1,7 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
 import { actualizarScriptSrc, extraerScriptsInline, hashScript } from './csp';
+import { incrustado } from './incrustados';
 
 // Hash SHA-256 (base64) de la cadena vacía: referencia fija para el algoritmo.
 const HASH_VACIO = 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=';
@@ -89,5 +91,32 @@ describe('actualizarScriptSrc', () => {
     expect(() => actualizarScriptSrc('/admin/*\n  Content-Security-Policy: script-src \'self\'\n', [HASH_VACIO])).toThrow(
       /regla \/\*/,
     );
+  });
+});
+
+// Todo iframe que produce el parser de incrustados tiene su origen en frame-src de la regla /* (la primera
+// con esa directiva, porque /admin/* viene después). Si no, el navegador lo bloquea sin avisar en el código.
+describe('frame-src cubre los embeds de incrustados', () => {
+  const headers = readFileSync(new URL('../../public/_headers', import.meta.url), 'utf8');
+  const frameSrc = headers.split('\n').find((l) => /\bframe-src\b/.test(l))!.match(/frame-src ([^;]+)/)![1]!.split(' ');
+
+  const EJEMPLOS = [
+    'https://www.youtube.com/playlist?list=PL1', 'https://open.spotify.com/track/abc', 'https://soundcloud.com/a/b',
+    'https://podcasts.apple.com/cl/podcast/x/id1?i=2', 'https://vimeo.com/1/abc', 'https://www.instagram.com/p/abc/',
+    'https://www.facebook.com/a/posts/1', 'https://www.google.com/maps?q=x', 'https://drive.google.com/file/d/a/view',
+    'https://docs.google.com/document/d/a/edit', 'https://www.tiktok.com/@a/video/1',
+    'https://www.linkedin.com/posts/a-activity-1234567890123456789-x', 'https://www.pinterest.com/pin/1/',
+    'https://www.reddit.com/r/a/comments/b/', 'https://www.twitch.tv/a', 'https://clips.twitch.tv/x',
+    'https://www.dailymotion.com/video/x1', 'https://www.loom.com/share/a', 'https://www.ted.com/talks/a',
+    'https://giphy.com/gifs/a-b1', 'https://www.deezer.com/track/1', 'https://audiomack.com/a/song/b',
+    'https://shows.acast.com/a', 'https://audioboom.com/posts/1', 'https://www.behance.net/gallery/1/a',
+    'https://www.figma.com/file/a/b', 'https://www.canva.com/design/a/b/view', 'https://codepen.io/a/pen/b',
+    'https://codesandbox.io/s/a', 'https://issuu.com/a/docs/b', 'https://sketchfab.com/models/0123456789abcdef0123456789abcdef',
+  ];
+
+  test.each(EJEMPLOS)('%s', (url) => {
+    const inc = incrustado(url, { dominios: ['bioing.cl', 'localhost'] });
+    expect(inc.tipo).toBe('iframe');
+    if (inc.tipo === 'iframe') expect(frameSrc).toContain(new URL(inc.src).origin);
   });
 });
