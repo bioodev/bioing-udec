@@ -89,6 +89,10 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Inicio** | archivo único `src/content/inicio/inicio.md`: banda «Comunidad y documentos» (título y tarjetas del Directorio y del Repositorio: título, texto, botón, foto opcional) y lista de secciones destacadas (título, texto, botón, enlace, imagen, texto alternativo, publicado) |
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
+| **SEO del sitio** | archivo único `src/content/seo/seo.yml` (colección `seo`): descripción general, imagen por defecto, descripción de cada listado y códigos de verificación de Google y Bing. Todo opcional (ADR 0010) |
+
+Las colecciones Noticias, Actividades, Anuncios, Documentos y Páginas libres traen además un campo `seo` opcional
+(título ≤ 60, descripción ≤ 160, imagen y `noindex`), editado como bloque «SEO (opcional)». En `config.yml` ese bloque se define una vez con el ancla `&seo_contenido` y las demás colecciones lo referencian con `*seo_contenido`: no lo copies a mano.
 
 **Menú y pie con Páginas libres**: `MENU` y `MENU_PRINCIPAL` (`src/lib/navegacion.ts`) son la lista fija de
 enlaces. Las páginas publicadas (`paginasParaMenu()` en `src/lib/contenido.ts`) se agregan con `menuConPaginas`
@@ -183,7 +187,14 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
   `public/`: en Astro el estático gana al generado. La política de bots de IA se edita solo en `robots.ts`.
 - **Feeds RSS**: `src/lib/feeds.ts` + `src/pages/{noticias,agenda}/rss.xml.ts`, anunciados con
   `<link rel="alternate">` en sus listados.
-- **Metadatos**: canonical y Open Graph/Twitter en `Base.astro` (`og-default.png` como imagen por defecto).
+- **Metadatos**: canonical, Open Graph y Twitter en `Base.astro` (`og-default.png` como imagen por defecto). Los
+  valores salen de `src/lib/seo.ts` (puro, probado en `seo.test.ts`), con la precedencia de ADR 0010: campo SEO de la
+  entrada → valor armado por la página → `seo.yml` → valor por defecto del código. `Base.astro` agrega el sufijo
+  « · BIOING+» una sola vez, emite `<meta name="robots" content="noindex">` si la página lo pide y las metas de
+  verificación de Google (`google-site-verification`) y Bing (`msvalidate.01`) solo con códigos cargados.
+- **No mostrar en buscadores** (`noindex`): la página sigue publicada y enlazada. La integración
+  `src/integrations/secciones-desactivadas.ts` la saca del sitemap detectando la meta en el HTML generado, y
+  `scripts/postbuild-pagefind.mjs` no la indexa. `llms.txt` lista solo secciones, así que no la incluye de todos modos.
 - **Analítica**: prevista sin cookies (Cloudflare Web Analytics); todavía no implementada.
 
 ## 9. Rendimiento y accesibilidad
