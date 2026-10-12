@@ -24,8 +24,13 @@ const decodificar = (texto: string) => {
   try { return decodeURIComponent(texto); } catch { return texto; }
 };
 
+export interface OpcionesIncrustado {
+  /** Dominios donde se muestra la página: Twitch exige `parent` con cada uno. Sin ellos, Twitch queda como tarjeta. */
+  dominios?: string[];
+}
+
 /** Cómo se muestra una URL pegada en Noticias o Actividades: reproductor, o tarjeta si no se puede incrustar. */
-export function incrustado(url: string): Incrustado {
+export function incrustado(url: string, { dominios = [] }: OpcionesIncrustado = {}): Incrustado {
   const tarjeta = (proveedor: string | null): Incrustado => ({ tipo: 'enlace', proveedor, url });
   let u: URL;
   try { u = new URL(url); } catch { return tarjeta(null); }
@@ -38,7 +43,13 @@ export function incrustado(url: string): Incrustado {
 
   const yt = idYouTube(url);
   if (yt) return { tipo: 'youtube', id: yt };
-  if (host === 'youtube.com' || host === 'youtu.be') return tarjeta('YouTube');
+  // YouTube: listas por su embed sin cookies; el resto (canales, búsquedas) queda como tarjeta.
+  if (host === 'youtube.com' || host === 'youtu.be') {
+    const lista = ruta === '/playlist' ? u.searchParams.get('list') : null;
+    return lista && /^[\w-]+$/.test(lista)
+      ? { tipo: 'iframe', proveedor: 'YouTube', src: `https://www.youtube-nocookie.com/embed/videoseries?list=${lista}`, proporcion: '16/9' }
+      : tarjeta('YouTube');
+  }
 
   if (host === 'open.spotify.com') {
     const m = ruta.match(/^\/(?:intl-[a-z]{2}\/)?(track|episode|show|playlist|album|artist)\/(\w+)\/?$/);
@@ -62,9 +73,12 @@ export function incrustado(url: string): Incrustado {
     return { tipo: 'iframe', proveedor: 'Apple Podcasts', src: `https://embed.podcasts.apple.com${ruta}${sufijo}`, alto: sufijo ? 175 : 450 };
   }
 
+  // Vimeo: video público (`/<id>`) o privado por enlace (`/<id>/<hash>`, que el player pide como ?h=).
   if (host === 'vimeo.com') {
-    const m = ruta.match(/^\/(\d+)\/?$/);
-    return m ? { tipo: 'iframe', proveedor: 'Vimeo', src: `https://player.vimeo.com/video/${m[1]}`, proporcion: '16/9' } : tarjeta('Vimeo');
+    const m = ruta.match(/^\/(\d+)(?:\/([\da-f]+))?\/?$/);
+    if (!m) return tarjeta('Vimeo');
+    const hash = m[2] ? `?h=${m[2]}` : '';
+    return { tipo: 'iframe', proveedor: 'Vimeo', src: `https://player.vimeo.com/video/${m[1]}${hash}`, proporcion: '16/9' };
   }
 
   if (host === 'instagram.com') {
@@ -108,5 +122,41 @@ export function incrustado(url: string): Incrustado {
     return src ? { tipo: 'iframe', proveedor, src, alto: 480 } : tarjeta(proveedor);
   }
 
+  // Twitch: canal, video archivado, clip (clips.twitch.tv o dentro de un canal). Necesita `parent`.
+  if (host === 'twitch.tv' || host === 'clips.twitch.tv') {
+    if (dominios.length === 0) return tarjeta('Twitch');
+    const parents = dominios.map((d) => `&parent=${encodeURIComponent(d)}`).join('');
+    const partes = ruta.split('/').filter(Boolean);
+    const clip = host === 'clips.twitch.tv' && partes.length === 1 ? partes[0]
+      : host === 'twitch.tv' && partes.length === 3 && partes[1] === 'clip' ? partes[2]
+      : null;
+    if (clip && /^[\w-]+$/.test(clip)) return { tipo: 'iframe', proveedor: 'Twitch', src: `https://clips.twitch.tv/embed?clip=${clip}${parents}`, proporcion: '16/9' };
+    if (host === 'twitch.tv' && partes[0] === 'videos' && partes.length === 2 && /^\d+$/.test(partes[1]!)) {
+      return { tipo: 'iframe', proveedor: 'Twitch', src: `https://player.twitch.tv/?video=v${partes[1]}${parents}`, proporcion: '16/9' };
+    }
+    const canal = partes.length === 1 && !RESERVADOS_TWITCH.has(partes[0]!) && /^\w+$/.test(partes[0]!) ? partes[0] : null;
+    if (host === 'twitch.tv' && canal) return { tipo: 'iframe', proveedor: 'Twitch', src: `https://player.twitch.tv/?channel=${canal}${parents}`, proporcion: '16/9' };
+    return tarjeta('Twitch');
+  }
+
+  // Dailymotion: video (`/video/<id>`) o enlace corto dai.ly/<id>.
+  if (host === 'dailymotion.com' || host === 'dai.ly') {
+    const id = (host === 'dai.ly' ? ruta.match(/^\/([\da-z]+)\/?$/i) : ruta.match(/^\/video\/([\da-z]+)\/?$/i))?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'Dailymotion', src: `https://www.dailymotion.com/embed/video/${id}`, proporcion: '16/9' } : tarjeta('Dailymotion');
+  }
+
+  if (host === 'loom.com') {
+    const id = ruta.match(/^\/share\/(\w+)\/?$/)?.[1];
+    return id ? { tipo: 'iframe', proveedor: 'Loom', src: `https://www.loom.com/embed/${id}`, proporcion: '16/9' } : tarjeta('Loom');
+  }
+
+  if (host === 'ted.com') {
+    const slug = ruta.match(/^\/talks\/([\w-]+)\/?$/)?.[1];
+    return slug ? { tipo: 'iframe', proveedor: 'TED', src: `https://embed.ted.com/talks/${slug}`, proporcion: '16/9' } : tarjeta('TED');
+  }
+
   return tarjeta(SIN_IFRAME.get(host) ?? null);
 }
+
+// Rutas de twitch.tv que no son un canal.
+const RESERVADOS_TWITCH = new Set(['directory', 'videos', 'downloads', 'jobs', 'store', 'search', 'settings']);

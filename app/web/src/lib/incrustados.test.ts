@@ -154,6 +154,73 @@ describe('Drive y Docs', () => {
   });
 });
 
+describe('YouTube listas', () => {
+  test('playlist → embed sin cookies de videoseries, 16/9', () => {
+    expect(incrustado('https://www.youtube.com/playlist?list=PLabc-123_x')).toEqual({
+      tipo: 'iframe', proveedor: 'YouTube', src: 'https://www.youtube-nocookie.com/embed/videoseries?list=PLabc-123_x', proporcion: '16/9',
+    });
+  });
+});
+
+describe('Vimeo privados', () => {
+  test('enlace con hash (video oculto por enlace) → player con ?h=', () => {
+    expect(incrustado('https://vimeo.com/76979871/a1b2c3d4e5')).toEqual({
+      tipo: 'iframe', proveedor: 'Vimeo', src: 'https://player.vimeo.com/video/76979871?h=a1b2c3d4e5', proporcion: '16/9',
+    });
+  });
+});
+
+describe('Twitch', () => {
+  const opciones = { dominios: ['bioing.cl', 'localhost'] };
+  const parents = '&parent=bioing.cl&parent=localhost';
+
+  test('canal → player en vivo, con parent por cada dominio, 16/9', () => {
+    expect(incrustado('https://www.twitch.tv/bioingenieria_udec', opciones)).toEqual({
+      tipo: 'iframe', proveedor: 'Twitch', src: `https://player.twitch.tv/?channel=bioingenieria_udec${parents}`, proporcion: '16/9',
+    });
+  });
+  test('video archivado → ?video=v<id>', () => {
+    expect(incrustado('https://www.twitch.tv/videos/123456789', opciones)).toMatchObject({
+      src: `https://player.twitch.tv/?video=v123456789${parents}`,
+    });
+  });
+  test('clip, en clips.twitch.tv o dentro de un canal → embed de clips', () => {
+    expect(incrustado('https://clips.twitch.tv/AwkwardSalamander-abc123', opciones)).toMatchObject({
+      src: `https://clips.twitch.tv/embed?clip=AwkwardSalamander-abc123${parents}`,
+    });
+    expect(incrustado('https://www.twitch.tv/canal/clip/AwkwardSalamander-abc123', opciones)).toMatchObject({
+      src: `https://clips.twitch.tv/embed?clip=AwkwardSalamander-abc123${parents}`,
+    });
+  });
+  test('sin dominios no hay reproductor (Twitch lo rechaza): tarjeta', () => {
+    expect(incrustado('https://www.twitch.tv/bioingenieria_udec')).toEqual(tarjeta('https://www.twitch.tv/bioingenieria_udec', 'Twitch'));
+  });
+  test('directorio u otra página → tarjeta', () => {
+    expect(incrustado('https://www.twitch.tv/directory/game/Just%20Chatting', opciones)).toEqual(
+      tarjeta('https://www.twitch.tv/directory/game/Just%20Chatting', 'Twitch'),
+    );
+  });
+});
+
+describe('Dailymotion, Loom y TED', () => {
+  test('Dailymotion: video y enlace corto dai.ly → 16/9', () => {
+    expect(incrustado('https://www.dailymotion.com/video/x7tgad0')).toEqual({
+      tipo: 'iframe', proveedor: 'Dailymotion', src: 'https://www.dailymotion.com/embed/video/x7tgad0', proporcion: '16/9',
+    });
+    expect(incrustado('https://dai.ly/x7tgad0')).toMatchObject({ src: 'https://www.dailymotion.com/embed/video/x7tgad0' });
+  });
+  test('Loom: enlace de compartir → embed 16/9', () => {
+    expect(incrustado('https://www.loom.com/share/abc123def')).toEqual({
+      tipo: 'iframe', proveedor: 'Loom', src: 'https://www.loom.com/embed/abc123def', proporcion: '16/9',
+    });
+  });
+  test('TED: charla → embed 16/9', () => {
+    expect(incrustado('https://www.ted.com/talks/ken_robinson_says_schools_kill_creativity')).toEqual({
+      tipo: 'iframe', proveedor: 'TED', src: 'https://embed.ted.com/talks/ken_robinson_says_schools_kill_creativity', proporcion: '16/9',
+    });
+  });
+});
+
 describe('servicios sin iframe (tarjeta con nombre)', () => {
   test.each([
     ['https://x.com/usuario/status/1', 'X'],
