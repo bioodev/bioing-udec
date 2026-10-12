@@ -6,10 +6,11 @@ import TarjetaEgresado from '@/components/TarjetaEgresado.astro';
 import { Input } from '@/components/starwind/input';
 import { Label } from '@/components/starwind/label';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from '@/components/starwind/combobox';
-import { egresadosDelDirectorio } from '@/lib/contenido';
+import { egresadosDelDirectorio, formularioDirectorio } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { listaElementos } from '@/lib/schema';
-import { TODAS } from '@/lib/filtro-directorio';
+import { contarAreas, TODAS } from '@/lib/filtro-directorio';
+import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
 import FilePdf from 'phosphor-astro/FilePdf.astro';
 
 const egresados = await Promise.all(
@@ -23,8 +24,16 @@ const egresados = await Promise.all(
 
 const unicos = <T,>(xs: T[], clave: (x: T) => string) => [...new Map(xs.map((x) => [clave(x), x])).values()];
 const generaciones = [...new Set(egresados.map((e) => e.persona.data.perfil_egresado!.generacion).filter((g): g is number => g !== undefined))].sort();
-const areas = unicos(egresados.flatMap((e) => e.areas), (a) => a.id).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+// Áreas con cuántos egresados/as las tienen: son los chips de la página y las opciones del Combobox «Área».
+const areas = contarAreas(egresados.map((e) => e.areas.map((a) => ({ id: a.id, nombre: a.data.nombre }))));
 const organizaciones = unicos(egresados.flatMap((e) => (e.organizacion ? [e.organizacion] : [])), (o) => o.id).sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+const formulario = formularioDirectorio((await getEntry('menu', 'menu'))?.data);
+// Valores válidos de los filtros, para leer la URL sin aceptar valores que no existen en el listado.
+const opciones = JSON.stringify({
+  generacion: generaciones.map(String),
+  area: areas.map((a) => a.id),
+  organizacion: organizaciones.map((o) => o.id),
+});
 
 // Solo los egresados/as que ya se muestran en el listado (Perfil autorizado y Ficha activa).
 const jsonLdPagina = listaElementos(
@@ -67,7 +76,7 @@ const jsonLdPagina = listaElementos(
             <ComboboxContent>
               <ComboboxEmpty>Nadie coincide.</ComboboxEmpty>
               <ComboboxItem value={TODAS}>Todas</ComboboxItem>
-              {areas.map((a) => <ComboboxItem value={a.id}>{a.data.nombre}</ComboboxItem>)}
+              {areas.map((a) => <ComboboxItem value={a.id}>{a.nombre}</ComboboxItem>)}
             </ComboboxContent>
           </Combobox>
         </div>
@@ -84,20 +93,89 @@ const jsonLdPagina = listaElementos(
         </div>
       </FiltrosPlegables>
     </form>
+    <input type="hidden" id="opciones-filtros" value={opciones} />
 
-    <p id="contador" class="mt-6 text-sm text-muted-foreground" aria-live="polite">{egresados.length} egresados/as</p>
+    {areas.length > 0 && (
+      <div role="group" aria-labelledby="areas-rapidas-titulo" class="mt-4">
+        <p id="areas-rapidas-titulo" class="text-sm font-medium">Filtrar por área</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {areas.map((a) => (
+            <button
+              type="button"
+              data-area-rapida={a.id}
+              aria-pressed="false"
+              class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outline aria-[pressed=true]:border-primary aria-[pressed=true]:bg-primary aria-[pressed=true]:text-primary-foreground"
+            >
+              {a.nombre}<span class="opacity-75">{a.cantidad}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+      <p id="contador" class="text-sm text-muted-foreground" aria-live="polite">{egresados.length} egresados/as</p>
+      <div id="orden" role="group" aria-labelledby="orden-titulo" class="flex flex-wrap items-center gap-2" hidden>
+        <span id="orden-titulo" class="text-sm font-medium">Ordenar</span>
+        <button
+          type="button"
+          id="orden-az"
+          aria-pressed="true"
+          class="inline-flex min-h-11 items-center rounded-full border border-border px-4 text-sm hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outline aria-[pressed=true]:border-primary aria-[pressed=true]:bg-primary aria-[pressed=true]:text-primary-foreground"
+        >
+          A–Z
+        </button>
+        <button
+          type="button"
+          id="orden-generacion"
+          aria-pressed="false"
+          class="inline-flex min-h-11 items-center rounded-full border border-border px-4 text-sm hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outline aria-[pressed=true]:border-primary aria-[pressed=true]:bg-primary aria-[pressed=true]:text-primary-foreground"
+        >
+          Por generación
+        </button>
+      </div>
+    </div>
     <h2 class="sr-only">Resultados</h2>
     <ul role="list" id="resultados" data-animar="grilla" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {egresados.map((e) => (
         <TarjetaEgresado persona={e.persona} areas={e.areas.map((a) => a.data.nombre)} organizacion={e.organizacion?.data.nombre} />
       ))}
     </ul>
+    {/* Vista «Por generación»: el script llena los grupos con las mismas tarjetas. */}
+    <div id="grupos" class="mt-4 grid gap-10" hidden></div>
     <p id="sin-resultados" class="mt-8 hidden text-center text-muted-foreground">No hay egresados/as que coincidan con los filtros.</p>
+
+    <section id="directorio-sumarse" aria-labelledby="sumarse-titulo" class="mt-16 rounded-lg border border-border bg-card p-6 sm:p-8">
+      <h2 id="sumarse-titulo" class="text-xl font-semibold tracking-tight">¿Eres egresado/a y no apareces?</h2>
+      <p class="mt-2 text-muted-foreground">
+        Pide aparecer en el Directorio: solo publicamos tu perfil si lo autorizas, con tu nombre, generación, área, organización, cargo y
+        enlaces profesionales. Nunca publicamos tu correo ni tu teléfono.
+      </p>
+      <p class="mt-2 text-muted-foreground">
+        {formulario
+          ? 'Para actualizar o quitar tus datos, usa el mismo formulario.'
+          : 'Para actualizar o quitar tus datos, escribe al equipo de BIOING+ por los canales de contacto del sitio.'}
+      </p>
+      {formulario && (
+        <a
+          href={formulario}
+          target="_blank"
+          rel="noopener"
+          class="mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90"
+        >
+          Sumar mi perfil<ArrowSquareOut class="size-4" aria-hidden="true" /><span class="sr-only"> (se abre en una ventana nueva)</span>
+        </a>
+      )}
+    </section>
   </section>
 </Base>
 
 <script>
-  import { coincide, TODAS, type Filtros } from '@/lib/filtro-directorio';
+  import { agruparPorGeneracion, coincide, etiquetaGrupo, TODAS, type Filtros } from '@/lib/filtro-directorio';
+  import { sincronizarFiltrosEnUrl } from '@/scripts/url-filtros';
+
+  type Orden = 'az' | 'generacion';
+  type Campo = 'generacion' | 'area' | 'organizacion';
 
   // Los <script> de Astro corren una sola vez; con ClientRouter hay que reiniciar en cada
   // astro:page-load (también la primera carga). La marca data-iniciado evita listeners dobles.
@@ -106,19 +184,32 @@ const jsonLdPagina = listaElementos(
   if (!encontrado) return;
   const form = encontrado;
   form.dataset.iniciado = '';
+  const params = new URLSearchParams(location.search);
   const tarjetas = [...document.querySelectorAll<HTMLLIElement>('#resultados > li')];
+  const resultados = document.querySelector<HTMLUListElement>('#resultados')!;
+  const grupos = document.querySelector<HTMLDivElement>('#grupos')!;
   const contador = document.querySelector('#contador')!;
   const sinResultados = document.querySelector('#sin-resultados')!;
+  const controlOrden = document.querySelector<HTMLDivElement>('#orden')!;
+  const botonAz = document.querySelector<HTMLButtonElement>('#orden-az')!;
+  const botonGeneracion = document.querySelector<HTMLButtonElement>('#orden-generacion')!;
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-area-rapida]')];
+  const opciones = JSON.parse(document.querySelector<HTMLInputElement>('#opciones-filtros')!.value) as Record<Campo, string[]>;
+  let orden: Orden = 'az';
 
-  function aplicar() {
+  function filtros(): Filtros {
     const d = new FormData(form);
-    const valor = (k: string) => (d.get(k) as string | null) || TODAS;
-    const filtros: Filtros = {
+    const valor = (k: Campo) => (d.get(k) as string | null) || TODAS;
+    return {
       texto: (d.get('texto') as string | null) ?? '',
       generacion: valor('generacion'),
       area: valor('area'),
       organizacion: valor('organizacion'),
     };
+  }
+
+  function aplicar() {
+    const f = filtros();
     let visibles = 0;
     for (const li of tarjetas) {
       const ok = coincide({
@@ -126,20 +217,93 @@ const jsonLdPagina = listaElementos(
         generacion: li.dataset.generacion ?? '',
         areas: (li.dataset.areas ?? '').split(' ').filter(Boolean),
         organizacion: li.dataset.organizacion ?? '',
-      }, filtros);
+      }, f);
       li.hidden = !ok;
       if (ok) visibles++;
     }
+    // En la vista por generación, un grupo sin tarjetas visibles no se muestra.
+    for (const grupo of grupos.querySelectorAll<HTMLElement>('[data-grupo]')) {
+      grupo.hidden = ![...grupo.querySelectorAll('li')].some((li) => !li.hidden);
+    }
     contador.textContent = `${visibles} egresados/as`;
     sinResultados.classList.toggle('hidden', visibles > 0);
+    for (const chip of chips) chip.setAttribute('aria-pressed', String(chip.dataset.areaRapida === f.area));
+
+    // Los filtros y el orden quedan en la URL para compartir el listado (sin tocar history.state).
+    sincronizarFiltrosEnUrl(
+      { texto: f.texto, generacion: f.generacion, area: f.area, organizacion: f.organizacion, orden: orden === 'generacion' ? 'generacion' : '' },
+      [TODAS],
+    );
   }
 
-  // Estado inicial desde la URL (p. ej. /directorio?texto=ana, que envía el buscador de la banda del Inicio).
-  const textoUrl = new URLSearchParams(location.search).get('texto');
-  if (textoUrl) (form.elements.namedItem('texto') as HTMLInputElement).value = textoUrl;
-  aplicar();
+  // Devuelve las tarjetas a la lista A–Z (en su orden original) y vacía los grupos.
+  function soltarTarjetas() {
+    resultados.append(...tarjetas);
+    grupos.replaceChildren();
+  }
+
+  function renderGrupos() {
+    soltarTarjetas();
+    const porId = new Map(tarjetas.map((li) => [li.id, li]));
+    const items = tarjetas.map((li) => ({ id: li.id, generacion: li.dataset.generacion ? Number(li.dataset.generacion) : undefined }));
+    for (const grupo of agruparPorGeneracion(items)) {
+      const id = `grupo-${grupo.generacion ?? 'sin-generacion'}`;
+      const seccion = document.createElement('section');
+      seccion.dataset.grupo = '';
+      seccion.setAttribute('aria-labelledby', `${id}-titulo`);
+      const titulo = document.createElement('h2');
+      titulo.id = `${id}-titulo`;
+      titulo.className = 'text-xl font-semibold tracking-tight';
+      titulo.textContent = etiquetaGrupo(grupo.generacion);
+      const lista = document.createElement('ul');
+      lista.setAttribute('role', 'list');
+      lista.className = 'mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3';
+      lista.append(...grupo.ids.map((tarjeta) => porId.get(tarjeta)!));
+      seccion.append(titulo, lista);
+      grupos.append(seccion);
+    }
+  }
+
+  function fijarOrden(nuevo: Orden) {
+    orden = nuevo;
+    const porGeneracion = nuevo === 'generacion';
+    botonAz.setAttribute('aria-pressed', String(!porGeneracion));
+    botonGeneracion.setAttribute('aria-pressed', String(porGeneracion));
+    if (porGeneracion) renderGrupos();
+    else soltarTarjetas();
+    resultados.hidden = porGeneracion;
+    grupos.hidden = !porGeneracion;
+    aplicar();
+  }
+
+  // Fija un Combobox por su id. Starwind emite starwind:value-change y el formulario vuelve a filtrar.
+  function elegir(campo: Campo, valor: string) {
+    document.getElementById(campo)?.dispatchEvent(new CustomEvent('starwind:set-value', { detail: { value: valor } }));
+  }
+
+  botonAz.addEventListener('click', () => fijarOrden('az'));
+  botonGeneracion.addEventListener('click', () => fijarOrden('generacion'));
+  for (const chip of chips) {
+    chip.addEventListener('click', () => {
+      const valor = chip.dataset.areaRapida!;
+      elegir('area', filtros().area === valor ? TODAS : valor);
+      setTimeout(aplicar, 0);
+    });
+  }
+
+  // Estado inicial desde la URL (p. ej. /directorio?texto=ana, o ?area=salud&orden=generacion desde el Inicio).
+  // Un valor que no existe en el listado se ignora.
+  (form.elements.namedItem('texto') as HTMLInputElement).value = params.get('texto') ?? '';
+  for (const campo of ['generacion', 'area', 'organizacion'] as const) {
+    const valor = params.get(campo);
+    if (valor && opciones[campo].includes(valor)) elegir(campo, valor);
+  }
+  controlOrden.hidden = false;
+  if (params.get('orden') === 'generacion') fijarOrden('generacion');
+  else aplicar();
 
   form.addEventListener('input', aplicar);
+  form.addEventListener('change', aplicar);
   // Starwind v3 emite starwind:value-change (burbujea) antes de actualizar el valor del
   // input oculto; se difiere la lectura para que FormData vea el valor nuevo.
   form.addEventListener('starwind:value-change', () => setTimeout(aplicar, 0));
