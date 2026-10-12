@@ -97,6 +97,18 @@ collections:
             fields:
               - { name: etiqueta, label: Etiqueta, widget: string }
               - { name: url, label: URL, widget: string, type: url }
+      - &seo_contenido
+        name: seo
+        label: SEO (opcional)
+        widget: object
+        collapsed: true
+        required: false
+        hint: "Solo si quieres que en Google o al compartir se vea distinto. Si lo dejas vacío, se usa el título, la bajada y la imagen destacada."
+        fields:
+          - { name: titulo, label: Título para buscadores y redes, widget: string, required: false, maxlength: 60, hint: "Máximo 60 caracteres. No hace falta escribir «· BIOING+»: se agrega solo." }
+          - { name: descripcion, label: Descripción para buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases, de hasta 160 caracteres. Es el texto que aparece bajo el título en Google." }
+          - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen de la página o, si no tiene, la del sitio." }
+          - { name: noindex, label: No mostrar en buscadores, widget: boolean, default: false, hint: "La página sigue publicada y enlazada, pero Google no la indexa: sale del buscador del sitio y del mapa del sitio." }
 
   - name: organizaciones
     label: Organizaciones
@@ -197,18 +209,7 @@ collections:
         fields:
           - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
-      - &seo_contenido
-        name: seo
-        label: SEO (opcional)
-        widget: object
-        collapsed: true
-        required: false
-        hint: "Solo si quieres que en Google o al compartir se vea distinto. Si lo dejas vacío, se usa el título, la bajada y la imagen destacada."
-        fields:
-          - { name: titulo, label: Título para buscadores y redes, widget: string, required: false, maxlength: 60, hint: "Máximo 60 caracteres. No hace falta escribir «· BIOING+»: se agrega solo." }
-          - { name: descripcion, label: Descripción para buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases, de hasta 160 caracteres. Es el texto que aparece bajo el título en Google." }
-          - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen de la página o, si no tiene, la del sitio." }
-          - { name: noindex, label: No mostrar en buscadores, widget: boolean, default: false, hint: "La página sigue publicada y enlazada, pero Google no la indexa: sale del buscador del sitio y del mapa del sitio." }
+      - *seo_contenido
       - { name: body, label: Cuerpo, widget: richtext }
 
   - name: actividades

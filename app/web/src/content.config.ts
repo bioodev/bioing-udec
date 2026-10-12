@@ -57,6 +57,7 @@ const personas = defineCollection({
           enlaces: z.array(z.object({ etiqueta: z.string(), url: z.url() })).optional(),
         })
         .optional(),
+      seo: seoEntrada(image),
     }),
 });
 
