@@ -21,7 +21,7 @@ export async function paginasLibres() {
 export async function paginasParaMenu(): Promise<PaginaLibreMenu[]> {
   return (await paginasLibres()).map((p) => ({
     titulo: p.data.titulo,
-    href: `/paginas/${p.id}`,
+    href: `/p/${p.id}`,
     bajada: p.data.bajada,
     mostrar_en: p.data.mostrar_en,
   }));

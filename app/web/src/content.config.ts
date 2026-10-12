@@ -155,7 +155,7 @@ const banners = defineCollection({
     }),
 });
 
-// Páginas libres: se crean desde el panel (una por archivo). Se publican en /paginas/<slug> y `mostrar_en`
+// Páginas libres: se crean desde el panel (una por archivo). Se publican en /p/<slug> y `mostrar_en`
 // decide si aparecen en el menú o en el pie (ver src/lib/navegacion.ts).
 const paginasLibres = defineCollection({
   loader: md('paginas-libres'),

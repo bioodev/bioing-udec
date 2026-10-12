@@ -159,7 +159,7 @@ colección; una colección es más barata que una página nueva.
 
 - **Cuándo:** una sección con URL propia (por ejemplo, un listado institucional).
 - **Antes de programar, revisa si basta una Página libre** (ADR 0005). Una Página libre es un texto con título,
-  bajada, imagen y cuerpo, creable desde el panel en `/paginas/<slug>`, que aparece en «La carrera», en
+  bajada, imagen y cuerpo, creable desde el panel en `/p/<slug>`, que aparece en «La carrera», en
   «Comunidad», en el pie o en ninguno. **Basta** para textos informativos sin lógica propia (normas, becas,
   preguntas frecuentes, historia). **Hace falta código** para un listado o buscador, una tabla con datos
   propios, un diseño especial, un nuevo desplegable o un nuevo valor de `mostrar_en`.

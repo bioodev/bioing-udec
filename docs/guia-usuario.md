@@ -273,7 +273,7 @@ bien.
 **Objetivo:** mantener al día la página institucional de la carrera. Es una **Página libre** (§4.12), así que se
 edita igual que cualquier otra y tiene su interruptor **Publicado**.
 
-**Dirección:** `/paginas/bioingenieria`. La página ya no existe en `/bioingenieria`, y no hay redirección.
+**Dirección:** `/p/bioingenieria`. La página ya no existe en `/bioingenieria`, y no hay redirección.
 
 **Campos.**
 - Obligatorios: Título, Bajada, Contenido.
@@ -290,14 +290,14 @@ edita igual que cualquier otra y tiene su interruptor **Publicado**.
    «Facultad de Ciencias Biológicas») son enlaces dentro del texto: para cambiarlos, edita ese párrafo.
 6. Marca **Publicado** y guarda.
 
-**Cómo comprobar que quedó bien.** Abre `/paginas/bioingenieria` en el sitio, en el celular y en el
+**Cómo comprobar que quedó bien.** Abre `/p/bioingenieria` en el sitio, en el celular y en el
 computador. Si hay video, se abre en una ventana al hacer clic.
 
 **Errores típicos:**
 - Pegar un enlace de otra plataforma de video: solo se reconoce YouTube, así que el video no se muestra.
 - Dejar la **Bajada** vacía: es obligatoria.
 - Un bloque destacado con el Texto vacío: ambos campos son obligatorios.
-- Enlazar `/bioingenieria` desde otro lado: esa dirección ya no existe; usa `/paginas/bioingenieria`.
+- Enlazar `/bioingenieria` desde otro lado: esa dirección ya no existe; usa `/p/bioingenieria`.
 
 ### 4.6 Seleccionar una publicación de Instagram
 
@@ -345,7 +345,7 @@ ve el carrusel con varios banners en el celular)_.
 2. Escribe el **Título** y activa **Publicado** cuando esté listo.
 3. Sube la **Imagen**.
 4. Escribe el **Texto** (opcional).
-5. En **Enlace**, escribe una ruta interna (p. ej. `/noticias/mi-noticia` o `/paginas/mi-pagina`) o una dirección
+5. En **Enlace**, escribe una ruta interna (p. ej. `/noticias/mi-noticia` o `/p/mi-pagina`) o una dirección
    completa externa (p. ej. `https://…`).
 6. Escribe el **Inicio de vigencia** y el **Fin de vigencia** (fecha y hora, hora de Chile).
 7. Guarda.
@@ -508,16 +508,16 @@ Con video o bloques, la página se ve como **¿Qué es la Bioingeniería?**; sin
 
 **Pasos.**
 1. Abre **Páginas libres** en el panel y crea una entrada nueva.
-2. Escribe el **Título**. El panel genera la dirección a partir de él: `/paginas/` seguido del título en minúsculas
+2. Escribe el **Título**. El panel genera la dirección a partir de él: `/p/` seguido del título en minúsculas
    y con guiones. Revísala antes de enlazar la página.
 3. Escribe la **Bajada** (una o dos líneas).
 4. Sube una **Imagen destacada** si la necesitas, y completa su texto alternativo.
 5. Elige **Mostrar en**.
 6. Escribe el **Contenido**.
 7. Marca **Publicado** cuando esté lista y guarda.
-8. Si la página es de *Ninguno*, enlázala desde un Banner: en **Enlace**, escribe `/paginas/<la-dirección>`.
+8. Si la página es de *Ninguno*, enlázala desde un Banner: en **Enlace**, escribe `/p/<la-dirección>`.
 
-**Cómo comprobar que quedó bien.** Abre `/paginas/<la-dirección>` y revisa el título, la bajada, la imagen y el
+**Cómo comprobar que quedó bien.** Abre `/p/<la-dirección>` y revisa el título, la bajada, la imagen y el
 texto. Si elegiste un menú, la página aparece en el desplegable, con su bajada como descripción. Si elegiste el pie,
 aparece en la lista del pie. Si elegiste *Ninguno*, no aparece en ningún menú, pero el Banner lleva a ella.
 
@@ -741,7 +741,7 @@ Los términos completos están en [`context.md`](context.md).
 | Publicado | Sí (por defecto: no) | Hace visible el banner |
 | Texto | No | Texto que acompaña la imagen |
 | Imagen | Sí | Imagen de la diapositiva |
-| Enlace | Sí | Ruta interna (`/noticias/…` o `/paginas/…`) o URL externa |
+| Enlace | Sí | Ruta interna (`/noticias/…` o `/p/…`) o URL externa |
 | Inicio de vigencia | Sí | Desde cuándo se muestra |
 | Fin de vigencia | Sí | Hasta cuándo se muestra |
 
@@ -749,7 +749,7 @@ Los términos completos están en [`context.md`](context.md).
 
 | Campo (label) | Obligatorio | Para qué sirve |
 |---|---|---|
-| Título | Sí | Título de la página; la dirección `/paginas/…` sale de él |
+| Título | Sí | Título de la página; la dirección `/p/…` sale de él |
 | Publicado | Sí (por defecto: no) | Sin publicar, la página da 404 |
 | Bajada | Sí | Resumen bajo el título, en buscadores y en el menú |
 | Imagen destacada | No | Imagen sobre el texto |

@@ -323,7 +323,7 @@ collections:
       - name: enlace
         label: Enlace
         widget: string
-        hint: Ruta interna (p. ej. /noticias/mi-noticia o /paginas/mi-pagina) o URL externa.
+        hint: Ruta interna (p. ej. /noticias/mi-noticia o /p/mi-pagina) o URL externa.
       - { name: inicio, label: Inicio de vigencia, widget: datetime, input_timezone: America/Santiago }
       - { name: fin, label: Fin de vigencia, widget: datetime, input_timezone: America/Santiago }
 
@@ -356,7 +356,7 @@ collections:
               - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Descripción de la imagen para lectores de pantalla. Déjalo vacío si la imagen es solo decorativa." }
               - { name: publicado, label: Publicado, widget: boolean, default: true }
 
-  # ── Páginas libres (se crean desde el panel; cada una vive en /paginas/<slug>) ──
+  # ── Páginas libres (se crean desde el panel; cada una vive en /p/<slug>) ──
 
   - name: paginas_libres
     label: Páginas libres

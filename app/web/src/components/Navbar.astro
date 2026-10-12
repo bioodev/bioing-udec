@@ -37,8 +37,8 @@ const iconos: Record<string, typeof House> = {
 };
 // Las Páginas libres usan un documento; «¿Qué es la Bioingeniería?» conserva el matraz.
 const iconoDe = (href: string) => {
-  if (href === '/paginas/bioingenieria') return Flask;
-  if (href.startsWith('/paginas/')) return FileText;
+  if (href === '/p/bioingenieria') return Flask;
+  if (href.startsWith('/p/')) return FileText;
   return iconos[href] ?? House;
 };
 

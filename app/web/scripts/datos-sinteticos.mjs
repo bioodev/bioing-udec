@@ -380,10 +380,10 @@ function generar() {
     ['Semana de la Bioingeniería', 'Charlas, talleres y encuentros con egresados', '/agenda'],
     ['Novedades de la comunidad', 'Lo último en noticias', '/noticias'],
     ['Directorio de egresados', 'Busca y conéctate con la comunidad', '/directorio'],
-    ['Becas y apoyo', 'Ayudas para estudiantes de la carrera', `/paginas/${idsPaginas.ninguno}`],
+    ['Becas y apoyo', 'Ayudas para estudiantes de la carrera', `/p/${idsPaginas.ninguno}`],
     ['Repositorio de documentos', 'Reglamentos, informes y publicaciones', '/repositorio'],
     ['Convocatoria de anuncios', 'Trabajo, prácticas y proyectos', '/anuncios'],
-    ['Conoce la carrera', '¿Qué es la Bioingeniería en la UdeC?', '/paginas/bioingenieria'],
+    ['Conoce la carrera', '¿Qué es la Bioingeniería en la UdeC?', '/p/bioingenieria'],
   ];
   const imagenesBanner = DEMOS;
   plantillasBanner.forEach(([titulo, texto, enlace], i) => {

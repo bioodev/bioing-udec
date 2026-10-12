@@ -29,7 +29,7 @@ más un acceso permanente a la web de la FCB. En el sitio el menú es sticky.
 
 - **Inicio**: contenido destacado y dinámico (Banners, noticias recientes, próximas actividades, anuncios
   vigentes, publicaciones de Instagram).
-- **¿Qué es la Bioingeniería?**: Página libre (`/paginas/bioingenieria`, en «La carrera») con contenido institucional, un video que se abre en un modal y bloques destacados.
+- **¿Qué es la Bioingeniería?**: Página libre (`/p/bioingenieria`, en «La carrera») con contenido institucional, un video que se abre en un modal y bloques destacados.
 - **Noticias**: con buscador y filtros por Tema, Persona mencionada y fecha; más archivo.
 - **Agenda**: Actividades con ficha propia; próximas (orden cronológico) y realizadas (archivo).
 - **Anuncios**: oportunidades (trabajo, práctica, pasantía, proyecto, convocatoria, colaboración).
@@ -146,7 +146,7 @@ La colección buscable de Documentos.
 _Avoid_: Biblioteca, archivo, drive
 
 **Página libre**:
-Página de texto creada desde el panel (título, bajada, imagen opcional, contenido, video de YouTube opcional y bloques destacados opcionales) que vive en `/paginas/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
+Página de texto creada desde el panel (título, bajada, imagen opcional, contenido, video de YouTube opcional y bloques destacados opcionales) que vive en `/p/<slug>`. Puede mostrarse en el menú «La carrera» o «Comunidad», en el pie, o en ninguno (solo por enlace desde un Banner). Con video o bloques, la página usa el diseño de «¿Qué es la Bioingeniería?» (cabecera ancha, cuerpo sobre fondo gris y franja oscura con los bloques).
 _Avoid_: Página institucional, página, artículo
 
 **Página institucional**:

@@ -18,7 +18,7 @@ interface Props { pagina: CollectionEntry<'paginasLibres'> }
 const { pagina } = Astro.props;
 const { Content } = await render(pagina);
 
-const enlace = `/paginas/${pagina.id}`;
+const enlace = `/p/${pagina.id}`;
 const rutas = [
   { name: 'Inicio', url: '/' },
   { name: pagina.data.titulo, url: enlace },

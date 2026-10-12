@@ -105,14 +105,14 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 | Ruta | Página |
 |---|---|
 | `/` | Inicio (hero en carrusel de Banners, noticias, actividades, anuncios, Instagram, secciones destacadas con parallax) |
-| `/paginas/[id]` | Páginas libres publicadas; `/paginas/bioingenieria` es ¿Qué es la Bioingeniería? (video en modal y bloques destacados). `/bioingenieria` ya no existe y no redirige |
+| `/p/[id]` | Páginas libres publicadas; `/p/bioingenieria` es ¿Qué es la Bioingeniería? (video en modal y bloques destacados). `/bioingenieria` ya no existe y no redirige |
 | `/noticias` · `/noticias/[id]` | Listado con filtros y paginación de a 12 + ficha |
 | `/agenda` · `/agenda/[id]` | Próximas y realizadas (pestañas) + ficha |
 | `/anuncios` · `/anuncios/[id]` | Vigentes y archivo + ficha |
 | `/directorio` · `/personas/[id]` | Buscador de egresados/as + Ficha |
 | `/repositorio` · `/repositorio/[id]` | Buscador de Documentos + ficha con vista previa |
 | `/instagram` | Publicaciones seleccionadas |
-| `/paginas/[id]` | Página libre (solo las publicadas; aparece en el menú o el pie según `mostrar_en`) |
+| `/p/[id]` | Página libre (solo las publicadas; aparece en el menú o el pie según `mostrar_en`) |
 | `/buscar` | Buscador general (Pagefind; solo funciona en build/preview) |
   Pagefind necesita `'wasm-unsafe-eval'` en `script-src` de la CSP pública (`public/_headers`) para compilar su WASM;
   sin eso el campo aparece pero no devuelve resultados. No habilita `eval` de JavaScript.
