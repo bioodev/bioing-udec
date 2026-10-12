@@ -5,18 +5,25 @@ import { incrustado } from '@/lib/incrustados';
 
 interface Props { items: { url: string; titulo?: string }[] }
 const { items } = Astro.props;
-const piezas = items.map((item) => ({ ...item, incrustado: incrustado(item.url) }));
+// Twitch exige el dominio donde se muestra (parent): el de Astro.site y localhost para la vista de desarrollo.
+const dominios = [Astro.site?.hostname, 'localhost'].filter((d): d is string => Boolean(d));
+const piezas = items.map((item) => ({ ...item, incrustado: incrustado(item.url, { dominios }) }));
 
 // Alto fijo de cada proveedor. Clases completas y literales: Tailwind las detecta en el código fuente.
 const ALTO: Record<number, string> = {
   152: 'h-[152px]',
   166: 'h-[166px]',
   175: 'h-[175px]',
+  190: 'h-[190px]',
+  200: 'h-[200px]',
+  252: 'h-[252px]',
   352: 'h-[352px]',
   400: 'h-[400px]',
   450: 'h-[450px]',
   480: 'h-[480px]',
+  500: 'h-[500px]',
   600: 'h-[600px]',
+  740: 'h-[740px]',
 };
 
 // Permisos mínimos por proveedor; el resto no pide ninguno.
@@ -24,6 +31,10 @@ const PERMISOS: Record<string, string> = {
   Spotify: 'encrypted-media; clipboard-write',
   Vimeo: 'fullscreen; picture-in-picture',
   Facebook: 'fullscreen',
+  YouTube: 'encrypted-media; picture-in-picture',
+  Twitch: 'autoplay; fullscreen',
+  Loom: 'autoplay; fullscreen',
+  Dailymotion: 'autoplay; fullscreen',
 };
 ---
 {piezas.length > 0 && (
@@ -42,7 +53,7 @@ const PERMISOS: Record<string, string> = {
               referrerpolicy="strict-origin-when-cross-origin"
               allow={PERMISOS[inc.proveedor]}
               allowfullscreen={inc.proporcion !== undefined}
-              class:list={['w-full rounded-lg border-0', inc.proporcion ? 'aspect-video' : (ALTO[inc.alto ?? 0] ?? 'aspect-video')]}
+              class:list={['w-full rounded-lg border-0', inc.proporcion ? 'aspect-video' : (ALTO[inc.alto ?? 0] ?? 'aspect-video'), inc.vertical && 'mx-auto max-w-sm']}
             />
           )}
 
