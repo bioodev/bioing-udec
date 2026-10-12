@@ -13,7 +13,7 @@ import { MENU, URL_FCB, enlacesFooter, seccionVisible } from '@/lib/navegacion';
 import { configuracionMenu, configuracionRedes, configuracionSeo, paginasParaMenu } from '@/lib/contenido';
 import { redesVisibles, urlsRedes } from '@/lib/redes';
 import { jsonLd as serializarJsonLd, sitioWeb, type JsonLd } from '@/lib/schema';
-import { descripcionSitio, imagenSitio, tituloDocumento, verificacionMetas } from '@/lib/seo';
+import { analiticaCloudflare, descripcionSitio, imagenSitio, tituloDocumento, verificacionMetas } from '@/lib/seo';
 import ogPorDefecto from '@/assets/og-default.png';
 
 interface Props { titulo: string; descripcion?: string; imagen?: string; jsonLd?: JsonLd | JsonLd[]; noindex?: boolean }
@@ -57,6 +57,10 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
     <meta name="description" content={descripcion} />
     {noindex && <meta name="robots" content="noindex" />}
     {verificacionMetas(seoSitio.verificacion).map((meta) => <meta name={meta.name} content={meta.content} />)}
+    {/* Analítica sin cookies (Cloudflare Web Analytics, ADR 0012): solo si el panel tiene un token válido. */}
+    {analiticaCloudflare(seoSitio) && (
+      <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={analiticaCloudflare(seoSitio)}></script>
+    )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <ClientRouter />
     <script is:inline>

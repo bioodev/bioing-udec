@@ -120,3 +120,19 @@ describe('frame-src cubre los embeds de incrustados', () => {
     if (inc.tipo === 'iframe') expect(frameSrc).toContain(new URL(inc.src).origin);
   });
 });
+
+// El beacon de Cloudflare Web Analytics (ADR 0012) solo se carga si hay token en el panel, pero la CSP ya lo
+// permite: si alguien quita estos orígenes, la analítica falla en silencio (el navegador la bloquea sin avisar).
+describe('la regla /* permite el beacon de Cloudflare Web Analytics', () => {
+  const headers = readFileSync(new URL('../../public/_headers', import.meta.url), 'utf8');
+  const regla = headers.slice(headers.indexOf('\n/*\n'), headers.indexOf('\n/admin/*'));
+  const directiva = (nombre: string) => regla.match(new RegExp(`\\b${nombre} ([^;]+)`))![1]!.split(' ');
+
+  test('script-src admite static.cloudflareinsights.com', () => {
+    expect(directiva('script-src')).toContain('https://static.cloudflareinsights.com');
+  });
+
+  test('connect-src admite cloudflareinsights.com (envío de las visitas)', () => {
+    expect(directiva('connect-src')).toContain('https://cloudflareinsights.com');
+  });
+});
