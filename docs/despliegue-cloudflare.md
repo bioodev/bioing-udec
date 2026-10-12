@@ -220,3 +220,37 @@ El ambiente es prescindible: si se borra, no afecta al repositorio ni al sitio d
    Workers Builds también hay URLs de preview por despliegue.
 
 Detalle y checklist completo: [`pendientes-infra.md`](pendientes-infra.md).
+
+## 12. Actualizar Sveltia CMS
+
+El panel carga Sveltia desde unpkg con **versión fija y hash de integridad** (`app/web/public/admin/index.html`).
+Sveltia todavía está en 0.x y publica a menudo, con cambios que pueden romper la compatibilidad. Por eso una versión
+nueva **nunca llega sola** al panel: se actualiza a propósito, en un momento tranquilo (por ejemplo, una vez por
+semestre o cuando una versión nueva traiga algo útil). La prueba `src/lib/panel-sveltia.test.ts` falla si alguien
+quita la versión o el hash.
+
+Qué depende de Sveltia y qué revisar:
+
+- `config.yml`: las opciones que acepta.
+- Las vistas previas (`public/admin/vista-previa-*.js`): usan `CMS.registerPreviewTemplate`,
+  `CMS.registerPreviewStyle` y los globales `h` y `createClass`. El tema copia el `data-theme` del `<html>` del
+  panel al iframe `blob:` de la vista previa.
+- La CSP de `/admin/*` en `public/_headers`: si Sveltia empieza a cargar algo de otro dominio, el navegador lo
+  bloquea.
+
+Si algo de las vistas previas falla, el panel sigue editando y guardando; lo grave es la CSP o el `config.yml`.
+
+Pasos (desde `app/web`, en una rama):
+
+1. Ver la última versión: `npm view @sveltia/cms version`, y leer las notas de versión en
+   <https://github.com/sveltia/sveltia-cms/releases> desde la versión actual.
+2. Calcular el hash de la nueva:
+   `curl -sL https://unpkg.com/@sveltia/cms@X.Y.Z/dist/sveltia-cms.js | openssl dgst -sha384 -binary | base64 -w0`
+3. En `public/admin/index.html`, cambiar la versión en `src` y el hash en `integrity` (`sha384-<hash>`).
+4. Validar `config.yml` contra el esquema **de esa versión**:
+   `https://unpkg.com/@sveltia/cms@X.Y.Z/schema/sveltia-cms.json`.
+5. `npm run verificar` en verde.
+6. Probar `/admin/` sobre el build servido **con la CSP real** (`npx wrangler dev --env qa`): sin errores en la
+   consola, abrir una Noticia y un Banner, ver las vistas previas en claro y en oscuro, y guardar una entrada de
+   prueba en un repositorio local (sin commitearla).
+7. Si todo está bien, se publica como cualquier cambio. Si algo falla, se queda en la versión anterior.

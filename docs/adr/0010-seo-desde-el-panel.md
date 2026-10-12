@@ -81,7 +81,7 @@ muestra cómo aparece la entrada en Google y al compartirla, con avisos breves (
 - **Consecuencia de mantenimiento**: cambiar un tipo, un límite de caracteres, la imagen por defecto o la forma de
   armar un título o una descripción exige cambiar también `vista-previa-seo-reglas.js` y su `.d.ts`, y correr
   `npm run verificar` (las pruebas de espejo fallan si se desalinean).
-- **Verificación**: probado con Sveltia 0.235.1 (CDN de unpkg, sin versión fija) sobre un backend de prueba en memoria
+- **Verificación**: probado con Sveltia 0.235.1 (CDN de unpkg; desde entonces el panel la carga con versión fija y hash, ver `docs/despliegue-cloudflare.md` §12) sobre un backend de prueba en memoria
   y la configuración real de `config.yml` convertida, sin tocar el archivo. Se recorrió Noticias de punta a punta; las
   demás colecciones se revisaron sin errores de consola, y solo Actividades se revisó en captura. `/admin/` en
   `wrangler dev --env qa` carga sin errores de consola y con la CSP de `/admin/*`.

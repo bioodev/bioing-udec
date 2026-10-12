@@ -6,7 +6,13 @@
     <title>Sveltia CMS</title>
   </head>
   <body>
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <!-- Versión fija con hash: una versión nueva de Sveltia no llega sola al panel. Para actualizar, seguir
+         docs/despliegue-cloudflare.md, «Actualizar Sveltia CMS» (la prueba src/lib/panel-sveltia.test.ts lo exige). -->
+    <script
+      src="https://unpkg.com/@sveltia/cms@0.235.1/dist/sveltia-cms.js"
+      integrity="sha384-0buNFRS4cnwrZfClZMgBYxOTaefGGJltRCRnsKTgLl+q0sOGWcd8sgJpgwr1oKUl"
+      crossorigin="anonymous"
+    ></script>
     <!-- Tema de las vistas previas (claro/oscuro del panel) y su hoja de estilos: van después de Sveltia. -->
     <script type="module" src="/admin/vista-previa-tema.js"></script>
     <!-- Vista previa SEO (ADR 0010): va después de Sveltia, que expone CMS, h y createClass. -->

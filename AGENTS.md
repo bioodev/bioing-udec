@@ -23,7 +23,7 @@ npx astro check           # tipos y esquemas de contenido: debe quedar en 0 erro
 npm test                  # Vitest: reglas puras en src/lib/*.test.ts
 npm run build             # sitio estático en dist/
 npm run postbuild         # índice de Pagefind (npm 11 NO lo dispara solo: correr ambos juntos)
-npm run preview           # sirve dist/ en localhost:4322 (el buscador /buscar solo existe aquí)
+npm run preview           # sirve dist/ en localhost:4321 (en segundo plano; detener con `npx astro preview stop`) (el buscador /buscar solo existe aquí)
 npm run verificar         # test + astro check + build + postbuild + JSON-LD: antes de mergear a main
 npm run verificar:jsonld  # valida el JSON-LD del build
 npm run deploy:dev        # build + postbuild + deploy a Cloudflare (*.workers.dev; requiere wrangler login)
@@ -68,7 +68,7 @@ levantar): no detecta cientos de archivos nuevos de una vez.
 - **Un cambio de modelo de dominio va en tres lugares**: `public/admin/config.yml`, `src/content.config.ts` y
   `docs/context.md`.
 - **`config.yml` se valida de dos formas**: contra el JSON Schema de Sveltia
-  (`https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json`) y cargando `/admin/` (p. ej.
+  de la **misma versión** que carga `public/admin/index.html` (`https://unpkg.com/@sveltia/cms@<versión>/schema/sveltia-cms.json`; ver [`docs/despliegue-cloudflare.md`](docs/despliegue-cloudflare.md) §12) y cargando `/admin/` (p. ej.
   `python3 -m http.server` en `app/web/public`).
 - **Rutas de imagen**: `'@/assets/media/…'` (alias del tsconfig, con comillas en YAML), que es el `public_folder` global
   de `config.yml`. No redefinir `media_folder`/`public_folder` por colección con la misma carpeta: Sveltia lo
