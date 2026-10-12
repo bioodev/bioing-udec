@@ -380,6 +380,13 @@ ve el carrusel con varios banners en el celular)_.
 **Cómo comprobar que quedó bien.** El banner aparece en el Inicio durante su vigencia, y el enlace lleva a donde
 corresponde. Antes del inicio y después del fin, no aparece.
 
+**Vista previa en el panel.** Al editar un Banner, a la derecha del formulario aparece cómo se ve su diapositiva en el
+Inicio, en escritorio y en un celular de 375 px. Es una aproximación: usa estilos propios y no el componente real, así
+que el tamaño de la letra y el corte del texto pueden variar un poco. Debajo indica la **vigencia** («Borrador (no
+publicado)», «Programado», «Visible ahora» o «Vencido») y muestra avisos breves: sin imagen, título de más de 56
+caracteres (en el celular ocupa más de cuatro líneas y el slide crece), fin anterior al inicio, fechas que faltan, enlace vacío o que no
+empieza con `/` ni con `https://`.
+
 **Errores típicos:**
 - Un **Fin de vigencia** anterior al **Inicio de vigencia**: el banner nunca se muestra.
 - Un enlace externo sin `https://`: el enlace no lleva a ningún lado.
