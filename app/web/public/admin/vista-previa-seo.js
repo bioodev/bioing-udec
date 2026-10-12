@@ -1,6 +1,6 @@
-// Vista previa SEO del panel (ADR 0010, guía de usuario 4.15). Para Noticias, Actividades, Anuncios, Documentos y
-// Páginas libres muestra el resultado de Google, la tarjeta al compartir en redes y avisos breves. Debajo, una vista
-// previa simple del contenido (una plantilla propia reemplaza la de Sveltia). Las reglas están en
+// Vista previa SEO del panel (ADR 0010, guía de usuario 4.15). Para Noticias, Actividades, Anuncios, Documentos,
+// Páginas libres y Personas muestra el resultado de Google, la tarjeta al compartir en redes y avisos breves.
+// Debajo, una vista previa simple del contenido (una plantilla propia reemplaza la de Sveltia). Las reglas están en
 // vista-previa-seo-reglas.js. Sveltia expone CMS, h y createClass como globales (sin JSX ni build).
 // Límites: la descripción general del sitio y la imagen por defecto vienen de src/content/seo/seo.yml y de
 // una copia de src/assets/og-default.png (public/admin/og-default.png, con prueba de igualdad). La descripción
@@ -69,9 +69,11 @@ function crearVistaPrevia(coleccion) {
         ? h('img', { src: urlTarjeta, alt: '', style: estilo.imagen })
         : h('div', { style: estilo.sinImagen }, 'La imagen elegida no está disponible en la vista previa');
 
-      const urlContenido = urlDe(getAsset, datos.imagen);
+      const urlContenido = urlDe(getAsset, datos.imagen ?? datos.foto);
       const cuerpo = CON_CUERPO.includes(coleccion) ? widgetFor('body') : null;
       const bajada = datos.bajada ?? datos.descripcion;
+      // Una persona no tiene título ni cuerpo: se muestra su nombre y su foto.
+      const nombre = coleccion === 'personas' ? datos.nombre : datos.titulo;
 
       return h(
         'div',
@@ -108,7 +110,7 @@ function crearVistaPrevia(coleccion) {
           h(
             'article',
             {},
-            h('h1', { style: estilo.titulo }, datos.titulo ?? ''),
+            h('h1', { style: estilo.titulo }, nombre ?? ''),
             bajada && h('p', { style: estilo.bajada }, bajada),
             urlContenido && h('img', { src: urlContenido, alt: '', style: estilo.imagenContenido }),
             cuerpo,
