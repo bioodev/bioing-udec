@@ -140,6 +140,9 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
   lista cerrada y se cargan de forma diferida.
 - El **logo** tiene una sola fuente: `src/assets/logo.svg`, renderizado por `src/components/Logo.astro` en
   navbar y footer (hoy es un placeholder hasta la identidad definitiva).
+- **Navbar**: el header vive en `src/components/Navbar.astro` (escritorio y menú móvil), con la estructura de
+  `MENU_PRINCIPAL` en `src/lib/navegacion.ts` y el comportamiento (desplegables, atajo `Ctrl+K`, ocultar al bajar)
+  en `src/scripts/navbar.ts`. `MENU` sigue siendo la única lista de páginas para el footer, `llms.txt` y `schema.ts`.
 
 ## 8. SEO, datos estructurados y descubrimiento
 

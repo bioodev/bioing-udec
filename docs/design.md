@@ -348,6 +348,34 @@ Toggle en navbar y menú móvil. La preferencia se guarda en `localStorage` (`te
 se aplica antes del primer pintado con un script inline en `<head>` (sin FOUC) y se vuelve a aplicar en
 `astro:page-load` porque View Transitions resetea las clases del `<html>`.
 
+### Navbar (cabecera)
+
+Componente `src/components/Navbar.astro` (el `<header>` completo; `Base.astro` solo lo incluye). Estructura en
+`MENU_PRINCIPAL` (`src/lib/navegacion.ts`), que agrupa los enlaces de `MENU` por `href` sin duplicar etiquetas:
+
+- **Escritorio (≥ 1024 px)**: `Inicio` · `La carrera ▾` (¿Qué es la Bioingeniería?, Repositorio) · `Noticias` ·
+  `Agenda` · `Comunidad ▾` (Directorio, Anuncios, Instagram). A la derecha: «Buscar» con la pista `Ctrl K`
+  (≥ 1280 px), el tema y «FCB UdeC». Todo en una línea (`whitespace-nowrap`), también a 1024 px.
+- **Página activa**: enlace con `aria-current="page"` y barra inferior de 2 px `border-primary`; un grupo con
+  un enlace activo se marca con la misma barra en su botón (sin `aria-current`, que es para enlaces). Nunca
+  depende solo del color. Las subrutas cuentan (`/noticias/x` activa Noticias; `/repositorio/x` activa La carrera).
+- **Desplegables** (patrón *Disclosure Navigation Menu* de WAI-ARIA, no `role="menu"`): botón con
+  `aria-expanded` y `aria-controls`; el panel tiene una descripción corta por enlace. Enter/Espacio abren y
+  cierran, `Escape` cierra y devuelve el foco al botón, Tab fuera del panel lo cierra, clic fuera lo cierra y
+  abrir uno cierra el otro. Solo se abren con clic o teclado (no hay hover).
+- **Atajo de búsqueda**: `Ctrl+K` / `Cmd+K` en cualquier lugar, y `/` cuando el foco no está en un campo de
+  texto. Navega a `/buscar` con `navigate()` de ClientRouter y enfoca el campo del buscador si ya existe.
+- **Ocultar al bajar**: el header (`sticky`) se oculta al bajar pasados 80 px y reaparece al subir
+  (`src/lib/ocultar-header.ts`, puro y con test). No se oculta con un desplegable abierto, con el foco dentro
+  del header ni con el menú móvil abierto. Con `prefers-reduced-motion` el ocultado es instantáneo, sin
+  transición: se decidió ocultar igual, porque no es una animación sino un cambio de posición.
+- **Menú móvil (< 1024 px)**: un `Sheet` de Starwind (`<dialog>`, así que el `transform` del header no lo
+  afecta) con «Buscar en el sitio» arriba, los mismos grupos con su título, un ícono Phosphor por enlace, la
+  página activa con fondo `bg-muted`, barra lateral y `aria-current`, zonas táctiles de 44 px, y al final el
+  tema y «Facultad de Ciencias Biológicas». Cada enlace cierra el menú al navegar.
+- **Comportamiento**: `src/scripts/navbar.ts`. Los listeners se registran una sola vez y se delegan en
+  `document`; el estado de cada página se reinicia en `astro:page-load`.
+
 ### Hero (Inicio)
 
 Foto del Banner con tinte cálido sutil (`.hero-imagen` con `sepia`/`saturate`) a opacity ~70 % + velo oscuro
