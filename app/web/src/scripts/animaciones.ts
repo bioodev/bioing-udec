@@ -54,7 +54,7 @@ export function iniciarAnimaciones(): void {
         const slideInicial = document.querySelector('[data-slide]');
         const visibles = todos.filter((el) => el.closest('[data-slide]') === slideInicial);
         const resto = todos.filter((el) => !visibles.includes(el));
-        gsap.set(resto, { opacity: 1, overwrite: 'auto' });
+        if (resto.length) gsap.set(resto, { opacity: 1, overwrite: 'auto' }); // con un solo slide, GSAP avisa «target not found»
         if (visibles.length) {
           gsap.to(visibles, {
             opacity: 1, duration: 0.6, ease: 'power3.out',
