@@ -4,11 +4,27 @@ import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './reglas';
 import { noticiasRelacionadas } from './relacionadas';
 import { seccionesPublicadas } from './secciones-inicio';
+import type { PaginaLibreMenu } from './navegacion';
 
-type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram';
+type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram' | 'paginasLibres';
 
 export function publicados<C extends ColeccionPublicable>(coleccion: C) {
   return getCollection(coleccion, ({ data }) => data.publicado) as Promise<CollectionEntry<C>[]>;
+}
+
+/** Páginas libres publicadas, ordenadas por título. */
+export async function paginasLibres() {
+  return (await publicados('paginasLibres')).sort((a, b) => a.data.titulo.localeCompare(b.data.titulo, 'es'));
+}
+
+/** Páginas libres publicadas, en la forma que usan el menú y el pie (src/lib/navegacion.ts). */
+export async function paginasParaMenu(): Promise<PaginaLibreMenu[]> {
+  return (await paginasLibres()).map((p) => ({
+    titulo: p.data.titulo,
+    href: `/paginas/${p.id}`,
+    bajada: p.data.bajada,
+    mostrar_en: p.data.mostrar_en,
+  }));
 }
 
 /** Noticias publicadas cuya fecha ya llegó (una Noticia con fecha futura no aparece en ninguna parte). */
