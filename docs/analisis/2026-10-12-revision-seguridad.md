@@ -58,5 +58,6 @@ consola y de CSP. Funcionan las páginas, el buscador (Ctrl+K), el formulario de
 ## Pendiente (fuera del código)
 
 - Doble factor obligatorio en las cuentas de GitHub y Cloudflare de quienes editan (`guia-mantencion.md` §10).
-- `security.txt` con un contacto para reportar vulnerabilidades (`pendientes-infra.md`).
+- `security.txt`: **hecho en forma provisional** (2026-10-12; `Contact` al repositorio de prueba del proveedor). Falta el
+  contacto oficial de la carrera al migrar (`pendientes-infra.md`).
 - Repetir esta revisión en la mantención semestral: `npm audit`, gitleaks y las pruebas de cabeceras.

@@ -1,0 +1,13 @@
+# PROVISIONAL: este archivo es de prueba. Contact apunta al repositorio de prueba del proveedor
+# (cuenta personal, fuera de la entrega), no al canal oficial de la carrera.
+# Al migrar a la cuenta central y al dominio definitivo (docs/guia-mantencion.md §10):
+#   - Contact:   cambiar al canal oficial de la carrera o de la UdeC (correo institucional o formulario).
+#   - Canonical: descomentar y poner https://<dominio>/.well-known/security.txt (el dominio aún no existe).
+#   - Expires:   renovar antes de la fecha, como mínimo una vez al año.
+# Detalle y calendario: docs/guia-mantencion.md §10 y docs/pendientes-infra.md (ítem security.txt).
+#
+# Canonical: https://<dominio>/.well-known/security.txt
+
+Contact: https://github.com/bioodev/bioing-udec/security/advisories/new
+Expires: 2027-03-31T23:59:59-03:00
+Preferred-Languages: es, en

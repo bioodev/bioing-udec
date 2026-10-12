@@ -156,7 +156,11 @@ Tabla *síntoma → causa probable → acción inmediata → a quién avisar →
   compartidas).
 - `_headers` (CSP y encabezados): qué revisar antes de agregar un embed nuevo a la lista cerrada.
 - Claves de R2 (permisos mínimos, rotación) — solo si se usa R2.
-- Reporte de vulnerabilidades (_pendiente de contacto; ver `pendientes-infra.md` → `security.txt`_).
+- **Reporte de vulnerabilidades**: `/.well-known/security.txt` (archivo en `app/web/public/.well-known/`, RFC 9116).
+  Hoy es **provisional**: `Contact` apunta al repositorio de prueba del proveedor. Al migrar a la cuenta y el dominio de
+  la carrera hay que cambiar `Contact`, descomentar `Canonical` y renovar `Expires`. **Renovar antes de la fecha de
+  `Expires`, como mínimo una vez al año.** La prueba `src/lib/security-txt.test.ts` avisa en consola si faltan menos de
+  60 días. Pendiente en `pendientes-infra.md`.
 - **Revisión de seguridad** (última: `analisis/2026-10-12-revision-seguridad.md`). En la mantención semestral:
   `npm audit`, `gitleaks git --log-opts="--all" --redact` y las pruebas de cabeceras (`src/lib/csp.test.ts`).
   El cuerpo Markdown del panel no admite HTML crudo (`src/lib/sanear-html.ts`) y los enlaces solo aceptan http(s)
