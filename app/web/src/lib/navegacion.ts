@@ -64,6 +64,41 @@ export const MENU_PRINCIPAL: EntradaMenu[] = [
   },
 ];
 
+// ── Secciones ocultables desde el panel (src/content/menu/menu.yml) ──────────
+
+/** Secciones fijas que el panel puede ocultar. «Inicio» no está: siempre se muestra. */
+export type SeccionOcultable = 'noticias' | 'agenda' | 'instagram' | 'directorio' | 'anuncios' | 'repositorio';
+
+/** Forma del archivo del panel: una clave por sección. Una clave ausente cuenta como visible. */
+export type ConfigMenu = Partial<Record<SeccionOcultable, boolean>>;
+
+const SECCION_DE_RUTA: Record<string, SeccionOcultable> = {
+  '/noticias': 'noticias',
+  '/agenda': 'agenda',
+  '/instagram': 'instagram',
+  '/directorio': 'directorio',
+  '/anuncios': 'anuncios',
+  '/repositorio': 'repositorio',
+};
+
+/**
+ * Una ruta se muestra salvo que el panel la haya desactivado. Las rutas que no son secciones ocultables
+ * (Inicio, Páginas libres) siempre se muestran. Ocultar no borra la página: solo la saca de menú, pie y llms.txt.
+ */
+export function seccionVisible(href: string, config: ConfigMenu): boolean {
+  const seccion = SECCION_DE_RUTA[href];
+  return seccion === undefined || config[seccion] !== false;
+}
+
+/** Quita del menú las secciones ocultas; un grupo que se queda sin enlaces visibles desaparece. */
+export function filtrarMenu(entradas: EntradaMenu[], config: ConfigMenu): EntradaMenu[] {
+  return entradas.flatMap((entrada): EntradaMenu[] => {
+    if (entrada.tipo === 'enlace') return seccionVisible(entrada.enlace.href, config) ? [entrada] : [];
+    const enlaces = entrada.grupo.enlaces.filter((e) => seccionVisible(e.href, config));
+    return enlaces.length === 0 ? [] : [{ tipo: 'grupo', grupo: { ...entrada.grupo, enlaces } }];
+  });
+}
+
 /** La ruta está en `href` o en una subruta suya (`/noticias` cubre `/noticias/x`, pero no `/noticiasx`). */
 export function esActual(href: string, pathname: string): boolean {
   if (href === '/') return pathname === '/';

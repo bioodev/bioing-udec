@@ -46,3 +46,13 @@ describe('generarLlms', () => {
     expect(salida).not.toContain('/admin');
   });
 });
+
+describe('seccionesLlms con secciones ocultas', () => {
+  test('omite las secciones que el panel oculta', () => {
+    const titulos = seccionesLlms({ anuncios: false, repositorio: false }).map((s) => s.titulo);
+    expect(titulos).not.toContain('Anuncios');
+    expect(titulos).not.toContain('Repositorio');
+    expect(titulos).toContain('Noticias');
+    expect(titulos).toContain('Inicio');
+  });
+});

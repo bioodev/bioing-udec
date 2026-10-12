@@ -1,7 +1,7 @@
 // llms.txt como función pura: índice curado del sitio para agentes (src/pages/llms.txt.ts).
 // No sustituye al sitemap: es un resumen legible con las secciones principales, no la lista
 // completa de URLs (esa vive en /sitemap-index.xml).
-import { MENU } from './navegacion';
+import { MENU, seccionVisible, type ConfigMenu } from './navegacion';
 
 /** Descripciones breves por sección, solo para llms.txt (no se agregan a navegacion.ts). */
 export const DESCRIPCIONES_SECCIONES: Record<string, string> = {
@@ -21,9 +21,9 @@ export interface Seccion {
   descripcion: string;
 }
 
-/** Secciones del sitio para llms.txt: el menú principal disponible con su descripción. */
-export function seccionesLlms(): Seccion[] {
-  return MENU.filter((seccion) => seccion.disponible).map((seccion) => ({
+/** Secciones del sitio para llms.txt: el menú principal disponible (y no ocultado en el panel) con su descripción. */
+export function seccionesLlms(config: ConfigMenu = {}): Seccion[] {
+  return MENU.filter((seccion) => seccion.disponible && seccionVisible(seccion.href, config)).map((seccion) => ({
     titulo: seccion.etiqueta,
     href: seccion.href,
     descripcion: DESCRIPCIONES_SECCIONES[seccion.href] ?? '',
