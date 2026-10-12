@@ -103,6 +103,9 @@
   --input: #e0e0e0;
   --outline: #0071e3;
   --radius: 18px;
+  /* Sombras de las tarjetas (clase `tarjeta-elevada`, abajo): reposo y al pasar el puntero o el foco. */
+  --sombra-tarjeta: 0 1px 2px rgb(0 0 0 / 0.04), 0 2px 8px rgb(0 0 0 / 0.04);
+  --sombra-tarjeta-hover: 0 4px 12px rgb(0 0 0 / 0.08), 0 12px 32px rgb(0 0 0 / 0.08);
 
   /* sidebar variables */
   --sidebar-background: var(--color-neutral-50);
@@ -143,6 +146,9 @@
   --border: --alpha(var(--color-neutral-50) / 10%);
   --input: --alpha(var(--color-neutral-50) / 15%);
   --outline: var(--color-neutral-500);
+  /* Sobre fondo oscuro la sombra casi no se ve: más opaca. */
+  --sombra-tarjeta: 0 1px 2px rgb(0 0 0 / 0.3), 0 2px 8px rgb(0 0 0 / 0.3);
+  --sombra-tarjeta-hover: 0 4px 12px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.5);
 
   /* sidebars variables */
   --sidebar-background: var(--color-neutral-900);
@@ -208,4 +214,25 @@ html:has(dialog[open]:modal) {
   --tw-prose-pre-bg: var(--muted);
   --tw-prose-th-borders: var(--border);
   --tw-prose-td-borders: var(--border);
+}
+
+/* Tarjetas (ver docs/design.md, «Estilo»): sombra tenue en reposo. Las que son enlace (`tarjeta-elevada-enlace`)
+   suben 2 px y ganan sombra al pasar el puntero o con foco de teclado dentro. El desplazamiento solo con
+   movimiento permitido; la sombra y el borde no se mueven. */
+@layer components {
+  .tarjeta-elevada {
+    box-shadow: var(--sombra-tarjeta);
+    transition: box-shadow 200ms ease-out, transform 200ms ease-out, border-color 200ms ease-out;
+  }
+  .tarjeta-elevada-enlace:is(:hover, :has(:focus-visible)) {
+    box-shadow: var(--sombra-tarjeta-hover);
+  }
+  .dark .tarjeta-elevada-enlace:is(:hover, :has(:focus-visible)) {
+    border-color: color-mix(in srgb, var(--foreground) 25%, transparent);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tarjeta-elevada-enlace:is(:hover, :has(:focus-visible)) {
+      transform: translateY(-2px);
+    }
+  }
 }

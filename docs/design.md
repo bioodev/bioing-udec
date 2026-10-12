@@ -306,8 +306,12 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 
 - Tiles a sangre alternando claro/oscuro (`<section>` con `bg-muted` / `bg-background`) como separador.
 - **Un único acento azul** (`--primary: #0066cc`) y ninguna otra marca; botones en píldora.
-- Sin gradientes, sin chrome decorativo y **una sola sombra**; hairlines (`--border: #e0e0e0`) en vez de
-  sombras.
+- Sin gradientes ni chrome decorativo. **Sombra tenue solo en las tarjetas** (clase `tarjeta-elevada`, en
+  `starwind.css`): en reposo, una sombra muy leve además del borde. Las tarjetas que son enlace
+  (`tarjeta-elevada-enlace`: Noticia, Actividad, Anuncio, Documento, Egresado) suben 2 px y ganan sombra al pasar el
+  puntero o con foco de teclado dentro, en ~200 ms; con `prefers-reduced-motion` solo cambia la sombra. Esto se aparta
+  de la referencia Apple, que no usa sombras en tarjetas. **Sin sombras** en botones, texto, títulos, navbar ni
+  secciones; los hairlines (`--border: #e0e0e0`) siguen separando.
 - Tipografía del sistema (`system-ui, -apple-system`) y radios amplios (`--radius: 18px`).
 - Texto enriquecido del panel (cuerpo de Noticias y Páginas libres, con ¿Qué es la Bioingeniería?): clase `prose` de `@tailwindcss/typography`, con sus colores mapeados a los tokens del tema en `starwind.css`; el modo oscuro sale solo, sin `dark:prose-invert`.
 - Densidad baja: cada sección con aire y titulares `text-3xl`/`text-4xl` semibold con tracking negativo.
@@ -323,6 +327,8 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 | `--border` / `--input` | `#e0e0e0` | neutral-50 al 10–15 % |
 | `--outline` (foco) | `#0071e3` | neutral-500 |
 | `--radius` | `18px` | ídem |
+| `--sombra-tarjeta` (reposo) | `0 1px 2px rgb(0 0 0 / 0.04), 0 2px 8px rgb(0 0 0 / 0.04)` | `… / 0.3` (ambas sombras) |
+| `--sombra-tarjeta-hover` | `0 4px 12px rgb(0 0 0 / 0.08), 0 12px 32px rgb(0 0 0 / 0.08)` | `0 4px 12px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.5)` |
 
 ### Componentes y marca
 
