@@ -20,7 +20,7 @@ const dosTarjetas = banda.tarjetas.length === 2;
 
   <div data-animar="grilla" class={dosTarjetas ? 'mt-8 grid gap-6 md:grid-cols-2' : 'mx-auto mt-8 w-full max-w-2xl'}>
     {banda.tarjetas.includes('directorio') && (
-      <article id="inicio-directorio" aria-labelledby="inicio-directorio-titulo" class="flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8">
+      <article id="inicio-directorio" aria-labelledby="inicio-directorio-titulo" class="tarjeta-elevada flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8">
         {banda.directorio.imagen && (
           <Image
             src={banda.directorio.imagen}
@@ -88,7 +88,7 @@ const dosTarjetas = banda.tarjetas.length === 2;
     )}
 
     {banda.tarjetas.includes('repositorio') && (
-      <article id="inicio-repositorio" aria-labelledby="inicio-repositorio-titulo" class="flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8">
+      <article id="inicio-repositorio" aria-labelledby="inicio-repositorio-titulo" class="tarjeta-elevada flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8">
         {banda.repositorio.imagen && (
           <Image
             src={banda.repositorio.imagen}

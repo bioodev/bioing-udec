@@ -7,7 +7,7 @@ import FileText from 'phosphor-astro/FileText.astro';
 interface Props { documento: CollectionEntry<'documentos'>; temas: string[] }
 const { documento, temas } = Astro.props;
 ---
-<article id={`documento-${documento.id}`} class="group relative rounded-lg border border-border bg-card p-5 transition hover:border-outline/60 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-outline">
+<article id={`documento-${documento.id}`} class="group relative rounded-lg border border-border bg-card p-5 tarjeta-elevada tarjeta-elevada-enlace has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-outline">
   <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
     <FileText class="size-4 shrink-0" aria-hidden="true" />
     <Badge variant="default">{TIPOS_DOCUMENTO[documento.data.tipo]}</Badge>

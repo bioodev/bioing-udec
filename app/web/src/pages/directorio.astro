@@ -153,7 +153,7 @@ const encabezado = await encabezadoDeListado('directorio');
     <div id="grupos" class="mt-4 grid gap-10" hidden></div>
     <p id="sin-resultados" class="mt-8 hidden text-center text-muted-foreground">No hay egresados/as que coincidan con los filtros.</p>
 
-    <section id="directorio-sumarse" aria-labelledby="sumarse-titulo" class="mt-16 overflow-hidden rounded-lg border border-border bg-card">
+    <section id="directorio-sumarse" aria-labelledby="sumarse-titulo" class="tarjeta-elevada mt-16 overflow-hidden rounded-lg border border-border bg-card">
       {menu?.sumarse_imagen && (
         <Image src={menu.sumarse_imagen} alt={menu.sumarse_imagen_alt ?? ''} class="aspect-[16/7] w-full object-cover sm:aspect-[3/1]" widths={[640, 960, 1280]} sizes="(min-width: 1152px) 1152px, 100vw" />
       )}

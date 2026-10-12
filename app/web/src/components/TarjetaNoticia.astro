@@ -10,7 +10,7 @@ interface Props { noticia: CollectionEntry<'noticias'> }
 const { noticia } = Astro.props;
 const temas = existentes(await getEntries(noticia.data.temas ?? []));
 ---
-<article id={`noticia-${noticia.id}`} class="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
+<article id={`noticia-${noticia.id}`} class="group tarjeta-elevada tarjeta-elevada-enlace relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
   {noticia.data.imagen
     ? <Image src={noticia.data.imagen} alt={noticia.data.imagen_alt ?? ''} class="aspect-video w-full object-cover" widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
     : <div class="aspect-video w-full bg-muted" aria-hidden="true"></div>}
