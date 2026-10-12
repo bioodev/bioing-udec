@@ -1,0 +1,151 @@
+---
+// Header del sitio: logo, menú principal con desplegables (escritorio), buscador con atajo y tema.
+// En móvil, un Sheet con los mismos grupos. El comportamiento (desplegables, Ctrl+K, ocultar al bajar)
+// vive en src/scripts/navbar.ts. Estructura en MENU_PRINCIPAL (src/lib/navegacion.ts).
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/starwind/sheet';
+import IconMenu from 'phosphor-astro/List.astro';
+import CaretDown from 'phosphor-astro/CaretDown.astro';
+import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
+import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
+import House from 'phosphor-astro/House.astro';
+import Flask from 'phosphor-astro/Flask.astro';
+import Newspaper from 'phosphor-astro/Newspaper.astro';
+import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
+import Files from 'phosphor-astro/Files.astro';
+import AddressBook from 'phosphor-astro/AddressBook.astro';
+import Megaphone from 'phosphor-astro/Megaphone.astro';
+import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
+import Logo from '@/components/Logo.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
+import { MENU_PRINCIPAL, URL_FCB, entradaActiva, esActual, type EnlaceMenu } from '@/lib/navegacion';
+
+const actual = Astro.url.pathname;
+
+// Ícono de cada página para el menú móvil (las páginas sin ícono propio usan House).
+const iconos: Record<string, typeof House> = {
+  '/': House,
+  '/bioingenieria': Flask,
+  '/repositorio': Files,
+  '/noticias': Newspaper,
+  '/agenda': CalendarBlank,
+  '/directorio': AddressBook,
+  '/anuncios': Megaphone,
+  '/instagram': InstagramLogo,
+};
+const iconoDe = (href: string) => iconos[href] ?? House;
+
+const clasesEnlaceEscritorio = (activo: boolean) =>
+  ['inline-flex h-full items-center border-b-2 px-1 whitespace-nowrap transition-colors hover:text-primary',
+   activo ? 'border-primary font-medium text-primary' : 'border-transparent text-foreground'];
+
+const clasesEnlaceMovil = (activo: boolean) =>
+  ['flex min-h-11 items-center gap-3 rounded-md border-l-2 px-3 hover:bg-muted',
+   activo ? 'border-primary bg-muted font-medium text-primary' : 'border-transparent text-foreground'];
+
+// Los IDs de los paneles (aria-controls) salen de la etiqueta del grupo: son estables y únicos.
+const idPanel = (etiqueta: string) => `desplegable-${etiqueta.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-')}`;
+---
+
+<header transition:name="encabezado" data-navbar class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur transition-transform duration-200 motion-reduce:transition-none print:hidden">
+  <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
+    <a href="/" class="flex shrink-0 items-center gap-2" aria-label="BIOING+ — Inicio"><Logo variante="navbar" /></a>
+
+    <!-- Escritorio -->
+    <nav aria-label="Principal" class="hidden h-full flex-1 items-center gap-5 text-sm lg:flex">
+      {MENU_PRINCIPAL.map((entrada) => {
+        if (entrada.tipo === 'enlace') {
+          const activo = esActual(entrada.enlace.href, actual);
+          return (
+            <a href={entrada.enlace.href} aria-current={activo ? 'page' : undefined} class:list={clasesEnlaceEscritorio(activo)}>
+              {entrada.enlace.etiqueta}
+            </a>
+          );
+        }
+        const activo = entradaActiva(entrada, actual);
+        const id = idPanel(entrada.grupo.etiqueta);
+        return (
+          <div data-desplegable class="relative flex h-full">
+            <button type="button" aria-expanded="false" aria-controls={id} data-desplegable-boton
+                    class:list={['group inline-flex h-full items-center gap-1 border-b-2 whitespace-nowrap transition-colors hover:text-primary', activo ? 'border-primary font-medium text-primary' : 'border-transparent text-foreground']}>
+              {entrada.grupo.etiqueta}
+              <CaretDown class="size-3.5 transition-transform group-aria-expanded:rotate-180 motion-reduce:transition-none" aria-hidden="true" />
+            </button>
+            <div id={id} hidden data-desplegable-panel
+                 class="absolute left-0 top-full z-50 mt-1 w-72 rounded-lg border border-border bg-background p-2 shadow-md">
+              <ul class="grid gap-1">
+                {entrada.grupo.enlaces.map((enlace: EnlaceMenu) => {
+                  const activo = esActual(enlace.href, actual);
+                  return (
+                    <li>
+                      <a href={enlace.href} aria-current={activo ? 'page' : undefined}
+                         class:list={['block rounded-md px-3 py-2 hover:bg-muted', activo && 'bg-muted']}>
+                        <span class:list={['block', activo ? 'font-medium text-primary' : 'text-foreground']}>{enlace.etiqueta}</span>
+                        {enlace.descripcion && <span class="mt-0.5 block text-xs text-muted-foreground">{enlace.descripcion}</span>}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        );
+      })}
+    </nav>
+
+    <div class="hidden shrink-0 items-center gap-3 text-sm lg:flex">
+      <a href="/buscar" data-buscar class="inline-flex items-center gap-2 rounded-md border border-border px-2.5 py-1 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-outline">
+        <MagnifyingGlass class="size-4" aria-hidden="true" />
+        <span>Buscar</span>
+        <kbd data-atajo class="hidden rounded border border-border px-1 font-sans text-xs xl:inline" aria-hidden="true"><span data-atajo-texto>Ctrl K</span></kbd>
+      </a>
+      <ThemeToggle />
+      <a href={URL_FCB} class="inline-flex items-center gap-1 whitespace-nowrap text-muted-foreground hover:text-primary">FCB UdeC <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
+    </div>
+
+    <!-- Móvil -->
+    <div class="ml-auto lg:hidden">
+      <Sheet>
+        <SheetTrigger aria-label="Abrir menú" class="p-2"><IconMenu class="size-6" aria-hidden="true" /></SheetTrigger>
+        <SheetContent side="left">
+          <SheetHeader><SheetTitle>BIOING+</SheetTitle></SheetHeader>
+          <nav aria-label="Principal (móvil)" class="flex flex-1 flex-col gap-1 overflow-y-auto px-4">
+            <SheetClose asChild>
+              <a href="/buscar" class="flex min-h-11 items-center gap-3 rounded-md border border-border px-3 hover:bg-muted">
+                <MagnifyingGlass class="size-5" aria-hidden="true" />Buscar en el sitio
+              </a>
+            </SheetClose>
+
+            {MENU_PRINCIPAL.map((entrada) => {
+              const enlaces = entrada.tipo === 'enlace' ? [entrada.enlace] : entrada.grupo.enlaces;
+              const titulo = entrada.tipo === 'grupo' ? entrada.grupo.etiqueta : null;
+              const enlacesMovil = enlaces.map((enlace) => {
+                const Icono = iconoDe(enlace.href);
+                const activo = esActual(enlace.href, actual);
+                return (
+                  <SheetClose asChild>
+                    <a href={enlace.href} aria-current={activo ? 'page' : undefined} class:list={clasesEnlaceMovil(activo)}>
+                      <Icono class="size-5 shrink-0" aria-hidden="true" />{enlace.etiqueta}
+                    </a>
+                  </SheetClose>
+                );
+              });
+              // Los grupos van en un bloque con bordes para que los enlaces sueltos (Noticias, Agenda) no parezcan parte de ellos.
+              return titulo ? (
+                <div class="my-2 border-y border-border py-2">
+                  <p class="px-3 pt-1 pb-1 text-xs font-semibold tracking-wide text-muted-foreground uppercase">{titulo}</p>
+                  {enlacesMovil}
+                </div>
+              ) : enlacesMovil;
+            })}
+
+            <div class="mt-auto flex items-center justify-between border-t border-border py-3 pt-4">
+              <span class="text-sm text-muted-foreground">Tema</span>
+              <ThemeToggle />
+            </div>
+            <a href={URL_FCB} class="inline-flex min-h-11 items-center gap-1 px-3 text-muted-foreground">Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </div>
+  </div>
+</header>

@@ -3,13 +3,10 @@ import '@/styles/starwind.css';
 import '@/styles/animaciones.css';
 import '@/styles/transitions.css';
 import { ClientRouter } from 'astro:transitions';
-import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/starwind/sheet';
-import IconMenu from 'phosphor-astro/List.astro';
 import ArrowUpRight from 'phosphor-astro/ArrowUpRight.astro';
 import InstagramLogo from 'phosphor-astro/InstagramLogo.astro';
-import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
 import Logo from '@/components/Logo.astro';
-import ThemeToggle from '@/components/ThemeToggle.astro';
+import Navbar from '@/components/Navbar.astro';
 import { MENU, URL_FCB } from '@/lib/navegacion';
 import { jsonLd as serializarJsonLd, sitioWeb, type JsonLd } from '@/lib/schema';
 import ogPorDefecto from '@/assets/og-default.png';
@@ -18,7 +15,6 @@ interface Props { titulo: string; descripcion?: string; imagen?: string; jsonLd?
 const { titulo, descripcion = 'Plataforma de la comunidad de Bioingeniería de la Universidad de Concepción.', imagen, jsonLd: jsonLdPagina } = Astro.props;
 const tituloPagina = titulo === 'BIOING+' ? titulo : `${titulo} · BIOING+`;
 const actual = Astro.url.pathname;
-const esActual = (href: string) => (href === '/' ? actual === '/' : actual.startsWith(href));
 // URL absoluta para canonical y Open Graph (Astro.site está definido en astro.config.mjs).
 const canonical = new URL(actual, Astro.site).href;
 const imagenOG = imagen ? new URL(imagen, Astro.site).href : new URL(ogPorDefecto.src, Astro.site).href;
@@ -78,43 +74,7 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
   </head>
   <body class="min-h-screen flex flex-col">
     <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2 focus:shadow-lg print:hidden">Saltar al contenido</a>
-    <header transition:name="encabezado" class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur print:hidden">
-      <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
-        <a href="/" class="flex items-center gap-2" aria-label="BIOING+ — Inicio"><Logo variante="navbar" /></a>
-        <nav aria-label="Principal" class="hidden lg:flex flex-1 items-center gap-5 text-sm">
-          {MENU.map((item) => (
-            <a href={item.href} aria-current={esActual(item.href) ? 'page' : undefined}
-               class:list={['hover:text-primary', esActual(item.href) ? 'text-primary' : 'text-foreground']}>
-              {item.etiqueta}
-            </a>
-          ))}
-          <a href="/buscar" aria-label="Buscar en el sitio" title="Buscar" class="text-muted-foreground hover:text-primary"><MagnifyingGlass class="size-4" aria-hidden="true" /></a>
-          <ThemeToggle />
-        </nav>
-        <a href={URL_FCB} class="ml-auto hidden lg:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">FCB UdeC <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
-        <div class="ml-auto lg:hidden">
-          <Sheet>
-            <SheetTrigger aria-label="Abrir menú" class="p-2"><IconMenu class="size-6" aria-hidden="true" /></SheetTrigger>
-            <SheetContent side="left">
-              <SheetHeader><SheetTitle>BIOING+</SheetTitle></SheetHeader>
-              <nav aria-label="Principal (móvil)" class="grid gap-1 px-4">
-                {MENU.map((item) => (
-                  <SheetClose asChild>
-                    <a href={item.href} aria-current={esActual(item.href) ? 'page' : undefined}
-                       class="rounded-md px-2 py-2 hover:bg-muted">{item.etiqueta}</a>
-                  </SheetClose>
-                ))}
-                <SheetClose asChild>
-                  <a href="/buscar" class="inline-flex items-center gap-2 rounded-md px-2 py-2 hover:bg-muted"><MagnifyingGlass class="size-4" aria-hidden="true" />Buscar</a>
-                </SheetClose>
-                <ThemeToggle />
-                <a href={URL_FCB} class="mt-4 inline-flex items-center gap-1 px-2 py-2 text-muted-foreground">Facultad de Ciencias Biológicas <ArrowUpRight class="size-3.5" aria-hidden="true" /></a>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </div>
-    </header>
+    <Navbar />
 
     <main id="contenido" transition:name="contenido" data-pagefind-body class="flex-1">
       <slot />
@@ -179,6 +139,7 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
   <script>
     import { iniciarAnimaciones, limpiarAnimaciones } from '@/scripts/animaciones';
     import { iniciarFiltrosPlegables } from '@/scripts/filtros-plegables';
+    import { iniciarNavbar } from '@/scripts/navbar';
 
     // Tema claro/oscuro: ClientRouter (View Transitions) puede resetear las clases del
     // <html> al navegar (lo mismo que pasa con .anima), así que se re-aplica la preferencia
@@ -198,6 +159,7 @@ const bloquesPagina = jsonLdPagina ? (Array.isArray(jsonLdPagina) ? jsonLdPagina
       aplicarTema();
       iniciarAnimaciones();
       iniciarFiltrosPlegables();
+      iniciarNavbar();
     });
 
     // Los formularios de filtros (role="search") filtran en el cliente: Enter no debe enviarlos.
