@@ -5,7 +5,8 @@ import { actividadEsProxima, anuncioVigente, estaVigente, yaPublicado } from './
 import { noticiasRelacionadas } from './relacionadas';
 import { seccionesPublicadas } from './secciones-inicio';
 import { paginaDestacada } from './pagina-destacada';
-import type { ConfigMenu, PaginaLibreMenu } from './navegacion';
+import { cifrasDelDirectorio, tarjetasComunidad, ultimosDocumentos } from './comunidad';
+import { seccionActiva, type ConfigMenu, type PaginaLibreMenu } from './navegacion';
 import type { ConfigRedes } from './redes';
 
 type ColeccionPublicable = 'noticias' | 'actividades' | 'anuncios' | 'documentos' | 'banners' | 'instagram' | 'paginasLibres';
@@ -170,6 +171,31 @@ export async function egresadosDelDirectorio() {
     ({ data }) => data.ficha_activa && data.perfil_egresado?.autorizado === true,
   );
   return personas.sort((a, b) => a.data.nombre.localeCompare(b.data.nombre, 'es'));
+}
+
+/**
+ * Banda «Comunidad y documentos» del Inicio: textos del panel (colección `inicio`), tarjetas activas, cifras del
+ * Directorio y últimos documentos. Null si el panel apagó el Directorio y el Repositorio: no sale la banda.
+ */
+export async function bandaComunidad(config: ConfigMenu) {
+  const tarjetas = tarjetasComunidad(seccionActiva('/directorio', config), seccionActiva('/repositorio', config));
+  if (tarjetas.length === 0) return null;
+  const [entrada, egresados, documentos] = await Promise.all([
+    getEntry('inicio', 'inicio'),
+    egresadosDelDirectorio(),
+    documentosDelRepositorio(),
+  ]);
+  const comunidad = entrada?.data.comunidad;
+  if (!comunidad) return null;
+  const cifras = cifrasDelDirectorio(
+    egresados.map((p) => ({ generacion: p.data.perfil_egresado?.generacion, organizacion: p.data.perfil_egresado?.organizacion?.id })),
+  );
+  return {
+    ...comunidad,
+    tarjetas,
+    cifras,
+    documentos: ultimosDocumentos(documentos),
+  };
 }
 
 /** Secciones destacadas del Inicio publicadas, en el orden de la lista del CMS (colección `inicio`). */

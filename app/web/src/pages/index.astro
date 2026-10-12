@@ -6,9 +6,10 @@ import TarjetaActividad from '@/components/TarjetaActividad.astro';
 import TarjetaAnuncio from '@/components/TarjetaAnuncio.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import SeccionDestacada from '@/components/SeccionDestacada.astro';
+import BandaComunidad from '@/components/BandaComunidad.astro';
 import PaginaDestacada from '@/components/PaginaDestacada.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { anunciosVigentes, configuracionMenu, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
+import { anunciosVigentes, bandaComunidad, configuracionMenu, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
 import { enlaceDisponible, seccionActiva } from '@/lib/navegacion';
 import { estaVigente } from '@/lib/reglas';
 import { getImage } from 'astro:assets';
@@ -31,6 +32,8 @@ const lcp = banners[0]
 
 const secciones = (await seccionesInicio()).filter((s) => enlaceDisponible(s.enlace, configMenu));
 const paginaDestacada = await paginaDestacadaInicio();
+// Banda «Comunidad y documentos»: null si el panel apagó el Directorio y el Repositorio.
+const banda = await bandaComunidad(configMenu);
 
 const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
   noticiasRecientes(3), proximasActividades(), anunciosVigentes(), publicacionesInstagram(3),
@@ -96,6 +99,8 @@ const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
       </div>
     </section>
   )}
+
+  {banda && <BandaComunidad banda={banda} />}
 
   {secciones.map((seccion) => <SeccionDestacada seccion={seccion} />)}
 </Base>

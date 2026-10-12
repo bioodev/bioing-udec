@@ -1,0 +1,99 @@
+---
+// Banda «Comunidad y documentos» del Inicio: una tarjeta por sección activa (Directorio y Repositorio), con cifras y
+// buscador en el Directorio, y los documentos más recientes en el Repositorio. Los datos llegan de `bandaComunidad`.
+import { Image } from 'astro:assets';
+import type { bandaComunidad } from '@/lib/contenido';
+import { Input } from '@/components/starwind/input';
+import { Label } from '@/components/starwind/label';
+import { TIPOS_DOCUMENTO } from '@/lib/repositorio';
+import ArrowRight from 'phosphor-astro/ArrowRight.astro';
+import MagnifyingGlass from 'phosphor-astro/MagnifyingGlass.astro';
+
+type Banda = NonNullable<Awaited<ReturnType<typeof bandaComunidad>>>;
+interface Props { banda: Banda }
+const { banda } = Astro.props;
+const dosTarjetas = banda.tarjetas.length === 2;
+---
+<section id="inicio-comunidad" class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="inicio-comunidad-titulo">
+  <h2 id="inicio-comunidad-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">{banda.titulo}</h2>
+
+  <div data-animar="grilla" class={dosTarjetas ? 'mt-8 grid gap-6 md:grid-cols-2' : 'mx-auto mt-8 w-full max-w-2xl'}>
+    {banda.tarjetas.includes('directorio') && (
+      <article id="inicio-directorio" aria-labelledby="inicio-directorio-titulo" class="flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8">
+        {banda.directorio.imagen && (
+          <Image
+            src={banda.directorio.imagen}
+            alt={banda.directorio.imagen_alt ?? ''}
+            widths={[320, 640]}
+            sizes="(min-width: 640px) 320px, 100vw"
+            loading="lazy"
+            class="mb-5 aspect-video w-full rounded-md object-cover sm:max-w-xs"
+          />
+        )}
+        <h3 id="inicio-directorio-titulo" class="text-xl font-semibold tracking-tight">{banda.directorio.titulo}</h3>
+        <p class="mt-2 text-muted-foreground">{banda.directorio.texto}</p>
+
+        {banda.cifras.length > 0 && (
+          <dl class="mt-6 grid grid-cols-3 gap-4 text-center">
+            {banda.cifras.map((c) => (
+              <div>
+                <dt class="text-xs text-muted-foreground sm:text-sm">{c.etiqueta}</dt>
+                <dd class="text-2xl font-semibold tracking-tight sm:text-3xl">{c.valor}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        <form action="/directorio" method="get" role="search" class="mt-6 flex flex-wrap gap-3">
+          <div class="grid min-w-0 flex-1 basis-56 gap-2">
+            <Label for="inicio-directorio-texto" class="sr-only">Buscar egresado o egresada por nombre</Label>
+            <Input id="inicio-directorio-texto" name="texto" type="search" placeholder="Buscar por nombre" autocomplete="off" />
+          </div>
+          <button type="submit" class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 font-medium hover:bg-muted">
+            <MagnifyingGlass class="size-4" aria-hidden="true" />Buscar
+          </button>
+        </form>
+
+        <div class="mt-auto pt-6">
+          <a href="/directorio" class="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90">
+            {banda.directorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
+          </a>
+        </div>
+      </article>
+    )}
+
+    {banda.tarjetas.includes('repositorio') && (
+      <article id="inicio-repositorio" aria-labelledby="inicio-repositorio-titulo" class="flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8">
+        {banda.repositorio.imagen && (
+          <Image
+            src={banda.repositorio.imagen}
+            alt={banda.repositorio.imagen_alt ?? ''}
+            widths={[320, 640]}
+            sizes="(min-width: 640px) 320px, 100vw"
+            loading="lazy"
+            class="mb-5 aspect-video w-full rounded-md object-cover sm:max-w-xs"
+          />
+        )}
+        <h3 id="inicio-repositorio-titulo" class="text-xl font-semibold tracking-tight">{banda.repositorio.titulo}</h3>
+        <p class="mt-2 text-muted-foreground">{banda.repositorio.texto}</p>
+
+        {banda.documentos.length > 0 && (
+          <ul role="list" class="mt-6 divide-y divide-border">
+            {banda.documentos.map((d) => (
+              <li id={`documento-${d.id}`} class="py-3">
+                <a href={`/repositorio/${d.id}`} class="font-medium hover:text-primary hover:underline">{d.data.titulo}</a>
+                <span class="block text-sm text-muted-foreground">{TIPOS_DOCUMENTO[d.data.tipo]} · {d.data.anio}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div class="mt-auto pt-6">
+          <a href="/repositorio" class="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-6 text-primary-foreground hover:opacity-90">
+            {banda.repositorio.boton}<ArrowRight class="size-4" aria-hidden="true" />
+          </a>
+        </div>
+      </article>
+    )}
+  </div>
+</section>

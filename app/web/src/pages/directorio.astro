@@ -134,6 +134,11 @@ const jsonLdPagina = listaElementos(
     sinResultados.classList.toggle('hidden', visibles > 0);
   }
 
+  // Estado inicial desde la URL (p. ej. /directorio?texto=ana, que envía el buscador de la banda del Inicio).
+  const textoUrl = new URLSearchParams(location.search).get('texto');
+  if (textoUrl) (form.elements.namedItem('texto') as HTMLInputElement).value = textoUrl;
+  aplicar();
+
   form.addEventListener('input', aplicar);
   // Starwind v3 emite starwind:value-change (burbujea) antes de actualizar el valor del
   // input oculto; se difiere la lectura para que FormData vea el valor nuevo.

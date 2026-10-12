@@ -399,6 +399,32 @@ collections:
               - { name: imagen, label: Imagen de fondo, widget: image, hint: "Foto horizontal. Se oscurece para que el texto se lea." }
               - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Descripción de la imagen para lectores de pantalla. Déjalo vacío si la imagen es solo decorativa." }
               - { name: publicado, label: Publicado, widget: boolean, default: true }
+          - name: comunidad
+            label: Comunidad y documentos
+            widget: object
+            required: false
+            collapsed: false
+            hint: "Banda del Inicio con una tarjeta para el Directorio y otra para el Repositorio. Si desactivas una sección en «Secciones del sitio», su tarjeta no sale; si desactivas las dos, no sale la banda."
+            fields:
+              - { name: titulo, label: Título de la banda, widget: string, default: "Comunidad y documentos", hint: "Encabezado de la banda." }
+              - name: directorio
+                label: Tarjeta del Directorio
+                widget: object
+                fields:
+                  - { name: titulo, label: Título, widget: string, default: "Directorio de bioingenieros/as" }
+                  - { name: texto, label: Texto, widget: text, default: "Encuentra egresados/as por generación, área y organización." }
+                  - { name: boton, label: Texto del botón, widget: string, default: "Ir al Directorio", hint: "Lleva al Directorio completo." }
+                  - { name: imagen, label: Foto (opcional), widget: image, required: false, hint: "Foto pequeña y horizontal. Sin foto, la tarjeta se ve igual." }
+                  - { name: imagen_alt, label: Texto alternativo de la foto, widget: string, required: false, hint: "Describe la foto para lectores de pantalla. Déjalo vacío si es solo decorativa." }
+              - name: repositorio
+                label: Tarjeta del Repositorio
+                widget: object
+                fields:
+                  - { name: titulo, label: Título, widget: string, default: "Repositorio de documentos" }
+                  - { name: texto, label: Texto, widget: text, default: "Decretos, reglamentos, informes y publicaciones de la carrera, en un solo lugar." }
+                  - { name: boton, label: Texto del botón, widget: string, default: "Ir al Repositorio", hint: "Lleva al Repositorio completo." }
+                  - { name: imagen, label: Foto (opcional), widget: image, required: false, hint: "Foto pequeña y horizontal. Sin foto, la tarjeta se ve igual." }
+                  - { name: imagen_alt, label: Texto alternativo de la foto, widget: string, required: false, hint: "Describe la foto para lectores de pantalla. Déjalo vacío si es solo decorativa." }
       - name: menu
         label: Secciones del sitio
         file: /app/web/src/content/menu/menu.yml

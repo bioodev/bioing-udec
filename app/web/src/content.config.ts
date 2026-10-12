@@ -193,8 +193,33 @@ const paginasLibres = defineCollection({
 // Secciones destacadas del Inicio (archivo único; el orden de la lista es el orden en la página).
 const inicio = defineCollection({
   loader: md('inicio'),
-  schema: ({ image }) =>
-    z.object({
+  schema: ({ image }) => {
+    // Tarjeta de la banda «Comunidad y documentos»: los valores por defecto son los del primer arranque.
+    const comunidad = {
+      titulo: 'Comunidad y documentos',
+      directorio: {
+        titulo: 'Directorio de bioingenieros/as',
+        texto: 'Encuentra egresados/as por generación, área y organización.',
+        boton: 'Ir al Directorio',
+      },
+      repositorio: {
+        titulo: 'Repositorio de documentos',
+        texto: 'Decretos, reglamentos, informes y publicaciones de la carrera, en un solo lugar.',
+        boton: 'Ir al Repositorio',
+      },
+    };
+    const tarjeta = (valores: { titulo: string; texto: string; boton: string }) =>
+      z
+        .object({
+          titulo: z.string().default(valores.titulo),
+          texto: z.string().default(valores.texto),
+          boton: z.string().default(valores.boton),
+          imagen: image().optional(),
+          imagen_alt: z.string().optional(),
+        })
+        .default(valores);
+
+    return z.object({
       secciones: z.array(
         z.object({
           titulo: z.string(),
@@ -207,7 +232,16 @@ const inicio = defineCollection({
           publicado: z.boolean().default(true),
         }),
       ).optional(),
-    }),
+      // Banda «Comunidad y documentos» del Inicio: una tarjeta para el Directorio y otra para el Repositorio.
+      comunidad: z
+        .object({
+          titulo: z.string().default(comunidad.titulo),
+          directorio: tarjeta(comunidad.directorio),
+          repositorio: tarjeta(comunidad.repositorio),
+        })
+        .default(comunidad),
+    });
+  },
 });
 
 // Secciones fijas: un interruptor por sección. Noticias y Agenda solo salen del menú; las demás, si se desactivan,
