@@ -8,6 +8,7 @@ import { leerConfigMenu } from './src/lib/navegacion.ts';
 import { seccionesDesactivadas } from './src/integrations/secciones-desactivadas.ts';
 import { satteri } from '@astrojs/markdown-satteri';
 import { sanearHtml } from './src/lib/sanear-html.ts';
+import { recuadros } from './src/lib/recuadros.ts';
 
 // Astro no carga .env en process.env al leer esta config: se lee con loadEnv de Vite.
 // La variable del entorno (p. ej. la de Workers Builds) gana sobre el archivo .env.
@@ -30,7 +31,7 @@ export default defineConfig({
 	],
 	// El cuerpo Markdown del panel se sanea: sin HTML crudo (scripts, formularios, <meta refresh>…) ni enlaces
 	// javascript:/data:. Sätteri es el procesador por defecto de Astro 7; ver src/lib/sanear-html.ts.
-	markdown: { processor: satteri({ hastPlugins: [sanearHtml] }) },
+	markdown: { processor: satteri({ hastPlugins: [recuadros, sanearHtml] }) },
 	vite: {
 		plugins: [tailwindcss()],
 		build: {
