@@ -1,6 +1,6 @@
 # 0011 · Encabezados de los listados, íconos y bloque del Directorio desde el panel
 
-- **Estado:** Accepted · 2026-10-12 · decisión de la persona responsable del proyecto («imágenes e íconos editables»)
+- **Estado:** Accepted (diseño visual con imagen superado por 0016, 2026-10-12) · 2026-10-12 · decisión de la persona responsable del proyecto («imágenes e íconos editables»)
 - **Decisores:** persona responsable del proyecto
 - **Contexto relacionado:** `../context.md` (Encabezado de listado, Ícono) · `../architecture.md` (§ Secciones y SEO) ·
   `../design.md` (Encabezado de los listados) · ADR 0010 (imagen para redes por listado)
@@ -47,3 +47,4 @@ listado (og:image) se tenía que poder elegir por listado (ADR 0010).
 - **Importar todo el paquete `phosphor-astro` con un glob**: simple, pero infla el build. Se usan imports estáticos de los 44.
 - **Encabezado con la imagen como fondo y título encima (con velo)**: más llamativo, pero el contraste depende de cada
   foto y del modo oscuro. Se eligió imagen ancha con el título debajo.
+  **Nota del 2026-10-12:** esta alternativa se adoptó después, con velo degradado y texto blanco fijo; ver ADR 0016.

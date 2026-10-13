@@ -52,6 +52,7 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 - [`0013-orden-del-panel-y-archivos-aparte.md`](adr/0013-orden-del-panel-y-archivos-aparte.md) — colecciones agrupadas con divisores, archivos únicos (singletons) en la sección «Archivos», «Páginas libres» → «Páginas» y campos en orden de uso.
 - [`0014-incrustados-sin-clic.md`](adr/0014-incrustados-sin-clic.md) — incrustados con esqueleto; Instagram se carga solo al acercarse a la pantalla, sin el botón «Ver publicación aquí».
 - [`0015-recuadros-y-columna-lateral.md`](adr/0015-recuadros-y-columna-lateral.md) — Recuadros destacados en el texto (`> [!NOTA]`) y columna lateral con datos clave y «Compartir» en las fichas.
+- [`0016-titulo-sobre-la-imagen-de-cabecera.md`](adr/0016-titulo-sobre-la-imagen-de-cabecera.md) — Título e introducción sobre la imagen de cabecera de los listados, con velo degradado (reemplaza el diseño visual del 0011).
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)
 
