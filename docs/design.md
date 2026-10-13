@@ -588,13 +588,15 @@ reintroducir efectos de puntos/impresión en el hero.
 - Bloque entre el carrusel de Banners y «Noticias recientes» (`PaginaDestacada.astro`), para una Página libre con
   **Destacar en el Inicio**. Solo se muestra una a la vez; la elige `paginaDestacadaInicio()` (`src/lib/contenido.ts`,
   regla pura en `src/lib/pagina-destacada.ts`).
-- Fondo `bg-muted`, etiqueta «Destacado», título h2 y resumen (`resumen_inicio` o, si falta, la bajada). Con imagen,
-  dos columnas en escritorio (la imagen a la izquierda) y la imagen arriba en móvil. Sin imagen pero con video, el
-  video ocupa ese lugar (para no dejar media sección vacía); sin imagen ni video, una columna.
+- Fondo `bg-muted`. El texto va en la **tarjeta de contenido** compartida (`TarjetaContenido.astro`, ver «Tarjeta de
+  contenido» más abajo): etiqueta (`etiqueta_inicio` o, si falta, «Destacado»), título h2, línea corta, resumen
+  (`resumen_inicio` o, si falta, la bajada), chips y botón «Ver más». Con imagen, dos columnas en escritorio (la
+  imagen a la izquierda) y la imagen arriba en móvil. Sin imagen pero con video, el video ocupa ese lugar (para no
+  dejar media sección vacía); sin imagen ni video, una columna de ancho máximo 2xl.
 - Hasta tres títulos de los bloques destacados se muestran como chips («datos clave»). Se eligió chips porque el
   bloque es un resumen: los textos largos quedan en la página.
-- Video: con imagen, el `VideoModal` va debajo del resumen, en un ancho máximo de 28 rem; sin imagen, al lado del
-  texto (ver arriba). Botón «Ver más» → `/p/<id>`.
+- Video: con imagen, el `VideoModal` va dentro de la tarjeta, debajo de los chips, en un ancho máximo de 28 rem; sin
+  imagen, al lado del texto (ver arriba). Botón «Ver más» → `/p/<id>`.
 - Sin JavaScript propio: el video usa el `VideoModal` existente. Las animaciones son `data-animar="fade-up"`.
 
 ### Enlaces (botones bajo el título)
@@ -611,8 +613,20 @@ reintroducir efectos de puntos/impresión en el hero.
 - Al final del Inicio hay una lista de **secciones destacadas** editable en el panel (colección `inicio`, archivo
   `src/content/inicio/inicio.md`). El orden de la lista es el orden en la página; las no publicadas no se muestran.
 - Cada sección (`SeccionDestacada.astro`) es de ancho completo, con altura mínima de 50 vh en móvil y 60 vh en
-  escritorio. La imagen de fondo va con `<Image>` (`widths` 640–2560, `sizes="100vw"`, `loading="lazy"`) y una capa
-  `bg-black/60` para que el texto blanco cumpla contraste AA sobre cualquier foto.
+  escritorio. La **tarjeta de contenido** va a la izquierda, con ancho del 43 % en escritorio (alineada al contenedor
+  de 6xl) y ancho completo en móvil, sobre la foto. La imagen de fondo va con `<Image>` (`widths` 640–2560,
+  `sizes="100vw"`, `loading="lazy"`) y una capa `bg-black/60` para que el texto blanco cumpla contraste AA sobre
+  cualquier foto. Sin etiqueta, la tarjeta empieza en el título.
+
+### Tarjeta de contenido (bloques destacados)
+
+- `TarjetaContenido.astro` es el lenguaje común de las Secciones y de la Página destacadas del Inicio: fondo
+  `bg-card` con borde `border-border`, radio `rounded-lg`, **sin sombra**. De arriba abajo: **etiqueta** (texto
+  `text-sm` seminegrita en color de marca, con una línea fina `border-border` debajo), título **h2** `text-3xl`,
+  **línea corta** de marca (`hr` de 4 rem, 2 px), texto, un slot para el cuerpo extra (chips, video) y el botón
+  (`cta cta-relleno`, con `cta-flecha`). El enlace externo abre en pestaña nueva y lo anuncia.
+- La tarjeta lleva `data-animar="fade-up"` en su raíz. Su `id` de título lo pasa el padre (`aria-labelledby` de la
+  sección sigue apuntando a él).
 - **Parallax** (`src/scripts/parallax.ts`, GSAP + ScrollTrigger con `scrub`): la imagen mide 175 % de la sección,
   centrada (`top: -37,5 %`), y se desplaza de −20 % a +20 % de su propio alto mientras la sección cruza el viewport.
   Con ese recorrido el borde de la imagen nunca entra en la sección (en las pruebas, 0 de 11 puntos con hueco). Si se
