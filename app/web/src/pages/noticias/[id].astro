@@ -19,6 +19,7 @@ import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
 import Distintivo from '@/components/Distintivo.astro';
+import Compartir from '@/components/Compartir.astro';
 
 export async function getStaticPaths() {
   const noticias = await noticiasVisibles();
@@ -64,7 +65,7 @@ const jsonLdPagina = [
 const seo = resolverSeo({ titulo: noticia.data.titulo, descripcion: noticia.data.bajada, imagen: noticia.data.imagen?.src }, seoDeEntrada(noticia.data.seo));
 ---
 <Base titulo={seo.titulo} descripcion={seo.descripcion} imagen={seo.imagen} noindex={seo.noindex} jsonLd={jsonLdPagina}>
-  <article class="mx-auto w-full max-w-3xl px-4 py-12 lg:grid lg:max-w-6xl lg:grid-cols-[minmax(0,48rem)_16rem] lg:justify-center lg:gap-x-12">
+  <article class="mx-auto w-full max-w-3xl px-4 py-12 lg:grid lg:max-w-6xl lg:grid-cols-[minmax(0,48rem)_18rem] lg:justify-center lg:gap-x-12">
     <header class="lg:col-start-1 lg:row-start-1">
       <Migas items={rutas} />
       <h1 class="mt-6 text-4xl font-semibold tracking-tight">{noticia.data.titulo}</h1>
@@ -107,6 +108,9 @@ const seo = resolverSeo({ titulo: noticia.data.titulo, descripcion: noticia.data
           <dd class="mt-1 font-medium">{lectura} min</dd>
         </div>
       </dl>
+      <div class="mt-6 border-t border-border pt-6">
+        <Compartir url={enlace} titulo={noticia.data.titulo} />
+      </div>
     </aside>
 
     <div class="lg:col-start-1 lg:row-start-2">

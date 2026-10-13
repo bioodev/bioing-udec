@@ -1,0 +1,62 @@
+---
+// Bloque «Compartir» de la columna lateral de una ficha: copiar enlace y enlaces simples a redes y correo.
+// `url` es la ruta de la ficha (p. ej. /agenda/x); se convierte en absoluta para que las redes la reciban completa.
+import { enlacesCompartir, type Red } from '@/lib/compartir';
+import { Button } from '@/components/starwind/button';
+import WhatsappLogo from 'phosphor-astro/WhatsappLogo.astro';
+import LinkedinLogo from 'phosphor-astro/LinkedinLogo.astro';
+import XLogo from 'phosphor-astro/XLogo.astro';
+import EnvelopeSimple from 'phosphor-astro/EnvelopeSimple.astro';
+import Copy from 'phosphor-astro/Copy.astro';
+
+interface Props { url: string; titulo: string }
+const { url, titulo } = Astro.props;
+const absoluta = new URL(url, Astro.site).href;
+const enlaces = enlacesCompartir(absoluta, titulo);
+const iconos: Record<Red, typeof WhatsappLogo> = {
+  whatsapp: WhatsappLogo,
+  linkedin: LinkedinLogo,
+  x: XLogo,
+  correo: EnvelopeSimple,
+};
+---
+<section data-compartir class="grid gap-3" aria-labelledby="compartir-titulo">
+  <h2 id="compartir-titulo" class="text-sm font-semibold">Compartir</h2>
+  <Button type="button" variant="outline" class="w-full rounded-full" data-copiar={absoluta}>
+    <Copy class="size-4" aria-hidden="true" />Copiar enlace
+  </Button>
+  <p data-compartir-estado class="min-h-5 text-sm text-muted-foreground" aria-live="polite"></p>
+  <ul role="list" class="flex flex-wrap gap-2">
+    {enlaces.map((e) => {
+      const Icono = iconos[e.red];
+      return (
+        <li>
+          <a href={e.url} target={e.red === 'correo' ? undefined : '_blank'} rel={e.red === 'correo' ? undefined : 'noopener noreferrer'} class="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm hover:bg-muted">
+            <Icono class="size-4" aria-hidden="true" />{e.etiqueta}
+            {e.red !== 'correo' && <span class="sr-only">(se abre en una pestaña nueva)</span>}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<script>
+  // Un solo listener delegado en el documento: el bloque se reemplaza en cada navegación (ClientRouter)
+  // y el módulo no debe registrarse dos veces.
+  if (!document.documentElement.dataset.compartir) {
+    document.documentElement.dataset.compartir = 'listo';
+    document.addEventListener('click', async (evento) => {
+      const boton = (evento.target as Element).closest<HTMLButtonElement>('[data-copiar]');
+      if (!boton) return;
+      const aviso = boton.closest('[data-compartir]')?.querySelector('[data-compartir-estado]');
+      if (!aviso) return;
+      try {
+        await navigator.clipboard.writeText(boton.dataset.copiar ?? '');
+        aviso.textContent = 'Enlace copiado';
+      } catch {
+        aviso.textContent = 'No se pudo copiar: copia el enlace desde la barra de direcciones.';
+      }
+    });
+  }
+</script>
