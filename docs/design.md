@@ -763,13 +763,17 @@ encabezado, un solo `<main>`, `<section>` con nombre):
 
 ### Encabezado de los listados (ADR 0011)
 
-- `EncabezadoListado.astro` es el `<h1>` de las seis páginas de listado. Con imagen, la imagen va arriba a ancho completo,
-  con `rounded-xl`, proporción 16/7 en móvil y 3/1 desde `sm`, y el título debajo con 24 px de separación. Sin velo: el
-  contraste del título no depende de la foto ni del modo oscuro.
-- El ícono va a la izquierda del título, en `text-primary`, de 36 px (`size-9`), decorativo (`aria-hidden`). Sin ícono,
-  el título no cambia de clases.
-- La introducción (`intro`, opcional) va bajo el `<h1>` en un `<p>` con `text-muted-foreground`, `mt-3` y ancho de lectura
-  (`max-w-prose`). Sin texto, no se dibuja nada.
+- `EncabezadoListado.astro` es el `<h1>` de las seis páginas de listado. Con imagen (ADR 0016), la imagen ocupa el ancho
+  del contenedor con `rounded-xl`, proporción 16/7 en móvil y 3/1 desde `sm`, con altura mínima (`min-h-72` en móvil,
+  `sm:min-h-64`) para que la intro no se corte. El título y la intro van **sobre** la imagen, alineados abajo a la
+  izquierda, con padding de 24 px (32 px desde `sm`), en blanco fijo (no cambia con el tema).
+- Velo: degradado de abajo arriba, `from-black/80 via-black/40 to-transparent`, que asegura el contraste AA del texto
+  blanco sobre cualquier foto. La imagen va con `absolute inset-0 object-cover`.
+- El ícono va a la izquierda del título, de 36 px (`size-9`), decorativo (`aria-hidden`), en blanco sobre la imagen y en
+  `text-primary` sin imagen. El texto del título va en un `<span class="min-w-0 break-words">` para que una palabra larga
+  («bioingenieros/as») se parta en lugar de salirse de la tarjeta.
+- La introducción (`intro`, opcional) va bajo el `<h1>` en un `<p>`: sobre la imagen en `text-white/90`; sin imagen,
+  en `text-muted-foreground`, con `mt-3` y ancho de lectura (`max-w-prose`). Sin texto, no se dibuja nada.
 - Sin imagen ni ícono, el encabezado es el de siempre (`text-4xl font-semibold tracking-tight`).
 - El bloque «¿Eres egresado/a?» del Directorio usa el mismo criterio: la imagen, si hay, va a sangre en la parte de arriba
   de la tarjeta, y el ícono de 28 px (`size-7`) va junto al título.

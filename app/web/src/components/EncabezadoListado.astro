@@ -10,10 +10,18 @@ interface Props { id: string; titulo: string; imagen?: ImageMetadata; imagenAlt?
 const { id, titulo, imagen, imagenAlt, icono, intro } = Astro.props;
 const clases = esIcono(icono) ? 'flex items-center gap-3 text-4xl font-semibold tracking-tight' : 'text-4xl font-semibold tracking-tight';
 ---
-{imagen && (
-  <div class="mb-6 overflow-hidden rounded-xl">
-    <Image src={imagen} alt={imagenAlt ?? ''} class="aspect-[16/7] w-full object-cover sm:aspect-[3/1]" widths={[640, 960, 1280]} sizes="(min-width: 1152px) 1152px, 100vw" />
+{imagen ? (
+  <div class="relative isolate flex w-full min-h-72 items-end overflow-hidden rounded-xl aspect-[16/7] sm:min-h-64 sm:aspect-[3/1]">
+    <Image src={imagen} alt={imagenAlt ?? ''} class="absolute inset-0 -z-10 size-full object-cover" widths={[640, 960, 1280]} sizes="(min-width: 1152px) 1152px, 100vw" />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/40 to-transparent" aria-hidden="true"></div>
+    <div class="w-full p-6 text-white sm:p-8">
+      <h1 id={id} data-animar="fade-up" class={clases}>{esIcono(icono) && <Icono nombre={icono} class="size-9 shrink-0 text-white" />}<span class="min-w-0 break-words">{titulo}</span></h1>
+      {intro && <p class="mt-3 max-w-prose text-white/90">{intro}</p>}
+    </div>
   </div>
+) : (
+  <>
+    <h1 id={id} data-animar="fade-up" class={clases}>{esIcono(icono) && <Icono nombre={icono} class="size-9 shrink-0 text-primary" />}{titulo}</h1>
+    {intro && <p class="mt-3 max-w-prose text-muted-foreground">{intro}</p>}
+  </>
 )}
-<h1 id={id} data-animar="fade-up" class={clases}>{esIcono(icono) && <Icono nombre={icono} class="size-9 shrink-0 text-primary" />}{titulo}</h1>
-{intro && <p class="mt-3 max-w-prose text-muted-foreground">{intro}</p>}
