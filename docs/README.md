@@ -53,7 +53,7 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 
 - [`plans/`](plans/) — planes de ejecución por hito (`YYYY-MM-DD-plan-tema.md`). Vigente para infraestructura:
   [`2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md).
-- [`analisis/`](analisis/) — wireframes acordados, comparativa EmDash, evaluación de Tolaria y revisión de seguridad (2026-10-12).
+- [`analisis/`](analisis/) — wireframes acordados, comparativa EmDash, evaluación de Tolaria, revisión de seguridad (2026-10-12) y [datos faltantes del contenido](analisis/2026-10-12-datos-faltantes.md) (2026-10-12).
 - [`biotech-imgs-demo/`](biotech-imgs-demo/) — fotos originales (Unsplash) usadas como material de prueba; la
   versión optimizada que usa el sitio está en `app/web/src/assets/media/`.
 
