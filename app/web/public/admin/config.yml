@@ -522,18 +522,18 @@ singletons:
             label: Enlace del botón
             widget: string
             hint: "Ruta interna que empieza con / (ej.: /directorio) o una dirección completa que empieza con https://."
-            pattern: ['^(/(?!/)|https://)', 'Debe empezar con / (ruta interna) o con https://']
+            pattern: ['^(/(?!/)|https://)', 'Debe empezar con / (ej.: /directorio) o con https:// (ej.: https://ejemplo.cl)']
           - { name: imagen, label: Imagen de fondo, widget: image, hint: "Foto horizontal. Se oscurece para que el texto se lea." }
           - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Descripción de la imagen para lectores de pantalla. Déjalo vacío si la imagen es solo decorativa." }
           - { name: publicado, label: Publicado, widget: boolean, default: true }
       - name: comunidad
-        label: Comunidad y documentos
+        label: Banda «Comunidad y documentos»
         widget: object
         required: false
         collapsed: false
-        hint: "Banda del Inicio con una tarjeta para el Directorio y otra para el Repositorio. Si desactivas una sección en «Secciones del sitio», su tarjeta no sale; si desactivas las dos, no sale la banda."
+        hint: "Bloque del Inicio, antes de las secciones destacadas, con una tarjeta para el Directorio y otra para el Repositorio. Si desactivas el Directorio o el Repositorio en «Secciones del sitio», su tarjeta no sale; si desactivas los dos, no sale la banda."
         fields:
-          - { name: titulo, label: Título de la banda, widget: string, default: "Comunidad y documentos", hint: "Encabezado de la banda." }
+          - { name: titulo, label: Título de la banda, widget: string, default: "Comunidad y documentos", hint: "Título que aparece arriba de las dos tarjetas." }
           - name: directorio
             label: Tarjeta del Directorio
             widget: object
@@ -560,16 +560,16 @@ singletons:
     fields:
       - { name: noticias, label: "Mostrar «Noticias» en el menú", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
       - { name: agenda, label: "Mostrar «Agenda» en el menú", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
-      - { name: instagram, label: "Sección «Instagram» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
-      - { name: directorio, label: "Sección «Directorio» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
+      - { name: instagram, label: "Publicar la sección «Instagram»", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra y puedes volver a publicarla cuando quieras." }
+      - { name: directorio, label: "Publicar la sección «Directorio»", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra y puedes volver a publicarla cuando quieras." }
       - name: formulario_directorio
-        label: "Formulario del Directorio (Google Form)"
+        label: "Formulario para sumarse al Directorio"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Enlace al formulario para sumarse al Directorio, p. ej.: https://docs.google.com/forms/d/e/TU_ID/viewform. Déjalo vacío si aún no hay formulario: el Inicio y /directorio no muestran el botón."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Enlace (https://) al formulario para sumarse o actualizar datos, p. ej.: https://docs.google.com/forms/d/e/TU_ID/viewform. Si lo dejas vacío, el Inicio no muestra «Suma tu perfil» y /directorio dice que pronto habrá formulario."
       - name: sumarse_icono
-        label: "Ícono del bloque «¿Eres egresado/a?»"
+        label: "Ícono del bloque para sumarse"
         widget: select
         required: false
         options: &iconos_phosphor
@@ -617,19 +617,19 @@ singletons:
           - { label: Certificado, value: Certificate }
           - { label: Medalla, value: Medal }
           - { label: Sumar persona, value: UserPlus }
-        hint: "Ícono que aparece junto al título del bloque, en /directorio. Déjalo vacío para no mostrar ícono."
+        hint: "Ícono que aparece junto al título del bloque «¿Eres egresado/a y no apareces?», en /directorio. Déjalo vacío para no mostrar ícono."
       - name: sumarse_imagen
-        label: "Imagen del bloque «¿Eres egresado/a?»"
+        label: "Imagen del bloque para sumarse"
         widget: image
         required: false
         hint: "Imagen de cabecera del bloque, en /directorio (horizontal y ancha, p. ej. 1600 × 700 px). Déjala vacía para no mostrar imagen."
       - name: sumarse_imagen_alt
-        label: "Texto alternativo de la imagen del bloque"
+        label: "Texto alternativo de esa imagen"
         widget: string
         required: false
         hint: "Describe lo que se ve (para lectores de pantalla). Déjalo vacío si la imagen es solo decorativa."
-      - { name: anuncios, label: "Sección «Anuncios» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
-      - { name: repositorio, label: "Sección «Repositorio» activa", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra." }
+      - { name: anuncios, label: "Publicar la sección «Anuncios»", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra y puedes volver a publicarla cuando quieras." }
+      - { name: repositorio, label: "Publicar la sección «Repositorio»", widget: boolean, default: true, hint: "Si la desactivas, deja de publicarse: sale del menú, del pie, del Inicio y del buscador, y su dirección da error 404. El contenido no se borra y puedes volver a publicarla cuando quieras." }
   - name: redes
     label: Redes sociales
     icon: share
@@ -640,56 +640,56 @@ singletons:
         label: "Instagram"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Dirección completa del perfil, p. ej.: https://www.instagram.com/tu_cuenta. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. Dirección completa del perfil, p. ej.: https://www.instagram.com/tu_cuenta. Déjalo vacío si no hay perfil en esta red."
       - name: facebook
         label: "Facebook"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Dirección completa del perfil, p. ej.: https://www.facebook.com/tu_pagina. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. Dirección completa del perfil, p. ej.: https://www.facebook.com/tu_pagina. Déjalo vacío si no hay perfil en esta red."
       - name: x
         label: "X (Twitter)"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Dirección completa del perfil, p. ej.: https://x.com/tu_cuenta. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. Dirección completa del perfil, p. ej.: https://x.com/tu_cuenta. Déjalo vacío si no hay perfil en esta red."
       - name: linkedin
         label: "LinkedIn"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Dirección completa del perfil, p. ej.: https://www.linkedin.com/company/tu-organizacion. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. Dirección completa del perfil, p. ej.: https://www.linkedin.com/company/tu-organizacion. Déjalo vacío si no hay perfil en esta red."
       - name: youtube
         label: "YouTube"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Dirección completa del perfil, p. ej.: https://www.youtube.com/@tu_canal. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. Dirección completa del perfil, p. ej.: https://www.youtube.com/@tu_canal. Déjalo vacío si no hay perfil en esta red."
       - name: tiktok
         label: "TikTok"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Dirección completa del perfil, p. ej.: https://www.tiktok.com/@tu_cuenta. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. Dirección completa del perfil, p. ej.: https://www.tiktok.com/@tu_cuenta. Déjalo vacío si no hay perfil en esta red."
       - name: threads
         label: "Threads"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Dirección completa del perfil, p. ej.: https://www.threads.net/@tu_cuenta. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. Dirección completa del perfil, p. ej.: https://www.threads.net/@tu_cuenta. Déjalo vacío si no hay perfil en esta red."
       - name: bluesky
         label: "Bluesky"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "Dirección completa del perfil, p. ej.: https://bsky.app/profile/tu-cuenta.bsky.social. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. Dirección completa del perfil, p. ej.: https://bsky.app/profile/tu-cuenta.bsky.social. Déjalo vacío si no hay perfil en esta red."
       - name: mastodon
         label: "Mastodon / Fediverso"
         widget: string
         required: false
-        pattern: ['^https://', 'Debe empezar con https://']
-        hint: "La dirección de tu perfil en cualquier instancia, p. ej. https://mastodon.social/@bioing. Déjalo vacío si no hay perfil en esta red."
+        pattern: ['^https://', 'Debe empezar con https:// (copia el enlace o la dirección completa)']
+        hint: "Aparece en el pie del sitio con su ícono. La dirección de tu perfil en cualquier instancia, p. ej. https://mastodon.social/@bioing. Déjalo vacío si no hay perfil en esta red."
 
   - name: seo
     label: SEO del sitio
@@ -702,7 +702,7 @@ singletons:
         widget: text
         required: false
         maxlength: 160
-        hint: "Una o dos frases que describan la carrera. Aparece en Google y al compartir el sitio. Si la dejas vacía, se usa el texto por defecto."
+        hint: "Una o dos frases (máximo 160 caracteres) que describan la carrera. Aparece en Google y al compartir el sitio. Si la dejas vacía, se usa el texto por defecto."
       - name: imagen
         label: Imagen para compartir por defecto
         widget: image
@@ -721,7 +721,7 @@ singletons:
             collapsed: true
             required: false
             fields:
-              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases (máximo 160 caracteres). Si la dejas vacía, se usa el texto por defecto." }
               - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
           - name: noticias
             label: Noticias
@@ -729,7 +729,7 @@ singletons:
             collapsed: true
             required: false
             fields:
-              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases (máximo 160 caracteres). Si la dejas vacía, se usa el texto por defecto." }
               - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
           - name: agenda
             label: Agenda
@@ -737,7 +737,7 @@ singletons:
             collapsed: true
             required: false
             fields:
-              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases (máximo 160 caracteres). Si la dejas vacía, se usa el texto por defecto." }
               - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
           - name: anuncios
             label: Anuncios
@@ -745,7 +745,7 @@ singletons:
             collapsed: true
             required: false
             fields:
-              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases (máximo 160 caracteres). Si la dejas vacía, se usa el texto por defecto." }
               - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
           - name: repositorio
             label: Repositorio
@@ -753,7 +753,7 @@ singletons:
             collapsed: true
             required: false
             fields:
-              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases (máximo 160 caracteres). Si la dejas vacía, se usa el texto por defecto." }
               - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
           - name: directorio
             label: Directorio
@@ -761,7 +761,7 @@ singletons:
             collapsed: true
             required: false
             fields:
-              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases (máximo 160 caracteres). Si la dejas vacía, se usa el texto por defecto." }
               - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
           - name: instagram
             label: Instagram
@@ -769,7 +769,7 @@ singletons:
             collapsed: true
             required: false
             fields:
-              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases. Si la dejas vacía, se usa el texto por defecto." }
+              - { name: descripcion, label: Descripción en buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases (máximo 160 caracteres). Si la dejas vacía, se usa el texto por defecto." }
               - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen por defecto del sitio." }
       - name: verificacion
         label: Verificación de buscadores
@@ -778,8 +778,8 @@ singletons:
         required: false
         hint: "Códigos que entregan Google y Bing para confirmar que el sitio es de la carrera. Solo el código, no la etiqueta HTML completa."
         fields:
-          - { name: google, label: Código de Google Search Console, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta google-site-verification. Ej.: abc123_XYZ-9." }
-          - { name: bing, label: Código de Bing Webmaster, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Solo el código: sin etiqueta <meta> ni comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta msvalidate.01." }
+          - { name: google, label: Código de Google Search Console, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Pega solo el código, sin la etiqueta <meta> ni las comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta google-site-verification. Ej.: abc123_XYZ-9." }
+          - { name: bing, label: Código de Bing Webmaster, widget: string, required: false, pattern: ['^[A-Za-z0-9_-]+$', 'Pega solo el código, sin la etiqueta <meta> ni las comillas.'], hint: "Es el valor de content=\"…\" de la etiqueta msvalidate.01." }
       - name: analitica
         label: Analítica (opcional)
         widget: object
@@ -787,10 +787,10 @@ singletons:
         required: false
         hint: "Medición de visitas sin cookies (Cloudflare Web Analytics). Si lo dejas vacío, el sitio no mide nada."
         fields:
-          - { name: cloudflare_token, label: Token de Cloudflare Web Analytics, widget: string, required: false, pattern: ['^[A-Za-z0-9]{20,64}$', 'Solo el token: letras y números, sin comillas ni código.'], hint: "Cloudflare → Web Analytics → Add site → «manual snippet»: copia solo el token del código. No es secreto: va atado al dominio. Si el sitio está en un dominio proxied por Cloudflare, la analítica puede activarse desde el panel de Cloudflare sin token; en ese caso déjalo vacío para no contar dos veces." }
+          - { name: cloudflare_token, label: Token de Cloudflare Web Analytics, widget: string, required: false, pattern: ['^[A-Za-z0-9]{20,64}$', 'Pega solo el token (letras y números), sin comillas ni el código completo.'], hint: "Cloudflare → Web Analytics → Add site → «manual snippet»: copia solo el token del código (no es secreto). Si el dominio ya pasa por Cloudflare y activas la analítica desde Cloudflare, déjalo vacío para no contar dos veces." }
 
   - name: encabezados
-    label: Encabezados de los listados
+    label: Encabezados de listados
     icon: title
     file: /app/web/src/content/encabezados/encabezados.yml
     format: yml
@@ -806,7 +806,7 @@ singletons:
             label: Imagen de cabecera
             widget: image
             required: false
-            hint: "Horizontal y ancha (p. ej. 1600 × 700 px). Va sobre el título. Si la dejas vacía, la página no tiene imagen."
+            hint: "Horizontal y ancha (p. ej. 1600 × 700 px). Se muestra arriba, encima del título. Si la dejas vacía, la página no tiene imagen."
           - name: imagen_alt
             label: Texto alternativo de la imagen
             widget: string
