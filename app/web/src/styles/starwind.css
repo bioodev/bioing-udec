@@ -182,6 +182,23 @@
     background: var(--background);
     color: var(--foreground);
   }
+  /* Cortes de línea (ver docs/design.md, «Cortes de línea»): los títulos reparten las líneas para no dejar una
+     palabra sola; los párrafos y textos largos evitan la última línea corta. Las utilidades text-balance y
+     text-pretty de cada elemento ganan a estas reglas. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd,
+  dt,
+  figcaption,
+  blockquote {
+    text-wrap: pretty;
+  }
   /* Foco visible explícito para enlaces que no definen su propio indicador
      (los controles Starwind ya usan focus-visible:ring-* con outline-none). */
   a:focus-visible:not(.outline-none) {
