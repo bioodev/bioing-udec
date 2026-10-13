@@ -64,6 +64,7 @@ wrangler.jsonc       → despliegue como Cloudflare Workers (Static Assets)
 | Íconos | **Phosphor** (`phosphor-astro`) | SVG sin tamaño propio: dimensionar con `size-*` |
 | Animación | **GSAP** + View Transitions | `src/scripts/animaciones.ts`, `src/styles/transitions.css` |
 | Buscador | **Pagefind** | Índice estático generado en `postbuild`; modal (component UI) cargado de forma diferida y `/buscar` con la UI clásica |
+| Código QR | **uqr** 0.1.3 (versión exacta) | Solo en el build: `src/lib/qr.ts` genera el SVG de la URL de la ficha (bloque Compartir). Sin JS en el cliente ni servicios externos |
 | Feeds | **@astrojs/rss** | `/noticias/rss.xml`, `/agenda/rss.xml` |
 | Sitemap | **@astrojs/sitemap** | `sitemap-index.xml` (excluye `/admin/` y `/componentes/`) |
 | Pruebas | **Vitest** (+ `lighthouse` y `wrangler` como devDependencies) | Reglas puras en `src/lib/*.test.ts` |
