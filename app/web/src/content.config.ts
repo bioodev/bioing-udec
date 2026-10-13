@@ -180,6 +180,8 @@ const banners = defineCollection({
     z.object({
       titulo: z.string(),
       publicado,
+      etiqueta: z.string().max(30).optional(), // texto corto sobre el título (categoría); sin él, no se muestra
+      etiqueta_color: z.enum(['marca', 'rojo', 'azul', 'verde', 'amarillo', 'morado']).default('marca'), // marca: color de marca
       texto: z.string().optional(),
       imagen: image(),
       enlace: enlaceDelSitio, // ruta interna o https: nunca javascript: (src/lib/urls.ts)

@@ -1,4 +1,6 @@
 titulo: Bienvenidos a BIOING+
+etiqueta: Comunidad
+etiqueta_color: verde
 texto: La plataforma de la comunidad de Bioingeniería UdeC.
 publicado: true
 imagen: '@/assets/media/demo-02.jpg'

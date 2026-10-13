@@ -31,21 +31,28 @@ const estilo = {
   sinImagen: { position: 'absolute', top: '8px', left: '12px', color: '#9ca3af', fontSize: '13px' },
   // Mismo velo radial que .hero-velo (HeroCarrusel.astro). Las variables --hero-* están en vista-previa.css, con los
   // valores de starwind.css: si se cambian en el sitio, cambiarlos ahí también.
-  velo: { position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgb(0 0 0 / var(--hero-velo-centro)), rgb(0 0 0 / var(--hero-velo-opacidad)) 100%)' },
+  velo: { position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at var(--hero-foco), rgb(0 0 0 / var(--hero-velo-centro)), rgb(0 0 0 / var(--hero-velo-opacidad)) 100%)' },
   // Mismo desenfoque radial que .hero-desenfoque: backdrop-filter enmascarado (nítido al centro, borroso en los bordes).
   desenfoque: {
     position: 'absolute', inset: 0,
     backdropFilter: 'blur(var(--hero-blur))', WebkitBackdropFilter: 'blur(var(--hero-blur))',
-    maskImage: 'radial-gradient(ellipse at center, transparent var(--hero-blur-radio), #000 100%)',
-    WebkitMaskImage: 'radial-gradient(ellipse at center, transparent var(--hero-blur-radio), #000 100%)',
+    maskImage: 'radial-gradient(ellipse at var(--hero-foco), transparent var(--hero-blur-radio), #000 100%)',
+    WebkitMaskImage: 'radial-gradient(ellipse at var(--hero-foco), transparent var(--hero-blur-radio), #000 100%)',
   },
-  contenido: { position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: 'inherit', boxSizing: 'border-box' },
-  contenidoEscritorio: { padding: '48px 24px' },
-  contenidoCelular: { padding: '96px 16px' },
+  // Texto a la izquierda, como el hero: el margen izquierdo deja la franja de las flechas (12 px + 44 px) libre.
+  contenido: { position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', textAlign: 'left', minHeight: 'inherit', boxSizing: 'border-box' },
+  contenidoEscritorio: { padding: '48px 24px 48px 80px' },
+  contenidoCelular: { padding: '96px 72px 96px 72px' },
+  // Etiqueta sobre el título: barra del color y texto en blanco, como .etiqueta-hero de HeroCarrusel.astro.
+  etiquetaBanner: {
+    display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px', fontSize: '14px', fontWeight: 600,
+    letterSpacing: '0.08em', textTransform: 'uppercase', overflowWrap: 'anywhere', maxWidth: '100%',
+  },
+  barraEtiqueta: { flex: 'none', width: '4px', height: '1.25em', borderRadius: '9999px' },
   titulo: { fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0, maxWidth: '100%', overflowWrap: 'break-word' },
   tituloEscritorio: { fontSize: '44px' },
   tituloCelular: { fontSize: '36px' },
-  texto: { margin: '16px auto 0', maxWidth: '90%', opacity: 0.9, overflowWrap: 'break-word' },
+  texto: { margin: '16px 0 0', maxWidth: '90%', opacity: 0.9, overflowWrap: 'break-word' },
   textoEscritorio: { fontSize: '17px' },
   textoCelular: { fontSize: '18px' },
   boton: {
@@ -74,6 +81,10 @@ const urlDe = (getAsset, ruta) => {
 const seccion = (titulo, contenido) =>
   h('section', { style: estilo.seccion }, h('p', { style: estilo.etiqueta }, titulo), contenido);
 
+// Colores de la etiqueta: los mismos nombres que el campo «Color de la etiqueta» del panel (tokens --etiqueta-*).
+const COLORES_ETIQUETA = ['rojo', 'azul', 'verde', 'amarillo', 'morado'];
+const colorEtiqueta = (color) => `var(--etiqueta-${COLORES_ETIQUETA.includes(color) ? color : 'marca'})`;
+
 // Un slide. `celular` cambia el ancho, el tamaño de letra y el margen; el resto es igual al del sitio.
 function Slide({ datos, imagenUrl, celular }) {
   const titulo = (typeof datos.titulo === 'string' && datos.titulo.trim()) || '(sin título)';
@@ -88,6 +99,13 @@ function Slide({ datos, imagenUrl, celular }) {
     h(
       'div',
       { style: { ...estilo.contenido, ...(celular ? estilo.contenidoCelular : estilo.contenidoEscritorio) } },
+      datos.etiqueta &&
+        h(
+          'p',
+          { style: estilo.etiquetaBanner },
+          h('span', { style: { ...estilo.barraEtiqueta, background: colorEtiqueta(datos.etiqueta_color) } }),
+          datos.etiqueta,
+        ),
       h('h2', { style: { ...estilo.titulo, ...(celular ? estilo.tituloCelular : estilo.tituloEscritorio) } }, titulo),
       datos.texto && h('p', { style: { ...estilo.texto, ...(celular ? estilo.textoCelular : estilo.textoEscritorio) } }, datos.texto),
       h('span', { style: estilo.boton }, 'Conoce más →'),

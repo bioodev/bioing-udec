@@ -471,25 +471,38 @@ Componente `src/components/Navbar.astro` (el `<header>` completo; `Base.astro` s
 ### Hero (Inicio)
 
 Foto del Banner con tinte cálido sutil (`.hero-imagen` con `sepia`/`saturate`) a opacity ~70 %. Cada slide de
-`HeroCarrusel.astro` tiene, sobre su foto, dos capas:
+`HeroCarrusel.astro` tiene, sobre su foto, dos capas (el texto va a la izquierda, así que el foco de ambas es
+`--hero-foco`):
 
-- **Velo radial** (`.hero-velo`): más oscuro al centro, donde va el título, y más claro hacia los bordes. Con
-  `--hero-velo-centro: 0.5`, el peor caso (foto blanca) da contraste ≈ 5:1 con el texto blanco.
-- **Desenfoque radial** (`.hero-desenfoque`): `backdrop-filter: blur` con `mask-image` radial: nítido al centro y
-  levemente borroso hacia los bordes.
+- **Texto a la izquierda**: título, bajada y botón van alineados a la izquierda, dentro de `max-w-6xl`. Con
+  flechas, el texto deja libre la franja de cada flecha (12 px + 44 px) más un margen: 72 px a la izquierda y a la
+  derecha en móvil; 80 px a la izquierda y 80 px a la derecha desde `sm` (640 px). Sin flechas (un solo Banner),
+  el margen es el normal.
+- **Velo radial** (`.hero-velo`): más oscuro alrededor del foco `--hero-foco` (a la izquierda, donde va el texto) y más
+  claro hacia los bordes. Con `--hero-velo-centro: 0.5`, el peor caso teórico (foto blanca) da contraste ≈ 5:1 con el
+  texto blanco; sobre las fotos de demo, el fondo bajo el título da ≈ 5,9:1.
+- **Desenfoque radial** (`.hero-desenfoque`): `backdrop-filter: blur` con `mask-image` radial alrededor del mismo
+  foco: nítido ahí y levemente borroso hacia los bordes.
+- **Etiqueta** (`.etiqueta-hero`, opcional): texto corto en mayúsculas, seminegrita, sobre el título, con una barra
+  vertical de 4 px a la izquierda del color del tipo. El texto va siempre en blanco, así que el contraste lo fija el
+  hero; el color solo marca la barra (decorativa: el significado lo lleva el texto). Tipos: `marca` (por defecto,
+  `--etiqueta-marca`), `rojo`, `azul`, `verde`, `amarillo`, `morado`, en `starwind.css` (bloque del hero). Sin
+  etiqueta, el hero no cambia.
 
 **Ajuste**: las cuatro variables están en `src/styles/starwind.css` (bloque «Hero del Inicio», en `:root`):
 
 | Variable | Por defecto | Qué hace |
 |---|---|---|
-| `--hero-velo-centro` | `0.5` | Opacidad del velo en el centro (0 a 1). Subirla da más contraste al título. |
-| `--hero-velo-opacidad` | `0.25` | Opacidad del velo en los bordes (0 a 1). |
+| `--hero-foco` | `25% 50%` | Punto de máxima oscuridad del velo y de máxima nitidez, como «x y» (a la izquierda, donde va el texto). |
+| `--hero-velo-centro` | `0.5` | Opacidad del velo en el foco (0 a 1). Subirla da más contraste al título. |
+| `--hero-velo-opacidad` | `0.25` | Opacidad del velo en los bordes más lejanos (0 a 1). |
 | `--hero-blur` | `4px` | Desenfoque máximo, en los bordes. |
 | `--hero-blur-radio` | `40%` | Hasta dónde llega la zona nítida, en % del radio de la elipse. |
 
 Poner una variable en `0` (o `0px`) apaga su efecto. La vista previa del Banner en el panel
-(`public/admin/vista-previa-banner.js`) usa las mismas variables: sus valores están copiados en
-`public/admin/vista-previa.css`, así que si se cambian en el sitio, cambiarlos también ahí.
+(`public/admin/vista-previa-banner.js`) usa las mismas variables (también `--hero-foco` y los `--etiqueta-*`): sus
+valores están copiados en `public/admin/vista-previa.css`, así que si se cambian en el sitio, cambiarlos también ahí.
+La vista previa dibuja el texto a la izquierda y la etiqueta con su barra, como el sitio.
 
 - **Modo oscuro**: el hero es oscuro en los dos temas. El texto y los controles van en blanco fijo y el fondo en
   `#1d1d1f`; no usan `text-background`/`bg-background`, que se invierten en modo oscuro.

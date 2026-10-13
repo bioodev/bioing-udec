@@ -12,6 +12,12 @@ const ZONA_HORARIA = 'America/Santiago';
  */
 export const LIMITE_TITULO_BANNER = 56;
 
+/**
+ * Límite de la etiqueta sobre el título (texto corto, en mayúsculas). Con 30 caracteres cabe en una línea del
+ * slide, también a 375 px; más largo, la etiqueta se parte en dos líneas.
+ */
+export const LIMITE_ETIQUETA_BANNER = 30;
+
 const texto = (valor) => (typeof valor === 'string' && valor.trim() ? valor.trim() : undefined);
 
 // Fecha de un campo de fecha y hora del panel; undefined si falta o no es una fecha válida.
@@ -58,6 +64,9 @@ export function avisos(datos) {
 
   if (!texto(datos.imagen)) lista.push('Sin imagen: el slide quedará sin fondo.');
   if (titulo.length > LIMITE_TITULO_BANNER) lista.push('Título largo: en el celular ocupa más de cuatro líneas y el slide crece.');
+  if (texto(datos.etiqueta) && datos.etiqueta.trim().length > LIMITE_ETIQUETA_BANNER) {
+    lista.push('Etiqueta larga: sobre la imagen conviene que no pase de 30 caracteres.');
+  }
   if (!inicio || !fin) lista.push('Faltan fechas de vigencia: el banner no se mostrará.');
   else if (fin < inicio) lista.push('El fin de vigencia es anterior al inicio: el banner nunca se muestra.');
   if (!enlace) lista.push('Sin enlace: el botón no lleva a ninguna parte.');
