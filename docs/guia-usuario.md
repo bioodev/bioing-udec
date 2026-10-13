@@ -791,6 +791,24 @@ La imagen para compartir en redes se ajusta en **SEO del sitio** (sección 4.15)
 - **Enlaces**: texto descriptivo («Ver las bases»), no «clic aquí».
 - **Nombres propios**: busca primero si la Persona u Organización ya existe, para no duplicarla.
 
+### Recuadros destacados
+
+Para resaltar un párrafo dentro del texto de una Noticia, una Actividad, un Anuncio o una Página, escribe una cita
+cuya primera línea es la marca del tipo. Por ejemplo, copia esto en el texto:
+
+```
+> [!IMPORTANTE]
+> La inscripción cierra el viernes 20 de octubre.
+```
+
+Tipos disponibles: `[!NOTA]`, `[!IMPORTANTE]`, `[!CONSEJO]` y `[!ATENCIÓN]`. En el sitio se ven como un recuadro
+con su título y un ícono.
+
+- Escribe la marca sola en su línea, con `>` delante, y el texto en las líneas siguientes.
+- Si la marca no está en la lista, el texto se ve como una cita normal.
+- En la vista previa del panel el texto sale como cita; el recuadro se ve al publicar.
+- Úsalos con moderación: uno o dos por texto.
+
 ## 7. Checklist antes de publicar
 
 - [ ] Título, bajada e imagen revisados.
