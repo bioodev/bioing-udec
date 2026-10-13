@@ -19,11 +19,13 @@ describe('leerMarcaRecuadro', () => {
     ['[!WARNING]\nHola', 'atencion', 'Hola'],
     ['[!nota]\nHola', 'nota', 'Hola'],
     ['[!NOTA]  \nHola', 'nota', 'Hola'],
+    // En el editor del panel es fácil escribir la marca y el texto en la misma línea.
+    ['[!NOTA] en la misma línea', 'nota', 'en la misma línea'],
   ])('reconoce %j', (texto, tipo, resto) => {
     expect(leerMarcaRecuadro(texto)).toEqual({ tipo, resto });
   });
 
-  test.each(['[!FOO]\nHola', 'Hola [!NOTA]', '[!NOTA] en la misma línea', 'Texto normal', '[NOTA]\nHola'])(
+  test.each(['[!FOO]\nHola', 'Hola [!NOTA]', '[!NOTA]pegado', 'Texto normal', '[NOTA]\nHola'])(
     'no es un recuadro: %j',
     (texto) => {
       expect(leerMarcaRecuadro(texto)).toBeNull();

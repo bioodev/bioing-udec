@@ -40,11 +40,12 @@ const ICONOS: Record<TipoRecuadro, string> = {
 const clave = (nombre: string) => nombre.normalize('NFD').replace(/\p{M}/gu, '').toUpperCase();
 
 /**
- * Lee la marca de tipo al inicio de un texto: `[!NOTA]` seguido de fin de texto o de salto de línea.
+ * Lee la marca de tipo al inicio de un texto: `[!NOTA]` seguido de fin de texto, salto de línea o espacio (el texto
+ * puede seguir en la misma línea, como se escribe fácil en el editor del panel).
  * Devuelve el tipo y el texto que sigue a la marca, o null si no es un recuadro conocido.
  */
 export function leerMarcaRecuadro(texto: string): { tipo: TipoRecuadro; resto: string } | null {
-  const coincidencia = texto.match(/^\[!([^\]\n]+)\][ \t]*(?:\r?\n|$)/);
+  const coincidencia = texto.match(/^\[!([^\]\n]+)\](?:[ \t]*(?:\r?\n|$)|[ \t]+)/);
   if (!coincidencia) return null;
   const tipo = TIPOS[clave(coincidencia[1])];
   if (!tipo) return null;

@@ -97,10 +97,13 @@ const PERMISOS: Record<string, string> = {
       const esqueleto = bloque.querySelector<HTMLElement>('[data-esqueleto]')!;
       esqueleto.classList.replace('hidden', 'grid');
       iframe.classList.add('opacity-0', 'transition-opacity', 'duration-300', 'motion-reduce:transition-none');
-      iframe.addEventListener('load', () => {
+      const mostrar = () => {
         esqueleto.remove();
         iframe.classList.remove('opacity-0');
-      }, { once: true });
+      };
+      iframe.addEventListener('load', mostrar, { once: true });
+      // Red de seguridad: si el load ya pasó sin quedar registrado, el iframe no debe quedar invisible.
+      window.setTimeout(mostrar, 8000);
     }
   }
   iniciar();

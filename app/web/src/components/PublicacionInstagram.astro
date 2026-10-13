@@ -55,10 +55,12 @@ const embed = embedInstagram(enlace);
     iframe.className = 'relative block w-full rounded-lg border-0 opacity-0 transition-opacity duration-300 motion-reduce:transition-none';
     iframe.style.height = '640px';
     iframe.dataset.instagram = '';
-    iframe.addEventListener('load', () => {
+    const mostrar = () => {
       esqueleto.remove();
       iframe.classList.remove('opacity-0');
-    }, { once: true });
+    };
+    iframe.addEventListener('load', mostrar, { once: true });
+    window.setTimeout(mostrar, 8000); // si Instagram no avisa la carga, el iframe no queda invisible
     envoltorio.append(esqueleto, iframe);
     tarjeta.querySelector('[data-embed]')!.append(envoltorio);
   }
