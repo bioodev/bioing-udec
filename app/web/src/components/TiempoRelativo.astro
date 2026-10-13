@@ -1,0 +1,7 @@
+---
+// Span vacío junto a una <time>: src/scripts/tiempo-relativo.ts escribe «· hace 3 días» al cargar.
+// `conHora`: la fecha trae hora (Actividades), así que el texto puede ser «hace 2 horas».
+interface Props { fecha: Date; conHora?: boolean }
+const { fecha, conHora = false } = Astro.props;
+---
+<span class="text-muted-foreground" data-relativo={fecha.toISOString()} data-relativo-hora={conHora ? '' : undefined}></span>

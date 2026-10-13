@@ -7,6 +7,7 @@ import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import Migas from '@/components/Migas.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
+import TiempoRelativo from '@/components/TiempoRelativo.astro';
 import { formatoFecha, formatoFechaHora, noticiasVisibles, relacionadasDe, seoDeEntrada } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
 import { minutosLectura } from '@/lib/lectura';
@@ -79,7 +80,7 @@ const seo = resolverSeo({ titulo: noticia.data.titulo, descripcion: noticia.data
       <dl class="grid gap-4">
         <div>
           <dt class="text-muted-foreground">Fecha</dt>
-          <dd class="mt-1 font-medium"><time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time></dd>
+          <dd class="mt-1 font-medium"><time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time><TiempoRelativo fecha={noticia.data.fecha} /></dd>
         </div>
         {temas.length > 0 && (
           <div>

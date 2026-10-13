@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Distintivo from '@/components/Distintivo.astro';
+import TiempoRelativo from '@/components/TiempoRelativo.astro';
 import { formatoFecha } from '@/lib/contenido';
 import { TIPOS_ANUNCIO } from '@/lib/anuncios';
 import { anuncioVigente } from '@/lib/reglas';
@@ -20,6 +21,6 @@ const { anuncio, vencido = !anuncioVigente(anuncio.data, new Date()) } = Astro.p
     {/* Enlace principal que extiende su área a toda la tarjeta. */}
     <a href={`/anuncios/${anuncio.id}`} class="group-hover:text-primary after:absolute after:inset-0 after:content-['']">{anuncio.data.titulo}</a>
   </h3>
-  {anuncio.data.fecha_limite && <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />{vencido ? 'Cerró el' : 'Postula hasta el'} <time datetime={anuncio.data.fecha_limite.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha_limite)}</time></p>}
+  {anuncio.data.fecha_limite && <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />{vencido ? 'Cerró el' : 'Postula hasta el'} <time datetime={anuncio.data.fecha_limite.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha_limite)}</time><TiempoRelativo fecha={anuncio.data.fecha_limite} /></p>}
   <address class="mt-2 flex items-center gap-1.5 text-sm not-italic"><EnvelopeSimple class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" /><span class="sr-only">Contacto: </span>{anuncio.data.contacto}</address>
 </article>

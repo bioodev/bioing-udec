@@ -744,3 +744,18 @@ encabezado, un solo `<main>`, `<section>` con nombre):
 - Sin imagen ni ícono, el encabezado es el de siempre (`text-4xl font-semibold tracking-tight`).
 - El bloque «¿Eres egresado/a?» del Directorio usa el mismo criterio: la imagen, si hay, va a sangre en la parte de arriba
   de la tarjeta, y el ícono de 28 px (`size-7`) va junto al título.
+
+### Fechas en las tarjetas y fichas (tiempo relativo)
+
+- Toda fecha de una tarjeta de Noticias, Actividades o Anuncios (y de sus fichas) muestra la fecha absoluta y, a
+  continuación, el tiempo relativo: «12 de octubre de 2026 · hace 3 días», «… · en 2 semanas», «… · hoy», «… · ayer»,
+  «… · mañana». Las Actividades con hora pueden decir «hace 2 horas» o «en 30 minutos» dentro de las 24 h.
+- El texto lo calcula el navegador (`src/lib/tiempo-relativo.ts`, con pruebas), no el build: el sitio se reconstruye
+  una vez al día y el texto quedaría viejo. `src/components/TiempoRelativo.astro` deja un `<span>` vacío junto a la
+  `<time>`, y `src/scripts/tiempo-relativo.ts` lo llena en `astro:page-load` (lo llama `Base.astro`). Sin JavaScript
+  se ve solo la fecha absoluta.
+- Estilo: el relativo va en `text-muted-foreground`, como texto normal (no `aria-hidden`), separado por «·».
+- Fechas solas (`AAAA-MM-DD`) se comparan por día de calendario de Santiago; con hora, por instante y luego por día
+  de Santiago. El futuro dice «en …» (Intl dice «dentro de …»; se cambia).
+- Las tarjetas de Noticias llevan el ícono `CalendarBlank` (`size-4`, `aria-hidden`) antes de la fecha, como las
+  Actividades. La tarjeta de Anuncios muestra la fecha límite con el ícono de reloj (`Clock`), que ya marca el plazo.
