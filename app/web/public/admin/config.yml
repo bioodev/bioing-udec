@@ -292,38 +292,38 @@ collections:
     label: Banners
     label_singular: Banner
     icon: view_carousel
-    description: 'Mensajes del carrusel del Inicio. Se muestran entre las fechas de inicio y fin.'
+    description: 'Mensajes del carrusel de la portada (Inicio). Cada uno se muestra solo entre sus fechas de inicio y fin.'
     folder: /app/web/src/content/banners
     format: yml
     identifier_field: titulo
-    summary: "{{titulo}} · {{inicio | date('YYYY-MM-DD')}} → {{fin | date('YYYY-MM-DD')}}"
+    summary: "{{titulo}} · {{inicio | date('YYYY-MM-DD')}} → {{fin | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
     fields:
-      - { name: titulo, label: Título, widget: string }
-      - { name: publicado, label: Publicado, widget: boolean, default: false }
-      - { name: imagen, label: Imagen, widget: image }
+      - { name: titulo, label: Título del mensaje, widget: string, hint: "Frase corta que se lee en grande sobre la imagen. Máximo 56 caracteres: si es más larga, el panel avisa y en el celular ocupa más espacio." }
+      - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Desmarca «Publicado» para ocultar el mensaje sin borrarlo." }
+      - { name: imagen, label: Imagen de fondo, widget: image, hint: "Foto horizontal. Se atenúa para que el texto se lea encima." }
       - name: enlace
-        label: Enlace
+        label: Dirección del botón «Conoce más»
         widget: string
         pattern: ['^(/(?!/)\S*|https?://\S+)$', 'Ruta interna que empiece con / (p. ej. /noticias/mi-noticia) o dirección completa que empiece con https://']
-        hint: Ruta interna (p. ej. /noticias/mi-noticia o /p/mi-pagina) o URL externa.
-      - { name: inicio, label: Inicio de vigencia, widget: datetime, input_timezone: America/Santiago }
-      - { name: fin, label: Fin de vigencia, widget: datetime, input_timezone: America/Santiago }
-      - { name: texto, label: Texto, widget: text, required: false }
+        hint: "Adónde lleva el botón: una página del sitio (p. ej. /noticias/mi-noticia o /p/mi-pagina) o una dirección externa completa (https://…)."
+      - { name: inicio, label: Se muestra desde, widget: datetime, input_timezone: America/Santiago, hint: "Fecha y hora (hora de Chile) desde la que aparece en el Inicio." }
+      - { name: fin, label: Se muestra hasta, widget: datetime, input_timezone: America/Santiago, hint: "Fecha y hora (hora de Chile) en que deja de aparecer. Puede tardar hasta un día en quitarse de la portada." }
+      - { name: texto, label: Texto de apoyo (opcional), widget: text, required: false, hint: "Una o dos frases bajo el título. Déjalo vacío para mostrar solo el título." }
   - name: paginas_libres
     label: Páginas
     label_singular: Página
     icon: article
-    description: 'Páginas propias del sitio, como ¿Qué es la Bioingeniería? Cada una vive en /p/nombre.'
+    description: 'Páginas de texto propias del sitio, como ¿Qué es la Bioingeniería? Pueden aparecer en el menú, en el pie o solo por enlace.'
     folder: /app/web/src/content/paginas-libres
     identifier_field: titulo
-    summary: "{{titulo}} · {{mostrar_en}} {{publicado | ternary('', '(borrador)')}}"
+    summary: "{{titulo}} {{publicado | ternary('', '(borrador)')}}"
     fields:
-      - { name: titulo, label: Título, widget: string }
-      - { name: publicado, label: Publicado, widget: boolean, default: false }
-      - { name: bajada, label: Bajada, widget: text, hint: "Una o dos líneas. Va bajo el título, en buscadores y en el desplegable del menú." }
-      - { name: body, label: Contenido, widget: richtext }
+      - { name: titulo, label: Título, widget: string, hint: "Nombre de la página. Es el texto del menú o del pie, según «Dónde aparece»." }
+      - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Desmarca «Publicado» para ocultar la página sin borrarla." }
+      - { name: bajada, label: Bajada (resumen corto), widget: text, hint: "Una o dos líneas. Va bajo el título, en buscadores y en el desplegable del menú." }
+      - { name: body, label: Contenido, widget: richtext, hint: "El texto principal de la página, con sus párrafos y títulos." }
       - name: mostrar_en
-        label: Mostrar en
+        label: Dónde aparece
         widget: select
         default: ninguno
         options:
@@ -331,12 +331,12 @@ collections:
           - { label: Pie de página, value: footer }
           - { label: "Menú «La carrera»", value: la-carrera }
           - { label: "Menú «Comunidad»", value: comunidad }
-        hint: "«Menú» la agrega al desplegable del navbar y también al pie. «Pie de página» solo al pie."
-      - { name: destacar_inicio, label: Destacar en el Inicio, widget: boolean, default: false, hint: "Se muestra un bloque bajo el carrusel del Inicio. Solo se muestra una página destacada a la vez." }
-      - { name: imagen, label: Imagen destacada, widget: image, required: false }
+        hint: "«Menú» la agrega al desplegable del menú y también al pie de página. «Pie de página» solo la agrega al pie. «Ninguno» la deja accesible solo por un enlace."
+      - { name: destacar_inicio, label: Destacar en el Inicio, widget: boolean, default: false, hint: "Muestra un bloque bajo el carrusel del Inicio. Solo puede haber una página destacada: si marcas varias, el sitio muestra la primera por orden alfabético de título." }
+      - { name: imagen, label: Imagen destacada, widget: image, required: false, hint: "Foto que acompaña el texto de la página." }
       - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título." }
-      - { name: resumen_inicio, label: Resumen para el Inicio, widget: text, required: false, hint: "3 o 4 líneas. Si lo dejas vacío, se usa la bajada." }
-      - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo de la bajada, en una ventana al hacer clic." }
+      - { name: resumen_inicio, label: Resumen para el Inicio, widget: text, required: false, hint: "Texto del bloque destacado del Inicio, de 3 o 4 líneas. Si lo dejas vacío, se usa la bajada." }
+      - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo de la bajada, en una ventana que se abre al hacer clic." }
       - name: enlaces
         label: Enlaces
         label_singular: Enlace
@@ -353,12 +353,12 @@ collections:
         label: Bloques destacados
         widget: list
         required: false
-        hint: "Se muestran en una franja oscura después del contenido, en dos columnas."
+        hint: "Tarjetas de texto en una franja oscura al final de la página. En computadora se ven en dos columnas."
         label_singular: Bloque destacado
         summary: "{{titulo}}"
         fields:
-          - { name: titulo, label: Título, widget: string }
-          - { name: texto, label: Texto, widget: text }
+          - { name: titulo, label: Título, widget: string, hint: "Encabezado corto de la tarjeta." }
+          - { name: texto, label: Texto, widget: text, hint: "Una o dos frases." }
       - name: incrustados
         label: Contenido incrustado
         label_singular: Contenido incrustado
@@ -375,28 +375,28 @@ collections:
     label: Instagram
     label_singular: Publicación de Instagram
     icon: photo_camera
-    description: 'Publicaciones de Instagram que se muestran en /instagram y en el Inicio.'
+    description: 'Publicaciones de Instagram que se muestran en la sección Instagram y en el Inicio.'
     folder: /app/web/src/content/instagram
     format: yml
     identifier_field: titulo
     summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
     fields:
-      - { name: titulo, label: Descripción breve, widget: string, hint: Se usa como texto de la tarjeta y para lectores de pantalla. }
+      - { name: titulo, label: Título de la tarjeta, widget: string, hint: "Frase corta que se ve como título de la publicación. También la leen los lectores de pantalla." }
       - name: enlace
         label: Enlace de la publicación
         widget: string
         hint: Copia el enlace desde Instagram (Compartir → Copiar enlace). Solo publicaciones o reels.
         pattern: ['^https://(www\.)?instagram\.com/(p|reel)/[\w-]+/?(\?.*)?$', 'Debe ser el enlace de una publicación o reel de Instagram']
-      - { name: fecha, label: Fecha, widget: datetime, type: date }
-      - { name: publicado, label: Publicado, widget: boolean, default: false }
-      - { name: imagen, label: Miniatura (opcional), widget: image, required: false, hint: Captura de la publicación para la tarjeta liviana. }
+      - { name: fecha, label: Fecha de la publicación, widget: datetime, type: date, hint: "Las publicaciones más recientes se muestran primero." }
+      - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Desmarca «Publicado» para ocultar la publicación sin borrarla." }
+      - { name: imagen, label: Miniatura (opcional), widget: image, required: false, hint: "Captura de la publicación. Se ve en la tarjeta antes de cargar Instagram." }
   - divider: true
   # ── Comunidad ───────────────────────────────────────────────
   - name: personas
     label: Personas
     label_singular: Persona
     icon: group
-    description: 'Egresados/as y miembros de la comunidad. Las fichas activas se ven en el Directorio.'
+    description: 'Integrantes de la comunidad: egresados/as, estudiantes, académicos/as e invitados/as. Pueden aparecer en noticias, actividades y anuncios.'
     folder: /app/web/src/content/personas
     format: yml
     identifier_field: nombre
@@ -404,32 +404,35 @@ collections:
     fields:
       - { name: nombre, label: Nombre y apellido, widget: string }
       - name: ficha_activa
-        label: Ficha pública activa
+        label: Tiene ficha pública
         widget: boolean
         default: true
-        hint: Si se desactiva, el nombre aparece sin enlace y la Persona sale del Directorio.
+        hint: "Si desmarcas «Tiene ficha pública», su nombre aparece sin enlace en noticias y actividades, y deja de salir en el Directorio."
       - name: descripcion
         label: Descripción breve
         widget: string
         required: false
-        hint: 'Ej.: "Académica FCB", "Estudiante de Bioingeniería".'
-      - { name: foto, label: Foto, widget: image, required: false }
+        hint: 'Aparece bajo su nombre en su ficha. Ej.: "Académica FCB", "Estudiante de Bioingeniería".'
+      - { name: foto, label: Foto, widget: image, required: false, hint: "Se muestra en su ficha, en forma de círculo. Déjala vacía si no hay." }
       - name: perfil_egresado
         label: Perfil de egresado
         widget: object
         required: false
         collapsed: true
+        hint: "Solo para egresados/as titulados de la carrera. Sus datos aparecen en el Directorio únicamente si autorizan publicarlos."
         fields:
           - name: autorizado
-            label: Autoriza publicar su perfil
+            label: Autoriza publicar sus datos en el Directorio
             widget: boolean
             default: false
+            hint: "Sin esta autorización, la persona no aparece en el Directorio, aunque tenga datos cargados."
           - name: generacion # TODO: confirmar significado (docs/preguntas-reunion.md 1.1)
             label: Generación
             widget: number
             value_type: int
             required: false
-          - { name: anio_egreso, label: Año de egreso, widget: number, value_type: int }
+            hint: "Número o año de la generación, p. ej. 2015. Se usa para agrupar en el Directorio. Déjalo vacío si no se sabe."
+          - { name: anio_egreso, label: Año de egreso, widget: number, value_type: int, hint: "Año en que terminó la carrera, p. ej. 2019." }
           - name: areas
             label: Áreas
             widget: relation
@@ -437,27 +440,30 @@ collections:
             display_fields: [nombre]
             multiple: true
             required: false
+            hint: "En qué campos trabaja o se especializa. Se eligen de la lista «Áreas»."
           - name: organizacion
             label: Organización
             widget: relation
             collection: organizaciones
             display_fields: [nombre]
             required: false
-          - { name: cargo, label: Cargo / profesión, widget: string, required: false }
+            hint: "Dónde trabaja. Se elige de la lista «Organizaciones»."
+          - { name: cargo, label: Cargo / profesión, widget: string, required: false, hint: 'Cómo se presenta profesionalmente, p. ej. "Gerente de calidad". Déjalo vacío si no corresponde.' }
           - name: enlaces
             label: Enlaces profesionales
             label_singular: Enlace
             widget: list
             required: false
+            hint: "Perfiles o sitios profesionales, p. ej. LinkedIn. Se muestran en su ficha."
             fields:
-              - { name: etiqueta, label: Etiqueta, widget: string }
-              - { name: url, label: URL, widget: string, type: url }
+              - { name: etiqueta, label: Etiqueta, widget: string, hint: 'Nombre del enlace, p. ej. "LinkedIn".' }
+              - { name: url, label: Dirección, widget: string, type: url, hint: "Dirección completa, que empiece con https://." }
       - *seo_contenido
   - name: organizaciones
     label: Organizaciones
     label_singular: Organización
     icon: domain
-    description: 'Empresas, instituciones y laboratorios vinculados a la carrera.'
+    description: 'Empresas, instituciones, laboratorios y agrupaciones. Se eligen al cargar Personas, actividades de la Agenda, Anuncios y Noticias.'
     folder: /app/web/src/content/organizaciones
     format: yml
     identifier_field: nombre
@@ -472,33 +478,33 @@ collections:
           - { label: Institución, value: institucion }
           - { label: Laboratorio, value: laboratorio }
           - { label: Agrupación, value: agrupacion }
-      - { name: ficha_activa, label: Ficha pública activa, widget: boolean, default: true }
-      - { name: sitio_web, label: Sitio web, widget: string, type: url, required: false }
-      - { name: logo, label: Logo, widget: image, required: false }
+      - { name: ficha_activa, label: Tiene ficha pública, widget: boolean, default: true, hint: "Hoy no cambia nada en el sitio: las Organizaciones todavía no tienen página propia." }
+      - { name: sitio_web, label: Sitio web, widget: string, type: url, required: false, hint: "Dirección completa (https://…). No se ve como enlace: se incluye en los datos que leen los buscadores, en la ficha de sus integrantes." }
+      - { name: logo, label: Logo, widget: image, required: false, hint: "Hoy no aparece en el sitio." }
   - divider: true
   # ── Listas ──────────────────────────────────────────────────
   - name: areas
     label: Áreas
     label_singular: Área
     icon: category
-    description: 'Áreas de la bioingeniería, para clasificar Personas, Noticias, Agenda, Anuncios y Documentos.'
+    description: 'Campos de la bioingeniería (p. ej. acuicultura, biomateriales). Sirven para clasificar Personas, Noticias, Agenda, Anuncios y Documentos.'
     folder: /app/web/src/content/areas
     format: yml
     identifier_field: nombre
     summary: '{{nombre}}'
     fields:
-      - { name: nombre, label: Nombre, widget: string }
+      - { name: nombre, label: Nombre, widget: string, hint: "Nombre del campo, p. ej. Acuicultura. Se muestra tal como lo escribes." }
   - name: temas
     label: Temas
     label_singular: Tema
     icon: sell
-    description: 'Temas para clasificar Noticias y Documentos.'
+    description: 'Clasificación editorial de Noticias y Documentos, p. ej. institucional o logros. Para campos profesionales, usa Áreas.'
     folder: /app/web/src/content/temas
     format: yml
     identifier_field: nombre
     summary: '{{nombre}}'
     fields:
-      - { name: nombre, label: Nombre, widget: string }
+      - { name: nombre, label: Nombre, widget: string, hint: "Nombre del tema, p. ej. Logros o Vida estudiantil. Sirve para filtrar Noticias y el Repositorio." }
 
 # ── Archivos: singletons de la sección «Archivos» del panel (aparte del contenido) ──
 singletons:
