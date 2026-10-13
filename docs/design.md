@@ -95,6 +95,17 @@ Store and shop surfaces retain the same chassis but switch modes. The product co
 - **Line-height is context-specific.** Display sizes use 1.07–1.19 (tight). Body uses 1.47. Utility link stacks in the footer/store use an unusually relaxed 2.41 (`{typography.dense-link}`). The 2.41 is not a bug — it's how the footer's dense link columns breathe.
 - **Weight 500 is deliberately absent.** The ladder is 300 / 400 / 600 / 700. Mid-weight readings always use 600.
 
+### Cortes de línea (`text-wrap`)
+- **Títulos (`h1`–`h4`)**: `text-wrap: balance` en la base global (`app/web/src/styles/starwind.css`), para que
+  los títulos de 2–4 líneas repartan el texto y no dejen una palabra sola en la última línea.
+- **Párrafos y textos largos (`p`, `li`, `dd`, `dt`, `figcaption`, `blockquote`)**: `text-wrap: pretty`, que evita
+  que la última línea quede con una sola palabra. Cubre las bajadas, descripciones de tarjetas, ítems y el
+  cuerpo `prose` de noticias y páginas.
+- Un título que no sea `h*` (p. ej. un `span` o un `p` con rol de título) recibe la utilidad `text-balance`
+  en su elemento. Las utilidades de Tailwind ganan a la base, así que una utilidad explícita siempre manda.
+- Solo cambian el corte de línea: no alteran tamaños, pesos ni textos. Navegadores sin soporte muestran el
+  corte normal.
+
 ### Note on Font Substitutes
 SF Pro is Apple's proprietary system font. When building off-system:
 
