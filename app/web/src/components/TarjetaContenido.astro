@@ -1,0 +1,46 @@
+---
+// Tarjeta de contenido de los bloques destacados del Inicio (SeccionDestacada y PaginaDestacada): etiqueta
+// opcional con una línea fina debajo, título h2, una línea corta de marca, texto y botón. El cuerpo extra
+// (chips, video) va en el slot, entre la línea y el botón. Es la misma tarjeta sobre una foto o sobre el gris.
+import ArrowRight from 'phosphor-astro/ArrowRight.astro';
+import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
+
+interface Props {
+  etiqueta?: string;
+  titulo: string;
+  tituloId: string;
+  texto?: string;
+  boton?: string;
+  enlace?: string;
+  // Texto oculto al final del botón para lectores de pantalla (p. ej. «sobre el Directorio»).
+  botonOculto?: string;
+}
+const { etiqueta, titulo, tituloId, texto, boton, enlace, botonOculto } = Astro.props;
+const externo = enlace?.startsWith('https://') ?? false;
+---
+<div data-animar="fade-up" class="w-full rounded-lg border border-border bg-card p-6 text-card-foreground md:p-8">
+  {etiqueta && <p class="border-b border-border pb-2 text-sm font-semibold text-primary">{etiqueta}</p>}
+  <h2 id={tituloId} class="mt-4 text-3xl font-semibold tracking-tight">{titulo}</h2>
+  <hr class="my-5 w-16 border-0 border-t-2 border-primary" />
+  {texto && <p class="text-muted-foreground">{texto}</p>}
+  <slot />
+  {enlace && boton && (
+    <a
+      href={enlace}
+      target={externo ? '_blank' : undefined}
+      rel={externo ? 'noopener' : undefined}
+      class="cta cta-relleno mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90"
+    >
+      {boton}
+      {botonOculto && <span class="sr-only"> {botonOculto}</span>}
+      {externo ? (
+        <>
+          <ArrowSquareOut class="cta-flecha size-4" aria-hidden="true" />
+          <span class="sr-only">(se abre en una ventana nueva)</span>
+        </>
+      ) : (
+        <ArrowRight class="cta-flecha size-4" aria-hidden="true" />
+      )}
+    </a>
+  )}
+</div>

@@ -128,7 +128,7 @@ Persona que presenta, dicta o modera en una Actividad. Los asistentes no se regi
 _Avoid_: Participante, ponente, invitado
 
 **Sección destacada (del Inicio)**:
-Bloque con imagen de fondo, título, texto y botón que se muestra al final del Inicio, en el orden de su lista en el panel. Se publica o se oculta sin borrarla. Su enlace es una ruta interna o una URL externa. Ya no incluye el Directorio ni el Repositorio, que tienen su propia banda.
+Bloque con imagen de fondo y una tarjeta (etiqueta opcional, título, línea corta, texto y botón) que se muestra al final del Inicio, en el orden de su lista en el panel. Se publica o se oculta sin borrarla. Su enlace es una ruta interna o una URL externa. Ya no incluye el Directorio ni el Repositorio, que tienen su propia banda.
 _Avoid_: Banner (los Banners son el carrusel superior), tarjeta, bloque fijo
 
 **Banda «Comunidad y documentos»**:
@@ -168,7 +168,7 @@ Sección del panel con los archivos únicos, aparte de las colecciones: Inicio, 
 _Avoid_: Configuración del sitio, Páginas, Ajustes
 
 **Página destacada**:
-Página libre marcada con «Destacar en el Inicio», que se muestra como bloque entre el carrusel de Banners y las Noticias recientes. Solo una a la vez: si hay varias marcadas, el sitio muestra una (la primera por título) y avisa en el build.
+Página libre marcada con «Destacar en el Inicio», que se muestra como bloque entre el carrusel de Banners y las Noticias recientes, con la misma tarjeta que las Secciones destacadas (etiqueta «Destacado» o la «Etiqueta en el Inicio» de la página). Solo una a la vez: si hay varias marcadas, el sitio muestra una (la primera por título) y avisa en el build.
 _Avoid_: Sección destacada (esa es un bloque al final del Inicio), Banner, portada
 
 **Página institucional**:

@@ -204,6 +204,7 @@ const paginasLibres = defineCollection({
       mostrar_en: z.enum(['ninguno', 'footer', 'la-carrera', 'comunidad']).default('ninguno'),
       destacar_inicio: z.boolean().default(false), // solo una a la vez (src/lib/pagina-destacada.ts)
       resumen_inicio: z.string().optional(), // resumen del bloque del Inicio; sin él, se usa la bajada
+      etiqueta_inicio: z.string().optional(), // etiqueta sobre el título en el Inicio; sin ella, «Destacado»
       video: urlWeb.optional(), // se abre en una ventana (VideoModal); si no es de YouTube, no se muestra
       enlaces,
       bloques_titulo: z.string().optional(),
@@ -245,6 +246,7 @@ const inicio = defineCollection({
     return z.object({
       secciones: z.array(
         z.object({
+          etiqueta: z.string().optional(), // texto pequeño sobre el título; sin él, la tarjeta empieza en el título
           titulo: z.string(),
           texto: z.string(),
           boton: z.string(),
