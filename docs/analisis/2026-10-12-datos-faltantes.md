@@ -48,9 +48,8 @@ No se completó `imagen_alt` en las noticias cuya imagen es un color plano de ej
 
 ## 3. Anotaciones para el modelo (no se cambió nada)
 
-- **Actividades no tienen `imagen_alt`.** La charla de acuicultura usa `demo-05.jpg` (manos con un brote) y no puede
-  tener texto alternativo. Es un hueco del modelo: habría que agregar el campo en `public/admin/config.yml`,
-  `src/content.config.ts` y `docs/context.md` (regla de tres lugares).
+- **Actividades sin `imagen_alt`**: resuelto después de esta revisión. El campo se agregó al modelo (panel, esquema y
+  `context.md`) y la charla de acuicultura ya tiene su texto alternativo.
 - **Noticias con imagen de color plano**: ver el punto 1. Se pueden reemplazar por fotos reales cuando estén.
 - **Bajada opcional en las noticias.** Sin bajada ni `seo.descripcion`, la noticia no tiene descripción para
   buscadores. Esto no se verificó en la vista previa del panel; habría que comprobarlo antes de decidir si la bajada
