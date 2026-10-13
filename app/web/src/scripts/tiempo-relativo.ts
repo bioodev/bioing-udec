@@ -10,6 +10,6 @@ export function iniciarTiempoRelativo(): void {
     const fecha = new Date(el.dataset.relativo ?? '');
     if (Number.isNaN(fecha.getTime())) return;
     const conHora = el.dataset.relativoHora !== undefined;
-    el.textContent = `· ${tiempoRelativo(fecha, ahora, { conHora })}`;
+    el.textContent = ` · ${tiempoRelativo(fecha, ahora, { conHora })}`;
   });
 }

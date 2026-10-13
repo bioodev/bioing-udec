@@ -18,6 +18,10 @@ import Incrustados from '@/components/Incrustados.astro';
 import Enlaces from '@/components/Enlaces.astro';
 import { migas, noticia as jsonLdNoticia } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
+import FolderSimple from 'phosphor-astro/FolderSimple.astro';
+import Hash from 'phosphor-astro/Hash.astro';
+import Books from 'phosphor-astro/Books.astro';
+import Clock from 'phosphor-astro/Clock.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
 import Distintivo from '@/components/Distintivo.astro';
 import Compartir from '@/components/Compartir.astro';
@@ -79,12 +83,12 @@ const seo = resolverSeo({ titulo: noticia.data.titulo, descripcion: noticia.data
     <aside aria-label="Información de la noticia" class="mt-8 rounded-lg bg-muted p-5 text-sm lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-start">
       <dl class="grid gap-4">
         <div>
-          <dt class="text-muted-foreground">Fecha</dt>
+          <dt class="flex items-center gap-1.5 text-muted-foreground"><CalendarBlank class="size-4 shrink-0" aria-hidden="true" />Fecha</dt>
           <dd class="mt-1 font-medium"><time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time><TiempoRelativo fecha={noticia.data.fecha} /></dd>
         </div>
         {temas.length > 0 && (
           <div>
-            <dt class="text-muted-foreground">Categoría</dt>
+            <dt class="flex items-center gap-1.5 text-muted-foreground"><FolderSimple class="size-4 shrink-0" aria-hidden="true" />Categoría</dt>
             <dd class="mt-1 flex flex-wrap gap-2">
               {temas.map((t) => <Distintivo clase="tema" href={`/noticias?tema=${t.id}`}>{t.data.nombre}</Distintivo>)}
             </dd>
@@ -92,7 +96,7 @@ const seo = resolverSeo({ titulo: noticia.data.titulo, descripcion: noticia.data
         )}
         {etiquetas.length > 0 && (
           <div>
-            <dt class="text-muted-foreground">Etiquetas</dt>
+            <dt class="flex items-center gap-1.5 text-muted-foreground"><Hash class="size-4 shrink-0" aria-hidden="true" />Etiquetas</dt>
             <dd class="mt-1 flex flex-wrap gap-2">
               {etiquetas.map((e) => <Distintivo clase="etiqueta" href={`/noticias?etiqueta=${encodeURIComponent(e)}`}>{e}</Distintivo>)}
             </dd>
@@ -100,12 +104,12 @@ const seo = resolverSeo({ titulo: noticia.data.titulo, descripcion: noticia.data
         )}
         {areas.length > 0 && (
           <div>
-            <dt class="text-muted-foreground">Áreas</dt>
+            <dt class="flex items-center gap-1.5 text-muted-foreground"><Books class="size-4 shrink-0" aria-hidden="true" />Áreas</dt>
             <dd class="mt-1 font-medium">{areas.map((a) => a.data.nombre).join(', ')}</dd>
           </div>
         )}
         <div>
-          <dt class="text-muted-foreground">Lectura</dt>
+          <dt class="flex items-center gap-1.5 text-muted-foreground"><Clock class="size-4 shrink-0" aria-hidden="true" />Lectura</dt>
           <dd class="mt-1 font-medium">{lectura} min</dd>
         </div>
       </dl>

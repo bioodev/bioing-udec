@@ -16,7 +16,9 @@ import { MODALIDADES, TIPOS_ACTIVIDAD } from '@/lib/agenda';
 import { migas, actividad as jsonLdActividad } from '@/lib/schema';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 import MapPin from 'phosphor-astro/MapPin.astro';
-import Users from 'phosphor-astro/Users.astro';
+import UsersThree from 'phosphor-astro/UsersThree.astro';
+import Microphone from 'phosphor-astro/Microphone.astro';
+import Books from 'phosphor-astro/Books.astro';
 
 export async function getStaticPaths() {
   const actividades = await publicados('actividades');
@@ -84,23 +86,21 @@ const seo = resolverSeo({ titulo: actividad.data.titulo, descripcion: `${TIPOS_A
     {/* En móvil va entre el título y el cuerpo; en escritorio, columna lateral fija junto al texto. */}
     <aside aria-label="Información de la actividad" class="mt-8 rounded-lg bg-muted p-5 text-sm lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-start">
       <h2 class="sr-only">Datos de la actividad</h2>
-      <dl class="grid gap-3">
-        <div class="flex items-center gap-2">
-          <dt class="sr-only">Fecha y hora</dt>
-          <CalendarBlank class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <dd><time datetime={actividad.data.inicio.toISOString()}>{cuando}</time><TiempoRelativo fecha={actividad.data.inicio} conHora /></dd>
+      <dl class="grid gap-4">
+        <div>
+          <dt class="flex items-center gap-1.5 text-muted-foreground"><CalendarBlank class="size-4 shrink-0" aria-hidden="true" />Fecha y hora</dt>
+          <dd class="mt-1 font-medium"><time datetime={actividad.data.inicio.toISOString()}>{cuando}</time><TiempoRelativo fecha={actividad.data.inicio} conHora /></dd>
         </div>
         {actividad.data.lugar && (
-          <div class="flex items-center gap-2">
-            <dt class="sr-only">Lugar</dt>
-            <MapPin class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-            <dd>{actividad.data.lugar}</dd>
+          <div>
+            <dt class="flex items-center gap-1.5 text-muted-foreground"><MapPin class="size-4 shrink-0" aria-hidden="true" />Lugar</dt>
+            <dd class="mt-1 font-medium">{actividad.data.lugar}</dd>
           </div>
         )}
         {areas.length > 0 && (
-          <div class="flex items-center gap-2">
-            <dt class="sr-only">Áreas</dt>
-            <dd class="text-muted-foreground">{areas.map((a) => a.data.nombre).join(' · ')}</dd>
+          <div>
+            <dt class="flex items-center gap-1.5 text-muted-foreground"><Books class="size-4 shrink-0" aria-hidden="true" />Áreas</dt>
+            <dd class="mt-1 font-medium">{areas.map((a) => a.data.nombre).join(' · ')}</dd>
           </div>
         )}
       </dl>
@@ -112,21 +112,24 @@ const seo = resolverSeo({ titulo: actividad.data.titulo, descripcion: `${TIPOS_A
       />
 
       {(organizadores.length > 0 || expositores.length > 0) && (
-        <div id="actividad-datos" class="mt-6 grid gap-3 border-t border-border pt-6">
+        <dl id="actividad-datos" class="mt-6 grid gap-4 border-t border-border pt-6">
           {organizadores.length > 0 && (
-            <p class="flex items-start gap-2">
-              <Users class="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-              <span><span class="text-muted-foreground">Organiza: </span>
+            <div>
+              <dt class="flex items-center gap-1.5 text-muted-foreground"><UsersThree class="size-4 shrink-0" aria-hidden="true" />Organiza</dt>
+              <dd class="mt-1 font-medium">
                 {organizadores.map((o, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion={o.coleccion} entrada={o.entrada} /></>)}
-              </span>
-            </p>
+              </dd>
+            </div>
           )}
           {expositores.length > 0 && (
-            <p><span class="text-muted-foreground">Expone: </span>
-              {expositores.map((p, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="personas" entrada={p} /></>)}
-            </p>
+            <div>
+              <dt class="flex items-center gap-1.5 text-muted-foreground"><Microphone class="size-4 shrink-0" aria-hidden="true" />Expone</dt>
+              <dd class="mt-1 font-medium">
+                {expositores.map((p, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="personas" entrada={p} /></>)}
+              </dd>
+            </div>
           )}
-        </div>
+        </dl>
       )}
 
       <div class="mt-6 border-t border-border pt-6">

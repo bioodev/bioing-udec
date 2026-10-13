@@ -541,6 +541,12 @@ reintroducir efectos de puntos/impresión en el hero.
 - **Contenido del aside** (solo datos que ya tiene la ficha): `<h2>` oculto («Datos de …») y la lista de datos
   (`<dl>`), los Enlaces de la ficha (en Actividades, la inscripción como botón principal mientras sea próxima),
   los organizadores o el oferente, y el bloque **Compartir** (`Compartir.astro`).
+- **Formato de cada dato** (igual en las tres fichas): un `<div>` por dato con `<dt>` visible (etiqueta en
+  `text-muted-foreground`, precedida de su ícono Phosphor `size-4 shrink-0`, decorativo) y `<dd class="mt-1 font-medium">`.
+  La lista es `grid gap-4`. Íconos por concepto: fecha `CalendarBlank`; fecha límite `Hourglass` (no `CalendarX`, que es
+  el badge «Vencido»); lugar `MapPin`; categoría `FolderSimple` (como el badge `tema`); etiquetas `Hash` (como el badge
+  `etiqueta`); áreas `Books`; lectura `Clock`; organiza `UsersThree`; expone `Microphone`; oferente `Buildings`;
+  contacto `EnvelopeSimple` si es correo y `Phone` si no. El `<time>` conserva su contenido.
 - **Compartir**: botón «Copiar enlace» y enlaces `<a>` a WhatsApp, LinkedIn, X y correo. Las URL se arman en
   `src/lib/compartir.ts`, con la URL absoluta del sitio. Sin scripts de terceros; el script del botón es delegado
   en `document` y corre una vez.

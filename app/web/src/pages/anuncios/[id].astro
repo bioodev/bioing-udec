@@ -13,6 +13,12 @@ import { migas, ofertaLaboral } from '@/lib/schema';
 import { TIPOS_ANUNCIO } from '@/lib/anuncios';
 import ArrowLeft from 'phosphor-astro/ArrowLeft.astro';
 import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
+import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
+import Hourglass from 'phosphor-astro/Hourglass.astro';
+import Buildings from 'phosphor-astro/Buildings.astro';
+import Books from 'phosphor-astro/Books.astro';
+import EnvelopeSimple from 'phosphor-astro/EnvelopeSimple.astro';
+import Phone from 'phosphor-astro/Phone.astro';
 
 export async function getStaticPaths() {
   const anuncios = await anunciosVisibles();
@@ -69,29 +75,31 @@ const seo = resolverSeo({ titulo: anuncio.data.titulo, descripcion: `${TIPOS_ANU
       <h2 class="sr-only">Datos del anuncio</h2>
       <dl class="grid gap-4">
         <div>
-          <dt class="text-muted-foreground">Publicado el</dt>
+          <dt class="flex items-center gap-1.5 text-muted-foreground"><CalendarBlank class="size-4 shrink-0" aria-hidden="true" />Publicado el</dt>
           <dd class="mt-1 font-medium"><time datetime={anuncio.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha)}</time><TiempoRelativo fecha={anuncio.data.fecha} /></dd>
         </div>
         {anuncio.data.fecha_limite && (
           <div>
-            <dt class="text-muted-foreground">Postula hasta el</dt>
+            <dt class="flex items-center gap-1.5 text-muted-foreground"><Hourglass class="size-4 shrink-0" aria-hidden="true" />Postula hasta el</dt>
             <dd class="mt-1 font-medium"><time datetime={anuncio.data.fecha_limite.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha_limite)}</time><TiempoRelativo fecha={anuncio.data.fecha_limite} /></dd>
           </div>
         )}
         {oferente && (
           <div>
-            <dt class="text-muted-foreground">Oferente</dt>
+            <dt class="flex items-center gap-1.5 text-muted-foreground"><Buildings class="size-4 shrink-0" aria-hidden="true" />Oferente</dt>
             <dd class="mt-1 font-medium"><EnlaceFicha coleccion={oferente.coleccion} entrada={oferente.entrada} /></dd>
           </div>
         )}
         {areas.length > 0 && (
           <div>
-            <dt class="text-muted-foreground">Áreas</dt>
+            <dt class="flex items-center gap-1.5 text-muted-foreground"><Books class="size-4 shrink-0" aria-hidden="true" />Áreas</dt>
             <dd class="mt-1 font-medium">{areas.map((a) => a.data.nombre).join(' · ')}</dd>
           </div>
         )}
         <div>
-          <dt class="text-muted-foreground">Contacto</dt>
+          <dt class="flex items-center gap-1.5 text-muted-foreground">
+            {esCorreo ? <EnvelopeSimple class="size-4 shrink-0" aria-hidden="true" /> : <Phone class="size-4 shrink-0" aria-hidden="true" />}Contacto
+          </dt>
           <dd class="mt-1 font-medium break-words">{esCorreo ? <a href={`mailto:${anuncio.data.contacto}`} class="text-primary hover:underline">{anuncio.data.contacto}</a> : anuncio.data.contacto}</dd>
         </div>
       </dl>
