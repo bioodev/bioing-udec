@@ -42,7 +42,7 @@ const iconos: Record<Red, typeof WhatsappLogo> = {
     <span class="group-data-[copiado=si]/copiar:hidden">Copiar enlace</span>
     <span class="hidden group-data-[copiado=si]/copiar:inline">Enlace copiado</span>
   </Button>
-  <p data-compartir-estado class="min-h-5 text-sm text-muted-foreground" aria-live="polite"></p>
+  <p data-compartir-estado class="sr-only text-sm text-muted-foreground" aria-live="polite"></p>
   <ul role="list" class="flex flex-wrap gap-2">
     {enlaces.map((e) => {
       const Icono = iconos[e.red];
