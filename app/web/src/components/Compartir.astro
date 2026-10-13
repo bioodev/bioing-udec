@@ -1,18 +1,25 @@
 ---
-// Bloque «Compartir» de la columna lateral de una ficha: copiar enlace y enlaces simples a redes y correo.
+// Bloque «Compartir» de la columna lateral de una ficha: copiar enlace, código QR y enlaces simples a redes y correo.
 // `url` es la ruta de la ficha (p. ej. /agenda/x); se convierte en absoluta para que las redes la reciban completa.
 import { enlacesCompartir, type Red } from '@/lib/compartir';
+import { nombreQr, qrDataUrl } from '@/lib/qr';
 import { Button } from '@/components/starwind/button';
 import WhatsappLogo from 'phosphor-astro/WhatsappLogo.astro';
 import LinkedinLogo from 'phosphor-astro/LinkedinLogo.astro';
 import XLogo from 'phosphor-astro/XLogo.astro';
 import EnvelopeSimple from 'phosphor-astro/EnvelopeSimple.astro';
 import Copy from 'phosphor-astro/Copy.astro';
+import Check from 'phosphor-astro/Check.astro';
+import QrCode from 'phosphor-astro/QrCode.astro';
+import CaretDown from 'phosphor-astro/CaretDown.astro';
+import DownloadSimple from 'phosphor-astro/DownloadSimple.astro';
 
 interface Props { url: string; titulo: string }
 const { url, titulo } = Astro.props;
 const absoluta = new URL(url, Astro.site).href;
 const enlaces = enlacesCompartir(absoluta, titulo);
+const qr = qrDataUrl(absoluta);
+const archivoQr = nombreQr(absoluta);
 const iconos: Record<Red, typeof WhatsappLogo> = {
   whatsapp: WhatsappLogo,
   linkedin: LinkedinLogo,
@@ -22,8 +29,18 @@ const iconos: Record<Red, typeof WhatsappLogo> = {
 ---
 <section data-compartir class="grid gap-3" aria-labelledby="compartir-titulo">
   <h2 id="compartir-titulo" class="text-sm font-semibold">Compartir</h2>
-  <Button type="button" variant="outline" class="w-full rounded-full" data-copiar={absoluta}>
-    <Copy class="size-4" aria-hidden="true" />Copiar enlace
+  <!-- El estado «copiado» vive en data-copiado: el CSS cambia ícono y texto; el script solo lo enciende y lo apaga. -->
+  <Button type="button" variant="outline" class="group/copiar w-full rounded-full" data-copiar={absoluta}>
+    <span class="grid size-4 shrink-0" aria-hidden="true">
+      <span class="col-start-1 row-start-1 transition-[opacity,scale] duration-200 group-data-[copiado=si]/copiar:scale-75 group-data-[copiado=si]/copiar:opacity-0 motion-reduce:transition-none motion-reduce:scale-100">
+        <Copy class="size-4" />
+      </span>
+      <span class="col-start-1 row-start-1 scale-75 opacity-0 transition-[opacity,scale] duration-200 group-data-[copiado=si]/copiar:scale-100 group-data-[copiado=si]/copiar:opacity-100 motion-reduce:transition-none motion-reduce:scale-100">
+        <Check class="size-4" />
+      </span>
+    </span>
+    <span class="group-data-[copiado=si]/copiar:hidden">Copiar enlace</span>
+    <span class="hidden group-data-[copiado=si]/copiar:inline">Enlace copiado</span>
   </Button>
   <p data-compartir-estado class="min-h-5 text-sm text-muted-foreground" aria-live="polite"></p>
   <ul role="list" class="flex flex-wrap gap-2">
@@ -39,12 +56,27 @@ const iconos: Record<Red, typeof WhatsappLogo> = {
       );
     })}
   </ul>
+  <!-- Plegado por defecto para no alargar la columna. El QR es negro sobre blanco en ambos temas. -->
+  <details class="group rounded-md border border-border">
+    <summary class="flex cursor-pointer list-none items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-muted [&::-webkit-details-marker]:hidden">
+      <QrCode class="size-4" aria-hidden="true" />Código QR
+      <CaretDown class="ml-auto size-4 transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" />
+    </summary>
+    <div class="grid justify-items-center gap-3 border-t border-border p-3">
+      <img src={qr} alt="Código QR de esta página" width="176" height="176" class="size-44 rounded-sm" loading="lazy" />
+      <a href={qr} download={archivoQr} class="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm hover:bg-muted">
+        <DownloadSimple class="size-4" aria-hidden="true" />Descargar QR
+      </a>
+    </div>
+  </details>
 </section>
 
 <script>
   // Un solo listener delegado en el documento: el bloque se reemplaza en cada navegación (ClientRouter)
   // y el módulo no debe registrarse dos veces.
   // La marca va en un data-* distinto de [data-compartir]: si coincidieran, el selector matchearía <html>.
+  const DURACION_COPIADO_MS = 2000;
+  const temporizadores = new WeakMap<HTMLElement, number>();
   if (!document.documentElement.dataset.compartirListo) {
     document.documentElement.dataset.compartirListo = 'si';
     document.addEventListener('click', async (evento) => {
@@ -54,9 +86,16 @@ const iconos: Record<Red, typeof WhatsappLogo> = {
       if (!aviso) return;
       try {
         await navigator.clipboard.writeText(boton.dataset.copiar ?? '');
+        boton.dataset.copiado = 'si';
+        window.clearTimeout(temporizadores.get(boton));
+        temporizadores.set(boton, window.setTimeout(() => delete boton.dataset.copiado, DURACION_COPIADO_MS));
+        // El éxito ya se ve en el botón: el aviso queda solo para lectores de pantalla.
         aviso.textContent = 'Enlace copiado';
+        aviso.classList.add('sr-only');
       } catch {
+        delete boton.dataset.copiado;
         aviso.textContent = 'No se pudo copiar: copia el enlace desde la barra de direcciones.';
+        aviso.classList.remove('sr-only');
       }
     });
   }

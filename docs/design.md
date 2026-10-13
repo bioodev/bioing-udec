@@ -541,9 +541,19 @@ reintroducir efectos de puntos/impresión en el hero.
 - **Contenido del aside** (solo datos que ya tiene la ficha): `<h2>` oculto («Datos de …») y la lista de datos
   (`<dl>`), los Enlaces de la ficha (en Actividades, la inscripción como botón principal mientras sea próxima),
   los organizadores o el oferente, y el bloque **Compartir** (`Compartir.astro`).
-- **Compartir**: botón «Copiar enlace» con `aria-live` («Enlace copiado») y enlaces `<a>` a WhatsApp,
-  LinkedIn, X y correo. Las URL se arman en `src/lib/compartir.ts`, con la URL absoluta del sitio. Sin scripts de
-  terceros; el script del botón es delegado en `document` y corre una vez.
+- **Compartir**: botón «Copiar enlace» y enlaces `<a>` a WhatsApp, LinkedIn, X y correo. Las URL se arman en
+  `src/lib/compartir.ts`, con la URL absoluta del sitio. Sin scripts de terceros; el script del botón es delegado
+  en `document` y corre una vez.
+  - **Botón copiado:** al copiar, el ícono `Copy` se desvanece y escala a `Check` (200 ms) y el texto pasa a
+    «Enlace copiado» durante 2 s; luego vuelve. El estado vive en `data-copiado` (lo enciende el script; el CSS
+    hace el cambio). Con `prefers-reduced-motion` el cambio es instantáneo, sin escala. Si falla, el aviso visible
+    dice «No se pudo copiar…».
+  - **Aviso `aria-live`:** tras copiar, el texto «Enlace copiado» queda solo para lectores de pantalla (`sr-only`),
+    para no repetir lo que ya se ve en el botón. Los errores sí se muestran.
+  - **Código QR:** bloque plegado por defecto («Código QR», `<details>`) con el QR de la URL absoluta de la ficha,
+    generado en el build como SVG (`src/lib/qr.ts`, `uqr`). Negro sobre blanco en ambos temas, para que se pueda
+    escanear. Alt: «Código QR de esta página». «Descargar QR» baja el SVG (`codigo-qr-<segmento>.svg`) desde una
+    data URL; no necesita JS.
 - **Relacionados**: en Noticias se mantiene «Te puede interesar» debajo del cuerpo a ancho completo (tres
   tarjetas, `relacionadas.ts`), porque tres tarjetas en 18 rem quedan apretadas. Actividades usan «Cobertura»
   y Anuncios no tienen relacionados: no se inventan.
