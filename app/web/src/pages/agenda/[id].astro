@@ -134,7 +134,7 @@ const seo = resolverSeo({ titulo: actividad.data.titulo, descripcion: `${TIPOS_A
     </aside>
 
     <div class="lg:col-start-1 lg:row-start-2">
-      {actividad.data.imagen && <Image src={actividad.data.imagen} alt="" class="mt-8 w-full rounded-lg" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
+      {actividad.data.imagen && <Image src={actividad.data.imagen} alt={actividad.data.imagen_alt ?? ''} class="mt-8 w-full rounded-lg" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
 
       <div class="prose mt-8 max-w-none"><Content /></div>
 

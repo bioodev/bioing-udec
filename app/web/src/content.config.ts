@@ -131,6 +131,7 @@ const actividades = defineCollection({
       enlace_inscripcion: urlWeb.optional(), // botón principal
       enlaces,
       imagen: image().optional(),
+      imagen_alt: z.string().optional(), // describe la imagen; sin él, la imagen se trata como decorativa
       incrustados,
       seo: seoEntrada(image),
     }),

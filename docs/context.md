@@ -111,7 +111,7 @@ Persona u Organización que figura en una Noticia; no implica autoría. La Notic
 _Avoid_: Participante, autor, etiquetado
 
 **Actividad**:
-Evento con fecha y lugar o modalidad (seminario, charla, congreso, taller, encuentro) publicado en la Agenda. Opcionalmente tiene una inscripción (botón principal) y hasta 6 Enlaces, además de Contenido incrustado.
+Evento con fecha y lugar o modalidad (seminario, charla, congreso, taller, encuentro) publicado en la Agenda. Opcionalmente tiene una imagen (con su texto alternativo), una inscripción (botón principal) y hasta 6 Enlaces, además de Contenido incrustado.
 _Avoid_: Evento, evento de agenda
 
 **Agenda**:

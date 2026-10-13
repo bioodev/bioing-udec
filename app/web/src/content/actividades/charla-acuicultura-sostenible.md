@@ -6,6 +6,7 @@ inicio: 2026-06-12T17:00:00-04:00
 modalidad: hibrida
 lugar: Sala 201, FCB
 imagen: '@/assets/media/demo-05.jpg'
+imagen_alt: Dos manos sostienen tierra con una pequeña planta verde
 organizadores:
   - tipo: persona
     persona: profesora-lopez

@@ -216,7 +216,7 @@ o modalidad y sus organizadores.
    egresados/as, Actividad académica, Encuentro de la comunidad u Otra.
 5. Elige la **Modalidad**: Presencial, En línea o Híbrida.
 6. Escribe la **Fecha y hora de inicio**. Las horas se entienden en hora de Chile.
-7. Escribe la **Descripción**. Opcional: sube una **Imagen**.
+7. Escribe la **Descripción**. Opcional: sube una **Imagen** y escribe su **Texto alternativo de la imagen** (lo que se ve en ella, para lectores de pantalla).
 8. Si la actividad dura varios días, escribe la **Fecha y hora de término**. Si no, déjalo vacío.
 9. Si la actividad es presencial o híbrida, escribe el **Lugar**.
 10. En **Organizadores**, agrega una entrada por cada organizador y elige si es una Persona o una Organización.

@@ -167,6 +167,7 @@ collections:
           - { label: Híbrida, value: hibrida }
       - { name: body, label: Descripción, widget: richtext, hint: "Explica de qué trata la actividad. Aparece en su ficha. Para un recuadro destacado, ver la guía (Recuadros destacados)." }
       - { name: imagen, label: Imagen, widget: image, required: false, hint: "Foto de la actividad. Se ve en la tarjeta de la Agenda y en su ficha." }
+      - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título." }
       - { name: fin, label: Fecha y hora de término, widget: datetime, input_timezone: America/Santiago, required: false, hint: "Opcional. Si la dejas vacía, la actividad muestra solo la fecha de inicio." }
       - { name: lugar, label: Lugar, widget: string, required: false, hint: "Sala, edificio o dirección. Si la actividad es en línea, puedes dejarlo vacío." }
       - name: organizadores
