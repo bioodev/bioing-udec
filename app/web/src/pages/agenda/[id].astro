@@ -8,6 +8,7 @@ import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
 import Incrustados from '@/components/Incrustados.astro';
 import Enlaces from '@/components/Enlaces.astro';
 import Distintivo from '@/components/Distintivo.astro';
+import Compartir from '@/components/Compartir.astro';
 import { formatoFechaHora, noticiasDeActividad, publicados, seoDeEntrada } from '@/lib/contenido';
 import { actividadEsProxima, existentes } from '@/lib/reglas';
 import { MODALIDADES, TIPOS_ACTIVIDAD } from '@/lib/agenda';
@@ -69,70 +70,82 @@ const jsonLdPagina = [
 const seo = resolverSeo({ titulo: actividad.data.titulo, descripcion: `${TIPOS_ACTIVIDAD[actividad.data.tipo]} · ${cuando}` }, seoDeEntrada(actividad.data.seo));
 ---
 <Base titulo={seo.titulo} descripcion={seo.descripcion} imagen={seo.imagen} noindex={seo.noindex} jsonLd={jsonLdPagina}>
-  <article class="mx-auto max-w-3xl px-4 py-12">
-    <div class="flex flex-wrap items-center gap-2">
-      <Distintivo clase="tipo">{TIPOS_ACTIVIDAD[actividad.data.tipo]}</Distintivo>
-      <Distintivo clase="modalidad" modalidad={actividad.data.modalidad}>{MODALIDADES[actividad.data.modalidad]}</Distintivo>
-      {!esProxima && <Distintivo clase="realizada">Realizada</Distintivo>}
+  <article class="mx-auto w-full max-w-3xl px-4 py-12 lg:grid lg:max-w-6xl lg:grid-cols-[minmax(0,48rem)_18rem] lg:justify-center lg:gap-x-12">
+    <header class="lg:col-start-1 lg:row-start-1">
+      <div class="flex flex-wrap items-center gap-2">
+        <Distintivo clase="tipo">{TIPOS_ACTIVIDAD[actividad.data.tipo]}</Distintivo>
+        <Distintivo clase="modalidad" modalidad={actividad.data.modalidad}>{MODALIDADES[actividad.data.modalidad]}</Distintivo>
+        {!esProxima && <Distintivo clase="realizada">Realizada</Distintivo>}
+      </div>
+      <h1 class="mt-3 text-4xl font-semibold tracking-tight">{actividad.data.titulo}</h1>
+    </header>
+
+    {/* En móvil va entre el título y el cuerpo; en escritorio, columna lateral fija junto al texto. */}
+    <aside aria-label="Información de la actividad" class="mt-8 rounded-lg bg-muted p-5 text-sm lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-start">
+      <h2 class="sr-only">Datos de la actividad</h2>
+      <dl class="grid gap-3">
+        <div class="flex items-center gap-2">
+          <dt class="sr-only">Fecha y hora</dt>
+          <CalendarBlank class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+          <dd><time datetime={actividad.data.inicio.toISOString()}>{cuando}</time></dd>
+        </div>
+        {actividad.data.lugar && (
+          <div class="flex items-center gap-2">
+            <dt class="sr-only">Lugar</dt>
+            <MapPin class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <dd>{actividad.data.lugar}</dd>
+          </div>
+        )}
+        {areas.length > 0 && (
+          <div class="flex items-center gap-2">
+            <dt class="sr-only">Áreas</dt>
+            <dd class="text-muted-foreground">{areas.map((a) => a.data.nombre).join(' · ')}</dd>
+          </div>
+        )}
+      </dl>
+
+      {/* La inscripción es el botón principal solo mientras la Actividad es próxima; los Enlaces se ven siempre. */}
+      <Enlaces
+        principal={esProxima && actividad.data.enlace_inscripcion ? { etiqueta: 'Inscripción o información', url: actividad.data.enlace_inscripcion } : undefined}
+        items={actividad.data.enlaces ?? []}
+      />
+
+      {(organizadores.length > 0 || expositores.length > 0) && (
+        <div id="actividad-datos" class="mt-6 grid gap-3 border-t border-border pt-6">
+          {organizadores.length > 0 && (
+            <p class="flex items-start gap-2">
+              <Users class="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <span><span class="text-muted-foreground">Organiza: </span>
+                {organizadores.map((o, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion={o.coleccion} entrada={o.entrada} /></>)}
+              </span>
+            </p>
+          )}
+          {expositores.length > 0 && (
+            <p><span class="text-muted-foreground">Expone: </span>
+              {expositores.map((p, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="personas" entrada={p} /></>)}
+            </p>
+          )}
+        </div>
+      )}
+
+      <div class="mt-6 border-t border-border pt-6">
+        <Compartir url={enlace} titulo={actividad.data.titulo} />
+      </div>
+    </aside>
+
+    <div class="lg:col-start-1 lg:row-start-2">
+      {actividad.data.imagen && <Image src={actividad.data.imagen} alt="" class="mt-8 w-full rounded-lg" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
+
+      <div class="prose mt-8 max-w-none"><Content /></div>
+
+      <Incrustados items={actividad.data.incrustados ?? []} />
+
+      {noticias.length > 0 && (
+        <section id="actividad-cobertura" class="mt-12" aria-labelledby="actividad-cobertura-titulo">
+          <h2 id="actividad-cobertura-titulo" class="text-2xl font-semibold">Cobertura</h2>
+          <ul role="list" class="mt-6 grid gap-6 md:grid-cols-2">{noticias.map((n) => <li><TarjetaNoticia noticia={n} /></li>)}</ul>
+        </section>
+      )}
     </div>
-    <h1 class="mt-3 text-4xl font-semibold tracking-tight">{actividad.data.titulo}</h1>
-
-    <dl class="mt-6 grid gap-2 text-sm">
-      <div class="flex items-center gap-2">
-        <dt class="sr-only">Fecha y hora</dt>
-        <CalendarBlank class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-        <dd><time datetime={actividad.data.inicio.toISOString()}>{cuando}</time></dd>
-      </div>
-      {actividad.data.lugar && (
-        <div class="flex items-center gap-2">
-          <dt class="sr-only">Lugar</dt>
-          <MapPin class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <dd>{actividad.data.lugar}</dd>
-        </div>
-      )}
-      {areas.length > 0 && (
-        <div class="flex items-center gap-2">
-          <dt class="sr-only">Áreas</dt>
-          <dd class="text-muted-foreground">{areas.map((a) => a.data.nombre).join(' · ')}</dd>
-        </div>
-      )}
-    </dl>
-
-    {/* La inscripción es el botón principal solo mientras la Actividad es próxima; los Enlaces se ven siempre. */}
-    <Enlaces
-      principal={esProxima && actividad.data.enlace_inscripcion ? { etiqueta: 'Inscripción o información', url: actividad.data.enlace_inscripcion } : undefined}
-      items={actividad.data.enlaces ?? []}
-    />
-
-    {actividad.data.imagen && <Image src={actividad.data.imagen} alt="" class="mt-8 w-full rounded-lg" widths={[768, 1536]} sizes="(min-width: 768px) 768px, 100vw" />}
-
-    <div class="prose mt-8 max-w-none"><Content /></div>
-
-    <Incrustados items={actividad.data.incrustados ?? []} />
-
-    {(organizadores.length > 0 || expositores.length > 0) && (
-      <div id="actividad-datos" class="mt-10 border-t border-border pt-6 text-sm">
-        {organizadores.length > 0 && (
-          <p class="flex items-start gap-2">
-            <Users class="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-            <span><span class="text-muted-foreground">Organiza: </span>
-              {organizadores.map((o, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion={o.coleccion} entrada={o.entrada} /></>)}
-            </span>
-          </p>
-        )}
-        {expositores.length > 0 && (
-          <p class="mt-2"><span class="text-muted-foreground">Expone: </span>
-            {expositores.map((p, i) => <>{i > 0 && ', '}<EnlaceFicha coleccion="personas" entrada={p} /></>)}
-          </p>
-        )}
-      </div>
-    )}
-
-    {noticias.length > 0 && (
-      <section id="actividad-cobertura" class="mt-12" aria-labelledby="actividad-cobertura-titulo">
-        <h2 id="actividad-cobertura-titulo" class="text-2xl font-semibold">Cobertura</h2>
-        <ul role="list" class="mt-6 grid gap-6 md:grid-cols-2">{noticias.map((n) => <li><TarjetaNoticia noticia={n} /></li>)}</ul>
-      </section>
-    )}
   </article>
 </Base>

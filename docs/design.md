@@ -532,6 +532,24 @@ reintroducir efectos de puntos/impresión en el hero.
 - **Publicación de Instagram**: la tarjeta no tiene botón de carga; el embed se crea al acercarse a la pantalla, con el
   mismo esqueleto, y el aviso dice «Contenido de Instagram (Meta)». Sin enlace incrustable, la tarjeta queda sin iframe.
 
+### Columna lateral de las fichas (Noticia, Actividad, Anuncio)
+
+- **Patrón común**: en escritorio (`lg`, 1024 px) el encabezado (migas, título, bajada) y el cuerpo van en
+  la columna de lectura de 48 rem; a la derecha, un `<aside>` de 18 rem (`lg:grid-cols-[minmax(0,48rem)_18rem]`)
+  que ocupa las dos filas y es `sticky` bajo la navbar (`lg:top-24`, `self-start`). En móvil el aside va entre
+  el título y el cuerpo, con los datos clave arriba del texto sin duplicarlos.
+- **Contenido del aside** (solo datos que ya tiene la ficha): `<h2>` oculto («Datos de …») y la lista de datos
+  (`<dl>`), los Enlaces de la ficha (en Actividades, la inscripción como botón principal mientras sea próxima),
+  los organizadores o el oferente, y el bloque **Compartir** (`Compartir.astro`).
+- **Compartir**: botón «Copiar enlace» con `aria-live` («Enlace copiado») y enlaces `<a>` a WhatsApp,
+  LinkedIn, X y correo. Las URL se arman en `src/lib/compartir.ts`, con la URL absoluta del sitio. Sin scripts de
+  terceros; el script del botón es delegado en `document` y corre una vez.
+- **Relacionados**: en Noticias se mantiene «Te puede interesar» debajo del cuerpo a ancho completo (tres
+  tarjetas, `relacionadas.ts`), porque tres tarjetas en 18 rem quedan apretadas. Actividades usan «Cobertura»
+  y Anuncios no tienen relacionados: no se inventan.
+- **Documentos (`/repositorio/[id]`)**: no llevan columna lateral. Sus datos son pocos (temas, áreas, palabras
+  clave) y la vista previa ocupa el ancho completo; una columna con tres líneas quedaría casi vacía.
+
 ### Filtros de los listados y modales
 
 - **Filtros plegables** (`FiltrosPlegables.astro` + `src/scripts/filtros-plegables.ts`, lógica en
