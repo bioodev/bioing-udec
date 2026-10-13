@@ -15,10 +15,9 @@ const embed = embedInstagram(enlace);
   <p class="flex items-center gap-1.5 text-sm text-muted-foreground"><InstagramLogo class="size-4" aria-hidden="true" /><time datetime={fecha.toISOString().slice(0, 10)}>{formatoFecha(fecha)}</time></p>
   <h3 class="mt-2 font-semibold leading-snug">{titulo}</h3>
   <div class="mt-4 flex flex-wrap gap-3 text-sm">
-    {embed && <button type="button" data-cargar class="rounded-full bg-primary px-4 py-1.5 text-primary-foreground hover:opacity-90">Ver publicación aquí</button>}
     <a href={enlace} target="_blank" rel="noopener" class="inline-flex items-center gap-1 hover:text-primary">Abrir en Instagram<ArrowSquareOut class="size-4" aria-hidden="true" /></a>
   </div>
-  <p class="mt-2 text-xs text-muted-foreground">Al verla aquí se carga contenido de Instagram (Meta).</p>
+  {embed && <p class="mt-2 text-xs text-muted-foreground">Contenido de Instagram (Meta)</p>}
   <div data-embed></div>
 </article>
 
@@ -38,27 +37,49 @@ const embed = embedInstagram(enlace);
     if (iframe) iframe.style.height = `${details.height}px`;
   });
 
+  // El embed se crea solo cuando la tarjeta se acerca al viewport (200 px antes). Mientras carga, un esqueleto
+  // del mismo tamaño ocupa su lugar; se quita con el evento load del iframe.
+  function cargarEmbed(tarjeta: HTMLElement) {
+    const envoltorio = document.createElement('div');
+    envoltorio.className = 'relative mx-auto mt-4 w-full max-w-[540px]';
+    const esqueleto = document.createElement('div');
+    esqueleto.setAttribute('aria-hidden', 'true');
+    esqueleto.className = 'absolute inset-0 rounded-lg bg-muted motion-safe:animate-pulse';
+    const iframe = document.createElement('iframe');
+    iframe.src = tarjeta.dataset.embedSrc!;
+    iframe.title = `Publicación de Instagram: ${tarjeta.dataset.titulo}`;
+    iframe.loading = 'lazy';
+    iframe.setAttribute('allowtransparency', 'true');
+    iframe.setAttribute('scrolling', 'no');
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.className = 'relative block w-full rounded-lg border-0 opacity-0 transition-opacity duration-300 motion-reduce:transition-none';
+    iframe.style.height = '640px';
+    iframe.dataset.instagram = '';
+    iframe.addEventListener('load', () => {
+      esqueleto.remove();
+      iframe.classList.remove('opacity-0');
+    }, { once: true });
+    envoltorio.append(esqueleto, iframe);
+    tarjeta.querySelector('[data-embed]')!.append(envoltorio);
+  }
+
   // Los <script> de Astro corren una sola vez; con ClientRouter hay que reiniciar en cada
-  // astro:page-load (también la primera carga). La marca data-iniciado evita listeners dobles.
+  // astro:page-load (también la primera carga). La marca data-iniciado evita observar dos veces.
   document.addEventListener('astro:page-load', () => {
+    const observador = 'IntersectionObserver' in window
+      ? new IntersectionObserver((entradas) => {
+          for (const entrada of entradas) {
+            if (!entrada.isIntersecting) continue;
+            observador!.unobserve(entrada.target);
+            cargarEmbed(entrada.target as HTMLElement);
+          }
+        }, { rootMargin: '200px' })
+      : null;
     for (const tarjeta of document.querySelectorAll<HTMLElement>('.publicacion-ig:not([data-iniciado])')) {
       tarjeta.dataset.iniciado = '';
-      const boton = tarjeta.querySelector<HTMLButtonElement>('[data-cargar]');
-      boton?.addEventListener('click', () => {
-        const iframe = document.createElement('iframe');
-        iframe.src = tarjeta.dataset.embedSrc!;
-        iframe.title = `Publicación de Instagram: ${tarjeta.dataset.titulo}`;
-        iframe.loading = 'lazy';
-        iframe.setAttribute('allowtransparency', 'true');
-        iframe.setAttribute('scrolling', 'no');
-        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-        iframe.className = 'mx-auto mt-4 block w-full max-w-[540px] rounded-lg border-0';
-        iframe.style.height = '640px';
-        iframe.dataset.instagram = '';
-        tarjeta.querySelector('[data-embed]')!.append(iframe);
-        boton.remove();
-        tarjeta.querySelector<HTMLAnchorElement>('a')?.focus();
-      });
+      if (!tarjeta.dataset.embedSrc) continue; // enlace no incrustable: la tarjeta queda sin iframe
+      if (observador) observador.observe(tarjeta);
+      else cargarEmbed(tarjeta);
     }
   });
 </script>
