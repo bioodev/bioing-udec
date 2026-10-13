@@ -809,7 +809,8 @@ cuya primera línea es la marca del tipo. Por ejemplo, copia esto en el texto:
 Tipos disponibles: `[!NOTA]`, `[!IMPORTANTE]`, `[!CONSEJO]` y `[!ATENCIÓN]`. En el sitio se ven como un recuadro
 con su título y un ícono.
 
-- Escribe la marca sola en su línea, con `>` delante, y el texto en las líneas siguientes.
+- Escribe la marca al comienzo de la cita, con `>` delante. El texto puede ir en las líneas siguientes o en la misma
+  línea (`> [!NOTA] Texto…`).
 - Si la marca no está en la lista, el texto se ve como una cita normal.
 - En la vista previa del panel el texto sale como cita; el recuadro se ve al publicar.
 - Úsalos con moderación: uno o dos por texto.

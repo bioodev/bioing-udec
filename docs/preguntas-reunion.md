@@ -209,6 +209,12 @@ Hoy el límite solo lo avisa la vista previa del panel. El build no lo valida.
 El hint de «Se muestra hasta» dice que el retiro puede tardar hasta un día. No se verificó que la reconstrucción
 esté programada; ver `docs/pendientes-infra.md`.
 
+**8.16 ¿El sitio necesita aviso de privacidad por las publicaciones de Instagram?**
+Desde el 2026-10-12 las publicaciones de Instagram se cargan solas al bajar hasta ellas (ADR 0014). Antes había que
+hacer clic. Meta puede poner sus cookies dentro de esa ventana.
+_Propuesta:_ Si la carrera tiene o publica una política de privacidad, mencionarlo ahí. Si prefieren el clic, se
+vuelve a poner el botón «Ver publicación aquí».
+
 ---
 
 ## 9. Datos del contenido real (2026-10-12)
@@ -233,7 +239,7 @@ Hoy es opcional. Sin bajada ni descripción SEO, la noticia queda sin descripci�
 tampoco tienen cuerpo: el texto es «Contenido de ejemplo».
 _Propuesta:_ Hacer la bajada obligatoria en el panel y escribir el cuerpo de cada noticia antes de publicar.
 
-**9.5 ¿La Actividad debe tener texto alternativo para su imagen?**
+**9.5 ¿La Actividad debe tener texto alternativo para su imagen?** _Resuelto el 2026-10-12: se agregó el campo._
 El modelo no tiene `imagen_alt` en Actividades. La imagen de la charla de acuicultura no puede tenerlo.
 _Propuesta:_ Agregar el campo con el mismo hint que en Noticias. Es un cambio en tres lugares (ver ADR/context).
 

@@ -184,16 +184,20 @@ Mastodon / Fediverso). Se edita en el panel como un campo por red, en «Redes so
 su ícono, en el `sameAs` del JSON-LD y en el botón «Seguir en Instagram» de `/instagram`. No son botones de compartir.
 
 **Publicación de Instagram**:
-Publicación o reel de la cuenta de Instagram de la carrera que el Encargado de comunicaciones selecciona para mostrar en el sitio pegando su enlace; una Noticia puede tener una relacionada.
+Publicación o reel de la cuenta de Instagram de la carrera que el Encargado de comunicaciones selecciona para mostrar en el sitio pegando su enlace; una Noticia puede tener una relacionada. Se carga sola al acercarse a la pantalla (ADR 0014).
 _Avoid_: Post, feed
 
 **Contenido incrustado**:
-Enlaces públicos de servicios externos (Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps, Google Drive/Docs) que el sitio muestra como reproductor después del cuerpo de una Noticia, una Actividad o una Página libre, bajo el título «Multimedia». Los demás servicios, o los enlaces no reconocidos, se muestran como tarjeta con el enlace.
+Enlaces públicos de servicios externos (Spotify, SoundCloud, Apple Podcasts, YouTube, Vimeo, Instagram, Facebook, Google Maps, Google Drive/Docs) que el sitio muestra como reproductor después del cuerpo de una Noticia, una Actividad o una Página libre, bajo el título «Multimedia». Se cargan solos al acercarse a la pantalla, con un esqueleto mientras tanto; YouTube se abre al hacer clic (ADR 0014). Los demás servicios, o los enlaces no reconocidos, se muestran como tarjeta con el enlace.
 _Avoid_: Embed, widget, iframe
 
 **Enlace**:
 Botón con etiqueta libre (p. ej. «Inscripción», «Ver transmisión», «Más información») bajo el título de una Noticia, una Actividad o una Página libre; hasta 6 por ficha. Lleva a una dirección externa o interna. No reproduce nada: para videos, audios o publicaciones, usar Contenido incrustado.
 _Avoid_: Link, botón, vínculo, enlace suelto
+
+**Recuadro destacado**:
+Bloque de color dentro del cuerpo de una Noticia, una Actividad, un Anuncio o una Página libre, de tipo Nota, Importante, Consejo o Atención, para un aviso que no debe pasar inadvertido. Se escribe como una cita que empieza con `[!NOTA]` (o `[!IMPORTANTE]`, `[!CONSEJO]`, `[!ATENCIÓN]`); ADR 0015.
+_Avoid_: Aside, alerta, callout, caja
 
 ### Clasificación
 

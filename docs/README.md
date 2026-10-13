@@ -41,13 +41,17 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 - [`0002-estructura-de-la-documentacion.md`](adr/0002-estructura-de-la-documentacion.md) — esta estructura.
 - [`0003-cuenta-central-anticipada-y-ambientes.md`](adr/0003-cuenta-central-anticipada-y-ambientes.md) — cuenta central adelantada; ambientes QA y producción.
 - [`0004-flujo-de-trabajo-una-persona.md`](adr/0004-flujo-de-trabajo-una-persona.md) — solo `main` se construye; QA a mano; agentes sin push.
+- [`0005-paginas-libres-desde-el-panel.md`](adr/0005-paginas-libres-desde-el-panel.md) — páginas creables desde el panel, en `/p/<slug>`, con `mostrar_en` para el menú o el pie.
+- [`0006-pagina-destacada-en-el-inicio.md`](adr/0006-pagina-destacada-en-el-inicio.md) — una Página libre puede destacarse en el Inicio, entre el carrusel y las Noticias.
+- [`0007-buscador-en-modal.md`](adr/0007-buscador-en-modal.md) — buscador de Pagefind en un modal (`Ctrl+K`, `/`) y `/buscar` como página.
 - [`0008-secciones-desactivables.md`](adr/0008-secciones-desactivables.md) — secciones fijas que el panel desactiva del todo (404, sitemap, buscador, Inicio), con integración de build.
 - [`0009-redes-sociales-campos-fijos.md`](adr/0009-redes-sociales-campos-fijos.md) — redes sociales del pie como campos fijos opcionales en el panel (Mastodon/Fediverso con `rel="me"`).
 - [`0010-seo-desde-el-panel.md`](adr/0010-seo-desde-el-panel.md) — SEO configurable desde el panel: descripción y verificación del sitio, bloque SEO por contenido y «No mostrar en buscadores».
 - [`0011-encabezados-de-listado-e-iconos.md`](adr/0011-encabezados-de-listado-e-iconos.md) — imagen e ícono opcionales en los encabezados de los listados y en el bloque «¿Eres egresado/a?»; lista curada de íconos Phosphor en el panel.
 - [`0012-analitica-sin-cookies.md`](adr/0012-analitica-sin-cookies.md) — analítica con Cloudflare Web Analytics (sin cookies ni banner), token opcional desde el panel; Google Analytics descartado.
 - [`0013-orden-del-panel-y-archivos-aparte.md`](adr/0013-orden-del-panel-y-archivos-aparte.md) — colecciones agrupadas con divisores, archivos únicos (singletons) en la sección «Archivos», «Páginas libres» → «Páginas» y campos en orden de uso.
-- [`0005-paginas-libres-desde-el-panel.md`](adr/0005-paginas-libres-desde-el-panel.md) — páginas creables desde el panel, en `/p/<slug>`, con `mostrar_en` para el menú o el pie.
+- [`0014-incrustados-sin-clic.md`](adr/0014-incrustados-sin-clic.md) — incrustados con esqueleto; Instagram se carga solo al acercarse a la pantalla, sin el botón «Ver publicación aquí».
+- [`0015-recuadros-y-columna-lateral.md`](adr/0015-recuadros-y-columna-lateral.md) — Recuadros destacados en el texto (`> [!NOTA]`) y columna lateral con datos clave y «Compartir» en las fichas.
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)
 

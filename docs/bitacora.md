@@ -94,3 +94,52 @@ contenido de prueba antes de la entrega.
 Ejecución: subagentes Haiku en worktrees coordinados con Herdr (`filtros-compacto`, `paginas-libres`,
 `bioing-libre`, `incrustados`, `prototipo-destacado`, `proveedores`, `enlaces`), integrados en `develop` por el
 orquestador después de revisar el diff, probar en el navegador y verificar sobre el build servido con la CSP.
+
+---
+
+## Diseño, seguridad, panel y tanda de mejoras visuales (sesión 2026-10-12)
+
+Publicado en `main` = `develop` = `c740d6a` (GitHub y Gitea), que Workers Builds despliega en
+https://bioing.bioodev.work. Una publicación intermedia (`5c267b4`) desplegó bien, pero dejó el check en rojo sin
+causa conocida (ver `pendientes-infra.md`).
+
+**Diseño**
+- **Sombras tenues** en todas las tarjetas (`tarjeta-elevada`): suben 2 px al pasar el mouse, solo en dispositivos con
+  puntero. Trampa: `@layer components` pierde frente a las utilidades de Tailwind v4, así que la regla del borde va
+  fuera de `@layer`.
+- **Badges** unificados en `Distintivo.astro`: con borde para clasificar y gris para estados; el negro no se usa.
+- **Banda «Comunidad y documentos»** en una columna, con imagen a sangre y contenido en zigzag.
+- **Favicon** generado desde `src/assets/logo.svg` (`npm run favicon`).
+- **Tipografía**: `text-wrap: balance` en títulos y `pretty` en párrafos e ítems (regla base en `starwind.css`).
+- **Hero** con velo y desenfoque radiales, configurables con las variables `--hero-*` de `starwind.css` (en 0 se
+  apagan). El fondo del hero quedó fijo en oscuro: `bg-foreground` se invertía en el tema oscuro.
+- **Parallax** de ±10 % a ±20 %, con la imagen al 175 % para que no aparezcan bordes vacíos.
+- **Llamados a la acción** (`cta`, `cta-flecha`, `cta-relleno` en `animaciones.css`): la flecha avanza al pasar el
+  mouse y los botones rellenos suben 1 px.
+- **Incrustados con esqueleto**; Instagram se carga solo al acercarse a la pantalla (ADR 0014).
+- **Recuadros destacados** (`> [!NOTA]`) y **columna lateral** con «Compartir» en las fichas (ADR 0015).
+- **Encabezados de listados** con ícono, texto de introducción (campo nuevo `intro`) e imagen de ejemplo.
+
+**Seguridad** (`analisis/2026-10-12-revision-seguridad.md`)
+- Saneador del cuerpo Markdown, URL validadas (`urlWeb`, `enlaceDelSitio`), `form-action`, COOP y
+  `Permissions-Policy`, Sveltia fijado con SRI, `security.txt` provisional, `wrangler` y dependencias al día.
+
+**Panel**
+- **Analítica sin cookies** (ADR 0012): token opcional de Cloudflare Web Analytics.
+- **Orden** (ADR 0013): colecciones agrupadas; la configuración pasó a «Archivos»; «Páginas libres» → «Páginas».
+- **Textos claros** en todos los campos, y la guía de usuario y el glosario alineados con ellos.
+- **Vista previa** solo donde sirve: se quitó en Áreas, Temas, Organizaciones, Instagram y «Archivos».
+- **Texto alternativo** en la imagen de las Actividades (cambio de modelo en los tres lugares).
+
+**Contenido**
+- Revisión de datos faltantes (`analisis/2026-10-12-datos-faltantes.md`). Se completó solo lo que se deduce del
+  contenido; las preguntas para la contraparte están en `preguntas-reunion.md` §8 y §9.
+- **Zona horaria**: sin cambios. El sitio y el panel usan `America/Santiago`, que pasa sola de UTC−4 a UTC−3 con el
+  horario de verano. No conviene fijar «UTC−4».
+
+**Próximos pasos:** la persona revisa el panel y el sitio. Después, reunión con la contraparte (§7.1, §8 y §9),
+reemplazar las imágenes de ejemplo y borrar el contenido de prueba (`pendientes-infra.md`, «Contenido y medios»).
+
+Ejecución: subagentes Haiku en worktrees coordinados con Herdr, integrados en `develop` por el orquestador después de
+revisar el diff y las capturas. Trampa del orquestador: un agente renombró su rama (`datos` → `datos-faltantes`) y el
+`git merge` falló en silencio porque la salida pasaba por `tail`. Al integrar, comprobar `git log develop..<rama>`.

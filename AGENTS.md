@@ -92,4 +92,6 @@ levantar): no detecta cientos de archivos nuevos de una vez.
   cabeceras y el navegador aplica las dos CSP. Para sobrescribir una de `/*`, quitarla antes con `! Nombre`.
 - **Scripts y ClientRouter**: un `<script>` corre una sola vez; lo que toque el DOM se inicia en
   `astro:page-load` (con una marca para no duplicar listeners) o se escucha delegado en `document`.
+- **Cuerpo Markdown**: Sätteri con plugins hast en `astro.config.mjs`, en este orden: `recuadros` (citas `[!NOTA]`…)
+  y `sanearHtml` (borra el HTML crudo). Un plugin nuevo genera nodos hast, nunca HTML crudo, o el saneador lo borra.
 - **Sin comprobación de tipos en el CMS**: el esquema Zod del build es la red de seguridad; `astro check` en 0.

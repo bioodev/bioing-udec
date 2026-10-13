@@ -82,7 +82,7 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Personas** | nombre, descripción, foto, ficha activa, Perfil de egresado (autorizado, generación, año de egreso, Áreas, Organización, cargo, enlaces) |
 | **Organizaciones** | nombre, tipo (empresa, institución, laboratorio, agrupación), sitio web, logo, ficha activa |
 | **Noticias** | título, fecha, imagen, bajada, Temas, Áreas, Personas y Organizaciones mencionadas, Actividad (cobertura), Publicación de Instagram, etiquetas libres, Enlaces (hasta 6), Contenido incrustado (hasta 10) |
-| **Actividades** | título, tipo (seminario, charla, congreso, taller, …), inicio, fin, modalidad, lugar, Organizadores, Expositores, Áreas, enlace de inscripción (botón principal), Enlaces (hasta 6), imagen, Contenido incrustado (hasta 10) |
+| **Actividades** | título, tipo (seminario, charla, congreso, taller, …), inicio, fin, modalidad, lugar, Organizadores, Expositores, Áreas, enlace de inscripción (botón principal), Enlaces (hasta 6), imagen y texto alternativo, Contenido incrustado (hasta 10) |
 | **Anuncios** | título, tipo de oportunidad, Oferente, Áreas, fecha, fecha límite, Contacto, enlace |
 | **Documentos** | título, tipo, año, enlace (Drive), descripción, Temas, Áreas, palabras clave |
 | **Banners** | título, texto, imagen, enlace, inicio, fin |
@@ -144,7 +144,12 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 - **Listados con filtros** renderizan todas las tarjetas con atributos `data-*` y un `<script>` filtra en el
   cliente con la función pura correspondiente; `/noticias`, `/agenda`, `/anuncios`, `/repositorio` y `/directorio` reflejan los filtros en la URL con `sincronizarFiltrosEnUrl` (`src/scripts/url-filtros.ts`), y `/noticias` además pagina. En `/directorio` el orden «Por generación» también va en la URL (`?orden=generacion`) y reagrupa las mismas tarjetas, sin duplicarlas.
 - **Columna lateral de las fichas** (Noticia, Actividad, Anuncio): el `<aside>` lateral y el bloque «Compartir»
-  (`Compartir.astro`, enlaces de `src/lib/compartir.ts`, con test). Patrón y decisiones en `docs/design.md`.
+  (`Compartir.astro`, enlaces de `src/lib/compartir.ts`, con test). Patrón y decisiones en `docs/design.md` y ADR 0015.
+- **Cuerpo Markdown**: lo procesa Sätteri con dos plugins hast, en este orden (`astro.config.mjs`): `recuadros`
+  (`src/lib/recuadros.ts`: citas con `[!NOTA]`… → Recuadro destacado, ADR 0015) y `sanearHtml`
+  (`src/lib/sanear-html.ts`: quita el HTML crudo y los enlaces `javascript:`/`data:`; revisión de seguridad 2026-10-12).
+- **Incrustados**: iframes con `loading="lazy"` y esqueleto hasta el `load`; Instagram se crea con IntersectionObserver
+  al acercarse a la pantalla (ADR 0014).
 - **Componentes** reutilizables en `src/components/` (tarjetas, `EnlaceFicha`, `HeroCarrusel`, …). Las
   tarjetas son 100 % clicables y reservan aspecto (`aspect-video`, `aspect-square`) para no tener CLS.
 - **Fechas**: los campos con hora llevan offset de America/Santiago y se muestran con `formatoFechaHora`;
@@ -255,6 +260,6 @@ shaders WebGL y la textura halftone por rendimiento y por decisión del equipo.
 - **Buscadores en el navegador**: adecuados para cientos o miles de registros, no para volúmenes mucho
   mayores.
 - **Dependencias de terceros** (Instagram, Google Drive): pueden cambiar o romper enlaces; hay revisión
-  pendiente de enlaces.
+  pendiente de enlaces. Instagram se carga sin clic (ADR 0014): contacta a Meta al bajar hasta la publicación.
 - **Capacidad del repositorio**: aviso al superar 1 GB (imágenes) y caché de imágenes optimizadas entre
   builds si el tiempo de construcción crece.

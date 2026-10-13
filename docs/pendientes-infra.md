@@ -33,6 +33,7 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 - [ ] Workers Builds conectado al repositorio de GitHub: build y deploy en cada push a `main`.
 - [ ] **Analítica sin cookies (Cloudflare Web Analytics)**: implementada (ADR 0012: token opcional en «SEO del sitio», CSP ampliada, `spa: true`). Falta solo el token de la cuenta de la carrera, cuando exista. Pasos en `guia-mantencion.md` §8.
 - [ ] Reconstrucción diaria poco después de las 00:00 **de Chile**, no a las 00:00 UTC (si no, un Anuncio vencido seguiría visible hasta ~21 horas). _Preparada 2026-10-11:_ GitHub Actions (`.github/workflows/reconstruccion-diaria.yml`, `15 4 * * *` UTC = 00:15/01:15 de Chile según el horario) hace `POST` al Deploy Hook de Workers Builds. Falta crear el hook y el secret `CF_DEPLOY_HOOK_URL` (plan de ambientes, etapa 3.5).
+- [ ] **Check rojo sin explicar del 2026-10-13 00:18 UTC** (commit `5c267b4`, build `914fd025-…`): Workers Builds desplegó la versión y aun así marcó el check como fallido. No se pudo leer el log: el token de wrangler no tiene permiso sobre la API de Builds (`Forbidden 12004`). El siguiente push (`c740d6a`) dio success. Si se repite, abrir el log en el dashboard de Cloudflare.
 - [ ] Avisos por correo ante fallas de build. Si el build registra `Invalid content reference`, avisar sin fallar (el sitio ya descarta esas referencias y un build caído congela Agenda y Anuncios).
 - [ ] Revisión periódica de enlaces rotos (documentos de Drive).
 - [ ] Aviso cuando el repositorio supere 1 GB.
@@ -67,4 +68,13 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 - [ ] **Prueba de Contenido incrustado y Enlaces** con enlaces reales: confirmar el alto del reproductor de episodios de Spotify (152 px, compacto) y probar al menos un proveedor de cada tipo (audio, video, red social, mapa) y un Enlace interno (`/agenda`) y uno externo.
 - [ ] **Página destacada del Inicio** (ADR 0006): validar con la contraparte (`preguntas-reunion.md` 7.1).
 - [ ] Reemplazar las imágenes de ejemplo de los encabezados de listado (`encabezados.yml`: `demo-*` y `ejemplo-azul.png`) por fotos reales de la carrera, con su texto alternativo.
-- [ ] Borrar el contenido de ejemplo y la "Noticia demo borrar luego" (el sintético `sint-*` no está en git: `npm run datos:limpiar`).
+- [ ] **Borrar el contenido de prueba antes de la entrega** (el sintético `sint-*` no está en git: `npm run datos:limpiar`):
+  - `noticias/noticia-demo-borrar-luego.md` y `noticia-demo-borrar-luego-2.md`, `instagram/publicacion-udec.yml`;
+  - la sección destacada de prueba del Inicio (`inicio/inicio.md` → `secciones`: «Seccion destacada», texto lorem
+    ipsum, enlace `/demo-link`) y su imagen `assets/media/julien-tromeur-w0139vjqZXg-unsplash.webp`, cargadas desde
+    el panel el 2026-10-12;
+  - la imagen `assets/media/dmitriy-suponnikov-_-1zQPK8tMc-unsplash.webp`;
+  - los textos «Contenido de ejemplo. Borrar cuando haya contenido real.» de noticias, actividades, anuncios y de
+    «¿Qué es la Bioingeniería?», y su video de prueba;
+  - las organizaciones «(ejemplo)» si la contraparte confirma que no existen (`preguntas-reunion.md` 9.3).
+  Lo que falta completar con datos reales está en [`analisis/2026-10-12-datos-faltantes.md`](analisis/2026-10-12-datos-faltantes.md).
