@@ -5,6 +5,8 @@ publicado: true
 imagen: '@/assets/media/ejemplo-verde.png'
 temas:
   - logros
+areas:
+  - acuicultura
 personas_mencionadas:
   - diego-rojas
   - profesora-lopez

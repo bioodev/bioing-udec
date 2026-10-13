@@ -208,3 +208,40 @@ Hoy el límite solo lo avisa la vista previa del panel. El build no lo valida.
 **8.15 ¿Está programada la reconstrucción diaria que retira los Banners vencidos?**
 El hint de «Se muestra hasta» dice que el retiro puede tardar hasta un día. No se verificó que la reconstrucción
 esté programada; ver `docs/pendientes-infra.md`.
+
+---
+
+## 9. Datos del contenido real (2026-10-12)
+
+Faltantes que salieron de revisar el contenido (detalle en [`analisis/2026-10-12-datos-faltantes.md`](analisis/2026-10-12-datos-faltantes.md)).
+
+**9.1 ¿Qué redes sociales publica la carrera, y con qué dirección?**
+`redes/redes.yml` está vacío, así que el pie y el JSON-LD no muestran ninguna red.
+_Propuesta:_ Cargar solo las redes que la carrera administra. Una red sin dirección no se muestra.
+
+**9.2 ¿Cuál es el enlace del Google Form para sumarse al Directorio?**
+Sin el enlace, `/directorio` no muestra el botón de sumarse.
+_Propuesta:_ Cargar el enlace del formulario que ya usa la carrera antes de publicar.
+
+**9.3 ¿Las tres organizaciones «(ejemplo)» son reales?**
+Acuícola del Sur, Alimentos Bío y el Centro de Estudiantes figuran como ejemplos, y el sitio web del laboratorio
+apunta a `udec.cl`.
+_Propuesta:_ Reemplazarlas por las organizaciones reales (nombre, tipo, sitio web) antes de publicar.
+
+**9.4 ¿Las noticias deben tener bajada obligatoria?**
+Hoy es opcional. Sin bajada ni descripción SEO, la noticia queda sin descripción para buscadores. Las noticias reales
+tampoco tienen cuerpo: el texto es «Contenido de ejemplo».
+_Propuesta:_ Hacer la bajada obligatoria en el panel y escribir el cuerpo de cada noticia antes de publicar.
+
+**9.5 ¿La Actividad debe tener texto alternativo para su imagen?**
+El modelo no tiene `imagen_alt` en Actividades. La imagen de la charla de acuicultura no puede tenerlo.
+_Propuesta:_ Agregar el campo con el mismo hint que en Noticias. Es un cambio en tres lugares (ver ADR/context).
+
+**9.6 ¿El video de «¿Qué es la Bioingeniería?» es el institucional?**
+El enlace que tiene la página es un video de prueba.
+_Propuesta:_ Reemplazarlo por el video institucional. Sin video, la página no lo muestra.
+
+**9.7 ¿Quién completa los datos de cada persona del Directorio?**
+Hay personas sin descripción (Enrique Fernandez), sin generación (Camila Herrera, Sofía Muñoz) o sin enlaces ni foto.
+_Propuesta:_ Cada egresado/a revisa su ficha con la autorización que ya dio. La persona encargada completa lo que
+falte.

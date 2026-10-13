@@ -5,6 +5,8 @@ publicado: true
 imagen: '@/assets/media/ejemplo-azul.png'
 temas:
   - logros
+areas:
+  - salud
 personas_mencionadas:
   - fernanda-silva
   - juan-soto
