@@ -11,11 +11,15 @@ const DIA = 86_400_000;
 const HORA = 3_600_000;
 const MINUTO = 60_000;
 
-const rtf = new Intl.RelativeTimeFormat('es', { numeric: 'auto' });
+// «hoy», «ayer», «mañana» solo para días; semanas, meses y años siempre con número («hace 1 semana»,
+// «en 2 meses»), que es lo que Intl con numeric: 'auto' cambia por «la semana pasada» o «el próximo mes».
+const rtfDias = new Intl.RelativeTimeFormat('es', { numeric: 'auto' });
+const rtfNumero = new Intl.RelativeTimeFormat('es', { numeric: 'always' });
 const formatoDia = new Intl.DateTimeFormat('en-CA', { timeZone: ZONA, year: 'numeric', month: '2-digit', day: '2-digit' });
 
 /** Intl dice «dentro de …» para el futuro; el sitio usa «en …» (p. ej. «en 2 semanas»). */
 function formatear(valor: number, unidad: Intl.RelativeTimeFormatUnit): string {
+  const rtf = unidad === 'day' ? rtfDias : rtfNumero;
   return rtf.format(valor, unidad).replace(/^dentro de /, 'en ');
 }
 

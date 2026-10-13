@@ -13,6 +13,7 @@ describe('tiempoRelativo: fechas solas (AAAA-MM-DD, medianoche UTC)', () => {
     ['2026-10-09', 'hace 3 días'],
     ['2026-10-08', 'hace 4 días'],
     ['2026-10-29', 'en 2 semanas'],
+    ['2026-10-05', 'hace 1 semana'],
     ['2026-09-28', 'hace 2 semanas'],
     ['2026-10-26', 'en 2 semanas'],
     ['2026-07-12', 'hace 3 meses'],
