@@ -143,6 +143,8 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
   `*.test.ts`. Las páginas no contienen lógica de negocio.
 - **Listados con filtros** renderizan todas las tarjetas con atributos `data-*` y un `<script>` filtra en el
   cliente con la función pura correspondiente; `/noticias`, `/agenda`, `/anuncios`, `/repositorio` y `/directorio` reflejan los filtros en la URL con `sincronizarFiltrosEnUrl` (`src/scripts/url-filtros.ts`), y `/noticias` además pagina. En `/directorio` el orden «Por generación» también va en la URL (`?orden=generacion`) y reagrupa las mismas tarjetas, sin duplicarlas.
+- **Columna lateral de las fichas** (Noticia, Actividad, Anuncio): el `<aside>` lateral y el bloque «Compartir»
+  (`Compartir.astro`, enlaces de `src/lib/compartir.ts`, con test). Patrón y decisiones en `docs/design.md`.
 - **Componentes** reutilizables en `src/components/` (tarjetas, `EnlaceFicha`, `HeroCarrusel`, …). Las
   tarjetas son 100 % clicables y reservan aspecto (`aspect-video`, `aspect-square`) para no tener CLS.
 - **Fechas**: los campos con hora llevan offset de America/Santiago y se muestran con `formatoFechaHora`;
