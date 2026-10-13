@@ -1,4 +1,4 @@
-// Íconos que el panel ofrece para los encabezados de listado y el bloque «¿Eres egresado/a?» (ADR 0011).
+// Íconos que el panel ofrece para los encabezados de listado y el bloque «¿Eres egresado/a y no apareces?» (ADR 0011).
 // Son nombres de componentes de phosphor-astro. El desplegable del panel (ancla &iconos_phosphor de config.yml)
 // y el mapa de Icono.astro deben tener esta misma lista: lo comprueba src/lib/iconos.test.ts.
 export const ICONOS = [

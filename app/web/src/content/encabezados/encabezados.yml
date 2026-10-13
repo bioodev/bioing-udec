@@ -1,4 +1,4 @@
-# Encabezados de los listados (editado desde el panel, «Encabezados de los listados»). Vacío = la página se ve
+# Encabezados de listados (editado desde el panel, «Encabezados de listados»). Vacío = la página se ve
 # como siempre: sin imagen de cabecera ni ícono. Decisión: docs/adr/0011.
 noticias: {}
 agenda: {}
