@@ -344,6 +344,7 @@ collections:
       - { name: destacar_inicio, label: Destacar en el Inicio, widget: boolean, default: false, hint: "Muestra un bloque bajo el carrusel del Inicio. Solo puede haber una página destacada: si marcas varias, el sitio muestra la primera por orden alfabético de título." }
       - { name: imagen, label: Imagen destacada, widget: image, required: false, hint: "Foto que acompaña el texto de la página." }
       - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título." }
+      - { name: etiqueta_inicio, label: Etiqueta en el Inicio, widget: string, required: false, hint: "Texto pequeño que va sobre el título del bloque destacado del Inicio. Si lo dejas vacío, dice «Destacado»." }
       - { name: resumen_inicio, label: Resumen para el Inicio, widget: text, required: false, hint: "Texto del bloque destacado del Inicio, de 3 o 4 líneas. Si lo dejas vacío, se usa la bajada." }
       - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo de la bajada, en una ventana que se abre al hacer clic." }
       - name: enlaces
@@ -540,6 +541,7 @@ singletons:
         label_singular: Sección destacada
         summary: "{{titulo}}{{publicado | ternary('', ' (oculta)')}}"
         fields:
+          - { name: etiqueta, label: Etiqueta, widget: string, required: false, hint: "Texto corto y pequeño que va sobre el título, p. ej.: Comunidad. Déjalo vacío para que la tarjeta empiece en el título." }
           - { name: titulo, label: Título, widget: string }
           - { name: texto, label: Texto, widget: text }
           - { name: boton, label: Texto del botón, widget: string, hint: "Ej.: Ir al Directorio." }
