@@ -44,6 +44,7 @@ app/api              → sin uso por ahora (se descartó el backend propio)
 public/admin/        → panel Sveltia (index.html + config.yml, el modelo del CMS)
 public/_headers      → encabezados de seguridad (CSP del sitio y otra para /admin)
 public/_redirects    → redirecciones del sitio antiguo (vacío: espera las URLs de la carrera)
+public/.well-known/security.txt → aviso de reporte de vulnerabilidades (RFC 9116; provisional, ver guia-mantencion §10)
 src/content/         → el contenido (noticias, actividades, anuncios, documentos, personas, …)
 src/content.config.ts→ espejo en Zod de config.yml
 src/lib/             → reglas y helpers puros (+ *.test.ts)
@@ -90,7 +91,7 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
 | **SEO del sitio** | archivo único `src/content/seo/seo.yml` (colección `seo`): descripción general, imagen por defecto, descripción e imagen para redes de cada listado y códigos de verificación de Google y Bing. Todo opcional (ADR 0010) |
-| **Encabezados de los listados** | archivo único `src/content/encabezados/encabezados.yml` (colección `encabezados`): un objeto por listado con imagen de cabecera, texto alternativo e ícono. `EncabezadoListado.astro` lo dibuja en el `<h1>` de cada listado; `encabezadoDeListado()` lo lee. Todo opcional (ADR 0011) |
+| **Encabezados de listados** | archivo único `src/content/encabezados/encabezados.yml` (colección `encabezados`): un objeto por listado con imagen de cabecera, texto alternativo e ícono. `EncabezadoListado.astro` lo dibuja en el `<h1>` de cada listado; `encabezadoDeListado()` lo lee. Todo opcional (ADR 0011) |
 
 Las colecciones Noticias, Actividades, Anuncios, Documentos, Páginas libres y Personas traen además un campo `seo` opcional
 (título ≤ 60, descripción ≤ 160, imagen y `noindex`), editado como bloque «SEO (opcional)». En `config.yml` ese bloque se define una vez con el ancla `&seo_contenido` (en Personas, la primera colección que lo usa: YAML exige que el ancla vaya antes del alias) y las demás colecciones lo referencian con `*seo_contenido`: no lo copies a mano.

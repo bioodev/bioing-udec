@@ -163,7 +163,7 @@ Página de texto creada desde el panel (en el panel se llama «Página»; colecc
 _Avoid_: Página institucional, página, artículo
 
 **Archivos del panel**:
-Sección del panel con los archivos únicos, aparte de las colecciones: Inicio, Secciones del sitio, Redes sociales, SEO del sitio y Encabezados de los listados. No se crean ni se borran; se editan siempre en el mismo lugar, al final de la lista (ADR 0013).
+Sección del panel con los archivos únicos, aparte de las colecciones: Inicio, Secciones del sitio, Redes sociales, SEO del sitio y Encabezados de listados. No se crean ni se borran; se editan siempre en el mismo lugar, al final de la lista (ADR 0013).
 _Avoid_: Configuración del sitio, Páginas, Ajustes
 
 **Página destacada**:
@@ -220,11 +220,11 @@ Medición de visitas del sitio con Cloudflare Web Analytics, sin cookies ni bann
 _Avoid_: Google Analytics, seguimiento, tracking, cookies
 
 **Encabezado de listado**:
-Franja superior de Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram: una imagen de cabecera opcional (con texto alternativo) y un ícono opcional junto al título. Se edita en el panel como «Encabezados de los listados». Sin imagen ni ícono, la página se ve como siempre.
+Franja superior de Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram: una imagen de cabecera opcional (con texto alternativo) y un ícono opcional junto al título. Se edita en el panel como «Encabezados de listados». Sin imagen ni ícono, la página se ve como siempre.
 _Avoid_: Banner de sección, portada de listado, hero
 
 **Ícono**:
-Dibujo de la lista curada de Phosphor que el panel ofrece para los encabezados y para el bloque «¿Eres egresado/a?». Se elige en un desplegable; no se sube un archivo.
+Dibujo de la lista curada de Phosphor que el panel ofrece para los encabezados y para el bloque «¿Eres egresado/a y no apareces?» del Directorio. Se elige en un desplegable; no se sube un archivo.
 _Avoid_: Icono personalizado, logo de sección, SVG
 
 **No mostrar en buscadores**:
