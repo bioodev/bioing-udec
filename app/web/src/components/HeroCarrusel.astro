@@ -10,6 +10,8 @@ interface Props { banners: CollectionEntry<'banners'>[] }
 const { banners } = Astro.props;
 const externo = (enlace: string) => /^https?:\/\//.test(enlace);
 const varios = banners.length > 1;
+// Texto a la izquierda: con flechas, deja libre la franja de cada flecha (12 px + 44 px) más un margen a ambos lados.
+const relleno = varios ? 'pl-[4.5rem] pr-[4.5rem] sm:pl-20 sm:pr-20' : 'px-4 sm:px-8';
 ---
 <!-- Hero en carrusel: un slide por Banner vigente. Autoplay con pausa al hover/foco,
      flechas y puntos; respeta prefers-reduced-motion (wireframes: Inicio). -->
@@ -41,9 +43,12 @@ const varios = banners.length > 1;
              y viajar con ella al hacer swipe. Variables en starwind.css. -->
         <div class="hero-desenfoque absolute inset-0 -z-10" aria-hidden="true"></div>
         <div class="hero-velo absolute inset-0 -z-10" aria-hidden="true"></div>
-        <div class="mx-auto flex min-h-[32rem] max-w-6xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[36rem]">
+        <div class={`mx-auto flex min-h-[32rem] max-w-6xl flex-col items-start justify-center py-24 text-left sm:min-h-[36rem] ${relleno}`}>
+          {banner.data.etiqueta && (
+            <p data-animar="hero" class="etiqueta-hero mb-4" data-color={banner.data.etiqueta_color}>{banner.data.etiqueta}</p>
+          )}
           <h1 data-animar="hero" class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">{banner.data.titulo}</h1>
-          {banner.data.texto && <p data-animar="hero" class="mx-auto mt-4 max-w-2xl text-lg opacity-90">{banner.data.texto}</p>}
+          {banner.data.texto && <p data-animar="hero" class="mt-4 max-w-2xl text-lg opacity-90">{banner.data.texto}</p>}
           <Button
             data-animar="hero"
             href={banner.data.enlace}
@@ -224,16 +229,43 @@ const varios = banners.length > 1;
     filter: sepia(0.22) saturate(1.06) brightness(0.95);
   }
 
-  /* Velo radial. Los valores son variables de starwind.css (--hero-velo-*). */
+  /* Velo radial, con el foco a la izquierda (--hero-foco), donde va el texto. Los valores son variables de
+     starwind.css (--hero-velo-*, --hero-foco). */
   .hero-velo {
-    background: radial-gradient(ellipse at center, rgb(0 0 0 / var(--hero-velo-centro)), rgb(0 0 0 / var(--hero-velo-opacidad)) 100%);
+    background: radial-gradient(ellipse at var(--hero-foco), rgb(0 0 0 / var(--hero-velo-centro)), rgb(0 0 0 / var(--hero-velo-opacidad)) 100%);
   }
 
-  /* Desenfoque radial: un backdrop-filter enmascarado, transparente en el centro y pleno hacia los bordes.
+  /* Desenfoque radial: un backdrop-filter enmascarado, nítido alrededor del foco y pleno hacia los bordes.
      Con --hero-blur: 0 no se ve nada. Es el punto a revisar en móviles viejos (ver docs/design.md, Hero). */
   .hero-desenfoque {
     backdrop-filter: blur(var(--hero-blur));
-    mask-image: radial-gradient(ellipse at center, transparent var(--hero-blur-radio), #000 100%);
-    -webkit-mask-image: radial-gradient(ellipse at center, transparent var(--hero-blur-radio), #000 100%);
+    mask-image: radial-gradient(ellipse at var(--hero-foco), transparent var(--hero-blur-radio), #000 100%);
+    -webkit-mask-image: radial-gradient(ellipse at var(--hero-foco), transparent var(--hero-blur-radio), #000 100%);
+  }
+
+  /* Etiqueta sobre el título: una barra del color de su tipo y el texto en blanco (el texto no depende del color,
+     así que el contraste lo fija el hero). Los colores son tokens --etiqueta-* de starwind.css. */
+  .etiqueta-hero {
+    --etiqueta-color: var(--etiqueta-marca);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .etiqueta-hero[data-color='rojo'] { --etiqueta-color: var(--etiqueta-rojo); }
+  .etiqueta-hero[data-color='azul'] { --etiqueta-color: var(--etiqueta-azul); }
+  .etiqueta-hero[data-color='verde'] { --etiqueta-color: var(--etiqueta-verde); }
+  .etiqueta-hero[data-color='amarillo'] { --etiqueta-color: var(--etiqueta-amarillo); }
+  .etiqueta-hero[data-color='morado'] { --etiqueta-color: var(--etiqueta-morado); }
+  .etiqueta-hero::before {
+    content: '';
+    flex: none;
+    width: 0.25rem;
+    height: 1.25em;
+    border-radius: 9999px;
+    background: var(--etiqueta-color);
   }
 </style>

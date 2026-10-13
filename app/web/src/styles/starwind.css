@@ -108,14 +108,26 @@
   --sombra-tarjeta-hover: 0 4px 12px rgb(0 0 0 / 0.08), 0 12px 32px rgb(0 0 0 / 0.08);
 
   /* Hero del Inicio (HeroCarrusel.astro). Todo el ajuste visual está aquí; poner una variable en 0 apaga su efecto.
-     --hero-velo-centro: opacidad del velo en el centro, donde va el texto (0 a 1). Más alto = más contraste.
-     --hero-velo-opacidad: opacidad del velo en los bordes (0 a 1).
+     El texto va a la izquierda, así que el foco del velo y del desenfoque también (--hero-foco).
+     --hero-foco: punto de máxima oscuridad del velo y de máxima nitidez, como «x y» (p. ej. 25% 50%).
+     --hero-velo-centro: opacidad del velo en el foco, donde va el texto (0 a 1). Más alto = más contraste.
+     --hero-velo-opacidad: opacidad del velo en los bordes más lejanos (0 a 1).
      --hero-blur: desenfoque máximo de los bordes, en px (0 = sin desenfoque).
-     --hero-blur-radio: hasta dónde llega la zona nítida, en % del radio de la elipse (0 % = desenfoque desde el centro). */
+     --hero-blur-radio: hasta dónde llega la zona nítida, en % del radio de la elipse (0 % = desenfoque desde el foco). */
+  --hero-foco: 25% 50%;
   --hero-velo-centro: 0.5;
   --hero-velo-opacidad: 0.25;
   --hero-blur: 4px;
   --hero-blur-radio: 40%;
+
+  /* Etiqueta sobre el título del Banner (HeroCarrusel.astro, clase .etiqueta-hero). La barra usa el color; el
+     texto va siempre en blanco. Los nombres siguen el campo «Color de la etiqueta» del panel. */
+  --etiqueta-marca: #2997ff;
+  --etiqueta-rojo: #f26b5b;
+  --etiqueta-azul: #5ac8fa;
+  --etiqueta-verde: #34d399;
+  --etiqueta-amarillo: #facc15;
+  --etiqueta-morado: #c084fc;
 
   /* sidebar variables */
   --sidebar-background: var(--color-neutral-50);
