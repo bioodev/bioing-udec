@@ -715,6 +715,10 @@ derecha del formulario aparece la vista previa. Va en este orden:
 La vista previa sigue el tema que tengas en el panel (claro u oscuro, o el del sistema si el panel sigue al sistema).
 Si cambias el tema en Ajustes, la vista previa cambia sin recargar.
 
+**Sin vista previa.** Áreas, Temas, Organizaciones, Instagram y la sección **Archivos** (Inicio, Secciones del sitio,
+Redes sociales, SEO del sitio y Encabezados de listados) no muestran panel de vista previa: el formulario ocupa todo el
+ancho. Lo que cambies se ve en el sitio tras la publicación.
+
 **Límites de la vista previa.** No muestra el texto exacto de cada buscador ni cómo se ve en el móvil. La descripción
 general del sitio no se lee desde el panel, así que el aviso «Sin descripción propia» no sabe cuál es. En Actividades,
 la descripción se arma con el tipo y la fecha, igual que en el sitio; si falta el tipo o la fecha, el aviso aparece
@@ -733,7 +737,7 @@ egresado/a y no apareces?» de `/directorio`. Todo es opcional: si los campos qu
 
 **Dónde.**
 - **Encabezados de listados** (en **Archivos**): un bloque por listado, con **Imagen de cabecera**, **Texto
-  alternativo de la imagen** y **Ícono junto al título**.
+  alternativo de la imagen**, **Ícono junto al título** y **Texto de introducción**.
 - **Secciones del sitio** (en **Archivos**): **Imagen del bloque para sumarse**, su **Texto alternativo de esa imagen** y
   el **Ícono del bloque para sumarse**.
 
@@ -743,10 +747,11 @@ egresado/a y no apareces?» de `/directorio`. Todo es opcional: si los campos qu
   Si eliges un ícono que no está en la lista, no sale ninguno.
 - El texto alternativo describe lo que se ve en la foto (para quien usa lector de pantalla). Si la imagen es solo
   decorativa, déjalo vacío.
+- El **Texto de introducción** es una o dos frases que se leen bajo el título. Si lo dejas vacío, no aparece ningún texto.
 
 **Pasos.**
 1. Abre **Encabezados de listados** (en **Archivos**) o, para el bloque del Directorio, **Secciones del sitio**.
-2. Despliega el listado que quieres cambiar, sube la imagen, escribe el texto alternativo y elige el ícono.
+2. Despliega el listado que quieres cambiar, sube la imagen, escribe el texto alternativo, elige el ícono y escribe el texto de introducción.
 3. Guarda. El cambio se publica en uno o dos minutos.
 
 **Cómo comprobar que quedó bien.** Abre la página del listado y revisa el encabezado en el computador y en el celular.

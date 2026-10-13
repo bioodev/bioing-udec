@@ -1,8 +1,34 @@
 # Encabezados de listados (editado desde el panel, «Encabezados de listados»). Vacío = la página se ve
-# como siempre: sin imagen de cabecera ni ícono. Decisión: docs/adr/0011.
-noticias: {}
-agenda: {}
-anuncios: {}
-repositorio: {}
-directorio: {}
-instagram: {}
+# como siempre: sin imagen de cabecera, ícono ni texto de introducción. Decisión: docs/adr/0011.
+# Las imágenes son de ejemplo (src/assets/media/demo-*, ejemplo-*): reemplazarlas por fotos reales de la carrera
+# (docs/pendientes-infra.md).
+noticias:
+  imagen: '@/assets/media/demo-01.jpg'
+  imagen_alt: 'Fotografía abstracta de luces rojas, violetas y amarillas sobre un fondo oscuro.'
+  icono: Newspaper
+  intro: 'Novedades de la carrera y de la comunidad de Bioingeniería UdeC.'
+agenda:
+  imagen: '@/assets/media/demo-03.jpg'
+  imagen_alt: 'Manos con guantes de laboratorio sostienen una placa de Petri.'
+  icono: CalendarDots
+  intro: 'Seminarios, charlas, congresos y otras actividades de la comunidad, pasadas y próximas.'
+anuncios:
+  imagen: '@/assets/media/demo-05.jpg'
+  imagen_alt: 'Dos manos sostienen tierra con una pequeña planta verde.'
+  icono: Megaphone
+  intro: 'Oportunidades de trabajo, prácticas, pasantías y convocatorias para la comunidad de Bioingeniería.'
+repositorio:
+  imagen: '@/assets/media/ejemplo-azul.png'
+  imagen_alt: ''
+  icono: Books
+  intro: 'Documentos de interés para la comunidad: decretos, reglamentos, informes y más.'
+directorio:
+  imagen: '@/assets/media/demo-04.jpg'
+  imagen_alt: 'Una persona con guantes de látex prepara una jeringa.'
+  icono: UsersThree
+  intro: 'Egresados y egresadas de Bioingeniería de la Universidad de Concepción.'
+instagram:
+  imagen: '@/assets/media/demo-02.jpg'
+  imagen_alt: 'Imagen microscópica de bacterias de color morado sobre fondo negro.'
+  icono: InstagramLogo
+  intro: 'Publicaciones seleccionadas de la cuenta de Bioingeniería UdeC en Instagram.'
