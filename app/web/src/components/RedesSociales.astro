@@ -1,6 +1,6 @@
 ---
 // Íconos de las redes con URL. Dos variantes con el mismo mapa de íconos: `pie` (columna de marca del pie, solo
-// íconos) y `inicio` (sección «Síguenos» al final del Inicio: una columna por red, ícono de marca y nombre como enlace).
+// íconos) y `inicio` (sección «Síguenos» al final del Inicio: una columna por red, ícono en color primario y nombre como enlace).
 // Cada enlace lleva su nombre accesible y se abre en una ventana nueva.
 import type { IconoRed, RedVisible } from '@/lib/redes';
 import ButterflyIcono from 'phosphor-astro/Butterfly.astro';
@@ -25,19 +25,6 @@ const iconos: Record<IconoRed, typeof InstagramLogo> = {
   MastodonLogo,
 };
 
-// Color de marca de cada red (clases de Tailwind, sin estilos en línea). Las redes que son negras (X, TikTok,
-// Threads) usan el color del texto: así se ven en el tema oscuro.
-const marca: Record<IconoRed, string> = {
-  InstagramLogo: 'text-[#E4405F]',
-  FacebookLogo: 'text-[#1877F2]',
-  XLogo: 'text-foreground',
-  LinkedinLogo: 'text-[#0A66C2]',
-  YoutubeLogo: 'text-[#FF0000]',
-  TiktokLogo: 'text-foreground',
-  ThreadsLogo: 'text-foreground',
-  Butterfly: 'text-[#0085FF]',
-  MastodonLogo: 'text-[#6364FF]',
-};
 
 interface Props { redes: RedVisible[]; variante?: 'pie' | 'inicio' }
 const { redes, variante = 'pie' } = Astro.props;
@@ -49,7 +36,7 @@ const { redes, variante = 'pie' } = Astro.props;
       {redes.map((red) => {
         const Icono = iconos[red.icono];
         return (
-          <li class={`relative border-l-2 border-current pl-5 ${marca[red.icono]}`}>
+          <li class="relative border-l-2 border-primary pl-5 text-primary">
             <Icono class="size-10" aria-hidden="true" />
             <a href={red.url} target="_blank" rel="noopener me" class="cta mt-4 block rounded-sm text-xl font-medium text-foreground after:absolute after:inset-0 hover:text-primary hover:underline focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none">
               {red.etiqueta}

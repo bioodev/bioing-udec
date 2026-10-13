@@ -411,8 +411,8 @@ mismo dato se ve igual en el listado y en el detalle. No usar `<Badge>` directo 
   se abre en una ventana nueva. Si ninguna red tiene URL, no se dibuja nada (ni título).
 - **Sección «Síguenos» (Inicio)**: al final del Inicio, antes del pie (`RedesSociales.astro`, variante `inicio`; `id="inicio-redes"`,
   `h2` «Síguenos»). Grilla de hasta 5 columnas en escritorio (`lg:grid-cols-5`) y 2 en móvil. Cada red es una columna con
-  borde izquierdo fino de su color de marca (las negras X, TikTok y Threads usan el color del texto para verse en el tema
-  oscuro), ícono de 40 px arriba y el nombre como enlace grande (`text-xl`); el enlace estira su área a toda la columna.
+  borde izquierdo fino e ícono en el color primario del sitio (uno solo para todas, como la referencia de udec.cl; los
+  colores propios de cada red se descartaron porque mezclaban cinco colores), ícono de 40 px arriba y el nombre como enlace grande (`text-xl`); el enlace estira su área a toda la columna.
   Sin redes con URL, la sección no se dibuja. Sin animación de movimiento más allá de la entrada `fade-up`/`grilla`.
 
 ### Tema claro/oscuro
