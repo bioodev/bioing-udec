@@ -4,11 +4,11 @@
 // `imagen_alt` vacío = imagen decorativa (alt="").
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import ArrowSquareOut from 'phosphor-astro/ArrowSquareOut.astro';
+import TarjetaContenido from '@/components/TarjetaContenido.astro';
 
 interface Props {
   seccion: {
+    etiqueta?: string;
     titulo: string;
     texto: string;
     boton: string;
@@ -18,7 +18,6 @@ interface Props {
   };
 }
 const { seccion } = Astro.props;
-const externo = seccion.enlace.startsWith('https://');
 // Las secciones no tienen id propio: el ancla sale del título (sin tildes). Los títulos deben ser distintos.
 const id = `inicio-seccion-${seccion.titulo.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 ---
@@ -38,24 +37,16 @@ const id = `inicio-seccion-${seccion.titulo.normalize('NFD').replace(/[̀-ͯ]/g,
     <div class="absolute inset-0 bg-black/60"></div>
   </div>
 
-  <div class="mx-auto flex min-h-[50vh] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center md:min-h-[60vh]">
-    <h2 id={`${id}-titulo`} data-animar="fade-up" class="text-3xl font-semibold tracking-tight">{seccion.titulo}</h2>
-    <p data-animar="fade-up" class="mx-auto mt-3 max-w-xl text-white/90">{seccion.texto}</p>
-    <a
-      href={seccion.enlace}
-      target={externo ? '_blank' : undefined}
-      rel={externo ? 'noopener' : undefined}
-      class="cta cta-relleno mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90"
-    >
-      {seccion.boton}
-      {externo ? (
-        <>
-          <ArrowSquareOut class="cta-flecha size-4" aria-hidden="true" />
-          <span class="sr-only">(se abre en una ventana nueva)</span>
-        </>
-      ) : (
-        <ArrowRight class="cta-flecha size-4" aria-hidden="true" />
-      )}
-    </a>
+  <div class="mx-auto flex min-h-[50vh] max-w-6xl items-center px-4 py-16 md:min-h-[60vh] md:py-20">
+    <div class="w-full md:w-[43%]">
+      <TarjetaContenido
+        etiqueta={seccion.etiqueta}
+        titulo={seccion.titulo}
+        tituloId={`${id}-titulo`}
+        texto={seccion.texto}
+        boton={seccion.boton}
+        enlace={seccion.enlace}
+      />
+    </div>
   </div>
 </section>
