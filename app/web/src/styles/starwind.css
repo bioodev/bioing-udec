@@ -107,6 +107,16 @@
   --sombra-tarjeta: 0 1px 2px rgb(0 0 0 / 0.04), 0 2px 8px rgb(0 0 0 / 0.04);
   --sombra-tarjeta-hover: 0 4px 12px rgb(0 0 0 / 0.08), 0 12px 32px rgb(0 0 0 / 0.08);
 
+  /* Hero del Inicio (HeroCarrusel.astro). Todo el ajuste visual está aquí; poner una variable en 0 apaga su efecto.
+     --hero-velo-centro: opacidad del velo en el centro, donde va el texto (0 a 1). Más alto = más contraste.
+     --hero-velo-opacidad: opacidad del velo en los bordes (0 a 1).
+     --hero-blur: desenfoque máximo de los bordes, en px (0 = sin desenfoque).
+     --hero-blur-radio: hasta dónde llega la zona nítida, en % del radio de la elipse (0 % = desenfoque desde el centro). */
+  --hero-velo-centro: 0.5;
+  --hero-velo-opacidad: 0.25;
+  --hero-blur: 4px;
+  --hero-blur-radio: 40%;
+
   /* sidebar variables */
   --sidebar-background: var(--color-neutral-50);
   --sidebar-foreground: var(--color-neutral-950);

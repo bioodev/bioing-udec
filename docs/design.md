@@ -446,8 +446,33 @@ Componente `src/components/Navbar.astro` (el `<header>` completo; `Base.astro` s
 
 ### Hero (Inicio)
 
-Foto del Banner con tinte cálido sutil (`.hero-imagen` con `sepia`/`saturate`) a opacity ~70 % + velo oscuro
-plano (`bg-foreground/30`) para el contraste del título. **Descartados**: los shaders WebGL de Paper Shaders
+Foto del Banner con tinte cálido sutil (`.hero-imagen` con `sepia`/`saturate`) a opacity ~70 %. Cada slide de
+`HeroCarrusel.astro` tiene, sobre su foto, dos capas:
+
+- **Velo radial** (`.hero-velo`): más oscuro al centro, donde va el título, y más claro hacia los bordes. Con
+  `--hero-velo-centro: 0.5`, el peor caso (foto blanca) da contraste ≈ 5:1 con el texto blanco.
+- **Desenfoque radial** (`.hero-desenfoque`): `backdrop-filter: blur` con `mask-image` radial: nítido al centro y
+  levemente borroso hacia los bordes.
+
+**Ajuste**: las cuatro variables están en `src/styles/starwind.css` (bloque «Hero del Inicio», en `:root`):
+
+| Variable | Por defecto | Qué hace |
+|---|---|---|
+| `--hero-velo-centro` | `0.5` | Opacidad del velo en el centro (0 a 1). Subirla da más contraste al título. |
+| `--hero-velo-opacidad` | `0.25` | Opacidad del velo en los bordes (0 a 1). |
+| `--hero-blur` | `4px` | Desenfoque máximo, en los bordes. |
+| `--hero-blur-radio` | `40%` | Hasta dónde llega la zona nítida, en % del radio de la elipse. |
+
+Poner una variable en `0` (o `0px`) apaga su efecto. La vista previa del Banner en el panel
+(`public/admin/vista-previa-banner.js`) usa las mismas variables: sus valores están copiados en
+`public/admin/vista-previa.css`, así que si se cambian en el sitio, cambiarlos también ahí.
+
+- **Modo oscuro**: el hero es oscuro en los dos temas. El texto y los controles van en blanco fijo y el fondo en
+  `#1d1d1f`; no usan `text-background`/`bg-background`, que se invierten en modo oscuro.
+- **Rendimiento**: el `backdrop-filter` cubre el hero completo y puede costar en móviles de gama baja. No se
+  midió en un dispositivo real. Si se nota, `--hero-blur: 0px` lo desactiva sin tocar el resto.
+
+**Descartados**: los shaders WebGL de Paper Shaders
 (rompían el rendimiento ≥ 90 por TBT) y la textura halftone CMYK en CSS/máscaras (no gustó al equipo). No
 reintroducir efectos de puntos/impresión en el hero.
 
@@ -546,8 +571,10 @@ reintroducir efectos de puntos/impresión en el hero.
 - Cada sección (`SeccionDestacada.astro`) es de ancho completo, con altura mínima de 50 vh en móvil y 60 vh en
   escritorio. La imagen de fondo va con `<Image>` (`widths` 640–2560, `sizes="100vw"`, `loading="lazy"`) y una capa
   `bg-black/60` para que el texto blanco cumpla contraste AA sobre cualquier foto.
-- **Parallax** (`src/scripts/parallax.ts`, GSAP + ScrollTrigger con `scrub`): la imagen mide 120 % de la sección y
-  se desplaza de −10 % a +10 % mientras la sección cruza el viewport. Con `prefers-reduced-motion: reduce` no hay
+- **Parallax** (`src/scripts/parallax.ts`, GSAP + ScrollTrigger con `scrub`): la imagen mide 175 % de la sección,
+  centrada (`top: -37,5 %`), y se desplaza de −20 % a +20 % de su propio alto mientras la sección cruza el viewport.
+  Con ese recorrido el borde de la imagen nunca entra en la sección (en las pruebas, 0 de 11 puntos con hueco). Si se
+  sube el recorrido, hay que recalcular la altura. Con `prefers-reduced-motion: reduce` no hay
   parallax (imagen fija y centrada). Sin JavaScript la imagen queda centrada. No se usa
   `background-attachment: fixed` (falla en iOS).
 - Imagen decorativa: si `imagen_alt` está vacío, `alt=""`. Un enlace externo abre en una ventana nueva y lo anuncia.
@@ -594,6 +621,18 @@ GSAP + ScrollTrigger con **fade solo** (sin deslizamientos), marcadas de forma d
 escalonados). Se limpian con `gsap.context()` en `astro:before-swap` y se reinician en `astro:page-load`.
 Transiciones entre páginas en fade con `ClientRouter` y estilos en `src/styles/transitions.css`. Todo respeta
 `prefers-reduced-motion` y es visible sin JavaScript (clase `.anima` + guard en `Base.astro`).
+
+**Llamados a la acción** (estilos en `src/styles/animaciones.css`, sin GSAP): al pasar el puntero o tener el foco,
+la flecha se desplaza 4 px a la derecha (150 ms). Se usan tres clases, para no repetir listas de utilidades:
+
+- `cta`: en el enlace o botón del llamado a la acción.
+- `cta-flecha`: en el ícono de flecha dentro de ese enlace o botón.
+- `cta-relleno`: solo en los botones rellenos (primarios); suma una elevación de 1 px y un brillo de 108 %.
+
+Ya están en «Conoce más» del hero y del Banner, las secciones destacadas, la página destacada, la banda
+«Comunidad y documentos», los enlaces de Noticias, Actividades y Páginas, y los «Ver más» / «Ver todas…» del Inicio.
+Con `prefers-reduced-motion: reduce` no hay movimiento; queda solo el cambio de brillo. No usan sombras (ver
+«Sin sombras» en Implementación).
 
 ### Imágenes
 

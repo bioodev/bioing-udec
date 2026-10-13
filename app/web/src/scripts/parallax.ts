@@ -1,7 +1,12 @@
-// Parallax de las secciones destacadas del Inicio (SeccionDestacada.astro). La imagen (`[data-parallax]`, 120 %
-// de alto) se desplaza en Y de -10 % a +10 % mientras la sección cruza el viewport, con `scrub`: se mueve más lento
-// que el scroll. Con prefers-reduced-motion no hay animación (imagen fija y centrada). Sin JavaScript la imagen
-// queda centrada. Se limpia en astro:before-swap y se reinicia en astro:page-load (ClientRouter), con gsap.context().
+// Parallax de las secciones destacadas del Inicio (SeccionDestacada.astro). La imagen (`[data-parallax]`, 175 %
+// de alto, centrada con top -37,5 %) se desplaza en Y de -20 % a +20 % de su propio alto mientras la sección cruza
+// el viewport, con `scrub`: se mueve más lento que el scroll. Con prefers-reduced-motion no hay animación (imagen
+// fija y centrada). Sin JavaScript la imagen queda centrada. Se limpia en astro:before-swap y se reinicia en
+// astro:page-load (ClientRouter), con gsap.context().
+//
+// Por qué 175 % y -37,5 %: con el desplazamiento máximo (20 % × 1,75 = 35 % de la sección) el borde superior de la
+// imagen queda en -2,5 % y el inferior en 102,5 %; no aparece ningún borde vacío. Si se sube el desplazamiento,
+// revisar que se cumpla top + desplazamiento ≤ 0 y bottom - desplazamiento ≥ 100 %.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -26,9 +31,9 @@ export function iniciarParallax(): void {
     for (const imagen of imagenes) {
       gsap.fromTo(
         imagen,
-        { yPercent: -10 },
+        { yPercent: -20 },
         {
-          yPercent: 10,
+          yPercent: 20,
           ease: 'none',
           scrollTrigger: { trigger: imagen.closest('section'), start: 'top bottom', end: 'bottom top', scrub: true },
         },

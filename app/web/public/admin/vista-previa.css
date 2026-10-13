@@ -16,6 +16,11 @@
   --vp-google-url: #202124;
   --vp-google-titulo: #1a0dab;
   --vp-google-texto: #4d5156;
+  /* Hero del Inicio (copia de los valores --hero-* de src/styles/starwind.css; usados por vista-previa-banner.js). */
+  --hero-velo-centro: 0.5;
+  --hero-velo-opacidad: 0.25;
+  --hero-blur: 4px;
+  --hero-blur-radio: 40%;
 }
 
 /* Tema oscuro según el sistema, solo si el panel no fijó el tema (data-theme) en el iframe. */

@@ -211,7 +211,7 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 Metas de la entrega: Lighthouse ≥ 90 en las cuatro categorías y WCAG 2.1 AA. Evidencia y método en
 `app/web/auditoria/` (`npm run build && npm run postbuild`, servir `dist/` y correr Lighthouse headless).
 Animaciones GSAP + View Transitions: todo respeta `prefers-reduced-motion` y el contenido es visible sin
-JavaScript (clase `.anima` + guard). El hero usa foto con tinte cálido + velo oscuro; se descartaron los
+JavaScript (clase `.anima` + guard). El hero usa foto con tinte cálido, velo radial y desenfoque radial (variables `--hero-*` en `starwind.css`; ver `docs/design.md`); se descartaron los
 shaders WebGL y la textura halftone por rendimiento y por decisión del equipo.
 
 ## 10. Build, despliegue y operación
