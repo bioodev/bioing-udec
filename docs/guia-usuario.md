@@ -376,7 +376,8 @@ no carga, la tarjeta sigue enlazando a la publicación en Instagram.
 **Campos.**
 - Obligatorios: Título del mensaje, Publicado, Imagen de fondo, Dirección del botón «Conoce más», Se muestra desde,
   Se muestra hasta.
-- Opcional: Texto de apoyo.
+- Opcionales: Etiqueta (una categoría corta sobre el título, máximo 30 caracteres), Color de la etiqueta y Texto de
+  apoyo.
 
 **Cómo se elige qué se destaca.** Cada Banner que esté **publicado** y dentro de su **vigencia** se muestra como
 una diapositiva del carrusel del Inicio. El código no tiene un límite de banners: si hay muchos vigentes, se
@@ -391,7 +392,9 @@ ve el carrusel con varios banners en el celular)_.
    o una dirección completa externa (p. ej. `https://…`).
 5. Escribe **Se muestra desde** y **Se muestra hasta** (fecha y hora, hora de Chile).
 6. Opcional: escribe el **Texto de apoyo**.
-7. Guarda.
+7. Opcional: escribe la **Etiqueta** (p. ej. «Admisión» o «Comunidad») y elige su **Color de la etiqueta**. Sin
+   etiqueta, no se muestra nada sobre el título; con «Color de marca» (el por defecto), la barra usa el azul del sitio.
+8. Guarda.
 
 **Cómo comprobar que quedó bien.** El banner aparece en el Inicio durante su vigencia, y el enlace lleva a donde
 corresponde. Antes del inicio y después del fin, no aparece.
@@ -401,7 +404,7 @@ Inicio, en escritorio y en un celular de 375 px. Es una aproximación: usa estil
 que el tamaño de la letra y el corte del texto pueden variar un poco. Debajo indica la **vigencia** («Borrador (no
 publicado)», «Programado», «Visible ahora» o «Vencido») y muestra avisos breves: sin imagen, título de más de 56
 caracteres (en el celular ocupa más de cuatro líneas y el slide crece), fin anterior al inicio, fechas que faltan, enlace vacío o que no
-empieza con `/` ni con `https://`.
+empieza con `/` ni con `https://`, y etiqueta de más de 30 caracteres.
 
 **Errores típicos:**
 - **Se muestra hasta** anterior a **Se muestra desde**: el banner nunca se muestra.
