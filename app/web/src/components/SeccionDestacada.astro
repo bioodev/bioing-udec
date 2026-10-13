@@ -24,8 +24,8 @@ const id = `inicio-seccion-${seccion.titulo.normalize('NFD').replace(/[̀-ͯ]/g,
 ---
 <section id={id} class="relative isolate overflow-hidden bg-foreground text-white" aria-labelledby={`${id}-titulo`}>
   <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-    <!-- Más alta que la sección (120 %) para que el parallax tenga margen para desplazarse. -->
-    <div data-parallax class="absolute inset-x-0 -top-[10%] h-[120%]">
+    <!-- Más alta que la sección (175 %, centrada: -37,5 %) para que el parallax de ±20 % no deje bordes vacíos. -->
+    <div data-parallax class="absolute inset-x-0 -top-[37.5%] h-[175%]">
       <Image
         src={seccion.imagen}
         alt={seccion.imagen_alt ?? ''}
@@ -45,16 +45,16 @@ const id = `inicio-seccion-${seccion.titulo.normalize('NFD').replace(/[̀-ͯ]/g,
       href={seccion.enlace}
       target={externo ? '_blank' : undefined}
       rel={externo ? 'noopener' : undefined}
-      class="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90"
+      class="cta cta-relleno mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-primary-foreground hover:opacity-90"
     >
       {seccion.boton}
       {externo ? (
         <>
-          <ArrowSquareOut class="size-4" aria-hidden="true" />
+          <ArrowSquareOut class="cta-flecha size-4" aria-hidden="true" />
           <span class="sr-only">(se abre en una ventana nueva)</span>
         </>
       ) : (
-        <ArrowRight class="size-4" aria-hidden="true" />
+        <ArrowRight class="cta-flecha size-4" aria-hidden="true" />
       )}
     </a>
   </div>
