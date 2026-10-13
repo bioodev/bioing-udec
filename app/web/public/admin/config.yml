@@ -42,26 +42,26 @@ collections:
     label: Noticias
     label_singular: Noticia
     icon: newspaper
-    description: 'Novedades de la carrera. Se publican en /noticias y en el Inicio.'
+    description: 'Novedades de la carrera. Se ven en la página Noticias y en el Inicio.'
     folder: /app/web/src/content/noticias
     identifier_field: titulo
     summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
     fields:
-      - { name: titulo, label: Título, widget: string }
-      - { name: fecha, label: Fecha de publicación, widget: datetime, type: date }
-      - { name: publicado, label: Publicado, widget: boolean, default: false }
-      - { name: bajada, label: Bajada, widget: text, required: false }
-      - { name: body, label: Cuerpo, widget: richtext }
-      - { name: imagen, label: Imagen destacada, widget: image, required: false }
+      - { name: titulo, label: Título, widget: string, hint: "Es el título que se ve en la lista de Noticias y en la página de la noticia." }
+      - { name: fecha, label: Fecha de publicación, widget: datetime, type: date, hint: "Define el orden de las Noticias (la más reciente primero) y la fecha que se muestra." }
+      - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Si lo desactivas, la Noticia queda como borrador y no aparece en el sitio." }
+      - { name: bajada, label: Bajada, widget: text, required: false, hint: "Una o dos frases. Va bajo el título y en la tarjeta de la lista. Si la dejas vacía, la noticia se ve sin resumen." }
+      - { name: body, label: Texto de la noticia, widget: richtext, hint: "El texto completo. Aparece debajo de la bajada." }
+      - { name: imagen, label: Imagen destacada, widget: image, required: false, hint: "Foto principal. Se ve en la lista de Noticias y al comienzo de la noticia. Se recorta en formato horizontal (16:9)." }
       - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título." }
-      - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false }
-      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
+      - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false, hint: "Clasifica la noticia para que se pueda filtrar en el sitio. Los Temas se crean en la lista «Temas»." }
+      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false, hint: "Campo disciplinar de la noticia (p. ej. acuicultura). Las Áreas se crean en la lista «Áreas»." }
       - name: etiquetas
-        label: Etiquetas (tags)
+        label: Etiquetas
         label_singular: Etiqueta
         widget: list
         required: false
-        hint: Texto libre para etiquetar la Noticia (p. ej. simulación, clínica). Editable por el Encargado de comunicaciones sin crear Temas.
+        hint: "Palabras libres para etiquetar la noticia (p. ej. simulación, clínica). Se escriben aquí, sin crearlas antes; a diferencia de los Temas, no son una lista aparte."
       - name: personas_mencionadas
         label: Personas mencionadas
         widget: relation
@@ -69,6 +69,7 @@ collections:
         display_fields: [nombre]
         multiple: true
         required: false
+        hint: "Personas que aparecen en la noticia. La noticia figura en su ficha, aunque no la hayan escrito."
       - name: organizaciones_mencionadas
         label: Organizaciones mencionadas
         widget: relation
@@ -76,15 +77,16 @@ collections:
         display_fields: [nombre]
         multiple: true
         required: false
+        hint: "Organizaciones que aparecen en la noticia. La noticia figura en su ficha."
       - name: actividad
-        label: Actividad que cubre
+        label: Cobertura de una actividad
         widget: relation
         collection: actividades
         display_fields: [titulo]
         required: false
-        hint: Solo si la Noticia es la Cobertura de una Actividad ya realizada.
-      - { name: instagram, label: Publicación de Instagram relacionada, widget: relation, collection: instagram, display_fields: [titulo], required: false }
-      - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo del cuerpo, en una ventana al hacer clic." }
+        hint: "Úsalo solo si la noticia cuenta una Actividad ya realizada. Cada noticia cubre como máximo una Actividad, y la noticia aparece en la ficha de esa Actividad."
+      - { name: instagram, label: Publicación de Instagram relacionada, widget: relation, collection: instagram, display_fields: [titulo], required: false, hint: "Opcional. Si la eliges, la noticia muestra esa publicación en la sección «En Instagram»." }
+      - { name: video, label: Video (YouTube), widget: string, type: url, required: false, hint: "Enlace de YouTube. Se muestra debajo del texto, en una ventana al hacer clic." }
       - name: enlaces
         label: Enlaces
         label_singular: Enlace
@@ -95,7 +97,7 @@ collections:
         hint: "Botones bajo el título: inscripción, transmisión, más información… Para reproducir videos, audios o publicaciones, usa Contenido incrustado."
         fields:
           - { name: etiqueta, label: Texto del botón, widget: string, hint: "Corto, p. ej.: Ver transmisión." }
-          - { name: url, label: Dirección, widget: string, pattern: ['^(https://|/[^/])', "Debe empezar con https:// o, si es una página del sitio, con / (p. ej. /agenda)."], hint: "Dirección completa (https://…) o, para una página del sitio, la ruta: /agenda, /p/mi-pagina." }
+          - { name: url, label: Dirección, widget: string, pattern: ['^(https://|/[^/])', "Debe empezar con https:// (dirección completa) o con / (página del sitio, p. ej. /agenda)."], hint: "Dirección completa (https://…) o, para una página del sitio, la ruta: /agenda, /p/mi-pagina." }
       - name: galeria
         label: Galería de imágenes
         label_singular: Imagen
@@ -115,7 +117,7 @@ collections:
         summary: "{{titulo}} {{url}}"
         hint: "Pega enlaces públicos (https) de Spotify, SoundCloud, YouTube, Vimeo, TikTok, Instagram, Facebook, LinkedIn, Twitch, Google Maps o Google Drive, entre otros: se muestran como reproductor. X y WhatsApp se muestran como enlace."
         fields:
-          - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
+          - { name: url, label: Dirección del contenido, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
       - &seo_contenido
         name: seo
@@ -123,26 +125,27 @@ collections:
         widget: object
         collapsed: true
         required: false
-        hint: "Solo si quieres que en Google o al compartir se vea distinto. Si lo dejas vacío, se usa el título, la bajada y la imagen destacada."
+        hint: "Solo si quieres que en Google o al compartir se vea distinto. Si lo dejas vacío, el sitio arma el título, la descripción y la imagen con los datos de la ficha."
         fields:
           - { name: titulo, label: Título para buscadores y redes, widget: string, required: false, maxlength: 60, hint: "Máximo 60 caracteres. No hace falta escribir «· BIOING+»: se agrega solo." }
           - { name: descripcion, label: Descripción para buscadores y redes, widget: text, required: false, maxlength: 160, hint: "Una o dos frases, de hasta 160 caracteres. Es el texto que aparece bajo el título en Google." }
-          - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen de la página o, si no tiene, la del sitio." }
+          - { name: imagen, label: Imagen para compartir, widget: image, required: false, hint: "Horizontal, de 1200 × 630 px. Si la dejas vacía, se usa la imagen de la ficha cuando tiene una (Noticias, Páginas y Personas) o, si no, la imagen por defecto del sitio." }
           - { name: noindex, label: No mostrar en buscadores, widget: boolean, default: false, hint: "La página sigue publicada y enlazada, pero Google no la indexa: sale del buscador del sitio y del mapa del sitio." }
   - name: actividades
     label: Agenda
     label_singular: Actividad
     icon: event
-    description: 'Charlas, seminarios, talleres y otras actividades. Se publican en /agenda.'
+    description: 'Charlas, seminarios, talleres y otras actividades. Se ven en la página Agenda.'
     folder: /app/web/src/content/actividades
     identifier_field: titulo
     summary: "{{titulo}} · {{inicio | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
     fields:
       - { name: titulo, label: Nombre de la actividad, widget: string }
-      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Si lo desactivas, la actividad queda como borrador y no aparece en la Agenda." }
       - name: tipo
-        label: Tipo
+        label: Tipo de actividad
         widget: select
+        hint: "Clase de actividad (charla, taller, etc.). Aparece como etiqueta en la tarjeta y en la ficha."
         options:
           - { label: Seminario, value: seminario }
           - { label: Charla, value: charla }
@@ -153,21 +156,23 @@ collections:
           - { label: Actividad académica, value: academica }
           - { label: Encuentro de la comunidad, value: encuentro }
           - { label: Otra, value: otra }
-      - { name: inicio, label: Inicio, widget: datetime, input_timezone: America/Santiago }
+      - { name: inicio, label: Fecha y hora de inicio, widget: datetime, input_timezone: America/Santiago, hint: "Cuándo empieza. Cuando pasa la fecha de término (o la de inicio, si no hay término), la actividad pasa a «realizadas»." }
       - name: modalidad
         label: Modalidad
         widget: select
+        hint: "Dónde se realiza: presencial, en línea o híbrida."
         options:
           - { label: Presencial, value: presencial }
           - { label: En línea, value: en-linea }
           - { label: Híbrida, value: hibrida }
-      - { name: body, label: Descripción, widget: richtext }
-      - { name: imagen, label: Imagen, widget: image, required: false }
-      - { name: fin, label: Término, widget: datetime, input_timezone: America/Santiago, required: false }
-      - { name: lugar, label: Lugar, widget: string, required: false }
+      - { name: body, label: Descripción, widget: richtext, hint: "Explica de qué trata la actividad. Aparece en su ficha." }
+      - { name: imagen, label: Imagen, widget: image, required: false, hint: "Foto de la actividad. Se ve en la tarjeta de la Agenda y en su ficha." }
+      - { name: fin, label: Fecha y hora de término, widget: datetime, input_timezone: America/Santiago, required: false, hint: "Opcional. Si la dejas vacía, la actividad muestra solo la fecha de inicio." }
+      - { name: lugar, label: Lugar, widget: string, required: false, hint: "Sala, edificio o dirección. Si la actividad es en línea, puedes dejarlo vacío." }
       - name: organizadores
         label: Organizadores
         label_singular: Organizador
+        hint: "Personas u organizaciones responsables de la actividad."
         widget: list
         typeKey: tipo
         types:
@@ -186,8 +191,9 @@ collections:
         display_fields: [nombre]
         multiple: true
         required: false
-      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
-      - { name: enlace_inscripcion, label: Enlace de inscripción o información, widget: string, type: url, required: false }
+        hint: "Personas que presentan, dictan o modera la actividad. Los asistentes no se cargan aquí."
+      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false, hint: "Campo disciplinar de la actividad. Las Áreas se crean en la lista «Áreas»." }
+      - { name: enlace_inscripcion, label: Enlace de inscripción o información, widget: string, type: url, required: false, hint: "Opcional. Si lo llenas, la tarjeta de la Agenda lleva a esta dirección. En las actividades próximas, la ficha también muestra un botón con ella." }
       - name: enlaces
         label: Enlaces
         label_singular: Enlace
@@ -198,7 +204,7 @@ collections:
         hint: "Botones bajo el título: inscripción, transmisión, más información… Para reproducir videos, audios o publicaciones, usa Contenido incrustado."
         fields:
           - { name: etiqueta, label: Texto del botón, widget: string, hint: "Corto, p. ej.: Ver transmisión." }
-          - { name: url, label: Dirección, widget: string, pattern: ['^(https://|/[^/])', "Debe empezar con https:// o, si es una página del sitio, con / (p. ej. /agenda)."], hint: "Dirección completa (https://…) o, para una página del sitio, la ruta: /agenda, /p/mi-pagina." }
+          - { name: url, label: Dirección, widget: string, pattern: ['^(https://|/[^/])', "Debe empezar con https:// (dirección completa) o con / (página del sitio, p. ej. /agenda)."], hint: "Dirección completa (https://…) o, para una página del sitio, la ruta: /agenda, /p/mi-pagina." }
       - name: incrustados
         label: Contenido incrustado
         label_singular: Contenido incrustado
@@ -208,20 +214,20 @@ collections:
         summary: "{{titulo}} {{url}}"
         hint: "Pega enlaces públicos (https) de Spotify, SoundCloud, YouTube, Vimeo, TikTok, Instagram, Facebook, LinkedIn, Twitch, Google Maps o Google Drive, entre otros: se muestran como reproductor. X y WhatsApp se muestran como enlace."
         fields:
-          - { name: url, label: Enlace, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
+          - { name: url, label: Dirección del contenido, widget: string, type: url, hint: "Copia la dirección de la barra del navegador." }
           - { name: titulo, label: Título, widget: string, required: false, hint: "Describe el contenido; lo leen los lectores de pantalla." }
       - *seo_contenido
   - name: anuncios
     label: Anuncios
     label_singular: Anuncio
     icon: campaign
-    description: 'Ofertas de trabajo, prácticas, convocatorias y otras oportunidades. Se publican en /anuncios.'
+    description: 'Ofertas de trabajo, prácticas, convocatorias y otras oportunidades. Se ven en la página Anuncios.'
     folder: /app/web/src/content/anuncios
     identifier_field: titulo
     summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
     fields:
-      - { name: titulo, label: Título, widget: string }
-      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - { name: titulo, label: Título, widget: string, hint: "Es lo primero que se lee del anuncio en la lista." }
+      - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Si lo desactivas, el anuncio queda como borrador y no aparece en el sitio." }
       - name: tipo
         label: Tipo de oportunidad
         widget: select
@@ -236,6 +242,7 @@ collections:
       - name: oferente
         label: Oferente
         widget: object
+        hint: "Quien ofrece la oportunidad: una Persona o una Organización."
         typeKey: tipo
         types:
           - name: persona
@@ -246,31 +253,32 @@ collections:
             label: Organización
             fields:
               - { name: organizacion, label: Organización, widget: relation, collection: organizaciones, display_fields: [nombre] }
-      - { name: fecha, label: Fecha de publicación, widget: datetime, type: date }
+      - { name: fecha, label: Fecha de publicación, widget: datetime, type: date, hint: "Día en que se publica el anuncio. Si no tiene fecha límite, el anuncio vence 60 días después." }
       - name: contacto
         label: Contacto
         widget: string
-        hint: Correo, teléfono o enlace. Texto libre; no es una Persona.
-      - { name: body, label: Descripción, widget: richtext }
-      - { name: fecha_limite, label: Fecha límite, widget: datetime, type: date, required: false }
-      - { name: enlace, label: Enlace externo, widget: string, type: url, required: false }
-      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
+        hint: "Correo, teléfono o enlace para responder al anuncio. Es texto libre: no es una Persona."
+      - { name: body, label: Descripción, widget: richtext, hint: "Detalle de la oportunidad: qué se ofrece y cómo postular." }
+      - { name: fecha_limite, label: Fecha límite, widget: datetime, type: date, required: false, hint: "Opcional. Hasta ese día se puede postular. Después, el anuncio aparece como vencido y se oculta su enlace." }
+      - { name: enlace, label: Enlace para más información, widget: string, type: url, required: false, hint: "Opcional. Se muestra como botón «Más información» mientras el anuncio esté vigente." }
+      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false, hint: "Campo disciplinar del anuncio. Las Áreas se crean en la lista «Áreas»." }
       - *seo_contenido
   - name: documentos
     label: Repositorio
     label_singular: Documento
     icon: folder_open
-    description: 'Decretos, reglamentos, informes y publicaciones. Se publican en /repositorio.'
+    description: 'Decretos, reglamentos, informes y publicaciones. Se ven en la página Repositorio.'
     folder: /app/web/src/content/documentos
     format: yml
     identifier_field: titulo
     summary: "{{titulo}} ({{anio}}) {{publicado | ternary('', '(borrador)')}}"
     fields:
-      - { name: titulo, label: Título, widget: string }
-      - { name: publicado, label: Publicado, widget: boolean, default: false }
+      - { name: titulo, label: Título, widget: string, hint: "Nombre del documento tal como se lo conoce." }
+      - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Si lo desactivas, el documento deja de aparecer en el Repositorio." }
       - name: tipo # TODO: confirmar lista (docs/preguntas-reunion.md 5.3)
         label: Tipo de documento
         widget: select
+        hint: "Clasifica el documento. Aparece como etiqueta en su tarjeta y en su ficha."
         options:
           - { label: Decreto, value: decreto }
           - { label: Reglamento, value: reglamento }
@@ -281,12 +289,12 @@ collections:
           - { label: Documento histórico, value: historico }
           - { label: Material académico, value: academico }
           - { label: Otro, value: otro }
-      - { name: anio, label: Año, widget: number, value_type: int }
-      - { name: enlace, label: Enlace al archivo (Drive), widget: string, type: url }
-      - { name: descripcion, label: Descripción, widget: text, required: false }
-      - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false }
-      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false }
-      - { name: palabras_clave, label: Palabras clave, widget: list, required: false }
+      - { name: anio, label: Año, widget: number, value_type: int, hint: "Año del documento. Sirve para filtrar en el Repositorio." }
+      - { name: enlace, label: Enlace del archivo, widget: string, type: url, hint: "Dirección del archivo en Google Drive. Es el botón «Abrir documento» de su ficha." }
+      - { name: descripcion, label: Descripción, widget: text, required: false, hint: "Resumen corto. Aparece bajo el título y se usa en la búsqueda." }
+      - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false, hint: "Clasifica el documento para filtrarlo. Los Temas se crean en la lista «Temas»." }
+      - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false, hint: "Campo disciplinar del documento. Las Áreas se crean en la lista «Áreas»." }
+      - { name: palabras_clave, label: Palabras clave, widget: list, required: false, hint: "Palabras que ayudan a encontrar el documento con el buscador del Repositorio. Escribe una en cada casilla." }
       - *seo_contenido
   - name: banners
     label: Banners
