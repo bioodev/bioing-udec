@@ -51,7 +51,7 @@ collections:
       - { name: fecha, label: Fecha de publicación, widget: datetime, type: date, hint: "Define el orden de las Noticias (la más reciente primero) y la fecha que se muestra." }
       - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Si lo desactivas, la Noticia queda como borrador y no aparece en el sitio." }
       - { name: bajada, label: Bajada, widget: text, required: false, hint: "Una o dos frases. Va bajo el título y en la tarjeta de la lista. Si la dejas vacía, la noticia se ve sin resumen." }
-      - { name: body, label: Texto de la noticia, widget: richtext, hint: "El texto completo. Aparece debajo de la bajada." }
+      - { name: body, label: Texto de la noticia, widget: richtext, hint: "El texto completo. Aparece debajo de la bajada. Para un recuadro destacado, ver la guía (Recuadros destacados)." }
       - { name: imagen, label: Imagen destacada, widget: image, required: false, hint: "Foto principal. Se ve en la lista de Noticias y al comienzo de la noticia. Se recorta en formato horizontal (16:9)." }
       - { name: imagen_alt, label: Texto alternativo de la imagen, widget: string, required: false, hint: "Describe lo que se ve en la imagen (para lectores de pantalla). No repitas el título." }
       - { name: temas, label: Temas, widget: relation, collection: temas, display_fields: [nombre], multiple: true, required: false, hint: "Clasifica la noticia para que se pueda filtrar en el sitio. Los Temas se crean en la lista «Temas»." }
@@ -165,7 +165,7 @@ collections:
           - { label: Presencial, value: presencial }
           - { label: En línea, value: en-linea }
           - { label: Híbrida, value: hibrida }
-      - { name: body, label: Descripción, widget: richtext, hint: "Explica de qué trata la actividad. Aparece en su ficha." }
+      - { name: body, label: Descripción, widget: richtext, hint: "Explica de qué trata la actividad. Aparece en su ficha. Para un recuadro destacado, ver la guía (Recuadros destacados)." }
       - { name: imagen, label: Imagen, widget: image, required: false, hint: "Foto de la actividad. Se ve en la tarjeta de la Agenda y en su ficha." }
       - { name: fin, label: Fecha y hora de término, widget: datetime, input_timezone: America/Santiago, required: false, hint: "Opcional. Si la dejas vacía, la actividad muestra solo la fecha de inicio." }
       - { name: lugar, label: Lugar, widget: string, required: false, hint: "Sala, edificio o dirección. Si la actividad es en línea, puedes dejarlo vacío." }
@@ -258,7 +258,7 @@ collections:
         label: Contacto
         widget: string
         hint: "Correo, teléfono o enlace para responder al anuncio. Es texto libre: no es una Persona."
-      - { name: body, label: Descripción, widget: richtext, hint: "Detalle de la oportunidad: qué se ofrece y cómo postular." }
+      - { name: body, label: Descripción, widget: richtext, hint: "Detalle de la oportunidad: qué se ofrece y cómo postular. Para un recuadro destacado, ver la guía (Recuadros destacados)." }
       - { name: fecha_limite, label: Fecha límite, widget: datetime, type: date, required: false, hint: "Opcional. Hasta ese día se puede postular. Después, el anuncio aparece como vencido y se oculta su enlace." }
       - { name: enlace, label: Enlace para más información, widget: string, type: url, required: false, hint: "Opcional. Se muestra como botón «Más información» mientras el anuncio esté vigente." }
       - { name: areas, label: Áreas, widget: relation, collection: areas, display_fields: [nombre], multiple: true, required: false, hint: "Campo disciplinar del anuncio. Las Áreas se crean en la lista «Áreas»." }
@@ -329,7 +329,7 @@ collections:
       - { name: titulo, label: Título, widget: string, hint: "Nombre de la página. Es el texto del menú o del pie, según «Dónde aparece»." }
       - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Desmarca «Publicado» para ocultar la página sin borrarla." }
       - { name: bajada, label: Bajada (resumen corto), widget: text, hint: "Una o dos líneas. Va bajo el título, en buscadores y en el desplegable del menú." }
-      - { name: body, label: Contenido, widget: richtext, hint: "El texto principal de la página, con sus párrafos y títulos." }
+      - { name: body, label: Contenido, widget: richtext, hint: "El texto principal de la página, con sus párrafos y títulos. Para un recuadro destacado, ver la guía (Recuadros destacados)." }
       - name: mostrar_en
         label: Dónde aparece
         widget: select

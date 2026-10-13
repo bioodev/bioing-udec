@@ -243,6 +243,42 @@ html:has(dialog[open]:modal) {
   --tw-prose-td-borders: var(--border);
 }
 
+/* Recuadros destacados del cuerpo Markdown (src/lib/recuadros.ts; ver docs/design.md, «Recuadros»). Color por tipo:
+   borde izquierdo y título en el color del tipo, fondo tenue. Texto siempre con --foreground (AA en ambos modos).
+   Fuera de @layer: deben ganar a las utilidades de prose. Sin animación. */
+.recuadro {
+  --recuadro-color: #0060c0;
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-inline-start: 4px solid var(--recuadro-color);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background-color: color-mix(in oklab, var(--recuadro-color) 8%, var(--background));
+  color: var(--foreground);
+}
+.recuadro-nota { --recuadro-color: #0060c0; }
+.recuadro-importante { --recuadro-color: #b91c1c; }
+.recuadro-consejo { --recuadro-color: #166534; }
+.recuadro-atencion { --recuadro-color: #92400e; }
+.dark .recuadro-nota { --recuadro-color: #7fb8ff; }
+.dark .recuadro-importante { --recuadro-color: #fca5a5; }
+.dark .recuadro-consejo { --recuadro-color: #86efac; }
+.dark .recuadro-atencion { --recuadro-color: #fcd34d; }
+.recuadro > :last-child { margin-bottom: 0; }
+.recuadro-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  color: var(--recuadro-color);
+}
+.recuadro-icono {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 /* Tarjetas (ver docs/design.md, «Estilo»): sombra tenue en reposo. Las que son enlace (`tarjeta-elevada-enlace`)
    suben 2 px y ganan sombra (y, con el mouse, borde de color) con foco de teclado dentro y, en dispositivos con puntero, al pasar el mouse (en
    pantallas táctiles el :hover quedaría pegado tras tocar). El desplazamiento solo con movimiento permitido. */
