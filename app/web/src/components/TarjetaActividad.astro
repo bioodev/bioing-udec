@@ -5,6 +5,7 @@ import type { CollectionEntry } from 'astro:content';
 import Distintivo from '@/components/Distintivo.astro';
 import { Button } from '@/components/starwind/button';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
+import TiempoRelativo from '@/components/TiempoRelativo.astro';
 import { formatoFecha } from '@/lib/contenido';
 import { MODALIDADES, TIPOS_ACTIVIDAD } from '@/lib/agenda';
 import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
@@ -65,6 +66,7 @@ const lugar = actividad.data.lugar ?? MODALIDADES[actividad.data.modalidad];
     <p class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-foreground">
       <CalendarBlank class="size-4 shrink-0" aria-hidden="true" />
       <time datetime={actividad.data.inicio.toISOString()}>{formatoFecha(actividad.data.inicio)}</time>
+      <TiempoRelativo fecha={actividad.data.inicio} conHora />
       <span aria-hidden="true">·</span>
       <Clock class="size-4 shrink-0" aria-hidden="true" />
       <span>{hora(actividad.data.inicio)}</span>

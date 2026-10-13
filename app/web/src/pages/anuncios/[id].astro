@@ -5,6 +5,7 @@ import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import Distintivo from '@/components/Distintivo.astro';
 import Compartir from '@/components/Compartir.astro';
+import TiempoRelativo from '@/components/TiempoRelativo.astro';
 import { Button } from '@/components/starwind/button';
 import { anunciosVisibles, formatoFecha, seoDeEntrada } from '@/lib/contenido';
 import { anuncioVigente, existentes } from '@/lib/reglas';
@@ -69,12 +70,12 @@ const seo = resolverSeo({ titulo: anuncio.data.titulo, descripcion: `${TIPOS_ANU
       <dl class="grid gap-4">
         <div>
           <dt class="text-muted-foreground">Publicado el</dt>
-          <dd class="mt-1 font-medium"><time datetime={anuncio.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha)}</time></dd>
+          <dd class="mt-1 font-medium"><time datetime={anuncio.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha)}</time><TiempoRelativo fecha={anuncio.data.fecha} /></dd>
         </div>
         {anuncio.data.fecha_limite && (
           <div>
             <dt class="text-muted-foreground">Postula hasta el</dt>
-            <dd class="mt-1 font-medium"><time datetime={anuncio.data.fecha_limite.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha_limite)}</time></dd>
+            <dd class="mt-1 font-medium"><time datetime={anuncio.data.fecha_limite.toISOString().slice(0, 10)}>{formatoFecha(anuncio.data.fecha_limite)}</time><TiempoRelativo fecha={anuncio.data.fecha_limite} /></dd>
           </div>
         )}
         {oferente && (

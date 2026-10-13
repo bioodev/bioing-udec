@@ -3,8 +3,10 @@ import { getEntries } from 'astro:content';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Distintivo from '@/components/Distintivo.astro';
+import TiempoRelativo from '@/components/TiempoRelativo.astro';
 import { formatoFecha } from '@/lib/contenido';
 import { existentes } from '@/lib/reglas';
+import CalendarBlank from 'phosphor-astro/CalendarBlank.astro';
 
 interface Props { noticia: CollectionEntry<'noticias'> }
 const { noticia } = Astro.props;
@@ -30,8 +32,10 @@ const temas = existentes(await getEntries(noticia.data.temas ?? []));
         ))}
       </div>
     )}
-    <p class="mt-auto pt-3 text-sm text-muted-foreground">
+    <p class="mt-auto flex flex-wrap items-center gap-x-1.5 gap-y-1 pt-3 text-sm text-muted-foreground">
+      <CalendarBlank class="size-4 shrink-0" aria-hidden="true" />
       <time datetime={noticia.data.fecha.toISOString().slice(0, 10)}>{formatoFecha(noticia.data.fecha)}</time>
+      <TiempoRelativo fecha={noticia.data.fecha} />
     </p>
   </div>
 </article>

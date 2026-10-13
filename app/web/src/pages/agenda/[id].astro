@@ -5,6 +5,7 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import EnlaceFicha from '@/components/EnlaceFicha.astro';
 import TarjetaNoticia from '@/components/TarjetaNoticia.astro';
+import TiempoRelativo from '@/components/TiempoRelativo.astro';
 import Incrustados from '@/components/Incrustados.astro';
 import Enlaces from '@/components/Enlaces.astro';
 import Distintivo from '@/components/Distintivo.astro';
@@ -87,7 +88,7 @@ const seo = resolverSeo({ titulo: actividad.data.titulo, descripcion: `${TIPOS_A
         <div class="flex items-center gap-2">
           <dt class="sr-only">Fecha y hora</dt>
           <CalendarBlank class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <dd><time datetime={actividad.data.inicio.toISOString()}>{cuando}</time></dd>
+          <dd><time datetime={actividad.data.inicio.toISOString()}>{cuando}</time><TiempoRelativo fecha={actividad.data.inicio} conHora /></dd>
         </div>
         {actividad.data.lugar && (
           <div class="flex items-center gap-2">
