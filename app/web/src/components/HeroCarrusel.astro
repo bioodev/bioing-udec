@@ -15,7 +15,7 @@ const varios = banners.length > 1;
      flechas y puntos; respeta prefers-reduced-motion (wireframes: Inicio). -->
 <section
   id="inicio-carrusel"
-  class="relative isolate overflow-hidden bg-foreground text-background"
+  class="relative isolate overflow-hidden bg-[#1d1d1f] text-white"
   data-carrusel
   aria-roledescription="carrusel"
   aria-label="Destacados"
@@ -37,6 +37,10 @@ const varios = banners.length > 1;
           sizes="100vw"
           priority={i === 0}
         />
+        <!-- Desenfoque radial y velo, por slide: van dentro del track (que tiene transform) para quedar sobre la foto
+             y viajar con ella al hacer swipe. Variables en starwind.css. -->
+        <div class="hero-desenfoque absolute inset-0 -z-10" aria-hidden="true"></div>
+        <div class="hero-velo absolute inset-0 -z-10" aria-hidden="true"></div>
         <div class="mx-auto flex min-h-[32rem] max-w-6xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[36rem]">
           <h1 data-animar="hero" class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">{banner.data.titulo}</h1>
           {banner.data.texto && <p data-animar="hero" class="mx-auto mt-4 max-w-2xl text-lg opacity-90">{banner.data.texto}</p>}
@@ -44,18 +48,15 @@ const varios = banners.length > 1;
             data-animar="hero"
             href={banner.data.enlace}
             variant="primary"
-            class="mt-8 rounded-full"
+            class="cta cta-relleno mt-8 rounded-full"
             {...(externo(banner.data.enlace) ? { target: '_blank', rel: 'noopener' } : {})}
           >
-            Conoce más<ArrowRight class="size-4" aria-hidden="true" />
+            Conoce más<ArrowRight class="cta-flecha size-4" aria-hidden="true" />
           </Button>
         </div>
       </div>
     ))}
   </div>
-
-  <!-- Velo oscuro sutil: mantiene el contraste del texto blanco sobre la foto. -->
-  <div class="absolute inset-0 -z-10 bg-foreground/30" aria-hidden="true"></div>
 
   {varios && (
     <>
@@ -65,7 +66,7 @@ const varios = banners.length > 1;
           type="button"
           data-carrusel-anterior
           aria-label="Anterior"
-          class="pointer-events-auto m-3 flex size-11 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition hover:bg-background/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
+          class="pointer-events-auto m-3 flex size-11 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur transition hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
         >
           <CaretLeft class="size-6" aria-hidden="true" />
         </button>
@@ -75,7 +76,7 @@ const varios = banners.length > 1;
           type="button"
           data-carrusel-siguiente
           aria-label="Siguiente"
-          class="pointer-events-auto m-3 flex size-11 items-center justify-center rounded-full bg-background/20 text-background backdrop-blur transition hover:bg-background/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
+          class="pointer-events-auto m-3 flex size-11 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur transition hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none"
         >
           <CaretRight class="size-6" aria-hidden="true" />
         </button>
@@ -87,7 +88,7 @@ const varios = banners.length > 1;
             data-punto
             aria-label={`Ir a la diapositiva ${i + 1}`}
             aria-current={i === 0 ? 'true' : undefined}
-            class="pointer-events-auto h-2.5 w-2.5 rounded-full bg-background/40 transition hover:bg-background/70 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none aria-[current=true]:bg-background"
+            class="pointer-events-auto h-2.5 w-2.5 rounded-full bg-white/40 transition hover:bg-white/70 focus-visible:ring-2 focus-visible:ring-outline focus-visible:outline-none aria-[current=true]:bg-white"
           ></button>
         ))}
       </div>
@@ -221,5 +222,18 @@ const varios = banners.length > 1;
   /* Tinte cálido sutil para las imágenes del hero (la foto debe verse). */
   .hero-imagen {
     filter: sepia(0.22) saturate(1.06) brightness(0.95);
+  }
+
+  /* Velo radial. Los valores son variables de starwind.css (--hero-velo-*). */
+  .hero-velo {
+    background: radial-gradient(ellipse at center, rgb(0 0 0 / var(--hero-velo-centro)), rgb(0 0 0 / var(--hero-velo-opacidad)) 100%);
+  }
+
+  /* Desenfoque radial: un backdrop-filter enmascarado, transparente en el centro y pleno hacia los bordes.
+     Con --hero-blur: 0 no se ve nada. Es el punto a revisar en móviles viejos (ver docs/design.md, Hero). */
+  .hero-desenfoque {
+    backdrop-filter: blur(var(--hero-blur));
+    mask-image: radial-gradient(ellipse at center, transparent var(--hero-blur-radio), #000 100%);
+    -webkit-mask-image: radial-gradient(ellipse at center, transparent var(--hero-blur-radio), #000 100%);
   }
 </style>

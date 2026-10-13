@@ -29,7 +29,16 @@ const estilo = {
   },
   // Sin imagen: la nota va arriba a la izquierda para no tapar el título centrado.
   sinImagen: { position: 'absolute', top: '8px', left: '12px', color: '#9ca3af', fontSize: '13px' },
-  velo: { position: 'absolute', inset: 0, background: 'rgba(29, 29, 31, 0.3)' },
+  // Mismo velo radial que .hero-velo (HeroCarrusel.astro). Las variables --hero-* están en vista-previa.css, con los
+  // valores de starwind.css: si se cambian en el sitio, cambiarlos ahí también.
+  velo: { position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgb(0 0 0 / var(--hero-velo-centro)), rgb(0 0 0 / var(--hero-velo-opacidad)) 100%)' },
+  // Mismo desenfoque radial que .hero-desenfoque: backdrop-filter enmascarado (nítido al centro, borroso en los bordes).
+  desenfoque: {
+    position: 'absolute', inset: 0,
+    backdropFilter: 'blur(var(--hero-blur))', WebkitBackdropFilter: 'blur(var(--hero-blur))',
+    maskImage: 'radial-gradient(ellipse at center, transparent var(--hero-blur-radio), #000 100%)',
+    WebkitMaskImage: 'radial-gradient(ellipse at center, transparent var(--hero-blur-radio), #000 100%)',
+  },
   contenido: { position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: 'inherit', boxSizing: 'border-box' },
   contenidoEscritorio: { padding: '48px 24px' },
   contenidoCelular: { padding: '96px 16px' },
@@ -74,6 +83,7 @@ function Slide({ datos, imagenUrl, celular }) {
     imagenUrl
       ? h('img', { src: imagenUrl, alt: '', style: estilo.imagen })
       : h('div', { style: estilo.sinImagen }, 'Sin imagen: el slide queda sin fondo'),
+    h('div', { style: estilo.desenfoque }),
     h('div', { style: estilo.velo }),
     h(
       'div',
