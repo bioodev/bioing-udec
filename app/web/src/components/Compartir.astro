@@ -44,8 +44,9 @@ const iconos: Record<Red, typeof WhatsappLogo> = {
 <script>
   // Un solo listener delegado en el documento: el bloque se reemplaza en cada navegación (ClientRouter)
   // y el módulo no debe registrarse dos veces.
-  if (!document.documentElement.dataset.compartir) {
-    document.documentElement.dataset.compartir = 'listo';
+  // La marca va en un data-* distinto de [data-compartir]: si coincidieran, el selector matchearía <html>.
+  if (!document.documentElement.dataset.compartirListo) {
+    document.documentElement.dataset.compartirListo = 'si';
     document.addEventListener('click', async (evento) => {
       const boton = (evento.target as Element).closest<HTMLButtonElement>('[data-copiar]');
       if (!boton) return;
