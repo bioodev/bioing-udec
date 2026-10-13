@@ -733,7 +733,7 @@ egresado/a y no apareces?» de `/directorio`. Todo es opcional: si los campos qu
 
 **Dónde.**
 - **Encabezados de listados** (en **Archivos**): un bloque por listado, con **Imagen de cabecera**, **Texto
-  alternativo de la imagen** y **Ícono junto al título**.
+  alternativo de la imagen**, **Ícono junto al título** y **Texto de introducción**.
 - **Secciones del sitio** (en **Archivos**): **Imagen del bloque para sumarse**, su **Texto alternativo de esa imagen** y
   el **Ícono del bloque para sumarse**.
 
@@ -743,10 +743,11 @@ egresado/a y no apareces?» de `/directorio`. Todo es opcional: si los campos qu
   Si eliges un ícono que no está en la lista, no sale ninguno.
 - El texto alternativo describe lo que se ve en la foto (para quien usa lector de pantalla). Si la imagen es solo
   decorativa, déjalo vacío.
+- El **Texto de introducción** es una o dos frases que se leen bajo el título. Si lo dejas vacío, no aparece ningún texto.
 
 **Pasos.**
 1. Abre **Encabezados de listados** (en **Archivos**) o, para el bloque del Directorio, **Secciones del sitio**.
-2. Despliega el listado que quieres cambiar, sube la imagen, escribe el texto alternativo y elige el ícono.
+2. Despliega el listado que quieres cambiar, sube la imagen, escribe el texto alternativo, elige el ícono y escribe el texto de introducción.
 3. Guarda. El cambio se publica en uno o dos minutos.
 
 **Cómo comprobar que quedó bien.** Abre la página del listado y revisa el encabezado en el computador y en el celular.

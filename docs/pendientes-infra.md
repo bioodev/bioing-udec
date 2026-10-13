@@ -66,4 +66,5 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 - [ ] **Prueba de Página libre** en el panel: crear una página, publicarla en `/p/<nombre>`, elegir «Mostrar en» y enlazarla desde un Banner con su ruta.
 - [ ] **Prueba de Contenido incrustado y Enlaces** con enlaces reales: confirmar el alto del reproductor de episodios de Spotify (152 px, compacto) y probar al menos un proveedor de cada tipo (audio, video, red social, mapa) y un Enlace interno (`/agenda`) y uno externo.
 - [ ] **Página destacada del Inicio** (ADR 0006): validar con la contraparte (`preguntas-reunion.md` 7.1).
+- [ ] Reemplazar las imágenes de ejemplo de los encabezados de listado (`encabezados.yml`: `demo-*` y `ejemplo-azul.png`) por fotos reales de la carrera, con su texto alternativo.
 - [ ] Borrar el contenido de ejemplo y la "Noticia demo borrar luego" (el sintético `sint-*` no está en git: `npm run datos:limpiar`).

@@ -643,6 +643,8 @@ encabezado, un solo `<main>`, `<section>` con nombre):
   contraste del título no depende de la foto ni del modo oscuro.
 - El ícono va a la izquierda del título, en `text-primary`, de 36 px (`size-9`), decorativo (`aria-hidden`). Sin ícono,
   el título no cambia de clases.
+- La introducción (`intro`, opcional) va bajo el `<h1>` en un `<p>` con `text-muted-foreground`, `mt-3` y ancho de lectura
+  (`max-w-prose`). Sin texto, no se dibuja nada.
 - Sin imagen ni ícono, el encabezado es el de siempre (`text-4xl font-semibold tracking-tight`).
 - El bloque «¿Eres egresado/a?» del Directorio usa el mismo criterio: la imagen, si hay, va a sangre en la parte de arriba
   de la tarjeta, y el ícono de 28 px (`size-7`) va junto al título.

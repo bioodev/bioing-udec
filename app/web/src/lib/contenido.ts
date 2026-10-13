@@ -253,10 +253,10 @@ export async function imagenDeListadoSeo(listado: Listado) {
   return imagenDeListado(listado, await configuracionSeo());
 }
 
-/** Encabezado de un listado (src/content/encabezados/encabezados.yml): imagen de cabecera e ícono, ambos opcionales. */
+/** Encabezado de un listado (src/content/encabezados/encabezados.yml): imagen, ícono e introducción, todo opcional. */
 export async function encabezadoDeListado(listado: Exclude<Listado, 'inicio'>) {
   const valores = (await getEntry('encabezados', 'encabezados'))?.data[listado];
-  return { imagen: valores?.imagen, imagenAlt: valores?.imagen_alt, icono: valores?.icono };
+  return { imagen: valores?.imagen, imagenAlt: valores?.imagen_alt, icono: valores?.icono, intro: valores?.intro };
 }
 
 /** Bloque SEO de una entrada, con la imagen ya resuelta a su ruta (para resolverSeo). */

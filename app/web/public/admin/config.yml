@@ -832,6 +832,11 @@ singletons:
             required: false
             options: *iconos_phosphor
             hint: "Opcional. Aparece junto al título de la página."
+          - name: intro
+            label: Texto de introducción
+            widget: text
+            required: false
+            hint: "Una o dos frases que se leen bajo el título de la página. Ejemplo: «Noticias y comunicados de la carrera.» Si lo dejas vacío, no aparece ningún texto."
       - name: agenda
         label: Agenda
         widget: object

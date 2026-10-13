@@ -297,6 +297,7 @@ const encabezados = defineCollection({
       imagen: image().optional(),
       imagen_alt: z.string().optional(),
       icono: z.string().optional(), // nombre de la lista src/lib/iconos.ts; uno desconocido no muestra ícono
+      intro: z.string().optional(), // 1–2 frases bajo el título (texto plano)
     }).optional();
     return z.object({
       noticias: encabezado,

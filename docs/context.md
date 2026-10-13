@@ -220,7 +220,7 @@ Medición de visitas del sitio con Cloudflare Web Analytics, sin cookies ni bann
 _Avoid_: Google Analytics, seguimiento, tracking, cookies
 
 **Encabezado de listado**:
-Franja superior de Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram: una imagen de cabecera opcional (con texto alternativo) y un ícono opcional junto al título. Se edita en el panel como «Encabezados de listados». Sin imagen ni ícono, la página se ve como siempre.
+Franja superior de Noticias, Agenda, Anuncios, Repositorio, Directorio e Instagram: una imagen de cabecera opcional (con texto alternativo), un ícono opcional junto al título y un texto de introducción opcional (1–2 frases) bajo el título. Se edita en el panel como «Encabezados de listados». Sin imagen ni ícono, la página se ve como siempre.
 _Avoid_: Banner de sección, portada de listado, hero
 
 **Ícono**:

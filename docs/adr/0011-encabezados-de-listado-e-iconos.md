@@ -18,9 +18,9 @@ listado (og:image) se tenía que poder elegir por listado (ADR 0010).
    `descripcion` y `imagen`. Precedencia de la imagen: imagen del listado → imagen del sitio → `og-default.png`
    (`imagenDeListado` en `src/lib/seo.ts`).
 2. **Encabezado de listado**: archivo nuevo «Encabezados de los listados» (`src/content/encabezados/encabezados.yml`,
-   colección `encabezados`) con un objeto por listado `{ imagen, imagen_alt, icono }`. El componente
-   `EncabezadoListado.astro` reemplaza el `<h1>` de las seis páginas. Sin valores, el marcado queda igual. El Inicio no
-   tiene encabezado: ya tiene el carrusel.
+   colección `encabezados`) con un objeto por listado `{ imagen, imagen_alt, icono, intro }`. El componente
+   `EncabezadoListado.astro` reemplaza el `<h1>` de las seis páginas. La `intro` (1–2 frases, texto plano) se muestra
+   bajo el título. Sin valores, el marcado queda igual. El Inicio no tiene encabezado: ya tiene el carrusel.
 3. **Bloque «¿Eres egresado/a?»** del Directorio: `sumarse_imagen`, `sumarse_imagen_alt` y `sumarse_icono` en «Secciones del
    sitio» (`menu.yml`), junto al formulario del Directorio.
 4. **Ícono**: desplegable con una lista curada de 44 íconos de Phosphor. La lista se define una sola vez en `config.yml`
@@ -33,6 +33,10 @@ listado (og:image) se tenía que poder elegir por listado (ADR 0010).
 - Agregar un ícono exige cambiar `config.yml` (ancla), `src/lib/iconos.ts` y `Icono.astro`; la prueba avisa si una falta.
 - Los tres campos de la lista de íconos viven en el mismo archivo de `config.yml` porque las anclas YAML no cruzan archivos.
 - Las imágenes van por `image()` de Astro (se optimizan y no se sirven sin revisar).
+- La `intro` no alimenta la descripción de buscadores (`descripcionDeListado`): sigue la cadena de siempre (descripción
+  del panel en «SEO del sitio» → texto por defecto del código). Se evaluó usarla como respaldo, pero cambiaría en silencio
+  los textos por defecto de seis metadescripciones, pensados para buscadores, y depende de si la intro está llena.
+  Pendiente de decisión: si la carrera la quiere como respaldo, se agrega un paso en `descripcionListado` con test.
 - Con los archivos vacíos, el HTML de las seis páginas es igual al de antes. Única salvedad: en Agenda y Anuncios el
   `<h1>` deja de llevar el atributo de ámbito de Astro (`data-astro-cid-*`); esas páginas no tienen reglas CSS que lo usen.
 

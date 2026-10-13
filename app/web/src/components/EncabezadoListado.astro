@@ -1,13 +1,13 @@
 ---
-// Encabezado de un listado: el <h1> de la página, con una imagen de cabecera y un ícono opcionales (ADR 0011).
-// Sin imagen ni ícono, el marcado es el de siempre. El ícono es decorativo (lo anuncia el título).
+// Encabezado de un listado: el <h1> de la página, con una imagen de cabecera, un ícono y una introducción opcionales (ADR 0011).
+// Sin imagen ni ícono ni introducción, el marcado es el de siempre. El ícono es decorativo (lo anuncia el título).
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Icono from './Icono.astro';
 import { esIcono } from '@/lib/iconos';
 
-interface Props { id: string; titulo: string; imagen?: ImageMetadata; imagenAlt?: string; icono?: string }
-const { id, titulo, imagen, imagenAlt, icono } = Astro.props;
+interface Props { id: string; titulo: string; imagen?: ImageMetadata; imagenAlt?: string; icono?: string; intro?: string }
+const { id, titulo, imagen, imagenAlt, icono, intro } = Astro.props;
 const clases = esIcono(icono) ? 'flex items-center gap-3 text-4xl font-semibold tracking-tight' : 'text-4xl font-semibold tracking-tight';
 ---
 {imagen && (
@@ -16,3 +16,4 @@ const clases = esIcono(icono) ? 'flex items-center gap-3 text-4xl font-semibold 
   </div>
 )}
 <h1 id={id} data-animar="fade-up" class={clases}>{esIcono(icono) && <Icono nombre={icono} class="size-9 shrink-0 text-primary" />}{titulo}</h1>
+{intro && <p class="mt-3 max-w-prose text-muted-foreground">{intro}</p>}
