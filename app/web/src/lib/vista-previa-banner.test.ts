@@ -4,6 +4,7 @@ import { describe, expect, test } from 'vitest';
 import {
   avisos,
   estadoVigencia,
+  LIMITE_ETIQUETA_BANNER,
   LIMITE_TITULO_BANNER,
   tipoEnlace,
 } from '../../public/admin/vista-previa-banner-reglas.js';
@@ -81,6 +82,15 @@ describe('avisos', () => {
     expect(avisos({ ...base, titulo: 'a'.repeat(57) })).toContain(
       'Título largo: en el celular ocupa más de cuatro líneas y el slide crece.',
     );
+  });
+
+  test('la etiqueta: 30 caracteres no avisan, 31 sí; sin etiqueta no hay aviso', () => {
+    expect(LIMITE_ETIQUETA_BANNER).toBe(30);
+    expect(avisos({ ...base, etiqueta: 'a'.repeat(30) })).toEqual([]);
+    expect(avisos({ ...base, etiqueta: 'a'.repeat(31) })).toContain(
+      'Etiqueta larga: sobre la imagen conviene que no pase de 30 caracteres.',
+    );
+    expect(avisos({ ...base, etiqueta: '' })).toEqual([]);
   });
 
   test('enlace vacío', () => {

@@ -309,6 +309,8 @@ collections:
     fields:
       - { name: titulo, label: Título del mensaje, widget: string, hint: "Frase corta que se lee en grande sobre la imagen. Máximo 56 caracteres: si es más larga, el panel avisa y en el celular ocupa más espacio." }
       - { name: publicado, label: Publicado, widget: boolean, default: false, hint: "Desmarca «Publicado» para ocultar el mensaje sin borrarlo." }
+      - { name: etiqueta, label: Etiqueta (opcional), widget: string, required: false, hint: "Categoría corta que va sobre el título, en mayúsculas (p. ej. Admisión, Comunidad). Máximo 30 caracteres. Déjala vacía para no mostrarla." }
+      - { name: etiqueta_color, label: Color de la etiqueta, widget: select, required: false, default: marca, options: [ { label: "Color de marca", value: marca }, { label: Rojo, value: rojo }, { label: Azul, value: azul }, { label: Verde, value: verde }, { label: Amarillo, value: amarillo }, { label: Morado, value: morado } ], hint: "Color de la barra que acompaña a la etiqueta. Sin etiqueta no se ve." }
       - { name: imagen, label: Imagen de fondo, widget: image, hint: "Foto horizontal. Se atenúa para que el texto se lea encima." }
       - name: enlace
         label: Dirección del botón «Conoce más»

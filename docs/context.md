@@ -175,7 +175,7 @@ Página de diseño a medida y archivo único. Hoy no hay ninguna: ¿Qué es la B
 _Avoid_: Página libre, página fija
 
 **Banner**:
-Pieza de portada con vigencia (inicio y fin) que enlaza a un contenido del sitio o a una URL externa; se muestra en el carrusel del Inicio. Es la forma de destacar algo temporal; los accesos permanentes al final del Inicio son Secciones destacadas.
+Pieza de portada con vigencia (inicio y fin) que enlaza a un contenido del sitio o a una URL externa; se muestra en el carrusel del Inicio. Es la forma de destacar algo temporal; los accesos permanentes al final del Inicio son Secciones destacadas. Puede llevar una **etiqueta** corta sobre el título (categoría, máx. 30 caracteres) con un color de tipo; sin etiqueta, no se muestra.
 _Avoid_: Destacado, slider, hero
 
 **Redes sociales**:
