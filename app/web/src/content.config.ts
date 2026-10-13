@@ -280,7 +280,7 @@ const menu = defineCollection({
       .string()
       .refine((url) => url === '' || /^https:\/\/\S+$/.test(url), 'Debe ser una dirección completa que empiece con https://')
       .optional(),
-    // Bloque «¿Eres egresado/a?» de /directorio: ícono (lista en src/lib/iconos.ts; uno desconocido no se muestra) e
+    // Bloque «¿Eres egresado/a y no apareces?» de /directorio: ícono (lista en src/lib/iconos.ts; uno desconocido no se muestra) e
     // imagen de cabecera con su texto alternativo. Todo opcional.
     sumarse_icono: z.string().optional(),
     sumarse_imagen: image().optional(),
@@ -288,7 +288,7 @@ const menu = defineCollection({
   }),
 });
 
-// Encabezados de los listados (ADR 0011): imagen de cabecera (con texto alternativo) e ícono, opcionales por listado.
+// Encabezados de listados (ADR 0011): imagen de cabecera (con texto alternativo) e ícono, opcionales por listado.
 // Sin valores, cada página se ve como antes. El Inicio no tiene encabezado: ya tiene el carrusel.
 const encabezados = defineCollection({
   loader: yml('encabezados'),

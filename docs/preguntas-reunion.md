@@ -150,3 +150,61 @@ recientes», con su resumen, el video en una ventana y un enlace «Ver más». P
 - Quedarían tres formas de destacar algo en el Inicio: los Banners (temporales, en el carrusel), la página
   destacada (institucional, permanente) y las Secciones destacadas (accesos al final). ¿Se entiende la
   diferencia?
+
+---
+
+## 8. Panel de edición
+
+Dudas que salieron al aclarar los textos del panel (rama `glosario-panel`). Las que ya están arriba se enlazan.
+
+**8.1 ¿La persona encargada entiende los nombres nuevos del panel?**
+Se cambiaron nombres como «Cuerpo» (ahora «Texto de la noticia»), «Enlace», «Inicio», «Término», «Tipo»,
+«Actividad que cubre», «Enlace externo» y «Enlace al archivo (Drive)». Hay que confirmarlo con ella antes de dar
+por cerrado el panel.
+
+**8.2 ¿Los botones «Mostrar … en el menú» y «Publicar la sección …» deben usar una sola forma?**
+Hoy hay dos: «Mostrar «Noticias» en el menú» y «Publicar la sección «Instagram»» (Instagram, Directorio, Anuncios
+y Repositorio).
+
+**8.3 ¿El texto del enlace «Suma tu perfil» es el que quieren para la persona egresada?**
+Es el enlace del Inicio que lleva al formulario del Directorio.
+
+**8.4 ¿Qué se muestra en /directorio cuando no hay formulario?**
+El mensaje «Pronto habrá un formulario…» es texto de código y no se tocó. ¿Lo quieren cambiar?
+
+**8.5 ¿Se revisan las etiquetas de la lista de íconos?**
+Las opciones del desplegable (p. ej. «Sumar persona») no se tocaron. ¿Quieren revisarlas?
+
+**8.6 ¿El archivo de Drive del Repositorio debe estar compartido «cualquier persona con el enlace»?**
+El hint dice solo que es la dirección del archivo en Google Drive. No se sabe si el botón necesita ese permiso
+para abrir el archivo. ¿Quieren que el hint lo diga?
+
+**8.7 ¿La foto de una Actividad debe usarse al compartir en redes?**
+La foto se muestra en la tarjeta y en la ficha, pero al compartir cae en la imagen por defecto del sitio. Sería un
+cambio de código, no de texto.
+
+**8.8 ¿Los Anuncios sin fecha límite deben vencer a los 60 días?**
+Ver 4.1. Si cambia el número, cambia también el hint del panel.
+
+**8.9 ¿Qué tipos de documento hay?**
+Ver 5.3. La lista de `tipo` sigue pendiente.
+
+**8.10 ¿Personas › Generación es el año de ingreso?**
+Ver 1.1. El hint dice «número o año» y no define el significado.
+
+**8.11 ¿Organizaciones deben tener ficha propia?**
+Hoy el campo «Tiene ficha pública» no cambia nada en el sitio, porque no hay página de Organización (solo las
+Personas tienen ficha; ver 2.5). ¿Se crea la ficha o se quita el campo?
+
+**8.12 ¿Se muestran el logo y el sitio web de las Organizaciones?**
+El logo no aparece en ninguna página. El sitio web solo llega a los datos que leen los buscadores.
+
+**8.13 ¿Páginas debe mostrar «Dónde aparece» en la lista del panel?**
+Hoy el resumen de la lista no lo muestra.
+
+**8.14 ¿El título de un Banner debe impedir guardar si pasa de 56 caracteres?**
+Hoy el límite solo lo avisa la vista previa del panel. El build no lo valida.
+
+**8.15 ¿Está programada la reconstrucción diaria que retira los Banners vencidos?**
+El hint de «Se muestra hasta» dice que el retiro puede tardar hasta un día. No se verificó que la reconstrucción
+esté programada; ver `docs/pendientes-infra.md`.
