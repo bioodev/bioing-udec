@@ -8,8 +8,10 @@ import PublicacionInstagram from '@/components/PublicacionInstagram.astro';
 import SeccionDestacada from '@/components/SeccionDestacada.astro';
 import BandaComunidad from '@/components/BandaComunidad.astro';
 import PaginaDestacada from '@/components/PaginaDestacada.astro';
+import RedesSociales from '@/components/RedesSociales.astro';
 import ArrowRight from 'phosphor-astro/ArrowRight.astro';
-import { anunciosVigentes, bandaComunidad, configuracionMenu, descripcionDeListado, imagenDeListadoSeo, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
+import { anunciosVigentes, bandaComunidad, configuracionMenu, configuracionRedes, descripcionDeListado, imagenDeListadoSeo, noticiasRecientes, paginaDestacadaInicio, proximasActividades, publicacionesInstagram, publicados, seccionesInicio } from '@/lib/contenido';
+import { redesVisibles } from '@/lib/redes';
 import { enlaceDisponible, seccionActiva } from '@/lib/navegacion';
 import { estaVigente } from '@/lib/reglas';
 import { getImage } from 'astro:assets';
@@ -34,6 +36,8 @@ const secciones = (await seccionesInicio()).filter((s) => enlaceDisponible(s.enl
 const paginaDestacada = await paginaDestacadaInicio();
 // Banda «Comunidad y documentos»: null si el panel apagó el Directorio y el Repositorio.
 const banda = await bandaComunidad(configMenu);
+// Redes con URL (ADR 0009): la sección «Síguenos» no aparece si ninguna red está cargada.
+const redes = redesVisibles(await configuracionRedes());
 
 const [noticias, actividades, anuncios, pubInstagram] = await Promise.all([
   noticiasRecientes(3), proximasActividades(), anunciosVigentes(), publicacionesInstagram(3),
@@ -105,6 +109,8 @@ const imagenListado = await imagenDeListadoSeo('inicio');
   {banda && <BandaComunidad banda={banda} />}
 
   {secciones.map((seccion) => <SeccionDestacada seccion={seccion} />)}
+
+  <RedesSociales redes={redes} variante="inicio" />
 </Base>
 
 <script>

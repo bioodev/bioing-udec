@@ -651,12 +651,13 @@ logo. Las que dejes vacías no aparecen.
 4. Guarda.
 
 **Qué cambia.** El pie muestra un ícono por cada red con dirección, en el orden fijo: Instagram, Facebook, X, LinkedIn,
-YouTube, TikTok, Threads, Bluesky y Mastodon / Fediverso. La página **Instagram** usa la dirección de Instagram para su
+YouTube, TikTok, Threads, Bluesky y Mastodon / Fediverso. Las mismas redes aparecen en la sección **Síguenos**, al final
+del Inicio (una columna por red, con su nombre); si no hay ninguna con dirección, la sección no aparece. La página **Instagram** usa la dirección de Instagram para su
 botón «Seguir en Instagram»; si la dejas vacía, el botón no aparece. Las redes también quedan en los datos del sitio
 que leen los buscadores.
 
-**Cómo comprobar que quedó bien.** Recarga el sitio y mira el pie: cada ícono debe llevar al perfil correcto (se abre en
-una ventana nueva). Los cambios se publican en uno o dos minutos después de guardar.
+**Cómo comprobar que quedó bien.** Recarga el sitio y mira el pie y la sección «Síguenos» del Inicio: cada ícono o nombre
+debe llevar al perfil correcto (se abre en una ventana nueva). Los cambios se publican en uno o dos minutos después de guardar.
 
 > Si la red que quieres no está en la lista, avisa al equipo de desarrollo: agregar una red nueva exige un cambio en el
 > código, no solo en el panel.

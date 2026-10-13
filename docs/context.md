@@ -47,7 +47,8 @@ Decisión en `adr/0008-secciones-desactivables.md`.
 - **Instagram**: publicaciones seleccionadas por el Encargado de comunicaciones (embed oficial, cargado
   bajo demanda).
 - **Redes sociales** (pie): enlaces a los perfiles de la comunidad (Instagram, Facebook, X, LinkedIn, YouTube,
-  TikTok, Threads, Bluesky, Mastodon / Fediverso), uno por red en el panel; solo se muestran las que tienen URL.
+  TikTok, Threads, Bluesky, Mastodon / Fediverso), uno por red en el panel; solo se muestran las que tienen URL. Se ven
+  en el pie y en la sección «Síguenos» al final del Inicio.
 - **Contacto**: fuera del sitio. Las altas, bajas y cambios del Directorio llegan por un enlace a un
   Google Form; los datos personales solo se publican con autorización previa.
 
