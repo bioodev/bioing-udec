@@ -361,9 +361,9 @@ computador. Si hay video, se abre en una ventana al hacer clic.
 
 > _Pantallazo pendiente: tarjeta de una publicación de Instagram en el sitio._
 
-**Cómo comprobar que quedó bien.** La publicación aparece en la sección **Instagram** del sitio. Al abrirla, se
-carga el embed oficial _(por verificar en el sitio: cuándo se carga el embed)_. Si el embed no carga, la tarjeta
-sigue enlazando a la publicación en Instagram.
+**Cómo comprobar que quedó bien.** La publicación aparece en la sección **Instagram** del sitio. El embed oficial
+se carga solo cuando la tarjeta se acerca a la pantalla; mientras tanto se ve un recuadro gris animado. Si el embed
+no carga, la tarjeta sigue enlazando a la publicación en Instagram.
 
 **Errores típicos:**
 - Pegar el enlace de una historia o de un perfil: el campo lo rechaza.

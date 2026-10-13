@@ -164,7 +164,9 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
   TikTok, Instagram, Google Maps, entre otros. El **contenido incrustado** de Noticias y Actividades (campo `incrustados`) se convierte en
   `src/lib/incrustados.ts`, un parser puro con prueba: a partir de la URL pegada decide el reproductor (o la
   tarjeta-enlace para lo que no se incrusta) y es el único punto para sumar un proveedor. El componente
-  `src/components/Incrustados.astro` lo renderiza.
+  `src/components/Incrustados.astro` lo renderiza. Mientras carga cada iframe muestra un esqueleto gris (se quita con su
+  evento `load`). Las publicaciones de Instagram (`PublicacionInstagram.astro`) crean su embed solo al acercarse a la
+  pantalla (`IntersectionObserver`, 200 px antes), sin botón; el iframe ajusta su alto con el `postMessage` de Instagram.
 - Los **Enlaces** (campo `enlaces`, hasta 6 `{ etiqueta, url }`) son botones de texto corto bajo el título de
   Noticias, Actividades y Páginas libres (`src/components/Enlaces.astro`). No reproducen nada: eso es el contenido
   incrustado. En una Actividad, `enlace_inscripcion` es el botón principal y los `enlaces` van a su lado. La regla

@@ -477,7 +477,11 @@ reintroducir efectos de puntos/impresión en el hero.
   columna. En Noticias va después del video y antes de la galería; en Actividades y Páginas libres, después del cuerpo. Cada
   item es un reproductor de alto fijo por proveedor (clases Tailwind literales, `h-[152px]`…), `aspect-video`
   para Vimeo y Facebook video, o el `VideoModal` si es YouTube; las tarjetas-enlace llevan el nombre del servicio,
-  el título o la URL y un ícono de enlace externo (`rel="noopener noreferrer"`). Sin estilos inline.
+  el título o la URL y un ícono de enlace externo (`rel="noopener noreferrer"`). Sin estilos inline. Mientras carga el
+  iframe, un esqueleto `bg-muted` con el nombre del proveedor ocupa el mismo lugar (`motion-safe:animate-pulse`; sin JS no
+  aparece). Al disparar `load` se quita con un fundido de 300 ms (`motion-reduce` sin transición).
+- **Publicación de Instagram**: la tarjeta no tiene botón de carga; el embed se crea al acercarse a la pantalla, con el
+  mismo esqueleto, y el aviso dice «Contenido de Instagram (Meta)». Sin enlace incrustable, la tarjeta queda sin iframe.
 
 ### Filtros de los listados y modales
 

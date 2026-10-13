@@ -46,15 +46,21 @@ const PERMISOS: Record<string, string> = {
           {inc.tipo === 'youtube' && <VideoModal id={inc.id} titulo={titulo ?? 'Video de YouTube'} />}
 
           {inc.tipo === 'iframe' && (
-            <iframe
-              src={inc.src}
-              title={titulo ?? `${inc.proveedor}: contenido incrustado`}
-              loading="lazy"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allow={PERMISOS[inc.proveedor]}
-              allowfullscreen={inc.proporcion !== undefined && !PERMISOS[inc.proveedor]?.includes('fullscreen')}
-              class:list={['w-full rounded-lg border-0', inc.proporcion ? 'aspect-video' : (ALTO[inc.alto ?? 0] ?? 'aspect-video'), inc.vertical && 'mx-auto max-w-sm']}
-            />
+            <div class:list={['relative', inc.vertical && 'mx-auto max-w-sm']} data-incrustado>
+              {/* Esqueleto oculto por defecto: el script lo muestra mientras el iframe carga. Sin JS no aparece. */}
+              <div data-esqueleto aria-hidden="true" class="absolute inset-0 hidden place-items-center rounded-lg bg-muted text-sm text-muted-foreground motion-safe:animate-pulse">
+                {inc.proveedor}
+              </div>
+              <iframe
+                src={inc.src}
+                title={titulo ?? `${inc.proveedor}: contenido incrustado`}
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow={PERMISOS[inc.proveedor]}
+                allowfullscreen={inc.proporcion !== undefined && !PERMISOS[inc.proveedor]?.includes('fullscreen')}
+                class:list={['relative w-full rounded-lg border-0', inc.proporcion ? 'aspect-video' : (ALTO[inc.alto ?? 0] ?? 'aspect-video')]}
+              />
+            </div>
           )}
 
           {inc.tipo === 'enlace' && (
@@ -76,3 +82,27 @@ const PERMISOS: Record<string, string> = {
     </ul>
   </section>
 )}
+
+<script>
+  // Esqueleto mientras carga cada iframe: se muestra y se quita con el evento load. El init corre al
+  // ejecutarse el módulo (la carga inicial, antes de que los iframes de la vista terminen) y en cada
+  // astro:page-load (navegaciones con ClientRouter). La marca data-iniciado evita duplicados.
+  // Si el iframe ya terminó de cargar antes de iniciar, su entrada en Resource Timing evita un esqueleto que no se iría.
+  function iniciar() {
+    const cargados = new Set(performance.getEntriesByType('resource').map((e) => e.name));
+    for (const bloque of document.querySelectorAll<HTMLElement>('[data-incrustado]:not([data-iniciado])')) {
+      bloque.dataset.iniciado = '';
+      const iframe = bloque.querySelector('iframe')!;
+      if (cargados.has(iframe.src)) continue;
+      const esqueleto = bloque.querySelector<HTMLElement>('[data-esqueleto]')!;
+      esqueleto.classList.replace('hidden', 'grid');
+      iframe.classList.add('opacity-0', 'transition-opacity', 'duration-300', 'motion-reduce:transition-none');
+      iframe.addEventListener('load', () => {
+        esqueleto.remove();
+        iframe.classList.remove('opacity-0');
+      }, { once: true });
+    }
+  }
+  iniciar();
+  document.addEventListener('astro:page-load', iniciar);
+</script>
