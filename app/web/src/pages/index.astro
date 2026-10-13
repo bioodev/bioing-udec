@@ -62,7 +62,7 @@ const imagenListado = await imagenDeListadoSeo('inicio');
     <section id="inicio-noticias" class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="inicio-noticias-titulo">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <h2 id="inicio-noticias-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Noticias recientes</h2>
-        <a data-animar="fade-up" href="/noticias" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las noticias <ArrowRight class="size-4" aria-hidden="true" /></a>
+        <a data-animar="fade-up" href="/noticias" class="cta inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las noticias <ArrowRight class="cta-flecha size-4" aria-hidden="true" /></a>
       </div>
       <ul role="list" data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{noticias.map((n) => <li><TarjetaNoticia noticia={n} /></li>)}</ul>
     </section>
@@ -73,7 +73,7 @@ const imagenListado = await imagenDeListadoSeo('inicio');
       <div class="mx-auto max-w-6xl px-4 py-16">
         <div class="flex flex-wrap items-end justify-between gap-4">
           <h2 id="inicio-agenda-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Próximas actividades</h2>
-          <a data-animar="fade-up" href="/agenda" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las actividades <ArrowRight class="size-4" aria-hidden="true" /></a>
+          <a data-animar="fade-up" href="/agenda" class="cta inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todas las actividades <ArrowRight class="cta-flecha size-4" aria-hidden="true" /></a>
         </div>
         <ul role="list" data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{actividades.slice(0, 3).map((a) => <li><TarjetaActividad actividad={a} /></li>)}</ul>
       </div>
@@ -84,7 +84,7 @@ const imagenListado = await imagenDeListadoSeo('inicio');
     <section id="inicio-anuncios" class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="inicio-anuncios-titulo">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <h2 id="inicio-anuncios-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">Anuncios</h2>
-        <a data-animar="fade-up" href="/anuncios" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todos los anuncios <ArrowRight class="size-4" aria-hidden="true" /></a>
+        <a data-animar="fade-up" href="/anuncios" class="cta inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver todos los anuncios <ArrowRight class="cta-flecha size-4" aria-hidden="true" /></a>
       </div>
       <ul role="list" data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{anuncios.slice(0, 3).map((a) => <li><TarjetaAnuncio anuncio={a} /></li>)}</ul>
     </section>
@@ -95,7 +95,7 @@ const imagenListado = await imagenDeListadoSeo('inicio');
       <div class="mx-auto max-w-6xl px-4 py-16">
         <div class="flex flex-wrap items-end justify-between gap-4">
           <h2 id="inicio-instagram-titulo" data-animar="fade-up" class="text-3xl font-semibold tracking-tight">En Instagram</h2>
-          <a href="/instagram" class="inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver más <ArrowRight class="size-4" aria-hidden="true" /></a>
+          <a href="/instagram" class="cta inline-flex items-center gap-1 text-sm text-primary hover:underline">Ver más <ArrowRight class="cta-flecha size-4" aria-hidden="true" /></a>
         </div>
         <div data-animar="grilla" class="mt-8 grid gap-6 md:grid-cols-3">{pubInstagram.map((p) => <PublicacionInstagram publicacion={p} />)}</div>
       </div>

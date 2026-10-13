@@ -20,11 +20,11 @@ const { items = [], principal } = Astro.props;
           as="a"
           href={e.url}
           variant={e.variant}
-          class="w-full rounded-full sm:w-auto"
+          class={`cta ${e.variant === 'primary' ? 'cta-relleno ' : ''}w-full rounded-full sm:w-auto`}
           {...(interno ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
         >
           {e.etiqueta}
-          <Icono class="size-4" aria-hidden="true" />
+          <Icono class="cta-flecha size-4" aria-hidden="true" />
           {!interno && <span class="sr-only">(se abre en una pestaña nueva)</span>}
         </Button>
       );

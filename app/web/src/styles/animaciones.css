@@ -14,3 +14,31 @@
     opacity: 0;
   }
 }
+
+/* Llamados a la acción («Conoce más», «Ver más», «Ver todas…»): al pasar el puntero o al tener el foco, la flecha
+   se desplaza ~4 px. Uso: `cta` en el enlace o botón y `cta-flecha` en el ícono. `cta-relleno` suma, en los botones
+   rellenos, una leve elevación (-1 px) y más brillo. Sin movimiento con prefers-reduced-motion: queda el cambio de
+   brillo, que no es movimiento. Va sin @layer a propósito: debe ganar a las utilidades de transición del botón. */
+.cta {
+  transition-property: transform, filter, background-color, color, border-color, box-shadow, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.cta-flecha {
+  transition: transform 150ms ease-out;
+}
+
+.cta-relleno:is(:hover, :focus-visible) {
+  filter: brightness(1.08);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cta:is(:hover, :focus-visible) .cta-flecha {
+    transform: translateX(0.25rem);
+  }
+
+  .cta-relleno:is(:hover, :focus-visible) {
+    transform: translateY(-1px);
+  }
+}
