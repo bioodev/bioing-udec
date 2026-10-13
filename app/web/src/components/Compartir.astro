@@ -89,10 +89,13 @@ const iconos: Record<Red, typeof WhatsappLogo> = {
         boton.dataset.copiado = 'si';
         window.clearTimeout(temporizadores.get(boton));
         temporizadores.set(boton, window.setTimeout(() => delete boton.dataset.copiado, DURACION_COPIADO_MS));
+        // El éxito ya se ve en el botón: el aviso queda solo para lectores de pantalla.
         aviso.textContent = 'Enlace copiado';
+        aviso.classList.add('sr-only');
       } catch {
         delete boton.dataset.copiado;
         aviso.textContent = 'No se pudo copiar: copia el enlace desde la barra de direcciones.';
+        aviso.classList.remove('sr-only');
       }
     });
   }
