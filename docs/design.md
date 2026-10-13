@@ -332,6 +332,30 @@ El sistema de referencia se aplica con **Starwind UI v3** sobre **Tailwind v4**.
 | `--sombra-tarjeta` (reposo) | `0 1px 2px rgb(0 0 0 / 0.04), 0 2px 8px rgb(0 0 0 / 0.04)` | `… / 0.3` (ambas sombras) |
 | `--sombra-tarjeta-hover` | `0 4px 12px rgb(0 0 0 / 0.08), 0 12px 32px rgb(0 0 0 / 0.08)` | `0 4px 12px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.5)` |
 
+### Recuadros destacados
+
+Dentro del cuerpo Markdown (Noticias, Agenda, Anuncios y Páginas) un párrafo puede ir en un recuadro `<aside>`
+(`src/lib/recuadros.ts`, plugin de Sätteri). Sintaxis de las alertas de GitHub: una cita cuya primera línea es
+`[!NOTA]`, `[!IMPORTANTE]`, `[!CONSEJO]` o `[!ATENCIÓN]` (también los nombres en inglés `NOTE`, `IMPORTANT`, `TIP`,
+`WARNING`). Una marca desconocida queda como cita normal.
+
+- **Forma**: borde izquierdo de 4 px en el color del tipo, fondo tenue (8 % del color sobre `--background`), radio
+  `--radius` solo en el lado derecho. Título visible con ícono de Phosphor (trazos de `phosphor-astro`, licencia MIT)
+  y el texto del recuadro siempre en `--foreground`.
+- **Color por tipo** (`--recuadro-color`, en `starwind.css`, fuera de `@layer` para ganar a `prose`):
+
+| Tipo | Ícono | Claro | Oscuro |
+|---|---|---|---|
+| Nota | `NotePencil` | `#0060c0` | `#7fb8ff` |
+| Importante | `WarningCircle` | `#b91c1c` | `#fca5a5` |
+| Consejo | `Lightbulb` | `#166534` | `#86efac` |
+| Atención | `Warning` | `#92400e` | `#fcd34d` |
+
+- **Contraste**: el título y el borde usan el color del tipo sobre el fondo tenue (AA: ≥ 4,5 : 1 en ambos modos); el
+  texto usa `--foreground`. Sin animación: no depende de `prefers-reduced-motion`.
+- **Panel**: la vista previa del panel muestra la cita tal cual; el recuadro se ve en el sitio publicado.
+- **Seguridad**: el plugin va antes de `sanearHtml` y solo genera nodos propios (nada de HTML crudo).
+
 ### Badges
 
 Un solo componente, `Distintivo.astro`, con la regla y el ícono (Phosphor, decorativo) de cada clase de dato. El
