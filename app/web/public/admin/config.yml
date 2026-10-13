@@ -385,6 +385,8 @@ collections:
     icon: photo_camera
     description: 'Publicaciones de Instagram que se muestran en la sección Instagram y en el Inicio.'
     folder: /app/web/src/content/instagram
+    editor:
+      preview: false
     format: yml
     identifier_field: titulo
     summary: "{{titulo}} · {{fecha | date('YYYY-MM-DD')}} {{publicado | ternary('', '(borrador)')}}"
@@ -473,6 +475,8 @@ collections:
     icon: domain
     description: 'Empresas, instituciones, laboratorios y agrupaciones. Se eligen al cargar Personas, actividades de la Agenda, Anuncios y Noticias.'
     folder: /app/web/src/content/organizaciones
+    editor:
+      preview: false
     format: yml
     identifier_field: nombre
     summary: '{{nombre}} ({{tipo}})'
@@ -497,6 +501,8 @@ collections:
     icon: category
     description: 'Campos de la bioingeniería (p. ej. acuicultura, biomateriales). Sirven para clasificar Personas, Noticias, Agenda, Anuncios y Documentos.'
     folder: /app/web/src/content/areas
+    editor:
+      preview: false
     format: yml
     identifier_field: nombre
     summary: '{{nombre}}'
@@ -508,6 +514,8 @@ collections:
     icon: sell
     description: 'Clasificación editorial de Noticias y Documentos, p. ej. institucional o logros. Para campos profesionales, usa Áreas.'
     folder: /app/web/src/content/temas
+    editor:
+      preview: false
     format: yml
     identifier_field: nombre
     summary: '{{nombre}}'
@@ -520,6 +528,8 @@ singletons:
     label: Inicio
     icon: home
     file: /app/web/src/content/inicio/inicio.md
+    editor:
+      preview: false
     fields:
       - name: secciones
         label: Secciones destacadas
@@ -570,6 +580,8 @@ singletons:
     label: Secciones del sitio
     icon: menu
     file: /app/web/src/content/menu/menu.yml
+    editor:
+      preview: false
     format: yml
     fields:
       - { name: noticias, label: "Mostrar «Noticias» en el menú", widget: boolean, default: true, hint: "Si lo desactivas, la sección sale del menú y del pie, pero su página sigue existiendo." }
@@ -648,6 +660,8 @@ singletons:
     label: Redes sociales
     icon: share
     file: /app/web/src/content/redes/redes.yml
+    editor:
+      preview: false
     format: yml
     fields:
       - name: instagram
@@ -709,6 +723,8 @@ singletons:
     label: SEO del sitio
     icon: travel_explore
     file: /app/web/src/content/seo/seo.yml
+    editor:
+      preview: false
     format: yml
     fields:
       - name: descripcion
@@ -807,6 +823,8 @@ singletons:
     label: Encabezados de listados
     icon: title
     file: /app/web/src/content/encabezados/encabezados.yml
+    editor:
+      preview: false
     format: yml
     fields:
       - name: noticias

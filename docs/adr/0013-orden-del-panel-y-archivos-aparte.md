@@ -29,3 +29,10 @@ El panel listaba todas las colecciones en una sola fila larga, mezcladas con cin
 - **Solo renombrar y agregar íconos.** No resolvía el orden del Cuerpo ni la duda sobre qué eran «Páginas».
 - **Dejar los cinco archivos dentro de «Páginas».** Obliga a abrir una colección para ajustes que no son contenido.
 - **Títulos de grupo en lugar de divisores.** No está en el esquema de Sveltia 0.235.1.
+
+## Vista previa del panel (2026-10-12, rama encabezados)
+
+La vista previa lateral se mantiene solo donde ayuda a revisar lo que se publica: Noticias, Agenda, Anuncios, Repositorio,
+Banners, Páginas y Personas. Se quita con `editor: { preview: false }` en Áreas, Temas, Organizaciones, Instagram y en
+todos los archivos de «Archivos» (Inicio, Secciones del sitio, Redes sociales, SEO del sitio y Encabezados de listados).
+Motivo: en esas colecciones el formulario se lee mejor a todo el ancho y la vista previa no agrega información útil.

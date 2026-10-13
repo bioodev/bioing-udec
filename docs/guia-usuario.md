@@ -715,6 +715,10 @@ derecha del formulario aparece la vista previa. Va en este orden:
 La vista previa sigue el tema que tengas en el panel (claro u oscuro, o el del sistema si el panel sigue al sistema).
 Si cambias el tema en Ajustes, la vista previa cambia sin recargar.
 
+**Sin vista previa.** Áreas, Temas, Organizaciones, Instagram y la sección **Archivos** (Inicio, Secciones del sitio,
+Redes sociales, SEO del sitio y Encabezados de listados) no muestran panel de vista previa: el formulario ocupa todo el
+ancho. Lo que cambies se ve en el sitio tras la publicación.
+
 **Límites de la vista previa.** No muestra el texto exacto de cada buscador ni cómo se ve en el móvil. La descripción
 general del sitio no se lee desde el panel, así que el aviso «Sin descripción propia» no sabe cuál es. En Actividades,
 la descripción se arma con el tipo y la fecha, igual que en el sitio; si falta el tipo o la fecha, el aviso aparece
