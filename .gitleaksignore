@@ -1,0 +1,3 @@
+# Falsos positivos revisados a mano (gitleaks). Una huella por línea.
+# Token ficticio de prueba de Cloudflare Web Analytics en seo.test.ts (commit anterior a la marca gitleaks:allow).
+1f4c309a939f1efa305e0108ac921aa0dbb53e52:app/web/src/lib/seo.test.ts:generic-api-key:136
