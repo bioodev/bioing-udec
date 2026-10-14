@@ -87,7 +87,7 @@ cada `relation` es `reference()`; los objetos "Persona u Organización" (Organiz
 | **Anuncios** | título, tipo de oportunidad, Oferente, Áreas, fecha, fecha límite, Contacto, enlace |
 | **Documentos** | título, tipo, año, enlace (Drive), descripción, Temas, Áreas, palabras clave |
 | **Banners** | título, etiqueta y su color (opcionales), texto, imagen, enlace, inicio, fin |
-| **Páginas libres** | título, publicado, bajada (obligatoria), imagen y texto alternativo, `mostrar_en` (ninguno, footer, la-carrera, comunidad), destacar en el Inicio y resumen para el Inicio (una sola destacada, ADR 0006), video (YouTube), Enlaces (hasta 6), título y lista de bloques destacados, y cuerpo; una por archivo en `src/content/paginas-libres/` (ADR 0005). ¿Qué es la Bioingeniería? es una de ellas |
+| **Páginas libres** | título, publicado, bajada (obligatoria), imagen y texto alternativo, `mostrar_en` (ninguno, footer, la-carrera, comunidad), destacar en el Inicio, etiqueta y resumen para el Inicio (una sola destacada, ADR 0006), video (YouTube), Enlaces (hasta 6), título y lista de bloques destacados, y cuerpo; una por archivo en `src/content/paginas-libres/` (ADR 0005). ¿Qué es la Bioingeniería? es una de ellas |
 | **Inicio** | archivo único `src/content/inicio/inicio.md`: banda «Comunidad y documentos» (título y tarjetas del Directorio y del Repositorio: título, texto, botón, foto opcional) y lista de secciones destacadas (etiqueta opcional, título, texto, botón, enlace, imagen, texto alternativo, publicado) |
 | **Instagram** | título, enlace validado, fecha, imagen |
 | **Áreas / Temas** | listas cerradas y editables por el Encargado |
@@ -149,6 +149,10 @@ reference` en el build **pero no lo hace fallar**: las páginas envuelven `getEn
 - **Cuerpo Markdown**: lo procesa Sätteri con dos plugins hast, en este orden (`astro.config.mjs`): `recuadros`
   (`src/lib/recuadros.ts`: citas con `[!NOTA]`… → Recuadro destacado, ADR 0015) y `sanearHtml`
   (`src/lib/sanear-html.ts`: quita el HTML crudo y los enlaces `javascript:`/`data:`; revisión de seguridad 2026-10-12).
+- **Fechas relativas**: «· hace 3 días» junto a las fechas de tarjetas y fichas. Lo calcula el navegador
+  (`src/lib/tiempo-relativo.ts` + `src/scripts/tiempo-relativo.ts`, desde `Base.astro`), porque el build es diario y el
+  texto quedaría viejo. Sin JavaScript solo se ve la fecha.
+- **Código QR** de cada ficha en «Compartir»: SVG generado en el build (`src/lib/qr.ts`, `uqr`), sin JS ni servicios.
 - **Incrustados**: iframes con `loading="lazy"` y esqueleto hasta el `load`; Instagram se crea con IntersectionObserver
   al acercarse a la pantalla (ADR 0014).
 - **Componentes** reutilizables en `src/components/` (tarjetas, `EnlaceFicha`, `HeroCarrusel`, …). Las

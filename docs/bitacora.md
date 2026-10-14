@@ -143,3 +143,25 @@ reemplazar las imágenes de ejemplo y borrar el contenido de prueba (`pendientes
 Ejecución: subagentes Haiku en worktrees coordinados con Herdr, integrados en `develop` por el orquestador después de
 revisar el diff y las capturas. Trampa del orquestador: un agente renombró su rama (`datos` → `datos-faltantes`) y el
 `git merge` falló en silencio porque la salida pasaba por `tail`. Al integrar, comprobar `git log develop..<rama>`.
+
+### Segunda tanda visual (2026-10-12, publicada en `33a54ca`)
+
+Decisiones de la persona: barra de redes en el Inicio; la referencia de udec.cl aplicada a Secciones y a la Página
+destacada; etiqueta del hero como campo del Banner con color; tiempo relativo en fichas y tarjetas.
+
+- **Fecha relativa** («· hace 4 meses», «· en 2 semanas») en tarjetas y fichas de Noticias, Agenda y Anuncios,
+  calculada en el navegador. Ícono de calendario en la fecha de las tarjetas (también en «Te puede interesar»).
+- **Compartir**: «Copiar enlace» cambia a ✓ «Enlace copiado» por 2 s; **código QR** plegado, generado en el build con
+  `uqr` 0.1.3 (negro sobre blanco en ambos temas) y descargable.
+- **Columna lateral**: ícono en cada dato, el mismo para el mismo concepto en las tres fichas.
+- **Hero**: texto a la izquierda (el velo y el desenfoque se centran en `--hero-foco`) y **etiqueta** opcional sobre el
+  título, con color de una lista (campos `etiqueta` y `etiqueta_color` del Banner).
+- **Listados**: título, ícono e introducción sobre la imagen de cabecera (ADR 0016).
+- **Tarjeta de contenido** (`TarjetaContenido.astro`, referencia «media-content» de udec.cl) en Secciones destacadas y
+  Página destacada: etiqueta, título, línea corta, texto y botón. Campos nuevos `etiqueta` y `etiqueta_inicio`.
+- **«Síguenos»** al final del Inicio: hasta 5 redes por fila con borde izquierdo, ícono y nombre, en un solo color de
+  marca. No aparece mientras «Redes sociales» esté vacío.
+
+Integración: los agentes de fecha y de íconos tocaron las mismas líneas de las fichas; se dejó el formato con íconos y
+se sumó la fecha relativa. Se quitó el hueco que dejaba el aviso vacío de «Copiar enlace». Los prompts ahora prohíben
+renombrar la rama de trabajo.

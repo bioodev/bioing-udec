@@ -182,7 +182,9 @@ _Avoid_: Destacado, slider, hero
 **Redes sociales**:
 Perfil de la comunidad en una red social (Instagram, Facebook, X, LinkedIn, YouTube, TikTok, Threads, Bluesky o
 Mastodon / Fediverso). Se edita en el panel como un campo por red, en «Redes sociales». Aparece en el pie del sitio con
-su ícono, en el `sameAs` del JSON-LD y en el botón «Seguir en Instagram» de `/instagram`. No son botones de compartir.
+su ícono, en la sección «Síguenos» al final del Inicio (solo si hay al menos una cargada), en el `sameAs` del JSON-LD y
+en el botón «Seguir en Instagram» de `/instagram`. No son botones de compartir (esos están en la columna lateral de las
+fichas, ADR 0015).
 
 **Publicación de Instagram**:
 Publicación o reel de la cuenta de Instagram de la carrera que el Encargado de comunicaciones selecciona para mostrar en el sitio pegando su enlace; una Noticia puede tener una relacionada. Se carga sola al acercarse a la pantalla (ADR 0014).

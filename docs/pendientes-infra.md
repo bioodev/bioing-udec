@@ -67,6 +67,8 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
 - [ ] **Prueba de Página libre** en el panel: crear una página, publicarla en `/p/<nombre>`, elegir «Mostrar en» y enlazarla desde un Banner con su ruta.
 - [ ] **Prueba de Contenido incrustado y Enlaces** con enlaces reales: confirmar el alto del reproductor de episodios de Spotify (152 px, compacto) y probar al menos un proveedor de cada tipo (audio, video, red social, mapa) y un Enlace interno (`/agenda`) y uno externo.
 - [ ] **Página destacada del Inicio** (ADR 0006): validar con la contraparte (`preguntas-reunion.md` 7.1).
+- [ ] **Cargar las redes sociales reales** en «Redes sociales» del panel: hoy `redes.yml` está vacío, así que no se ven
+  ni el pie con íconos ni la sección «Síguenos» del Inicio (`preguntas-reunion.md` 9.1).
 - [ ] Reemplazar las imágenes de ejemplo de los encabezados de listado (`encabezados.yml`: `demo-*` y `ejemplo-azul.png`) por fotos reales de la carrera, con su texto alternativo.
 - [ ] **Borrar el contenido de prueba antes de la entrega** (el sintético `sint-*` no está en git: `npm run datos:limpiar`):
   - `noticias/noticia-demo-borrar-luego.md` y `noticia-demo-borrar-luego-2.md`, `instagram/publicacion-udec.yml`;
@@ -76,5 +78,7 @@ Mientras tanto, el desarrollo sigue en el Gitea propio (`gitea.bioodev.work/bioi
   - la imagen `assets/media/dmitriy-suponnikov-_-1zQPK8tMc-unsplash.webp`;
   - los textos «Contenido de ejemplo. Borrar cuando haya contenido real.» de noticias, actividades, anuncios y de
     «¿Qué es la Bioingeniería?», y su video de prueba;
+  - las etiquetas de ejemplo: «Comunidad» en el Banner `bienvenida-bioing.yml` y «Ejemplo» en la sección destacada de
+    prueba (puestas el 2026-10-12 para mostrar los campos nuevos);
   - las organizaciones «(ejemplo)» si la contraparte confirma que no existen (`preguntas-reunion.md` 9.3).
   Lo que falta completar con datos reales está en [`analisis/2026-10-12-datos-faltantes.md`](analisis/2026-10-12-datos-faltantes.md).
