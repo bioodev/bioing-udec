@@ -280,9 +280,14 @@ Fuentes: [GitLab — Storage usage quotas](https://docs.gitlab.com/user/storage_
 |---|---|---|---|
 | 1. Modelo y base | Modelo de contenidos, arquitectura, gestor configurado, diseño base | Demo navegable revisada por la contraparte; modelo de contenidos aprobado | Completado (demo funcional) |
 | 2. Secciones | Inicio, Noticias, Directorio y Fichas | Cada sección funciona con contenido de prueba y la contraparte aprueba su diseño | Completado (demo funcional) |
-| 3. Secciones restantes | Agenda, Anuncios, Repositorio, Instagram, ¿Qué es la Bioingeniería?, anuario PDF | Todas las secciones del alcance funcionan con contenido de prueba; pruebas automáticas en verde | 30 de noviembre de 2026 (en curso) |
+| 3. Secciones restantes | Agenda, Anuncios, Repositorio, Instagram, ¿Qué es la Bioingeniería?, anuario PDF | Todas las secciones del alcance funcionan con contenido de prueba; pruebas automáticas en verde | 30 de noviembre de 2026 (criterio técnico cumplido; falta la aceptación de la contraparte) |
 | 4. Producción | Dominio, Cloudflare, R2, CI/CD, identidad visual definitiva, carga de contenidos iniciales | Sitio publicado en el dominio definitivo; el Encargado de comunicaciones publica un contenido de principio a fin sin ayuda; metas de calidad cumplidas | 31 de enero de 2027 |
 | 5. Cierre | Capacitación, documentación y entrega | Entregables de cierre recibidos y capacitación realizada; acta de entrega conforme | 15 de marzo de 2027 |
+
+Al 18 de octubre de 2026, el criterio técnico del Hito 3 está cumplido: todas las secciones del alcance
+(Agenda, Anuncios, Repositorio, Instagram, ¿Qué es la Bioingeniería? y el anuario PDF) funcionan con
+contenido de prueba, con las pruebas automáticas en verde y `astro check` sin errores. Queda la
+aceptación de la contraparte, prevista para el 30 de noviembre.
 
 La contraparte revisa cada hito en un plazo de 5 días hábiles; sin observaciones en ese plazo, el hito se considera aceptado.
 
