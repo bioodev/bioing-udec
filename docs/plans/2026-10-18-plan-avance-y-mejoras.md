@@ -58,7 +58,7 @@ reales en el panel (2.3). Todo lo demás puede ir en paralelo.
 - [ ] Proponer como oportunidad los **componentes de editor** para video/PDF/mapa (`guia-evolucion.md` §4).
 
 ### 1.2 Puesta al día de la documentación de hitos
-- [ ] `propuesta-desarrollo.md` §11 marca el Hito 3 «en curso»: actualizar el estado sin tocar lo comprometido.
+- [x] `propuesta-desarrollo.md` §11 marca el Hito 3 «en curso»: actualizar el estado sin tocar lo comprometido.
 
 ---
 
@@ -101,7 +101,7 @@ incluye axe-core, así que **no** se agrega un arnés Playwright + axe (dos depe
 mantención para una persona).
 
 ### 3.1 Lighthouse — oficial después de 2.2
-- [ ] **Ahora, solo control rápido**: re-correr las 12 páginas sobre el build local para detectar regresiones de
+- [x] **Ahora, solo control rápido**: re-correr las 12 páginas sobre el build local para detectar regresiones de
       las tandas 2 y 3; sumar Anuncio individual y una Página libre.
 - [ ] **Medición oficial** sobre el build real de Cloudflare (compresión, `_headers`, CSP) tras 2.2, y de nuevo con
       el contenido real (Bloque 5). Si con volumen (`datos:generar`) sigue bajo 90, ajustar `widths`/`sizes`.
@@ -122,13 +122,13 @@ mantención para una persona).
 
 ## Bloque 4 — Mantención técnica
 
-- [ ] **Parches de bajo riesgo** (un commit por paquete, `verificar` entre cada uno): `astro` 7.3.8, `vitest`
+- [x] **Parches de bajo riesgo** (un commit por paquete, `verificar` entre cada uno): `astro` 7.3.8, `vitest`
       5.0.5, `wrangler` 4.151.0 (fijado exacto en `package.json`: cambiar la versión a mano).
-- [ ] **Con revisión visual**: `@starwind-ui/astro` 1.3.0 (minor; revisar componentes) y
+- [x] **Con revisión visual**: `@starwind-ui/astro` 1.3.0 (minor; revisar componentes) y
       `@astrojs/markdown-satteri` 0.4.4 (0.x, fijado exacto; alimenta `recuadros` y `sanearHtml`: revisar una Noticia
       con recuadros y los tests de `sanear-html`).
 - [ ] **TypeScript 7** fuera (major; evaluar aparte con `astro check`).
-- [ ] Anotar en `guia-mantencion.md` la versión de Sveltia que carga `public/admin/index.html` (pre-1.0; el schema de
+- [x] Anotar en `guia-mantencion.md` la versión de Sveltia que carga `public/admin/index.html` (pre-1.0; el schema de
       `config.yml` se valida contra esa misma versión).
 - [ ] Linter: fuera de este plan. Si se retoma, Biome (un archivo de config) antes que ESLint + plugins.
 

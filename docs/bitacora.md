@@ -165,3 +165,36 @@ destacada; etiqueta del hero como campo del Banner con color; tiempo relativo en
 Integración: los agentes de fecha y de íconos tocaron las mismas líneas de las fichas; se dejó el formato con íconos y
 se sumó la fecha relativa. Se quitó el hueco que dejaba el aviso vacío de «Copiar enlace». Los prompts ahora prohíben
 renombrar la rama de trabajo.
+
+## Plan de avance y mejoras: bloques ejecutables (sesión 2026-10-18)
+
+Ejecución del [plan de avance y mejoras](plans/2026-10-18-plan-avance-y-mejoras.md) por un agente, en `develop` y
+sin push (ADR 0004). Se hizo solo lo que no depende de la carrera ni de cuentas; lo demás quedó como estaba.
+
+**Mantención técnica (Bloque 4).** Un commit por paquete, con `npm run verificar` en verde entre cada uno:
+`astro` 7.3.8, `vitest` 5.0.5, `wrangler` 4.151.0, `@astrojs/markdown-satteri` 0.4.4 y `@starwind-ui/astro` 1.3.0.
+Los dos últimos con revisión visual: una Noticia con recuadros y el saneado del cuerpo en claro y oscuro (Sätteri) y
+la sección Starwind, el Combobox de los filtros y el Sheet del menú móvil en 390 px (el diff de Starwind resultó ser
+un refactor de `getInitCandidates` a un módulo compartido más el salto del runtime). El `save-prefix` de npm de este
+equipo está vacío, así que `npm install` deja la versión exacta: astro y vitest quedan fijados, como ya pedía el plan
+para estos parches. 580 pruebas y `astro check` en 0.
+
+**Control rápido de Lighthouse (Bloque 3.1).** Se repitieron las 13 páginas del CSV de la Fase A —la de bioingeniería
+hoy es `/p/bioingenieria`— más un Anuncio individual, sobre `dist/` servido con `python3 -m http.server`. Resultados
+en `app/web/auditoria/lighthouse-2026-10-18-control.csv` (el CSV oficial no se toca); método y hallazgos en
+`auditoria/README.md`. Para separar la regresión real del ruido del entorno, la Fase A se volvió a medir en el mismo
+equipo y seguida de la corrida actual (worktree en `df53096` con su propio `npm ci`): reprodujo el CSV tal cual
+(Inicio 98, Noticias 95…). Conclusión: las tandas visuales posteriores cuestan de 4 a 19 puntos de rendimiento —el
+peso del Inicio sube de ~150 KiB a ~750 KiB— por Pagefind UI cargado con `requestIdleCallback` (213 KiB), GSAP y el
+script del carrusel, más CSS e imágenes; en Noticias aparece CLS 0,121 por la animación de entrada de la lista, y
+Instagram baja a 77 en buenas prácticas por la cookie del embed (consecuencia asumida del ADR 0014). Accesibilidad y
+SEO siguen en 100. No se tocó código: ajustar `widths`/`sizes` y diferir Pagefind es del Bloque 5.
+
+**Documentación.** Estado del Hito 3 al día en `propuesta-desarrollo.md` §11 (criterio técnico cumplido; falta la
+aceptación de la contraparte). Versión de Sveltia del panel (0.235.1) anotada en `guia-mantencion.md` §2.3 y §5.
+
+**Borradores que esperan a la persona** (no se enviaron): `analisis/2026-10-18-agenda-reunion-hito-3.md` (agenda del
+Hito 3 con §6, §7.1, §8 y §9 de `preguntas-reunion.md`, la Ley 21.719, las URLs del WordPress, el plan B y la
+aceptación del hito), `adr/0017-datos-personales-del-directorio.md` (**Proposed**: supresión que incluya el historial
+de Git, o datos del Directorio fuera del repositorio) y `guia-mantencion.md` §7 (Respaldos, completo como propuesta,
+sin tocar cuentas).
