@@ -39,7 +39,8 @@ cómo revertir*. Los incidentes van como tabla en §9.
 
 ### 2.3 Semestral
 - Actualizar dependencias mayores (Astro, Sveltia, Tailwind/Starwind, Pagefind) siguiendo §3.3.
-- **Sveltia CMS** (versión fija en `app/web/public/admin/index.html`): revisar si hay versión nueva y leer sus
+- **Sveltia CMS** (versión fija en `app/web/public/admin/index.html`: **0.235.1**, pre-1.0): revisar si hay
+  versión nueva y leer sus
   notas de versión desde la actual. Si no trae cambios que rompan la compatibilidad (opciones de `config.yml`
   renombradas o retiradas, cambios en `registerPreviewTemplate`/`registerPreviewStyle`, recursos de dominios
   nuevos que choquen con la CSP de `/admin/*`), actualizar siguiendo `despliegue-cloudflare.md` §12. Si los trae o
@@ -84,6 +85,10 @@ cómo revertir*. Los incidentes van como tabla en §9.
 
 - Modelo en dos espejos: `app/web/public/admin/config.yml` ↔ `src/content.config.ts` (+ `docs/context.md`);
   todo cambio va en los tres.
+- **Versión de Sveltia:** el panel carga **0.235.1** con versión fija y hash de integridad
+  (`app/web/public/admin/index.html`). El schema de `config.yml` se valida contra esa misma versión
+  (`https://unpkg.com/@sveltia/cms@0.235.1/schema/sveltia-cms.json`); al actualizarla, validar de nuevo. Cómo
+  actualizar: [`despliegue-cloudflare.md`](despliegue-cloudflare.md) §12 y §2.3 de esta guía.
 - Cómo validar `config.yml` (JSON Schema de Sveltia + cargar `/admin/`).
 - Migración a GitHub con el Worker de autenticación de Sveltia (`/auth`, CORS, COOP); qué revisar en
   `_headers` para que funcione el login.
