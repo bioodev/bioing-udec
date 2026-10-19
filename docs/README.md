@@ -57,7 +57,8 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)
 
 - [`plans/`](plans/) — planes de ejecución por hito (`YYYY-MM-DD-plan-tema.md`). Vigente para infraestructura:
-  [`2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md).
+  [`2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md). Prioridades hasta
+  la entrega: [`2026-10-18-plan-avance-y-mejoras.md`](plans/2026-10-18-plan-avance-y-mejoras.md).
 - [`analisis/`](analisis/) — wireframes acordados, comparativa EmDash, evaluación de Tolaria, revisión de seguridad (2026-10-12) y [datos faltantes del contenido](analisis/2026-10-12-datos-faltantes.md) (2026-10-12).
 - [`biotech-imgs-demo/`](biotech-imgs-demo/) — fotos originales (Unsplash) usadas como material de prueba; la
   versión optimizada que usa el sitio está en `app/web/src/assets/media/`.
