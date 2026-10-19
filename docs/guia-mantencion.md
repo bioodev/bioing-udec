@@ -94,17 +94,73 @@ cómo revertir*. Los incidentes van como tabla en §9.
 - **Contenido publicado por error**: identificar el commit en el historial del repositorio y revertirlo
   (o deshacer desde el panel si el cambio es reciente); tiempos.
 - **Cambio de contenido con datos personales**: procedimiento con prioridad (incluye revisar el historial
-  de Git, ver riesgo 1 de la propuesta).
+  de Git, ver riesgo 1 de la propuesta y el [ADR 0017](adr/0017-datos-personales-del-directorio.md)).
 - **Cambio de código que rompió el sitio**: revertir el commit y esperar el redeploy, o volver al deploy
   anterior.
 - Qué se puede hacer sin soporte del proveedor y qué conviene pedir dentro de la garantía.
 
 ## 7. Respaldos
 
-- Repositorio: mirror/segunda copia (dónde y cada cuánto); por qué Git solo no es un respaldo.
-- Documentos en R2 (si se usa) y en Drive (propiedad de la cuenta central).
-- Evidencia de autorizaciones de datos personales (fuera del sitio: planilla del Google Form).
-- Prueba de restauración: cómo verificar que el respaldo sirve (al menos una vez al año).
+> **Propuesta — pendiente de ejecutar** (plan de avance, Bloque 2.2). Nada de esto está montado todavía: se
+> completa cuando existan la cuenta central y el repositorio definitivo. Sirve como guion de la puesta en
+> marcha y como procedimiento una vez que exista.
+
+**Punto de partida:** Git no es un respaldo. Un repositorio en un solo proveedor (GitHub) es una copia
+única: un borrado de la organización, un problema de cuenta o un `push --force` accidentado se llevan todo,
+y el historial tampoco sirve como respaldo de los datos personales (ADR 0017). Las imágenes del sitio viven
+en el mismo repositorio; los documentos, en Drive (y en R2 solo si se decidió usarlo).
+
+### 7.1 Qué se respalda y dónde
+
+| Qué | Dónde vive | Respaldo propuesto |
+|---|---|---|
+| Código y contenido del sitio | repositorio de GitHub de la cuenta central | segundo mirror programado en otra ubicación de la cuenta central (p. ej. una GitHub Action que hace `git push --mirror` a un repositorio espejo, o una copia a almacenamiento de la cuenta) |
+| Imágenes del sitio | `app/web/src/assets/media` (dentro del repositorio) | queda cubierto por el mirror del repositorio |
+| Documentos del Repositorio | carpeta pública de Google Drive de la cuenta central | copia periódica en un almacén de la cuenta central (Drive aparte o R2) |
+| Documentos en R2 (solo si se usa) | bucket de Cloudflare | copia a otra ubicación de la cuenta central; revisar al decidir R2 sí/no (guía §5) |
+| Evidencia de autorizaciones de datos personales | planilla del Google Form | exportación periódica (CSV) guardada en la cuenta central, **fuera** del sitio y del repositorio (ADR 0017) |
+| Secretos y variables (Deploy Hook, token de analítica, claves de R2) | Workers / Workers Builds / GitHub | registro en el gestor de contraseñas compartido de la cuenta central; nunca en el repositorio |
+| Configuración de las cuentas (DNS, Worker, Builds, reglas de `_headers`) | panel de Cloudflare | anotada en `despliegue-cloudflare.md`; se rehace a mano si se pierde |
+
+### 7.2 Cuándo
+
+- **Programado**: el mirror del repositorio, al menos una vez por semana (o en cada push a `main`, según el
+  costo).
+- **Antes de cambios de riesgo**: migración de repositorio, rotación de secretos, reescritura de historial
+  (ADR 0017) o cambio de cuenta. Un respaldo justo antes permite volver atrás sin adivinar.
+- **Anual**: prueba de restauración y revisión de que cada respaldo sigue existiendo (una GitHub Action que
+  avise si el espejo se atrasa sirve para lo mismo; ver también el aviso de repositorio sobre 1 GB).
+
+### 7.3 Cómo saber que salió bien
+
+- El espejo tiene el mismo `HEAD` que el original (`git log --oneline -1` en ambos) y la fecha del último
+  push es reciente.
+- La copia de Drive/R2 incluye los archivos esperados (cantidad y fechas razonables), no solo la carpeta.
+- El gestor de contraseñas tiene las credenciales y la fecha de la última rotación.
+- Queda un registro breve (fecha, qué se copió, quién): unas líneas en `bitacora.md` bastan.
+
+### 7.4 Prueba de restauración (al menos una vez al año)
+
+**Cuándo:** una vez al año, y la primera vez al montar los respaldos (antes de necesitarlos).
+
+**Cómo:**
+1. Clonar el espejo en una carpeta aparte y comprobar que compila: `npm ci` y `npm run verificar` en
+   `app/web` (si `verificar` pasa, el respaldo del código y del contenido sirve).
+2. Restaurar una muestra de documentos y de imágenes y abrirla.
+3. Simular el borrado de una ficha del Directorio sobre la copia y aplicar el procedimiento del ADR 0017
+   (opción vigente) para comprobar que se puede cumplir una supresión.
+4. Anotar en `bitacora.md` el resultado y lo que haya que corregir.
+
+**Cómo revertir:** si la prueba falla, el respaldo existe pero no es utilizable: corregir el respaldo (volver
+a copiar, cambiar de método) antes de dar por buena la mantención, y avisar. No se declara «respaldos al
+día» sin haber pasado esta prueba.
+
+### 7.5 Qué **no** es un respaldo
+
+- Git solo, en un único proveedor.
+- El historial de commits (`git log`), que no borra lo que la ley pide borrar (ADR 0017).
+- La vista previa publicada, que se desmonta al migrar (ADR 0001 y plan de ambientes, etapa P).
+- La copia que solo vive en el computador de una persona.
 
 ## 8. Salud del sitio
 

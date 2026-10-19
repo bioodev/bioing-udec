@@ -53,13 +53,14 @@ En [`adr/`](adr/), numeradas, con Estado · Contexto · Decisión · Consecuenci
 - [`0014-incrustados-sin-clic.md`](adr/0014-incrustados-sin-clic.md) — incrustados con esqueleto; Instagram se carga solo al acercarse a la pantalla, sin el botón «Ver publicación aquí».
 - [`0015-recuadros-y-columna-lateral.md`](adr/0015-recuadros-y-columna-lateral.md) — Recuadros destacados en el texto (`> [!NOTA]`) y columna lateral con datos clave y «Compartir» en las fichas.
 - [`0016-titulo-sobre-la-imagen-de-cabecera.md`](adr/0016-titulo-sobre-la-imagen-de-cabecera.md) — Título e introducción sobre la imagen de cabecera de los listados, con velo degradado (reemplaza el diseño visual del 0011).
+- [`0017-datos-personales-del-directorio.md`](adr/0017-datos-personales-del-directorio.md) — datos personales del Directorio y Ley 21.719: supresión con historial de Git (a) o datos fuera del repositorio (b). **Propuesto**, espera la decisión de la carrera.
 
 ## Trabajo (histórico, fechado: son fotos del momento, no se reescriben)
 
 - [`plans/`](plans/) — planes de ejecución por hito (`YYYY-MM-DD-plan-tema.md`). Vigente para infraestructura:
   [`2026-10-11-plan-ambientes-qa-produccion.md`](plans/2026-10-11-plan-ambientes-qa-produccion.md). Prioridades hasta
   la entrega: [`2026-10-18-plan-avance-y-mejoras.md`](plans/2026-10-18-plan-avance-y-mejoras.md).
-- [`analisis/`](analisis/) — wireframes acordados, comparativa EmDash, evaluación de Tolaria, revisión de seguridad (2026-10-12) y [datos faltantes del contenido](analisis/2026-10-12-datos-faltantes.md) (2026-10-12).
+- [`analisis/`](analisis/) — wireframes acordados, comparativa EmDash, evaluación de Tolaria, revisión de seguridad (2026-10-12), [datos faltantes del contenido](analisis/2026-10-12-datos-faltantes.md) (2026-10-12) y [agenda de la reunión del Hito 3](analisis/2026-10-18-agenda-reunion-hito-3.md) (2026-10-18).
 - [`biotech-imgs-demo/`](biotech-imgs-demo/) — fotos originales (Unsplash) usadas como material de prueba; la
   versión optimizada que usa el sitio está en `app/web/src/assets/media/`.
 
