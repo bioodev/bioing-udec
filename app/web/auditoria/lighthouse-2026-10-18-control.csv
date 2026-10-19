@@ -1,0 +1,15 @@
+pagina,url,rend_control,acc_control,bp_control,seo_control,rend_fase_a,acc_fase_a,bp_fase_a,seo_fase_a,d_rend,d_acc,d_bp,d_seo,regresion,nota
+inicio,/,83,100,100,100,98,100,100,100,-15,0,0,0,si,
+noticias,/noticias,76,100,100,100,95,100,100,100,-19,0,0,0,si,CLS 0.121 por la animación de entrada de la lista (data-animar)
+noticia-detalle,/noticias/egresada-premio-innovacion,89,100,100,100,98,100,100,100,-9,0,0,0,si,
+agenda,/agenda,86,100,100,100,94,100,100,100,-8,0,0,0,si,
+agenda-detalle,/agenda/charla-acuicultura-sostenible,92,100,100,100,98,100,100,100,-6,0,0,0,si,
+directorio,/directorio,89,100,100,100,97,100,100,100,-8,0,0,0,si,
+ficha-persona,/personas/ana-perez,93,100,100,100,98,100,100,100,-5,0,0,0,si,
+repositorio,/repositorio,93,100,100,100,98,100,100,100,-5,0,0,0,si,
+anuncios,/anuncios,92,100,100,100,97,100,100,100,-5,0,0,0,si,
+anuncio-detalle,/anuncios/busqueda-ingeniero-procesos,92,100,100,100,,,,,,,,,,
+bioingenieria,/p/bioingenieria,82,100,100,100,98,100,100,100,-16,0,0,0,si,en la Fase A se midió en /bioingenieria; hoy es /p/bioingenieria
+instagram,/instagram,93,100,77,100,98,100,100,100,-5,0,-23,0,si,buenas prácticas 77 por la cookie de terceros del embed de Instagram (ADR 0014 · carga al acercarse)
+buscar,/buscar,89,100,100,100,95,100,100,100,-6,0,0,0,si,
+404,/404.html,95,100,100,100,99,100,100,100,-4,0,0,0,si,
