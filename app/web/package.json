@@ -21,7 +21,7 @@
     "dev:tunel": "bash scripts/dev-tunel.sh"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "0.4.2",
+    "@astrojs/markdown-satteri": "0.4.4",
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.4",
     "@starwind-ui/astro": "^1.2.1",
